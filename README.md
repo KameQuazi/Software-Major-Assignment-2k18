@@ -8,10 +8,15 @@ Steps
 4. Positition and print
 
 **1**
+
 a) Choosing a template
+
 b) Selecting how many
+
 c) load data
+
 d) print
+
 
 Who?
 Dt teachers (Ms Dam and Mr Comben)
