@@ -7,7 +7,7 @@ Steps
 3. Print to VLS (laser cutter printer)
 4. Positition and print
 
-**1**
+# footnote 1
 
 a) Choosing a template
 
