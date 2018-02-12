@@ -76,8 +76,11 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DXFDrawing.vb" />
-    <Compile Include="Form1.vb" />
+    <Compile Include="DxfDrawing.vb" />
+    <Compile Include="DxfText.vb" />
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form1.Designer.vb">
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
