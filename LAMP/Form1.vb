@@ -16,7 +16,9 @@ Public Class Form1
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-
+        If SaveFileDialog1.ShowDialog() = DialogResult.Ok
+            dxf.Save(SaveFileDialog1.FileName)
+        End If
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
@@ -26,6 +28,8 @@ Public Class Form1
                 Case DxfEntityType.Line
                     dim line = CType(item, DxfLine)
                     MessageBox.Show(line.P1.ToString() + ":" + line.P2.ToString())
+                Case DxfEntityType.Insert
+
                 Case Else
                     MessageBox.Show([Enum].GetName(GetType(DxfEntityType), item.EntityType))
 
@@ -34,7 +38,12 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        dxf = New DxfDrawing()
+        dxf.AddLine(0,0,100,100)
+        dxf.AddArc(0,0,5, 0,90)
+        dxf.Save("out.dxf")
     End Sub
+
+    
 End Class
 
