@@ -28,14 +28,14 @@ Public Class Form1
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         dxf = New LampDxfDocument()
-        dxf.AddLine(0, 0, 100, 100)
+        dxf.AddLine(0, 0, 100, 50)
         dxf.AddArc(0, 0, 5, 0, 90)
         dxf.AddMultiText(0, 0, "hewwo!", 12, 100)
         dxf.Save("out.dxf")
         Dim bmp As New Bitmap(200, 200)
 
         Using g = Graphics.FromImage(bmp)
-            ' g.FillRectangle()
+            g.FillRectangle(New SolidBrush(Color.LightSlateGray), 0, Height, Width, Height)
             dxf.WriteToGraphics(g, New PointF(0, 0), 200, 200)
         End Using
         bmp.Save("out.png", ImageFormat.Png)

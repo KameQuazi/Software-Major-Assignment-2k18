@@ -140,7 +140,8 @@ Public Class LampDxfDocument
 
 
     Public Sub WriteToGraphics(g As Graphics, middle As PointF, width As Integer, height As Integer)
-        Dim bounds As New Rectangle(middle.X - width / 2, middle.Y + height / 2, width, height)
+        ' the bounds where entities are rendered
+        Dim bounds As New RectangleF(middle.X - width / 2, middle.Y + height / 2, width, height)
 
         For Each line As Line In _dxfFile.Lines
             If IntersectsWith(bounds, line) Then
@@ -157,9 +158,8 @@ Public Class LampDxfDocument
         Next
     End Sub
 
-    Private _blackPen As New Pen(Color.Cyan)
 
-    Private Function IntersectsWith(rect As Rectangle, line As Line) As Boolean
+    Private Function IntersectsWith(rect As RectangleF, line As Line) As Boolean
         Return True
     End Function
 End Class
