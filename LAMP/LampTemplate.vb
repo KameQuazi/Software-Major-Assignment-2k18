@@ -14,6 +14,7 @@ Public Class LampTemplate
     Private _template As LampDxfDocument
 
     Public Property DynamicTextList As New List(Of DynamicText)
+
     Public ReadOnly Property HasDynamicText As Boolean
         Get
             Return DynamicTextList.Count() = 0
@@ -29,6 +30,18 @@ Public Class LampTemplate
     Public Property ApproverId As Integer
 
 End Class
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Public Class OwO

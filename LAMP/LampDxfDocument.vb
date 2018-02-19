@@ -1,10 +1,11 @@
 ﻿Imports System.IO
 Imports netDxf
 Imports netDxf.Entities
+Imports netDxf.Units
 
 
-' WARNING! Aliasing point to vector2
-Imports Point = netDxf.Vector3
+' WARNING! Aliasing Point3 to vector2
+Imports Point3 = netDxf.Vector3
 
 
 Public Class LampDxfDocument
@@ -44,16 +45,16 @@ Public Class LampDxfDocument
     ''' <param name="x2">x value of second</param>
     ''' <param name="y2">y value of second</param>
     Public Sub AddLine(x1 As Integer, y1 As Integer, x2 As Integer, y2 As Integer)
-        AddLine(New Line(ConvertPoint(x1, y1), ConvertPoint(x2, y2)))
+        AddLine(New Line(ConvertPoint3(x1, y1), ConvertPoint3(x2, y2)))
     End Sub
 
     ''' <summary>
     ''' Adds a line between two coordinates. Shorthand for AddLine(New line(...))
     ''' </summary>
-    ''' <param name="point1">point 1</param>
-    ''' <param name="point2">point 2</param>
-    Public Sub AddLine(point1 As Point, point2 As Point)
-        AddLine(New Line(point1, point2))
+    ''' <param name="start">startpoint </param>
+    ''' <param name="end">endpoint </param>
+    Public Sub AddLine(start As Point3, [end] As Point3)
+        AddLine(New Line(start, [end]))
     End Sub
 
     ''' <summary>
@@ -75,29 +76,29 @@ Public Class LampDxfDocument
     ''' <summary>
     ''' Adds a circle to the drawing. Shorthand for AddCircle(New Circle(...))
     ''' </summary>
-    ''' <param name="centerX">point 1</param>
-    ''' <param name="centerY">point 2</param>
+    ''' <param name="centerX">Point3 1</param>
+    ''' <param name="centerY">Point3 2</param>
     ''' <param name="radius">radius of circle</param>
     Public Sub AddCircle(centerX As Integer, centerY As Integer, radius As Double)
-        _dxfFile.AddEntity(New Circle(ConvertPoint(centerX, centerY), radius))
+        _dxfFile.AddEntity(New Circle(ConvertPoint3(centerX, centerY), radius))
     End Sub
 
-    Public Sub AddCircle(centre As Point, radius As Double)
-        _dxfFile.AddEntity(New Circle(ConvertPoint(centre.X, centre.Y), radius))
+    Public Sub AddCircle(centre As Point3, radius As Double)
+        _dxfFile.AddEntity(New Circle(ConvertPoint3(centre.X, centre.Y), radius))
     End Sub
 
 
-    Public Sub AddPolyline(ParamArray points() As Point)
-        AddPolyline(points)
+    Public Sub AddPolyline(ParamArray Point3s() As Point3)
+        AddPolyline(Point3s)
     End Sub
 
-    Public Sub AddPolyline(points As IEnumerable(Of Point))
+    Public Sub AddPolyline(Point3s As IEnumerable(Of Point3))
 
-        _dxfFile.AddEntity(New Polyline(points))
+        _dxfFile.AddEntity(New Polyline(Point3s))
     End Sub
 
     Public Sub AddArc(centerX As Integer, centerY As Integer, radius As Double, startAngle As Double, endAngle As Double)
-        _dxfFile.AddEntity(New Arc(ConvertPoint(centerX, centerY), radius, startAngle, endAngle))
+        _dxfFile.AddEntity(New Arc(ConvertPoint3(centerX, centerY), radius, startAngle, endAngle))
     End Sub
 
     ''' <summary>
@@ -111,15 +112,20 @@ Public Class LampDxfDocument
     ''' <param name="textHeight"></param>
     ''' <param name="width"></param>
     Public Sub AddMultiText(x As Integer, y As Integer, text As String, textHeight As Double, width As Double)
-        _dxfFile.AddEntity(New MText(text, ConvertPoint(x, y), textHeight, width))
+        _dxfFile.AddEntity(New MText(text, ConvertPoint3(x, y), textHeight, width))
     End Sub
 
 
 
 
-    Private Function ConvertPoint(x As Integer, y As Integer) As Point
-        Return New Point(x, y, 0)
+    Public Shared Function ConvertPoint3(x As Integer, y As Integer) As Point3
+        Return New Point3(x, y, 0)
     End Function
+
+    Public Shared Function ConvertToPointF(point As Point3) As Drawing.PointF
+        Return New PointF(point.X, point.Y)
+    End Function
+
 
     Public Overrides Function ToString() As String
         Return String.Format("CustomDxfDrawing: {0}", _dxfFile)
@@ -130,6 +136,31 @@ Public Class LampDxfDocument
     Public Function GetRawDxf() As DxfDocument
         Return _dxfFile
     End Function
-End Class
 
+
+
+    Public Sub WriteToGraphics(g As Graphics, middle As PointF, width As Integer, height As Integer)
+        Dim bounds As New Rectangle(middle.X - width / 2, middle.Y + height / 2, width, height)
+
+        For Each line As Line In _dxfFile.Lines
+            If IntersectsWith(bounds, line) Then
+                Dim start As PointF = ConvertToPointF(line.StartPoint)
+                start.X -= middle.X
+                start.Y -= middle.Y
+
+                Dim [end] As PointF = ConvertToPointF(line.EndPoint)
+                [end].X -= middle.X
+                [end].Y -= middle.Y
+
+                g.DrawLine(New Pen(line.Color.ToColor()), start, [end])
+            End If
+        Next
+    End Sub
+
+    Private _blackPen As New Pen(Color.Cyan)
+
+    Private Function IntersectsWith(rect As Rectangle, line As Line) As Boolean
+        Return True
+    End Function
+End Class
 

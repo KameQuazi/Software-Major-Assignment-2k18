@@ -4,9 +4,9 @@ Imports Newtonsoft.Json
 
 
 Public Class DynamicText
-
     <JsonProperty("text")>
     Public Property Text As String
+
     <JsonProperty("location")>
     Public Property Location As Point
 
@@ -40,5 +40,7 @@ Public Class DynamicText
         ret = JsonConvert.SerializeObject(textList, Formatting.Indented)
         Return ret
     End Function
+
+
 End Class
 
