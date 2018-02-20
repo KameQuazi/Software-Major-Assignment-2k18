@@ -35,12 +35,30 @@ Public Class Form1
         Dim bmp As New Bitmap(200, 200)
 
         Using g = Graphics.FromImage(bmp)
-            g.FillRectangle(New SolidBrush(Color.LightSlateGray), 0, Height, Width, Height)
+            g.FillRectangle(New SolidBrush(Color.LightSlateGray), 0, 0, Width, Height)
+
             dxf.WriteToGraphics(g, New PointF(0, 0), 200, 200)
         End Using
         bmp.Save("out.png", ImageFormat.Png)
     End Sub
 
+    Private Sub Button4_Click(sender As Object, e As EventArgs)
 
+    End Sub
+    Protected Overrides Sub OnPaint(e As PaintEventArgs)
+        Dim g = e.Graphics
+        g.TranslateTransform(200, 0)
+        g.FillRectangle(New SolidBrush(Color.LightSlateGray), 0, 0, 200, 200)
+        dxf.WriteToGraphics(g, New PointF(0, 0), 200, 200)
+        g.ResetTransform()
+
+    End Sub
+
+    Private Sub Button4_Click_1(sender As Object, e As EventArgs) Handles Button4.Click
+        Dim z = TextBox1.Text.Split(" ")
+        Dim y = TextBox2.Text.Split(" ")
+        dxf.AddLine(Double.Parse(z(0)), Double.Parse(z(1)), Double.Parse(y(0)), Double.Parse(y(1)))
+        Me.Invalidate()
+    End Sub
 End Class
 

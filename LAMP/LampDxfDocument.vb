@@ -145,17 +145,21 @@ Public Class LampDxfDocument
 
         For Each line As Line In _dxfFile.Lines
             If IntersectsWith(bounds, line) Then
-                Dim start As PointF = ConvertToPointF(line.StartPoint)
-                start.X -= middle.X
-                start.Y -= middle.Y
+                Dim start As PointF = New PointF(middle.X + width / 2, middle.Y + height / 2)
+                start.X += line.StartPoint.X
+                start.Y -= line.StartPoint.Y
 
-                Dim [end] As PointF = ConvertToPointF(line.EndPoint)
-                [end].X -= middle.X
-                [end].Y -= middle.Y
+                Dim [end] As PointF = New PointF(middle.X + width / 2, middle.Y + height / 2)
+                [end].X += line.EndPoint.X
+                [end].Y -= line.EndPoint.Y
 
                 g.DrawLine(New Pen(line.Color.ToColor()), start, [end])
             End If
         Next
+    End Sub
+
+    Private Sub CartesianToGDI(center As PointF, width As Integer, height As Integer, cartesian As PointF)
+
     End Sub
 
 
