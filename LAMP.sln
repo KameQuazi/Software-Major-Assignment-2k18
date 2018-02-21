@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LAMP", "LAMP\LAMP.vbproj", "{5038E134-B806-4534-8152-0FD76115D27A}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LampUnitTests", "LampUnitTests\LampUnitTests.vbproj", "{D55A17B9-A1BA-4629-AB8C-FF4E517E6097}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{5038E134-B806-4534-8152-0FD76115D27A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5038E134-B806-4534-8152-0FD76115D27A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5038E134-B806-4534-8152-0FD76115D27A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D55A17B9-A1BA-4629-AB8C-FF4E517E6097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D55A17B9-A1BA-4629-AB8C-FF4E517E6097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D55A17B9-A1BA-4629-AB8C-FF4E517E6097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D55A17B9-A1BA-4629-AB8C-FF4E517E6097}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

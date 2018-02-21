@@ -1,4 +1,5 @@
 ﻿Imports System.Reflection
+Imports Newtonsoft.Json
 
 Public Class LampTemplate
     ''' <summary>
@@ -26,9 +27,19 @@ Public Class LampTemplate
     Public Property CreatorName As String
     Public Property CreatorId As Integer
 
+    <JsonProperty("approverName")>
     Public Property ApproverName As String
+
+    <JsonProperty("approverId")>
     Public Property ApproverId As Integer
 
+    ''' <summary>
+    ''' Converts -> json format to be saved as a .spiff
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function Serialize() As String
+
+    End Function
 End Class
 
 

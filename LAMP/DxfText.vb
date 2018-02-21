@@ -1,3 +1,6 @@
-﻿Public Class DxfText
+﻿
+
+Public Class DxfText
 
 End Class
+

@@ -1,10 +1,10 @@
 ﻿Imports System.IO
 Imports netDxf
 Imports netDxf.Entities
+Imports netDxf.Tables
 Imports netDxf.Units
 
-
-' WARNING! Aliasing Point3 to vector2
+' WARNING! Aliasing Point3 to vector3
 Imports Point3 = netDxf.Vector3
 
 
@@ -111,8 +111,12 @@ Public Class LampDxfDocument
     ''' <param name="text"></param>
     ''' <param name="textHeight"></param>
     ''' <param name="width"></param>
-    Public Sub AddMultiText(x As Integer, y As Integer, text As String, textHeight As Double, width As Double)
+    Public Sub AddMultiText(x As Integer, y As Integer, text As String, textHeight As Double, width As Double, Optional tstyle As TextStyle = Nothing)
         _dxfFile.AddEntity(New MText(text, ConvertPoint3(x, y), textHeight, width))
+    End Sub
+
+    Public Sub AddText(x As Integer, y As Integer, text As String, height As Integer)
+        _dxfFile.AddEntity(New Text(text, New Point3(x, y, 0), height))
     End Sub
 
 
@@ -145,26 +149,33 @@ Public Class LampDxfDocument
 
         For Each line As Line In _dxfFile.Lines
             If IntersectsWith(bounds, line) Then
-                Dim start As PointF = New PointF(middle.X + width / 2, middle.Y + height / 2)
-                start.X += line.StartPoint.X
-                start.Y -= line.StartPoint.Y
+                Dim start = LampMath.CartesianToGdi(middle, width, height, line.StartPoint.X, line.StartPoint.Y)
 
-                Dim [end] As PointF = New PointF(middle.X + width / 2, middle.Y + height / 2)
-                [end].X += line.EndPoint.X
-                [end].Y -= line.EndPoint.Y
+                Dim [end] = LampMath.CartesianToGdi(middle, width, height, line.StartPoint.X, line.StartPoint.Y)
 
                 g.DrawLine(New Pen(line.Color.ToColor()), start, [end])
             End If
         Next
     End Sub
 
-    Private Sub CartesianToGDI(center As PointF, width As Integer, height As Integer, cartesian As PointF)
 
-    End Sub
 
 
     Private Function IntersectsWith(rect As RectangleF, line As Line) As Boolean
+
         Return True
     End Function
 End Class
 
+Public Class LampMath
+    Public Shared Function CartesianToGdi(center As PointF, width As Integer, height As Integer, cartesianX As Double, cartesianY As Double) As PointF
+        Dim ret As New PointF(-center.X + width / 2, center.Y + height / 2)
+        ret.X += cartesianX
+        ret.Y -= cartesianY
+        Return ret
+    End Function
+
+    Public Shared Function GdiToCartesian(center As PointF, width As Integer, height As Integer, location As PointF) As PointF
+        Throw New Exception("TODO")
+    End Function
+End Class
