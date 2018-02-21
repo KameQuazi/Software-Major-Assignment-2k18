@@ -34,6 +34,7 @@ Partial Class Form1
         Me.Button4 = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.jsonOutput = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Button1
@@ -119,11 +120,21 @@ Partial Class Form1
         Me.Label2.TabIndex = 9
         Me.Label2.Text = "end"
         '
+        'jsonOutput
+        '
+        Me.jsonOutput.AutoSize = True
+        Me.jsonOutput.Location = New System.Drawing.Point(648, 283)
+        Me.jsonOutput.Name = "jsonOutput"
+        Me.jsonOutput.Size = New System.Drawing.Size(147, 17)
+        Me.jsonOutput.TabIndex = 10
+        Me.jsonOutput.Text = "Serialized output here"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(983, 480)
+        Me.Controls.Add(Me.jsonOutput)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Button4)
@@ -151,4 +162,5 @@ Partial Class Form1
     Friend WithEvents Button4 As Button
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
+    Friend WithEvents jsonOutput As Label
 End Class

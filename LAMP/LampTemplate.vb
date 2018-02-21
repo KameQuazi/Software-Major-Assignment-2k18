@@ -7,6 +7,7 @@ Public Class LampTemplate
     ''' </summary>
     Private _completedDrawing As LampDxfDocument
     Public Property IsComplete As Boolean
+    Public Property TemplateInsertLocations As New List(Of DxfLocations)
 
 
     ''' <summary>
@@ -14,6 +15,7 @@ Public Class LampTemplate
     ''' </summary>
     Private _template As LampDxfDocument
 
+    <JsonProperty("dynamicTextList")>
     Public Property DynamicTextList As New List(Of DynamicText)
 
     Public ReadOnly Property HasDynamicText As Boolean
@@ -22,9 +24,10 @@ Public Class LampTemplate
         End Get
     End Property
 
-    Public Property PreviewImages As New List(Of Image)
-
+    <JsonProperty("creatorName")>
     Public Property CreatorName As String
+
+    <JsonProperty("creatorId")>
     Public Property CreatorId As Integer
 
     <JsonProperty("approverName")>
@@ -38,8 +41,22 @@ Public Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     Public Function Serialize() As String
-
+        Return JsonConvert.SerializeObject(Me)
     End Function
+
+    Public Shared Function Serialize(item As LampTemplate) As String
+        Return JsonConvert.SerializeObject(item)
+    End Function
+
+    Public Sub New(start As LampDxfDocument)
+        Me._template = start
+        RefreshCompleteDrawing()
+    End Sub
+
+    Public Sub RefreshCompleteDrawing()
+        ' TODO!
+
+    End Sub
 End Class
 
 
@@ -70,5 +87,10 @@ Public Class OwO
 
 
 
+
+End Class
+
+
+Public Class DxfLocations
 
 End Class

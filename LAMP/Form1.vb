@@ -5,6 +5,7 @@ Imports Point = netDxf.Vector3
 
 Public Class Form1
     Private dxf As LampDxfDocument
+    Private template As LampTemplate
 
 
     Private Sub OpenFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
@@ -40,6 +41,9 @@ Public Class Form1
             dxf.WriteToGraphics(g, New PointF(0, 0), 200, 200)
         End Using
         bmp.Save("out.png", ImageFormat.Png)
+        template = New LampTemplate(dxf)
+
+        jsonOutput.Text = template.Serialize()
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs)
@@ -59,6 +63,10 @@ Public Class Form1
         Dim y = TextBox2.Text.Split(" ")
         dxf.AddLine(Double.Parse(z(0)), Double.Parse(z(1)), Double.Parse(y(0)), Double.Parse(y(1)))
         Me.Invalidate()
+    End Sub
+
+    Private Sub jsonOutput_Click(sender As Object, e As EventArgs) Handles jsonOutput.Click
+
     End Sub
 End Class
 
