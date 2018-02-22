@@ -10,6 +10,9 @@ Public Class DynamicText
     <JsonProperty("location")>
     Public Property Location As Point
 
+    <JsonProperty("font")>
+    Public Property Font As Font
+
     Public Sub New(text As String, location As Point)
         Me.Text = text
         Me.Location = location

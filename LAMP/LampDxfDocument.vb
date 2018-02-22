@@ -3,13 +3,49 @@ Imports netDxf
 Imports netDxf.Entities
 Imports netDxf.Tables
 Imports netDxf.Units
+Imports Newtonsoft.Json
 
 ' WARNING! Aliasing Point3 to vector3
 Imports Point3 = netDxf.Vector3
 
+Public Class DxfJsonConverter
+    Inherits JsonConverter
+
+    Public Overrides Sub WriteJson(writer As JsonWriter, value As Object, serializer As JsonSerializer)
+        Dim document As DxfDocument = value
+        ' save it to a stream, then convert the stream -> a string and return the string
+        Dim dxfString As String = ""
+        Using stream As New MemoryStream()
+            document.Save(stream, isBinary:=False)
+            Using reader As New StreamReader(stream)
+                dxfString = reader.ReadToEnd()
+            End Using
+        End Using
+        writer.WriteValue(dxfString)
+    End Sub
+
+    Public Overrides Function CanConvert(objectType As Type) As Boolean
+        Return objectType = GetType(DxfDocument)
+    End Function
+
+    Public Overrides Function ReadJson(reader As JsonReader, objectType As Type, existingValue As Object, serializer As JsonSerializer) As Object
+        Throw New NotImplementedException("Unnecessary because CanRead is false. The type will skip the converter.")
+    End Function
+
+    Public Overrides ReadOnly Property CanRead As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
+End Class
 
 Public Class LampDxfDocument
+    <JsonProperty("dxfFile")>
+    <JsonConverter(GetType(DxfJsonConverter))>
     Private _dxfFile As DxfDocument
+
+
 
     ''' <summary>
     ''' Creates a new DxfDrawing, reading from a file given in filePath
@@ -151,7 +187,7 @@ Public Class LampDxfDocument
             If IntersectsWith(bounds, line) Then
                 Dim start = LampMath.CartesianToGdi(middle, width, height, line.StartPoint.X, line.StartPoint.Y)
 
-                Dim [end] = LampMath.CartesianToGdi(middle, width, height, line.StartPoint.X, line.StartPoint.Y)
+                Dim [end] = LampMath.CartesianToGdi(middle, width, height, line.EndPoint.X, line.EndPoint.Y)
 
                 g.DrawLine(New Pen(line.Color.ToColor()), start, [end])
             End If
