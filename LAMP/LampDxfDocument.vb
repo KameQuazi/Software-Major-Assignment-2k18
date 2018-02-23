@@ -1,4 +1,6 @@
-﻿Imports System.IO
+﻿Imports System.Drawing.Imaging
+Imports System.IO
+Imports System.Text
 Imports netDxf
 Imports netDxf.Entities
 Imports netDxf.Tables
@@ -29,23 +31,28 @@ Public Class DxfJsonConverter
     End Function
 
     Public Overrides Function ReadJson(reader As JsonReader, objectType As Type, existingValue As Object, serializer As JsonSerializer) As Object
-        Throw New NotImplementedException("Unnecessary because CanRead is false. The type will skip the converter.")
-    End Function
+        Dim out As DxfDocument
+        If reader.TokenType <> JsonToken.String Then
+            Throw New JsonSerializationException()
+        Else
+            Dim value As String = reader.Value
+            Using stream As New MemoryStream(Encoding.UTF8.GetBytes(value))
+                out = DxfDocument.Load(stream)
+            End Using
+        End If
 
-    Public Overrides ReadOnly Property CanRead As Boolean
-        Get
-            Return False
-        End Get
-    End Property
+        Return out
+    End Function
 
 End Class
 
 Public Class LampDxfDocument
+    ''' <summary>
+    ''' DxfDocument from .netdxf library
+    ''' </summary>
     <JsonProperty("dxfFile")>
     <JsonConverter(GetType(DxfJsonConverter))>
     Private _dxfFile As DxfDocument
-
-
 
     ''' <summary>
     ''' Creates a new DxfDrawing, reading from a file given in filePath
@@ -60,8 +67,20 @@ Public Class LampDxfDocument
     ''' </summary>
     Sub New()
         _dxfFile = New DxfDocument()
-
     End Sub
+
+    Public Function ToImage(center As PointF, width As Integer, height As Integer) As System.Drawing.Image
+        Dim bmp As New Bitmap(width, height)
+
+        Using g = Graphics.FromImage(bmp)
+            g.FillRectangle(New SolidBrush(Color.LightSlateGray), 0, 0, width, height)
+
+            WriteToGraphics(g, center, width, 200)
+        End Using
+        Return bmp
+    End Function
+
+
 
     ''' <summary>
     ''' Saves the file

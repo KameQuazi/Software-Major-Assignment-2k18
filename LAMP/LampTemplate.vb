@@ -1,4 +1,6 @@
-﻿Imports System.Reflection
+﻿Imports System.IO
+Imports System.Reflection
+Imports LAMP
 Imports netDxf
 Imports Newtonsoft.Json
 
@@ -50,6 +52,16 @@ Public Class LampTemplate
     <JsonProperty("approverName")>
     Public Property ApproverName As String = ""
 
+    Friend Shared Function Load(fileName As String) As LampTemplate
+        Using file As New StreamReader(fileName)
+            Return Deserialize(file.ReadToEnd())
+        End Using
+    End Function
+
+    Private Shared Function Deserialize(json As String) As LampTemplate
+        Return JsonConvert.DeserializeObject(Of LampTemplate)(json)
+    End Function
+
     <JsonProperty("approverId")>
     Public Property ApproverId As Integer = -1
 
@@ -76,11 +88,21 @@ Public Class LampTemplate
         Return JsonConvert.SerializeObject(item)
     End Function
 
+    Public Sub Save(path As String, Optional formatting As Formatting = Formatting.None)
+        Using fileStream As New StreamWriter(path)
+            fileStream.Write(Serialize(formatting))
+        End Using
+    End Sub
+
     Public Sub New(start As LampDxfDocument)
         Me._template = start
         InsertionLocations.Add(New LampDxfInsertLocations())
         RefreshCompleteDrawing()
     End Sub
+
+    Public Shared Function CreateFromDxf(drawing As LampDxfDocument)
+        Return New LampTemplate(drawing)
+    End Function
 
     Public Sub RefreshCompleteDrawing()
         ' TODO!

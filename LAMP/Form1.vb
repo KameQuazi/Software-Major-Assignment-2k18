@@ -33,19 +33,16 @@ Public Class Form1
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         dxf = New LampDxfDocument()
-        dxf.AddLine(0, 0, 100, 100)
-        dxf.Save("out.dxf")
-        Dim bmp As New Bitmap(200, 200)
 
-        Using g = Graphics.FromImage(bmp)
-            g.FillRectangle(New SolidBrush(Color.LightSlateGray), 0, 0, Width, Height)
 
-            dxf.WriteToGraphics(g, currentCenter, 200, 200)
-        End Using
-        bmp.Save("out.png", ImageFormat.Png)
         template = New LampTemplate(dxf)
 
         jsonOutput.Text = template.Serialize(Formatting.Indented)
+        template.Save("out.spf", Formatting.Indented)
+        dxf.Save("out.dxf")
+        LampTemplate.Load("out.spf")
+        ' dxf = template.
+
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs)
