@@ -14,15 +14,9 @@ Public Class DxfJsonConverter
     Inherits JsonConverter
 
     Public Overrides Sub WriteJson(writer As JsonWriter, value As Object, serializer As JsonSerializer)
-        Dim document As DxfDocument = value
+        Dim document As LampDxfDocument = value
         ' save it to a stream, then convert the stream -> a string and return the string
-        Dim dxfString As String = ""
-        Using stream As New MemoryStream()
-            document.Save(stream, isBinary:=False)
-            Using reader As New StreamReader(stream)
-                dxfString = reader.ReadToEnd()
-            End Using
-        End Using
+        Dim dxfString As String = document.ToDxfString()
         writer.WriteValue(dxfString)
     End Sub
 
@@ -31,14 +25,12 @@ Public Class DxfJsonConverter
     End Function
 
     Public Overrides Function ReadJson(reader As JsonReader, objectType As Type, existingValue As Object, serializer As JsonSerializer) As Object
-        Dim out As DxfDocument
+        Dim out As LampDxfDocument
         If reader.TokenType <> JsonToken.String Then
             Throw New JsonSerializationException()
         Else
             Dim value As String = reader.Value
-            Using stream As New MemoryStream(Encoding.UTF8.GetBytes(value))
-                out = DxfDocument.Load(stream)
-            End Using
+            out = LampDxfDocument.LoadFromString(value)
         End If
 
         Return out
@@ -46,12 +38,11 @@ Public Class DxfJsonConverter
 
 End Class
 
+<JsonConverter(GetType(DxfJsonConverter))>
 Public Class LampDxfDocument
     ''' <summary>
     ''' DxfDocument from .netdxf library
     ''' </summary>
-    <JsonProperty("dxfFile")>
-    <JsonConverter(GetType(DxfJsonConverter))>
     Private _dxfFile As DxfDocument
 
     ''' <summary>
@@ -63,10 +54,37 @@ Public Class LampDxfDocument
     End Sub
 
     ''' <summary>
+    ''' Creates a new LampDxfDocument from a dxf string
+    ''' </summary>
+    ''' <param name="dxf"></param>
+    Public Shared Function LoadFromString(dxf As String) As LampDxfDocument
+        Dim out As LampDxfDocument
+        Using stream As New MemoryStream(Encoding.UTF8.GetBytes(dxf))
+            out = New LampDxfDocument(DxfDocument.Load(stream))
+            Return out
+        End Using
+    End Function
+
+    Public Function ToDxfString() As String
+        Dim out As String
+        Using stream As New MemoryStream()
+            GetRawDxf().Save(stream, isBinary:=False)
+            Using reader As New StreamReader(stream)
+                out = reader.ReadToEnd()
+            End Using
+        End Using
+        Return out
+    End Function
+
+    ''' <summary>
     ''' Creates a new, empty DxfDrawing
     ''' </summary>
     Sub New()
         _dxfFile = New DxfDocument()
+    End Sub
+
+    Sub New(dxfFile As DxfDocument)
+        _dxfFile = dxfFile
     End Sub
 
     Public Function ToImage(center As PointF, width As Integer, height As Integer) As System.Drawing.Image
