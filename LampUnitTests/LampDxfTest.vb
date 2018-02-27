@@ -3,6 +3,7 @@ Imports LAMP
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports LAMP.LampMath
 Imports System.Drawing
+Imports System.IO
 
 <TestClass()> Public Class LampDxfTest
 
@@ -21,6 +22,13 @@ Imports System.Drawing
         ' test P(100, 100) with center (0, 0), but with a bigger screen (1000, 1000)
         Assert.AreEqual(CartesianToGdi(zero, 1000, 1000, 100, 100), New PointF(600, 400))
 
+    End Sub
+
+    <TestMethod()>
+    Public Sub DatabaseTest()
+        Using x As New StreamWriter("out.txt", FileMode.Create)
+            x.WriteLine("hello!\na")
+        End Using
     End Sub
 
 End Class

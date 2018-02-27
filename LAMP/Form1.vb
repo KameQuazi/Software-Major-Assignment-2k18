@@ -13,17 +13,17 @@ Public Class Form1
 
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles OpenFileBtn.Click
         If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
-            dxf = New LampDxfDocument(OpenFileDialog1.FileName)
-            Button2.Enabled = True
-
+            dxf = LampDxfDocument.LoadFromFile(OpenFileDialog1.FileName)
+            SaveFileBtn.Enabled = True
 
             Me.Invalidate()
+            FilenameTbox.Text = OpenFileDialog1.FileName
         End If
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles SaveFileBtn.Click
         If SaveFileDialog1.ShowDialog() = DialogResult.OK Then
             dxf.Save(SaveFileDialog1.FileName)
         End If

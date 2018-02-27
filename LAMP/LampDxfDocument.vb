@@ -15,7 +15,6 @@ Public Class DxfJsonConverter
 
     Public Overrides Sub WriteJson(writer As JsonWriter, value As Object, serializer As JsonSerializer)
         Dim document As LampDxfDocument = value
-        ' save it to a stream, then convert the stream -> a string and return the string
         Dim dxfString As String = document.ToDxfString()
         writer.WriteValue(dxfString)
     End Sub
@@ -45,13 +44,10 @@ Public Class LampDxfDocument
     ''' </summary>
     Private _dxfFile As DxfDocument
 
-    ''' <summary>
-    ''' Creates a new DxfDrawing, reading from a file given in filePath
-    ''' </summary>
-    ''' <param name="filePath">Filepath of file to read</param>
-    Sub New(filePath As String)
-        _dxfFile = DxfDocument.Load(filePath)
-    End Sub
+    Public Property BottomLeft As New Point3
+    Public Property TopRight As New Point3
+
+
 
     ''' <summary>
     ''' Creates a new LampDxfDocument from a dxf string
@@ -77,16 +73,40 @@ Public Class LampDxfDocument
     End Function
 
     ''' <summary>
-    ''' Creates a new, empty DxfDrawing
+    ''' Creates a new, empty LampDxfDrawing
     ''' </summary>
     Sub New()
         _dxfFile = New DxfDocument()
+        RecalculateBounds()
     End Sub
 
+    ''' <summary>
+    ''' Creates a new LampDxfDrawing from an existing one
+    ''' </summary>
+    ''' <param name="dxfFile"></param>
     Sub New(dxfFile As DxfDocument)
         _dxfFile = dxfFile
+        RecalculateBounds()
     End Sub
 
+
+    ''' <summary>
+    ''' Creates a new DxfDrawing, reading from a file given in filePath
+    ''' </summary>
+    ''' <param name="filePath">Filepath of file to read</param>
+    Public Shared Function LoadFromFile(filePath As String) As LampDxfDocument
+        Dim dxf = DxfDocument.Load(filePath)
+        Return New LampDxfDocument(dxf)
+    End Function
+
+
+    ''' <summary>
+    ''' Rasterises the contents of the dxfFile into an Image
+    ''' </summary>
+    ''' <param name="center"></param>
+    ''' <param name="width"></param>
+    ''' <param name="height"></param>
+    ''' <returns></returns>
     Public Function ToImage(center As PointF, width As Integer, height As Integer) As System.Drawing.Image
         Dim bmp As New Bitmap(width, height)
 
@@ -97,7 +117,6 @@ Public Class LampDxfDocument
         End Using
         Return bmp
     End Function
-
 
 
     ''' <summary>
@@ -146,6 +165,44 @@ Public Class LampDxfDocument
         _dxfFile.AddEntity(circle)
     End Sub
 
+    Private Sub RecalculateBounds()
+        For Each line As Line In _dxfFile.Lines
+            If IsBottomOrLeft(line.StartPoint) Then
+                BottomLeft = line.StartPoint
+            End If
+            If IsBottomOrLeft(line.EndPoint) Then
+                BottomLeft = line.EndPoint
+            End If
+            If IsTopOrRight(line.StartPoint) Then
+                TopRight = line.StartPoint
+            End If
+            If IsTopOrRight(line.EndPoint) Then
+                TopRight = line.EndPoint
+            End If
+        Next
+        ' TODO others
+    End Sub
+
+    Private Function IsBottomOrLeft(point As Point3) As Boolean
+        If point.X < Me.BottomLeft.X Then
+            Return True
+        End If
+        If point.Y < Me.BottomLeft.Y Then
+            Return True
+        End If
+        Return False
+    End Function
+
+    Private Function IsTopOrRight(point As Point3) As Boolean
+        If point.X > Me.TopRight.X Then
+            Return True
+        End If
+        If point.Y > Me.TopRight.Y Then
+            Return True
+        End If
+        Return False
+    End Function
+
     ''' <summary>
     ''' Adds a circle to the drawing. Shorthand for AddCircle(New Circle(...))
     ''' </summary>
@@ -161,8 +218,8 @@ Public Class LampDxfDocument
     End Sub
 
 
-    Public Sub AddPolyline(ParamArray Point3s() As Point3)
-        AddPolyline(Point3s)
+    Public Sub AddPolyline(ParamArray Points() As Point3)
+        AddPolyline(Points)
     End Sub
 
     Public Sub AddPolyline(Point3s As IEnumerable(Of Point3))
@@ -215,7 +272,13 @@ Public Class LampDxfDocument
     End Function
 
 
-
+    ''' <summary>
+    ''' Draws the contents onto a graphics object
+    ''' </summary>
+    ''' <param name="g"></param>
+    ''' <param name="middle"></param>
+    ''' <param name="width"></param>
+    ''' <param name="height"></param>
     Public Sub WriteToGraphics(g As Graphics, middle As PointF, width As Integer, height As Integer)
         ' the bounds where entities are rendered
         Dim bounds As New RectangleF(middle.X - width / 2, middle.Y + height / 2, width, height)
