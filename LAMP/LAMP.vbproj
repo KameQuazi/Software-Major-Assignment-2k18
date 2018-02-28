@@ -79,6 +79,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DesignerScreen.Designer.vb">
+      <DependentUpon>DesignerScreen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DesignerScreen.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="DynamicText.vb" />
     <Compile Include="LampTemplate.vb" />
     <Compile Include="LampDxfDocument.vb" />
@@ -108,6 +114,9 @@
     <Compile Include="SelectTemplate.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DesignerScreen.resx">
+      <DependentUpon>DesignerScreen.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
     </EmbeddedResource>

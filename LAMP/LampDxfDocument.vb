@@ -136,7 +136,7 @@ Public Class LampDxfDocument
     ''' <param name="y1">y value of first</param>
     ''' <param name="x2">x value of second</param>
     ''' <param name="y2">y value of second</param>
-    Public Sub AddLine(x1 As Integer, y1 As Integer, x2 As Integer, y2 As Integer)
+    Public Sub AddLine(x1 As Double, y1 As Double, x2 As Double, y2 As Double)
         AddLine(New Line(ConvertPoint3(x1, y1), ConvertPoint3(x2, y2)))
     End Sub
 

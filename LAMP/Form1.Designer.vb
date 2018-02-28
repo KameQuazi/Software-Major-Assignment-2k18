@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,9 +20,10 @@ Partial Class Form1
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.OpenFileBtn = New System.Windows.Forms.Button()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.SaveFileBtn = New System.Windows.Forms.Button()
@@ -39,12 +40,13 @@ Partial Class Form1
         Me.leftButton = New System.Windows.Forms.Button()
         Me.upButton = New System.Windows.Forms.Button()
         Me.FilenameTbox = New System.Windows.Forms.RichTextBox()
+        Me.DesignerScreen1 = New LAMP.DesignerScreen()
         Me.SuspendLayout()
         '
         'OpenFileBtn
         '
         Me.OpenFileBtn.Location = New System.Drawing.Point(60, 87)
-        Me.OpenFileBtn.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.OpenFileBtn.Margin = New System.Windows.Forms.Padding(4)
         Me.OpenFileBtn.Name = "OpenFileBtn"
         Me.OpenFileBtn.Size = New System.Drawing.Size(100, 28)
         Me.OpenFileBtn.TabIndex = 0
@@ -60,7 +62,7 @@ Partial Class Form1
         '
         Me.SaveFileBtn.Enabled = False
         Me.SaveFileBtn.Location = New System.Drawing.Point(59, 123)
-        Me.SaveFileBtn.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SaveFileBtn.Margin = New System.Windows.Forms.Padding(4)
         Me.SaveFileBtn.Name = "SaveFileBtn"
         Me.SaveFileBtn.Size = New System.Drawing.Size(100, 28)
         Me.SaveFileBtn.TabIndex = 1
@@ -119,17 +121,17 @@ Partial Class Form1
         '
         'jsonOutput
         '
-        Me.jsonOutput.Location = New System.Drawing.Point(692, 226)
+        Me.jsonOutput.Location = New System.Drawing.Point(820, 256)
         Me.jsonOutput.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.jsonOutput.Name = "jsonOutput"
-        Me.jsonOutput.Size = New System.Drawing.Size(279, 210)
+        Me.jsonOutput.Size = New System.Drawing.Size(204, 210)
         Me.jsonOutput.TabIndex = 11
         Me.jsonOutput.Text = "serialized her"
         '
         'rightButton
         '
-        Me.rightButton.Location = New System.Drawing.Point(872, 103)
-        Me.rightButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.rightButton.Location = New System.Drawing.Point(924, 150)
+        Me.rightButton.Margin = New System.Windows.Forms.Padding(4)
         Me.rightButton.Name = "rightButton"
         Me.rightButton.Size = New System.Drawing.Size(100, 28)
         Me.rightButton.TabIndex = 12
@@ -138,8 +140,8 @@ Partial Class Form1
         '
         'downButton
         '
-        Me.downButton.Location = New System.Drawing.Point(776, 162)
-        Me.downButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.downButton.Location = New System.Drawing.Point(890, 201)
+        Me.downButton.Margin = New System.Windows.Forms.Padding(4)
         Me.downButton.Name = "downButton"
         Me.downButton.Size = New System.Drawing.Size(100, 28)
         Me.downButton.TabIndex = 13
@@ -148,8 +150,8 @@ Partial Class Form1
         '
         'leftButton
         '
-        Me.leftButton.Location = New System.Drawing.Point(692, 103)
-        Me.leftButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.leftButton.Location = New System.Drawing.Point(792, 150)
+        Me.leftButton.Margin = New System.Windows.Forms.Padding(4)
         Me.leftButton.Name = "leftButton"
         Me.leftButton.Size = New System.Drawing.Size(100, 28)
         Me.leftButton.TabIndex = 14
@@ -158,8 +160,8 @@ Partial Class Form1
         '
         'upButton
         '
-        Me.upButton.Location = New System.Drawing.Point(792, 46)
-        Me.upButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.upButton.Location = New System.Drawing.Point(890, 87)
+        Me.upButton.Margin = New System.Windows.Forms.Padding(4)
         Me.upButton.Name = "upButton"
         Me.upButton.Size = New System.Drawing.Size(100, 28)
         Me.upButton.TabIndex = 15
@@ -169,16 +171,29 @@ Partial Class Form1
         'FilenameTbox
         '
         Me.FilenameTbox.Location = New System.Drawing.Point(12, 177)
+        Me.FilenameTbox.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.FilenameTbox.Name = "FilenameTbox"
         Me.FilenameTbox.Size = New System.Drawing.Size(259, 96)
         Me.FilenameTbox.TabIndex = 16
         Me.FilenameTbox.Text = ""
         '
+        'DesignerScreen1
+        '
+        Me.DesignerScreen1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DesignerScreen1.Center = CType(resources.GetObject("DesignerScreen1.Center"), System.Drawing.PointF)
+        Me.DesignerScreen1.Location = New System.Drawing.Point(283, 66)
+        Me.DesignerScreen1.Margin = New System.Windows.Forms.Padding(5)
+        Me.DesignerScreen1.Name = "DesignerScreen1"
+        Me.DesignerScreen1.Size = New System.Drawing.Size(500, 500)
+        Me.DesignerScreen1.Source = Nothing
+        Me.DesignerScreen1.TabIndex = 17
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(983, 480)
+        Me.ClientSize = New System.Drawing.Size(1152, 580)
+        Me.Controls.Add(Me.DesignerScreen1)
         Me.Controls.Add(Me.FilenameTbox)
         Me.Controls.Add(Me.upButton)
         Me.Controls.Add(Me.leftButton)
@@ -192,7 +207,7 @@ Partial Class Form1
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.SaveFileBtn)
         Me.Controls.Add(Me.OpenFileBtn)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "Form1"
         Me.Text = "Form1"
         Me.ResumeLayout(False)
@@ -216,4 +231,5 @@ Partial Class Form1
     Friend WithEvents leftButton As Button
     Friend WithEvents upButton As Button
     Friend WithEvents FilenameTbox As RichTextBox
+    Friend WithEvents DesignerScreen1 As DesignerScreen
 End Class

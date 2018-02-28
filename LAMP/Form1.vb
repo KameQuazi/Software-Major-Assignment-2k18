@@ -33,9 +33,10 @@ Public Class Form1
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         dxf = New LampDxfDocument()
-
+        dxf.AddLine(0, 0, -100, -100)
 
         template = New LampTemplate(dxf)
+        DesignerScreen1.Source = dxf
 
         jsonOutput.Text = template.Serialize(Formatting.Indented)
         template.Save("out.spf", Formatting.Indented)
@@ -48,14 +49,7 @@ Public Class Form1
     Private Sub Button4_Click(sender As Object, e As EventArgs)
 
     End Sub
-    Protected Overrides Sub OnPaint(e As PaintEventArgs)
-        Dim g = e.Graphics
-        g.TranslateTransform(200, 0)
-        g.FillRectangle(New SolidBrush(Color.LightSlateGray), 0, 0, 200, 200)
-        dxf.WriteToGraphics(g, currentCenter, 200, 200)
-        g.ResetTransform()
 
-    End Sub
 
     Private Sub Button4_Click_1(sender As Object, e As EventArgs) Handles Button4.Click
         Dim z = TextBox1.Text.Split(" ")
@@ -69,7 +63,7 @@ Public Class Form1
     End Sub
 
     Private Sub rightButton_Click(sender As Object, e As EventArgs) Handles rightButton.Click
-        currentCenter.X -= 10
+        DesignerScreen1.Center = DesignerScreen1.Center
         Me.Invalidate()
     End Sub
 
@@ -86,6 +80,10 @@ Public Class Form1
     Private Sub upButton_Click(sender As Object, e As EventArgs) Handles upButton.Click
         currentCenter.Y -= 10
         Me.Invalidate()
+    End Sub
+
+    Private Sub DesignerScreen1_Load(sender As Object, e As EventArgs) Handles DesignerScreen1.Load
+
     End Sub
 End Class
 
