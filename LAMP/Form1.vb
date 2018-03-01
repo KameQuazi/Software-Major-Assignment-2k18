@@ -44,6 +44,7 @@ Public Class Form1
         dxf.Save("out.dxf")
         LampTemplate.Load("out.spf")
         ' dxf = template.
+        TemplateDB.createTable()
 
     End Sub
 

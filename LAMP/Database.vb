@@ -1,12 +1,8 @@
 ﻿Imports System.Data.SQLite
 Imports LAMP
 Public Class TemplateDB
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        selectEntry(2)
-    End Sub
-
-    Sub createTable()
-        Dim sqlite_conn = New SQLiteConnection("Data Source=templateDB.sqlite;Version=3;")
+    Public Shared Sub createTable(Optional name As String = "templateDB.sqlite")
+        Dim sqlite_conn = New SQLiteConnection(String.Format("Data Source={0};Version=3;", name))
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
         sqlite_cmd.CommandText = "CREATE TABLE test (
@@ -60,6 +56,7 @@ Public Class TemplateDB
         sqlite_cmd.ExecuteNonQuery()
         sqlite_conn.Close()
     End Sub
+
     Function selectEntry(id As Integer) As LampTemplate
         Dim sqlite_conn = New SQLiteConnection("Data Source=templateDB.sqlite;Version=3;")
         sqlite_conn.Open()
@@ -70,9 +67,9 @@ Public Class TemplateDB
         sqlite_reader = sqlite_cmd.ExecuteReader()
         While sqlite_reader.Read()
             'Debug.Write(sqlite_reader.GetInt32(0) & " " & sqlite_reader.GetString(1) & " " & sqlite_reader.GetString(2) & " " & sqlite_reader.GetString(3)& " " & sqlite_reader.GetInt32(4)& " " & sqlite_reader.GetInt32(5) & " "& sqlite_reader.GetInt32(6)& " " & sqlite_reader.GetString(7) & " "& sqlite_reader.GetInt32(8) & " "& sqlite_reader.GetString(9) & " "& sqlite_reader.GetInt32(10))
-            Dim LampDXF = LampDxfDocument.LoadFromString(sqlite_reader.GetString(1))
+            Dim LampDXF = LampDxfDocument.LoadFromString(sqlite_reader.GetString(DatabaseColumn.DXF))
             Dim LampTemp = New LampTemplate(LampDXF)
-            LampTemp.ApproverId = sqlite_reader.GetInt32(10)
+            LampTemp.ApproverId = sqlite_reader.GetInt32(DatabaseColumn.ApproverId)
             LampTemp.ApproverName = sqlite_reader.GetString(9)
             LampTemp.CreatorId = sqlite_reader.GetInt32(8)
             LampTemp.CreatorName = sqlite_reader.GetString(7)
@@ -80,6 +77,12 @@ Public Class TemplateDB
             Return LampTemp
 
         End While
-        Return 0
+        Return Nothing
     End Function
+
+
+    Public Enum DatabaseColumn
+        Dxf = 1
+        ApproverId = 10
+    End Enum
 End Class
