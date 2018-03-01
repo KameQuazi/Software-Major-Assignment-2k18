@@ -34,7 +34,7 @@ Public Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("insertionLocations")>
-    Public Property InsertionLocations As New List(Of LampDxfInsertLocations)
+    Public Property InsertionLocations As New List(Of LampDxfInsertLocation)
 
     ''' <summary>
     ''' where or not the file is in a complete state - if complete, should disable editing
@@ -94,9 +94,14 @@ Public Class LampTemplate
         End Using
     End Sub
 
-    Public Sub New(start As LampDxfDocument)
-        Me._template = start
-        InsertionLocations.Add(New LampDxfInsertLocations())
+    Public Sub New(Optional start As LampDxfDocument = Nothing)
+        If start IsNot Nothing Then
+            Me._template = start
+        Else
+            Me._template = New LampDxfDocument
+        End If
+
+        InsertionLocations.Add(New LampDxfInsertLocation())
         RefreshCompleteDrawing()
     End Sub
 
@@ -104,9 +109,23 @@ Public Class LampTemplate
         Return New LampTemplate(drawing)
     End Function
 
+    ''' <summary>
+    ''' Refreshes the _completeDrawing based on the InsertionLocations
+    ''' Expensive, dont call too many times 
+    ''' </summary>
     Public Sub RefreshCompleteDrawing()
         ' TODO!
+        _completedDrawing = New LampDxfDocument()
+        For Each point As LampDxfInsertLocation In InsertionLocations
+            _template.InsertInto(_completedDrawing, point)
+        Next
+    End Sub
 
+    Public Sub AddInsertionPoint(point As LampDxfInsertLocation, Optional refresh As Boolean = True)
+        InsertionLocations.Add(point)
+        If refresh Then
+            RefreshCompleteDrawing()
+        End If
     End Sub
 End Class
 
@@ -142,7 +161,7 @@ Public Class OwO
 End Class
 
 
-Public Class LampDxfInsertLocations
+Public Class LampDxfInsertLocation
     <JsonProperty("insertPoint")>
     Public Property InsertPoint As New Vector3
     <JsonProperty("rotation")>

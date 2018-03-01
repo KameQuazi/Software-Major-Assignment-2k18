@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 
+
 Public Class DesignerScreen
     Private Sub DesignerScreen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -40,12 +41,12 @@ Public Class DesignerScreen
     Public Sub UpdateView()
         Me.Invalidate()
     End Sub
-
+    Public BackgroundColorBrush As Brush = New SolidBrush(Color.LimeGreen)
 
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         If Source IsNot Nothing Then
             Dim g = e.Graphics
-            g.FillRectangle(New SolidBrush(Color.LightSlateGray), 0, 0, Width, Height)
+            g.FillRectangle(BackgroundColorBrush, 0, 0, Width, Height)
             ' Source.ToImage(Center, Width, Height).Save("out.png")
             Source.WriteToGraphics(g, Center, Width, Height)
 

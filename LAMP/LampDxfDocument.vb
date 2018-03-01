@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Text
+Imports LAMP
 Imports netDxf
 Imports netDxf.Entities
 Imports netDxf.Tables
@@ -99,6 +100,7 @@ Public Class LampDxfDocument
         Return New LampDxfDocument(dxf)
     End Function
 
+    Public BackgroundColorBrush As Brush = New SolidBrush(Color.AliceBlue)
 
     ''' <summary>
     ''' Rasterises the contents of the dxfFile into an Image
@@ -113,11 +115,18 @@ Public Class LampDxfDocument
         Using g = Graphics.FromImage(bmp)
             g.FillRectangle(New SolidBrush(Color.LightSlateGray), 0, 0, width, height)
 
-            WriteToGraphics(g, center, width, 200)
+            WriteToGraphics(g, center, width, height)
         End Using
         Return bmp
     End Function
 
+    Public Sub InsertInto(otherDrawing As LampDxfDocument, point As LampDxfInsertLocation)
+        Dim offset = point.InsertPoint
+        For Each line As Line In _dxfFile.Lines
+            Dim start = line.StartPoint
+
+        Next
+    End Sub
 
     ''' <summary>
     ''' Saves the file
@@ -313,5 +322,11 @@ Public Class LampMath
 
     Public Shared Function GdiToCartesian(center As PointF, width As Integer, height As Integer, location As PointF) As PointF
         Throw New Exception("TODO")
+    End Function
+
+    Public Shared Function Transform(point As PointF, x As Double, y As Double) As PointF
+        point.X += x
+        point.Y += y
+        Return point
     End Function
 End Class

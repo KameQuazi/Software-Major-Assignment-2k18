@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing.Imaging
 Imports Newtonsoft.Json
 Imports Point = netDxf.Vector3
+Imports LAMP.LampMath
 
 
 
@@ -55,7 +56,7 @@ Public Class Form1
         Dim z = TextBox1.Text.Split(" ")
         Dim y = TextBox2.Text.Split(" ")
         dxf.AddLine(Double.Parse(z(0)), Double.Parse(z(1)), Double.Parse(y(0)), Double.Parse(y(1)))
-        Me.Invalidate()
+        DesignerScreen1.Refresh()
     End Sub
 
     Private Sub jsonOutput_Click(sender As Object, e As EventArgs)
@@ -63,23 +64,19 @@ Public Class Form1
     End Sub
 
     Private Sub rightButton_Click(sender As Object, e As EventArgs) Handles rightButton.Click
-        DesignerScreen1.Center = DesignerScreen1.Center
-        Me.Invalidate()
+        DesignerScreen1.Center = Transform(DesignerScreen1.Center, 10, 0)
     End Sub
 
     Private Sub downButton_Click(sender As Object, e As EventArgs) Handles downButton.Click
-        currentCenter.Y += 10
-        Me.Invalidate()
+        DesignerScreen1.Center = Transform(DesignerScreen1.Center, 0, -10)
     End Sub
 
     Private Sub leftButton_Click(sender As Object, e As EventArgs) Handles leftButton.Click
-        currentCenter.X += 10
-        Me.Invalidate()
+        DesignerScreen1.Center = Transform(DesignerScreen1.Center, -10, 0)
     End Sub
 
     Private Sub upButton_Click(sender As Object, e As EventArgs) Handles upButton.Click
-        currentCenter.Y -= 10
-        Me.Invalidate()
+        DesignerScreen1.Center = Transform(DesignerScreen1.Center, 0, 10)
     End Sub
 
     Private Sub DesignerScreen1_Load(sender As Object, e As EventArgs) Handles DesignerScreen1.Load
