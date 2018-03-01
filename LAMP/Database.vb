@@ -60,6 +60,7 @@ Public Class TemplateDB
         sqlite_cmd.ExecuteNonQuery()
         sqlite_conn.Close()
     End Sub
+
     Function selectEntry(id As Integer) As LampTemplate
         Dim sqlite_conn = New SQLiteConnection("Data Source=templateDB.sqlite;Version=3;")
         sqlite_conn.Open()
@@ -80,6 +81,6 @@ Public Class TemplateDB
             Return LampTemp
 
         End While
-        Return 0
+        Return Nothing
     End Function
 End Class
