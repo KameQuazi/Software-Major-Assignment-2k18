@@ -19,8 +19,8 @@ Public Class Form1
             dxf = LampDxfDocument.LoadFromFile(OpenFileDialog1.FileName)
             SaveFileBtn.Enabled = True
 
-            Me.Invalidate()
             FilenameTbox.Text = OpenFileDialog1.FileName
+            DesignerScreen1.Source = dxf
         End If
     End Sub
 
@@ -32,6 +32,7 @@ Public Class Form1
 
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         dxf = New LampDxfDocument()
         dxf.AddLine(0, 0, -100, -100)
 
@@ -40,7 +41,6 @@ Public Class Form1
 
         jsonOutput.Text = template.Serialize(Formatting.Indented)
         template.Save("out.spf", Formatting.Indented)
-        dxf.Save("out.dxf")
         LampTemplate.Load("out.spf")
         ' dxf = template.
         Dim database As New TemplateDB("templatedb.sqlite")
@@ -50,10 +50,16 @@ Public Class Form1
 
 
     Private Sub Button4_Click_1(sender As Object, e As EventArgs) Handles Button4.Click
-        Dim z = TextBox1.Text.Split(" ")
-        Dim y = TextBox2.Text.Split(" ")
-        dxf.AddLine(Double.Parse(z(0)), Double.Parse(z(1)), Double.Parse(y(0)), Double.Parse(y(1)))
-        DesignerScreen1.Refresh()
+        Try
+            Dim z = TextBox1.Text.Split(" ")
+            Dim y = TextBox2.Text.Split(" ")
+            dxf.AddLine(Double.Parse(z(0)), Double.Parse(z(1)), Double.Parse(y(0)), Double.Parse(y(1)))
+            DesignerScreen1.Refresh()
+            jsonOutput.Text = template.Serialize(Formatting.Indented)
+            template.Save("out.spf", Formatting.Indented)
+        Catch ex As FormatException
+            MessageBox.Show("The format is incorrect!")
+        End Try
     End Sub
 
 
@@ -76,6 +82,16 @@ Public Class Form1
 
     Private Sub DesignerScreen1_Load(sender As Object, e As EventArgs) Handles DesignerScreen1.Load
 
+    End Sub
+
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
+
+    End Sub
+
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
+        If SaveFileDialog2.ShowDialog = DialogResult.OK Then
+            template._template.Save(SaveFileDialog2.FileName)
+        End If
     End Sub
 End Class
 

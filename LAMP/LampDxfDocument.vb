@@ -97,6 +97,9 @@ Public Class LampDxfDocument
     ''' <param name="filePath">Filepath of file to read</param>
     Public Shared Function LoadFromFile(filePath As String) As LampDxfDocument
         Dim dxf = DxfDocument.Load(filePath)
+        If dxf Is Nothing Then
+            Throw New InvalidTimeZoneException("dxf cannot be loaded from string")
+        End If
         Return New LampDxfDocument(dxf)
     End Function
 

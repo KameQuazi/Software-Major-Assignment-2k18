@@ -22,13 +22,11 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.OpenFileBtn = New System.Windows.Forms.Button()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.SaveFileBtn = New System.Windows.Forms.Button()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
         Me.Button4 = New System.Windows.Forms.Button()
@@ -41,11 +39,13 @@ Partial Class Form1
         Me.upButton = New System.Windows.Forms.Button()
         Me.FilenameTbox = New System.Windows.Forms.RichTextBox()
         Me.DesignerScreen1 = New LAMP.DesignerScreen()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.SaveFileDialog2 = New System.Windows.Forms.SaveFileDialog()
         Me.SuspendLayout()
         '
         'OpenFileBtn
         '
-        Me.OpenFileBtn.Location = New System.Drawing.Point(45, 71)
+        Me.OpenFileBtn.Location = New System.Drawing.Point(44, 45)
         Me.OpenFileBtn.Name = "OpenFileBtn"
         Me.OpenFileBtn.Size = New System.Drawing.Size(75, 23)
         Me.OpenFileBtn.TabIndex = 0
@@ -60,23 +60,17 @@ Partial Class Form1
         'SaveFileBtn
         '
         Me.SaveFileBtn.Enabled = False
-        Me.SaveFileBtn.Location = New System.Drawing.Point(44, 100)
+        Me.SaveFileBtn.Location = New System.Drawing.Point(44, 74)
         Me.SaveFileBtn.Name = "SaveFileBtn"
         Me.SaveFileBtn.Size = New System.Drawing.Size(75, 23)
         Me.SaveFileBtn.TabIndex = 1
         Me.SaveFileBtn.Text = "Save file"
         Me.SaveFileBtn.UseVisualStyleBackColor = True
         '
-        'ContextMenuStrip1
-        '
-        Me.ContextMenuStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(61, 4)
-        '
         'TextBox1
         '
         Me.TextBox1.Location = New System.Drawing.Point(52, 264)
-        Me.TextBox1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TextBox1.Margin = New System.Windows.Forms.Padding(2)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(76, 20)
         Me.TextBox1.TabIndex = 5
@@ -84,7 +78,7 @@ Partial Class Form1
         'TextBox2
         '
         Me.TextBox2.Location = New System.Drawing.Point(52, 297)
-        Me.TextBox2.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TextBox2.Margin = New System.Windows.Forms.Padding(2)
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Size = New System.Drawing.Size(76, 20)
         Me.TextBox2.TabIndex = 6
@@ -92,7 +86,7 @@ Partial Class Form1
         'Button4
         '
         Me.Button4.Location = New System.Drawing.Point(63, 343)
-        Me.Button4.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.Button4.Margin = New System.Windows.Forms.Padding(2)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(56, 19)
         Me.Button4.TabIndex = 7
@@ -122,7 +116,7 @@ Partial Class Form1
         'jsonOutput
         '
         Me.jsonOutput.Location = New System.Drawing.Point(615, 208)
-        Me.jsonOutput.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.jsonOutput.Margin = New System.Windows.Forms.Padding(2)
         Me.jsonOutput.Name = "jsonOutput"
         Me.jsonOutput.Size = New System.Drawing.Size(154, 171)
         Me.jsonOutput.TabIndex = 11
@@ -143,7 +137,7 @@ Partial Class Form1
         Me.downButton.Name = "downButton"
         Me.downButton.Size = New System.Drawing.Size(75, 23)
         Me.downButton.TabIndex = 13
-        Me.downButton.Text = "V"
+        Me.downButton.Text = "v"
         Me.downButton.UseVisualStyleBackColor = True
         '
         'leftButton
@@ -167,7 +161,7 @@ Partial Class Form1
         'FilenameTbox
         '
         Me.FilenameTbox.Location = New System.Drawing.Point(9, 144)
-        Me.FilenameTbox.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.FilenameTbox.Margin = New System.Windows.Forms.Padding(2)
         Me.FilenameTbox.Name = "FilenameTbox"
         Me.FilenameTbox.Size = New System.Drawing.Size(195, 79)
         Me.FilenameTbox.TabIndex = 16
@@ -184,11 +178,21 @@ Partial Class Form1
         Me.DesignerScreen1.Source = Nothing
         Me.DesignerScreen1.TabIndex = 17
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(44, 103)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 18
+        Me.Button1.Text = "Save As Dxf"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(864, 471)
+        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.DesignerScreen1)
         Me.Controls.Add(Me.FilenameTbox)
         Me.Controls.Add(Me.upButton)
@@ -214,7 +218,6 @@ Partial Class Form1
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents SaveFileBtn As Button
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
-    Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents TextBox2 As TextBox
     Friend WithEvents Button4 As Button
@@ -227,4 +230,6 @@ Partial Class Form1
     Friend WithEvents upButton As Button
     Friend WithEvents FilenameTbox As RichTextBox
     Friend WithEvents DesignerScreen1 As DesignerScreen
+    Friend WithEvents Button1 As Button
+    Friend WithEvents SaveFileDialog2 As SaveFileDialog
 End Class
