@@ -30,7 +30,6 @@ Public Class Form1
         End If
     End Sub
 
-    Dim currentCenter As New PointF(0, 0)
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         dxf = New LampDxfDocument()
@@ -44,11 +43,8 @@ Public Class Form1
         dxf.Save("out.dxf")
         LampTemplate.Load("out.spf")
         ' dxf = template.
-        TemplateDB.createTable()
-
-    End Sub
-
-    Private Sub Button4_Click(sender As Object, e As EventArgs)
+        Dim database As New TemplateDB("templatedb.sqlite")
+        database.addEntry(template)
 
     End Sub
 
@@ -60,9 +56,7 @@ Public Class Form1
         DesignerScreen1.Refresh()
     End Sub
 
-    Private Sub jsonOutput_Click(sender As Object, e As EventArgs)
 
-    End Sub
 
     Private Sub rightButton_Click(sender As Object, e As EventArgs) Handles rightButton.Click
         DesignerScreen1.Center = Transform(DesignerScreen1.Center, 10, 0)

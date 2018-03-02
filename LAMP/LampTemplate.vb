@@ -10,7 +10,13 @@ Public Class LampTemplate
     ''' The actual template : contains just 1 of drawing
     ''' </summary>
     <JsonProperty("template", Order:=1000)>
-    Private _template As LampDxfDocument
+    Public _template As LampDxfDocument
+    Public _tags As String
+    Public _material As String
+    Public _height As Integer
+    Public _thickness As Integer
+    Public _length As Integer
+
 
     ''' <summary>
     ''' Where the dynamic text will be stored:
