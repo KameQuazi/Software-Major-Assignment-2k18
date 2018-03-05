@@ -20,7 +20,7 @@ Public Class LampTemplate
 
     ''' <summary>
     ''' Where the dynamic text will be stored:
-    ''' 
+    '''
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("dynamicTextList")>
@@ -91,10 +91,6 @@ Public Class LampTemplate
         Return JsonConvert.SerializeObject(Me, formatting)
     End Function
 
-    Public Shared Function Serialize(item As LampTemplate) As String
-        Return JsonConvert.SerializeObject(item)
-    End Function
-
     Public Sub Save(path As String, Optional formatting As Formatting = Formatting.None)
         Using fileStream As New StreamWriter(path)
             fileStream.Write(Serialize(formatting))
@@ -112,13 +108,9 @@ Public Class LampTemplate
         RefreshCompleteDrawing()
     End Sub
 
-    Public Shared Function CreateFromDxf(drawing As LampDxfDocument)
-        Return New LampTemplate(drawing)
-    End Function
-
     ''' <summary>
     ''' Refreshes the _completeDrawing based on the InsertionLocations
-    ''' Expensive, dont call too many times 
+    ''' Expensive, dont call too many times
     ''' </summary>
     Public Sub RefreshCompleteDrawing()
         ' TODO!
