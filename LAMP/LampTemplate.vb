@@ -10,8 +10,8 @@ Public Class LampTemplate
     ''' The actual template : contains just 1 of drawing
     ''' </summary>
     <JsonProperty("template", Order:=1000)>
-    Public _template As LampDxfDocument
-    Public _tags As String
+    Public template As LampDxfDocument
+    Public tags As List(Of String)
     Public _material As String
     Public _height As Integer
     Public _thickness As Integer
@@ -54,6 +54,7 @@ Public Class LampTemplate
 
     <JsonProperty("creatorId")>
     Public Property CreatorId As Integer = -1
+
 
     <JsonProperty("approverName")>
     Public Property ApproverName As String = ""
@@ -102,9 +103,9 @@ Public Class LampTemplate
 
     Public Sub New(Optional start As LampDxfDocument = Nothing)
         If start IsNot Nothing Then
-            Me._template = start
+            Me.template = start
         Else
-            Me._template = New LampDxfDocument
+            Me.template = New LampDxfDocument
         End If
 
         InsertionLocations.Add(New LampDxfInsertLocation())
@@ -123,7 +124,7 @@ Public Class LampTemplate
         ' TODO!
         _completedDrawing = New LampDxfDocument()
         For Each point As LampDxfInsertLocation In InsertionLocations
-            _template.InsertInto(_completedDrawing, point)
+            template.InsertInto(_completedDrawing, point)
         Next
     End Sub
 

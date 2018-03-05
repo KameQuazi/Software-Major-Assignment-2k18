@@ -90,7 +90,7 @@ Public Class Form1
 
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
         If SaveFileDialog2.ShowDialog = DialogResult.OK Then
-            template._template.Save(SaveFileDialog2.FileName)
+            template.template.Save(SaveFileDialog2.FileName)
         End If
     End Sub
 End Class

@@ -67,7 +67,7 @@ Public Class TemplateDB
         Dim sqlite_conn = New SQLiteConnection(String.Format("Data Source={0};Version=3;", Me.name))
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
-        sqlite_cmd.CommandText = String.Format("INSERT INTO test(DXF,Tag,material,length,Height,thickness,creatorName,creator_ID) VALUES ('{0}','{1}','{2}',{3},{4},{5},'{6}',{7});", lamp._template.ToDxfString, lamp._tags, lamp._material, lamp._length, lamp._height, lamp._thickness, lamp.CreatorName, lamp.CreatorId)
+        sqlite_cmd.CommandText = String.Format("INSERT INTO test(DXF,Tag,material,length,Height,thickness,creatorName,creator_ID) VALUES ('{0}','{1}','{2}',{3},{4},{5},'{6}',{7});", lamp.template.ToDxfString, lamp.tags, lamp._material, lamp._length, lamp._height, lamp._thickness, lamp.CreatorName, lamp.CreatorId)
 
         sqlite_cmd.ExecuteNonQuery()
         sqlite_conn.Close()
