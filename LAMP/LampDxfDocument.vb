@@ -221,7 +221,7 @@ Public Class LampDxfDocument
     ''' <param name="centerX">Point3 1</param>
     ''' <param name="centerY">Point3 2</param>
     ''' <param name="radius">radius of circle</param>
-    Public Sub AddCircle(centerX As Integer, centerY As Integer, radius As Double)
+    Public Sub AddCircle(centerX As Double, centerY As Double, radius As Double)
         _dxfFile.AddEntity(New Circle(ConvertPoint3(centerX, centerY), radius))
     End Sub
 

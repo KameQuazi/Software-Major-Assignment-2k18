@@ -32,9 +32,10 @@ Public Class Form1
 
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
         dxf = New LampDxfDocument()
+
         dxf.AddLine(0, 0, -100, -100)
+        dxf.AddCircle(0, 0, 10)
 
         template = New LampTemplate(dxf)
         DesignerScreen1.Source = dxf
