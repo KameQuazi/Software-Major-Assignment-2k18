@@ -7,36 +7,12 @@ Imports netDxf.Entities
 Imports netDxf.Tables
 Imports netDxf.Units
 Imports Newtonsoft.Json
+Imports LAMP.LampMath
 
 ' WARNING! Aliasing Point3 to vector3
 Imports Point3 = netDxf.Vector3
 
-Public Class DxfJsonConverter
-    Inherits JsonConverter
 
-    Public Overrides Sub WriteJson(writer As JsonWriter, value As Object, serializer As JsonSerializer)
-        Dim document As LampDxfDocument = value
-        Dim dxfString As String = document.ToDxfString()
-        writer.WriteValue(dxfString)
-    End Sub
-
-    Public Overrides Function CanConvert(objectType As Type) As Boolean
-        Return objectType = GetType(DxfDocument)
-    End Function
-
-    Public Overrides Function ReadJson(reader As JsonReader, objectType As Type, existingValue As Object, serializer As JsonSerializer) As Object
-        Dim out As LampDxfDocument
-        If reader.TokenType <> JsonToken.String Then
-            Throw New JsonSerializationException()
-        Else
-            Dim value As String = reader.Value
-            out = LampDxfDocument.LoadFromString(value)
-        End If
-
-        Return out
-    End Function
-
-End Class
 
 <JsonConverter(GetType(DxfJsonConverter))>
 Public Class LampDxfDocument
@@ -103,7 +79,6 @@ Public Class LampDxfDocument
         Return New LampDxfDocument(dxf)
     End Function
 
-    Public BackgroundColorBrush As Brush = New SolidBrush(Color.AliceBlue)
 
     ''' <summary>
     ''' Rasterises the contents of the dxfFile into an Image
@@ -116,12 +91,19 @@ Public Class LampDxfDocument
         Dim bmp As New Bitmap(width, height)
 
         Using g = Graphics.FromImage(bmp)
-            g.FillRectangle(New SolidBrush(Color.LightSlateGray), 0, 0, width, height)
-
+            g.FillRectangle(BackgroundBrush, 0, 0, width, height)
             WriteToGraphics(g, center, width, height)
         End Using
         Return bmp
     End Function
+
+    Public Function ToImage() As System.Drawing.Image
+        Return ToImage(New PointF((BottomLeft.X + TopRight.X) / 2, (BottomLeft.Y + TopRight.Y) / 2),
+                       Math.Abs(BottomLeft.X - TopRight.X),
+                       Math.Abs(BottomLeft.Y - TopRight.Y))
+    End Function
+
+    Public Property BackgroundBrush As New SolidBrush(Color.LightSlateGray)
 
     Public Sub InsertInto(otherDrawing As LampDxfDocument, point As LampDxfInsertLocation)
         Dim offset = point.InsertPoint
@@ -261,6 +243,13 @@ Public Class LampDxfDocument
         _dxfFile.AddEntity(New Text(text, New Point3(x, y, 0), height))
     End Sub
 
+    Public Sub AddEntity(ent As EntityObject, Optional recalculate As Boolean = True)
+        _dxfFile.AddEntity(ent)
+        If recalculate = True Then
+            RecalculateBounds()
+        End If
+    End Sub
+
 
 
 
@@ -305,14 +294,33 @@ Public Class LampDxfDocument
             End If
         Next
     End Sub
+End Class
 
+Public Class DxfJsonConverter
+    Inherits JsonConverter
 
+    Public Overrides Sub WriteJson(writer As JsonWriter, value As Object, serializer As JsonSerializer)
+        Dim document As LampDxfDocument = value
+        Dim dxfString As String = document.ToDxfString()
+        writer.WriteValue(dxfString)
+    End Sub
 
-
-    Private Function IntersectsWith(rect As RectangleF, line As Line) As Boolean
-
-        Return True
+    Public Overrides Function CanConvert(objectType As Type) As Boolean
+        Return objectType = GetType(DxfDocument)
     End Function
+
+    Public Overrides Function ReadJson(reader As JsonReader, objectType As Type, existingValue As Object, serializer As JsonSerializer) As Object
+        Dim out As LampDxfDocument
+        If reader.TokenType <> JsonToken.String Then
+            Throw New JsonSerializationException()
+        Else
+            Dim value As String = reader.Value
+            out = LampDxfDocument.LoadFromString(value)
+        End If
+
+        Return out
+    End Function
+
 End Class
 
 Public Class LampMath
@@ -332,4 +340,10 @@ Public Class LampMath
         point.Y += y
         Return point
     End Function
+
+    Public Shared Function IntersectsWith(rect As RectangleF, line As Line) As Boolean
+
+        Return True
+    End Function
+
 End Class
