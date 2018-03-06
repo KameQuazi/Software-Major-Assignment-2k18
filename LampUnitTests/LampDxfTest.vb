@@ -4,6 +4,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports LAMP.LampMath
 Imports System.Drawing
 Imports System.IO
+Imports netDxf
 
 <TestClass()> Public Class LampDxfTest
 
@@ -26,9 +27,21 @@ Imports System.IO
 
     <TestMethod()>
     Public Sub DatabaseTest()
-        Using x As New StreamWriter("out.txt", FileMode.Create)
-            x.WriteLine("hello!\na")
-        End Using
+
+    End Sub
+
+    <TestMethod()>
+    Public Sub CompletedDrawingTest()
+        Dim dxf As New LampDxfDocument
+        dxf.AddLine(0, 0, 10, 10)
+        dxf.AddLine(10, 10, 20, 0)
+        dxf.AddLine(20, 0, 0, 0)
+        Dim template As New LampTemplate(dxf, New List(Of LampDxfInsertLocation))
+        template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(0, 0, 0)))
+        template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(30, 0, 0)))
+        template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(60, 0, 0)))
+        template.Save("template.spf")
+        template.CompletedDrawing.Save("finished drawing.dxf")
     End Sub
 
 End Class

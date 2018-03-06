@@ -24,8 +24,6 @@ Public Class LampDxfDocument
     Public Property BottomLeft As New Point3
     Public Property TopRight As New Point3
 
-
-
     ''' <summary>
     ''' Creates a new LampDxfDocument from a dxf string
     ''' </summary>

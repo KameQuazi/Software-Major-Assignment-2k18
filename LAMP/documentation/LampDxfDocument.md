@@ -5,14 +5,13 @@ A way to open, read, alter and write dxf files
 	- Creates an empty DxfDocument
 - `New(dxf as DxfDocument)`
 	- Creates from an exisitng DxfDocument (NOT LampDxfDocument). Shouldn't really need to be used
-- `
 ## Methods (Shared)
 - `LoadFromString(dxf as string) -> LampDxfDocument`
 	- Creates a dxf document from a string, formatted as a dxf
 - `LoadFromFile(filePath as string) -> LampDxfDocument`
 	- Loads a dxf document from the filepath
 ## Methods (Instance)
-- `ToDxfString() -> String
+- `ToDxfString() -> String`
 	- Converts to a string encoded in DXF format
 - `ToImage(center As PointF, width As Integer, Height as Integer) -> Image`
 	- Renders the drawing, with center at `Center`, and width and height as specified

@@ -147,6 +147,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="documentation\documentation_guide.md" />
     <None Include="documentation\LampDxfDocument.md" />
     <None Include="documentation\LampTemplate.md" />
     <None Include="My Project\Application.myapp">

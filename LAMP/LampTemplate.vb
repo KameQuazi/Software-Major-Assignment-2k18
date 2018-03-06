@@ -31,7 +31,7 @@ Public Class LampTemplate
     ''' The completed drawing, w/ all the templates laid out appropriately
     ''' Not serialized, as it can be generated using _template when deserialized
     ''' </summary>
-    Private _completedDrawing As LampDxfDocument
+    Public Property CompletedDrawing As LampDxfDocument
 
     ''' <summary>
     ''' Where each individual trophy will be inserted (in cartesian form) on the competedDrawing
@@ -97,14 +97,20 @@ Public Class LampTemplate
         End Using
     End Sub
 
-    Public Sub New(Optional start As LampDxfDocument = Nothing)
-        If start IsNot Nothing Then
-            Me.template = start
+    Public Sub New(Optional dxf As LampDxfDocument = Nothing, Optional insertionPoints As IEnumerable(Of LampDxfInsertLocation) = Nothing)
+        If dxf IsNot Nothing Then
+            Me.template = dxf
         Else
             Me.template = New LampDxfDocument
         End If
+        If insertionPoints IsNot Nothing Then
+            For Each item In insertionPoints
+                AddInsertionPoint(item, False)
+            Next
+        Else
+            AddInsertionPoint(New LampDxfInsertLocation(New Vector3(0, 0, 0)))
+        End If
 
-        InsertionLocations.Add(New LampDxfInsertLocation())
         RefreshCompleteDrawing()
     End Sub
 
@@ -114,14 +120,15 @@ Public Class LampTemplate
     ''' </summary>
     Public Sub RefreshCompleteDrawing()
         ' TODO!
-        _completedDrawing = New LampDxfDocument()
+        CompletedDrawing = New LampDxfDocument()
         For Each point As LampDxfInsertLocation In InsertionLocations
-            template.InsertInto(_completedDrawing, point)
+            template.InsertInto(CompletedDrawing, point)
         Next
     End Sub
 
     Public Sub AddInsertionPoint(point As LampDxfInsertLocation, Optional refresh As Boolean = True)
         InsertionLocations.Add(point)
+
         If refresh Then
             RefreshCompleteDrawing()
         End If
@@ -167,4 +174,7 @@ Public Class LampDxfInsertLocation
     Public Property Rotation As Double
     <JsonProperty("dynamicTextData")>
     Public Property DynamicTextData As New Dictionary(Of DynamicText, String)
+    Sub New(point As Vector3)
+        Me.InsertPoint = point
+    End Sub
 End Class
