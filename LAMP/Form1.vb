@@ -44,7 +44,7 @@ Public Class Form1
         template.Save("out.spf", Formatting.Indented)
         LampTemplate.Load("out.spf")
         ' dxf = template.
-        Dim database As New TemplateDB("templatedb.sqlite")
+        Dim database As New TemplateDB()
         database.addEntry(template)
 
     End Sub

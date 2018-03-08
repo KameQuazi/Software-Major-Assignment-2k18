@@ -27,7 +27,9 @@ Imports netDxf
 
     <TestMethod()>
     Public Sub DatabaseTest()
-
+        Dim database As New TemplateDB("unitest.db")
+        Dim newdxf As New LampTemplate()
+        database.addEntry(newdxf)
     End Sub
 
     <TestMethod()>

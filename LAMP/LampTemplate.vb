@@ -11,11 +11,14 @@ Public Class LampTemplate
     ''' </summary>
     <JsonProperty("template", Order:=1000)>
     Public template As LampDxfDocument
-    Public tags As List(Of String)
-    Public _material As String
-    Public _height As Integer
-    Public _thickness As Integer
-    Public _length As Integer
+    Public Property Tags As List(Of String)
+
+    Public Property Material As String
+    Public Property MaterialThickness As Integer
+
+    Public Property Height As Integer
+    Public Property Length As Integer
+    Public Property GUID As String
 
 
     ''' <summary>
