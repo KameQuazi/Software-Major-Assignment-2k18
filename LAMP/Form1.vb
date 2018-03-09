@@ -44,9 +44,23 @@ Public Class Form1
         template.Save("out.spf", Formatting.Indented)
         LampTemplate.Load("out.spf")
         ' dxf = template.
+        template.GUID = "whyJack"
+        template.Material = "drywall"
+        template.Tags = New List(Of String)({"hi", "Bye", "why"})
         Dim database As New TemplateDB()
-        database.addEntry(template)
+        ' NOTE!!
+        ' Exceptions in event handlers (form.load) suppress exceptions implicitly
+        ' That means if any function raises an exception (e.g. inserting a duplicate item,
+        ' since the GUID is a unique constraint, it will simply exit the function
+        ' as if a return was placed there
 
+        'Try
+        'database.addEntry(template)
+        'Catch d As Exception
+        ' MessageBox.Show(d.ToString)
+        'End Try
+        'MessageBox.Show("HELLO@")
+        'database.removeEntry(template.GUID)
     End Sub
 
 
