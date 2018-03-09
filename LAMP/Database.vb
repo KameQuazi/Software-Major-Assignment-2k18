@@ -111,6 +111,7 @@ Public Class TemplateDB
         sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.CreatorName))
         sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, lamp.CreatorId))
 
+
         sqlite_cmd.ExecuteNonQuery()
         sqlite_conn.Close()
     End Sub

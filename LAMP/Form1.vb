@@ -32,6 +32,21 @@ Public Class Form1
 
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ' NOTE!!
+        ' Exceptions in event handlers (form.load) suppress exceptions implicitly
+        ' That means if any function raises an exception (e.g. inserting a duplicate item,
+        ' since the GUID is a unique constraint, it will simply exit the function
+        ' as if a return was placed there
+        ' I've moved the stuff to the sub new underneath
+
+
+    End Sub
+
+    Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
         dxf = New LampDxfDocument()
 
         dxf.AddLine(0, 0, -100, -100)
@@ -43,24 +58,13 @@ Public Class Form1
         jsonOutput.Text = template.Serialize(Formatting.Indented)
         template.Save("out.spf", Formatting.Indented)
         LampTemplate.Load("out.spf")
-        ' dxf = template.
-        template.GUID = "whyJack"
-        template.Material = "drywall"
-        template.Tags = New List(Of String)({"hi", "Bye", "why"})
-        Dim database As New TemplateDB()
-        ' NOTE!!
-        ' Exceptions in event handlers (form.load) suppress exceptions implicitly
-        ' That means if any function raises an exception (e.g. inserting a duplicate item,
-        ' since the GUID is a unique constraint, it will simply exit the function
-        ' as if a return was placed there
 
-        'Try
-        'database.addEntry(template)
-        'Catch d As Exception
-        ' MessageBox.Show(d.ToString)
-        'End Try
+        Dim database As New TemplateDB()
+        database.addEntry(template)
+
         'MessageBox.Show("HELLO@")
         'database.removeEntry(template.GUID)
+
     End Sub
 
 
@@ -108,5 +112,13 @@ Public Class Form1
             template.template.Save(SaveFileDialog2.FileName)
         End If
     End Sub
+
+    Public Overrides Function ToString() As String
+        Return String.Format("LampTemplate GUID:{0}", Me.guid.ToString())
+    End Function
+
+    Public Shared Operator =(ByVal other As LampTemplate)
+        Return other.GUID = Guid
+    End Operator
 End Class
 

@@ -20,12 +20,13 @@ Public NotInheritable Class LampTemplate
     Public template As LampDxfDocument
     Public Property Tags As New List(Of String)
 
-    Public Property Material As String
-    Public Property MaterialThickness As Integer
+    Public Property Material As String = "Unspecified"
+
+
 
     Public Property Height As Integer
     Public Property Length As Integer
-
+    Public Property MaterialThickness As Integer
 
     Public Property SubmitDate As Date = Nothing
 
@@ -151,13 +152,23 @@ Public NotInheritable Class LampTemplate
         listOfTemplate.Sort(AddressOf CompareMaterial)
     End Sub
 
-    Private Function CompareMaterial(x As LampTemplate, y As LampTemplate)
+    Private Function CompareMaterial(x As LampTemplate, y As LampTemplate) As Integer
         Return x.Material.CompareTo(y.Material)
     End Function
 
-    Private Function CompareDate(x As LampTemplate, y As LampTemplate)
-
+    Private Function CompareDate(x As LampTemplate, y As LampTemplate) As Integer
+        Return x.Material.CompareTo(y.Material)
     End Function
+
+    ' TODO - ACtually compare all the elements of the template
+    Public Shared Operator =(ByVal first As LampTemplate, ByVal second As LampTemplate) As Boolean
+        Return first.GUID = second.GUID
+    End Operator
+
+    Public Shared Operator <>(ByVal first As LampTemplate, ByVal second As LampTemplate) As Boolean
+        Return first.GUID <> second.GUID
+
+    End Operator
 End Class
 
 
