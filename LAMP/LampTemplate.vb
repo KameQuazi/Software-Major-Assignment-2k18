@@ -5,20 +5,30 @@ Imports netDxf
 Imports Newtonsoft.Json
 
 
-Public Class LampTemplate
+Public NotInheritable Class LampTemplate
+    ''' <summary>
+    ''' a unique identifer 
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property GUID As String = System.Guid.NewGuid.ToString()
+
+
     ''' <summary>
     ''' The actual template : contains just 1 of drawing
     ''' </summary>
     <JsonProperty("template", Order:=1000)>
     Public template As LampDxfDocument
-    Public Property Tags As List(Of String)
+    Public Property Tags As New List(Of String)
 
     Public Property Material As String
     Public Property MaterialThickness As Integer
 
     Public Property Height As Integer
     Public Property Length As Integer
-    Public Property GUID As String
+
+
+    Public Property SubmitDate As Date = Nothing
+
 
 
     ''' <summary>
@@ -136,6 +146,18 @@ Public Class LampTemplate
             RefreshCompleteDrawing()
         End If
     End Sub
+
+    Public Sub SortByMaterial(listOfTemplate As List(Of LampTemplate))
+        listOfTemplate.Sort(AddressOf CompareMaterial)
+    End Sub
+
+    Private Function CompareMaterial(x As LampTemplate, y As LampTemplate)
+        Return x.Material.CompareTo(y.Material)
+    End Function
+
+    Private Function CompareDate(x As LampTemplate, y As LampTemplate)
+
+    End Function
 End Class
 
 

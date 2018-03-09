@@ -97,7 +97,7 @@ Public Class TemplateDB
         Return foo
     End Function
     Sub addEntry(lamp As LampTemplate)
-        Dim sqlite_conn = New SQLiteConnection(String.Format("Data Source={0};Version=3;", Me.Name))
+        Dim sqlite_conn = New SQLiteConnection(_connectionString)
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
         sqlite_cmd.CommandText = "INSERT INTO template(GUID,DXF,Tag,material,length,Height,thickness,creatorName,creator_ID,submit_date) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?,DATETIME('now'));"
@@ -116,12 +116,14 @@ Public Class TemplateDB
     End Sub
 
     Function selectEntry(id As Integer) As LampTemplate
-        Dim sqlite_conn = New SQLiteConnection(String.Format("Data Source={0};Version=3;", Me.Name))
+        Dim sqlite_conn = New SQLiteConnection(_connectionString)
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
         Dim sqlite_reader As SQLiteDataReader
 
-        sqlite_cmd.CommandText = String.Format("Select * FROM template WHERE GUID = {0}", id)
+        sqlite_cmd.CommandText = "Select * FROM test WHERE Auto_ID = ?"
+        sqlite_cmd.Parameters.Add(id)
+
         sqlite_reader = sqlite_cmd.ExecuteReader()
         While sqlite_reader.Read()
             'Debug.Write(sqlite_reader.GetInt32(0) & " " & sqlite_reader.GetString(1) & " " & sqlite_reader.GetString(2) & " " & sqlite_reader.GetString(3)& " " & sqlite_reader.GetInt32(4)& " " & sqlite_reader.GetInt32(5) & " "& sqlite_reader.GetInt32(6)& " " & sqlite_reader.GetString(7) & " "& sqlite_reader.GetInt32(8) & " "& sqlite_reader.GetString(9) & " "& sqlite_reader.GetInt32(10))
