@@ -169,6 +169,11 @@ Public NotInheritable Class LampTemplate
         Return first.GUID <> second.GUID
 
     End Operator
+
+    Public Overrides Function ToString() As String
+        Return String.Format("LampTemplate Guid:{0}", Me.GUID.ToString())
+    End Function
+
 End Class
 
 

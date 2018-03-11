@@ -113,12 +113,6 @@ Public Class Form1
         End If
     End Sub
 
-    Public Overrides Function ToString() As String
-        Return String.Format("LampTemplate GUID:{0}", Me.guid.ToString())
-    End Function
 
-    Public Shared Operator =(ByVal other As LampTemplate)
-        Return other.GUID = Guid
-    End Operator
 End Class
 

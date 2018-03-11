@@ -67,16 +67,7 @@ Public Class TemplateDB
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
 
-        sqlite_cmd.CommandText = "INSERT INTO template(GUID,DXF,Tag,material,length,Height,thickness,creatorName,creator_ID,submit_date) VALUES (?,?,?,?,?,?,?,?,?,DATETIME('now'));"
-        sqlite_cmd.Parameters.Add(GUID)
-        sqlite_cmd.Parameters.Add(DXF)
-        sqlite_cmd.Parameters.Add(tag)
-        sqlite_cmd.Parameters.Add(material)
-        sqlite_cmd.Parameters.Add(length)
-        sqlite_cmd.Parameters.Add(height)
-        sqlite_cmd.Parameters.Add(materialthickness)
-        sqlite_cmd.Parameters.Add(creatorName)
-        sqlite_cmd.Parameters.Add(creator_ID)
+        sqlite_cmd.CommandText = "INSERT INTO template(Guid,DXF,Tag,material,length,Height,thickness,creatorName,creator_ID,submit_date) VALUES (?,?,?,?,?,?,?,?,?,DATETIME('now'));"
 
         sqlite_cmd.Parameters.Add(sqlParam(DbType.String, GUID))
         sqlite_cmd.Parameters.Add(sqlParam(DbType.String, DXF))
@@ -91,16 +82,20 @@ Public Class TemplateDB
         sqlite_cmd.ExecuteNonQuery()
         sqlite_conn.Close()
     End Sub
+
     Function sqlParam(type As DbType, data As Object) As SQLiteParameter
         Dim foo As New SQLiteParameter(type)
         foo.Value = data
         Return foo
     End Function
+
     Sub addEntry(lamp As LampTemplate)
         Dim sqlite_conn = New SQLiteConnection(_connectionString)
         sqlite_conn.Open()
+
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
-        sqlite_cmd.CommandText = "INSERT INTO template(GUID,DXF,Tag,material,length,Height,thickness,creatorName,creator_ID,submit_date) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?,DATETIME('now'));"
+
+        sqlite_cmd.CommandText = "INSERT INTO template(Guid,DXF,Tag,material,length,Height,thickness,creatorName,creator_ID,submit_date) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?,DATETIME('now'));"
         sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.GUID))
         sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.template.ToDxfString))
         sqlite_cmd.Parameters.Add(sqlParam(DbType.String, String.Join(",", lamp.Tags.ToArray())))
@@ -130,7 +125,7 @@ Public Class TemplateDB
             'Debug.Write(sqlite_reader.GetInt32(0) & " " & sqlite_reader.GetString(1) & " " & sqlite_reader.GetString(2) & " " & sqlite_reader.GetString(3)& " " & sqlite_reader.GetInt32(4)& " " & sqlite_reader.GetInt32(5) & " "& sqlite_reader.GetInt32(6)& " " & sqlite_reader.GetString(7) & " "& sqlite_reader.GetInt32(8) & " "& sqlite_reader.GetString(9) & " "& sqlite_reader.GetInt32(10))
             Dim LampDXF = LampDxfDocument.LoadFromString(sqlite_reader.GetString(DatabaseColumn.Dxf))
             Dim LampTemp = New LampTemplate(LampDXF)
-            LampTemp.GUID = sqlite_reader.GetString(DatabaseColumn.GUID)
+            LampTemp.GUID = sqlite_reader.GetString(DatabaseColumn.Guid)
             LampTemp.ApproverId = sqlite_reader.GetInt32(DatabaseColumn.ApproverId)
             LampTemp.ApproverName = sqlite_reader.GetString(DatabaseColumn.ApproverName)
             LampTemp.CreatorId = sqlite_reader.GetInt32(DatabaseColumn.CreatorId)
@@ -145,7 +140,7 @@ Public Class TemplateDB
 
     Public Enum DatabaseColumn
         Dxf = 1
-        GUID = 0
+        Guid = 0
         CreatorName = 7
         CreatorId = 8
         ApproverName = 9
