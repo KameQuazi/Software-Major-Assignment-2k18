@@ -3,23 +3,23 @@ Imports LAMP
 
 Public Class TemplateDatabase
     Public Property Name As String
-    Private _connectionString As String
+    Private _connection As SQLiteConnection
 
     ''' <summary>
     ''' Makes a connection for use by other code
     ''' </summary>
     ''' <returns></returns>
     Public Function GetConnection() As SQLiteConnection
-        Return New SQLiteConnection(_connectionString)
+        Return _connection
     End Function
 
     Public Sub CreateTable()
         Me.Name = Name
-        Dim sqlite_conn = New SQLiteConnection(_connectionString)
+        Dim sqlite_conn = _connection
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
         sqlite_cmd.CommandText = "CREATE TABLE if not exists template (
-                                  GUID STRING PRIMARY KEY, 
+                                  GUID Text PRIMARY KEY Not NULL, 
                                   DXF Text Not NULL DEFAULT '',
                                   Tag Text DEFAULT '',
                                   material Text Not NULL,
@@ -38,11 +38,13 @@ Public Class TemplateDatabase
 
     Public Sub New(Optional name As String = "templateDB.sqlite")
         Me.Name = name
-        Me._connectionString = String.Format("Data Source={0};Version=3;", name)
+        _connection = New SQLiteConnection(String.Format("Data Source={0};Version=3;", name))
         ' recreate the database if not found
-        If Not IO.File.Exists(name) Then
+        Try
             CreateTable()
-        End If
+        Catch ex As Exception
+            ' do nothing 
+        End Try
     End Sub
 
     ''' <summary>
@@ -50,13 +52,14 @@ Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="guid"></param>
     Sub removeEntry(guid As String)
-        Dim sqlite_conn = New SQLiteConnection(_connectionString)
+        Dim sqlite_conn = _connection
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
         sqlite_cmd.CommandText = "DELETE from template WHERE GUID = ?"
         sqlite_cmd.Parameters.Add(guid)
         sqlite_cmd.ExecuteNonQuery()
         sqlite_conn.Close()
+
     End Sub
 
     ''' <summary>
@@ -72,7 +75,7 @@ Public Class TemplateDatabase
     ''' <param name="creatorName"></param>
     ''' <param name="creator_ID"></param>
     Sub addDebugEntry(GUID As String, DXF As String, tag As String, material As String, length As Integer, height As Integer, materialthickness As Integer, creatorName As String, creator_ID As Integer)
-        Dim sqlite_conn = New SQLiteConnection(String.Format("Data Source={0};Version=3;", Me.Name))
+        Dim sqlite_conn = _connection
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
 
@@ -99,7 +102,7 @@ Public Class TemplateDatabase
     End Function
 
     Sub addEntry(lamp As LampTemplate)
-        Dim sqlite_conn = New SQLiteConnection(_connectionString)
+        Dim sqlite_conn = _connection
         sqlite_conn.Open()
 
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
@@ -121,7 +124,7 @@ Public Class TemplateDatabase
     End Sub
 
     Function selectEntry(id As Integer) As LampTemplate
-        Dim sqlite_conn = New SQLiteConnection(_connectionString)
+        Dim sqlite_conn = _connection
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
         Dim sqlite_reader As SQLiteDataReader
@@ -140,9 +143,11 @@ Public Class TemplateDatabase
             LampTemp.CreatorId = sqlite_reader.GetInt32(DatabaseColumn.CreatorId)
             LampTemp.CreatorName = sqlite_reader.GetString(DatabaseColumn.CreatorName)
             LampTemp.IsComplete = sqlite_reader.GetInt32(DatabaseColumn.IsComplete)
+            sqlite_conn.Close()
             Return LampTemp
 
         End While
+        sqlite_conn.Close()
         Return Nothing
     End Function
 
