@@ -1,8 +1,17 @@
 ﻿Imports System.Data.SQLite
 Imports LAMP
-Public Class TemplateDB
+
+Public Class TemplateDatabase
     Public Property Name As String
     Private _connectionString As String
+
+    ''' <summary>
+    ''' Makes a connection for use by other code
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function GetConnection() As SQLiteConnection
+        Return New SQLiteConnection(_connectionString)
+    End Function
 
     Public Sub CreateTable()
         Me.Name = Name
