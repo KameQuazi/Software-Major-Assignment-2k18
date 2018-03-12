@@ -4,25 +4,32 @@ Imports LAMP
 Imports netDxf
 Imports Newtonsoft.Json
 
-
+<JsonObject(MemberSerialization.OptIn)>
 Public NotInheritable Class LampTemplate
     ''' <summary>
     ''' a unique identifer 
     ''' </summary>
     ''' <returns></returns>
-    Public Property GUID As String = System.Guid.NewGuid.ToString()
-
+    <JsonProperty("guid")>
+    Public Property GUID As String
 
     ''' <summary>
     ''' The actual template : contains just 1 of drawing
     ''' </summary>
     <JsonProperty("template", Order:=1000)>
     Public template As LampDxfDocument
+
+    ''' <summary>
+    ''' A list of tags
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Tags As New List(Of String)
 
+    ''' <summary>
+    ''' material the trophy is made out of
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Material As String = "Unspecified"
-
-
 
     Public Property Height As Integer
     Public Property Length As Integer
@@ -98,7 +105,7 @@ Public NotInheritable Class LampTemplate
     End Property
 
     ''' <summary>
-    ''' Converts -> json format to be saved as a .spiff
+    ''' Converts -> json format to be saved as a .spf
     ''' </summary>
     ''' <returns></returns>
     Public Function Serialize(Optional formatting As Formatting = Formatting.None) As String
@@ -111,22 +118,32 @@ Public NotInheritable Class LampTemplate
         End Using
     End Sub
 
-    Public Sub New(Optional dxf As LampDxfDocument = Nothing, Optional insertionPoints As IEnumerable(Of LampDxfInsertLocation) = Nothing)
-        If dxf IsNot Nothing Then
-            Me.template = dxf
-        Else
-            Me.template = New LampDxfDocument
-        End If
-        If insertionPoints IsNot Nothing Then
-            For Each item In insertionPoints
-                AddInsertionPoint(item, False)
-            Next
-        Else
-            AddInsertionPoint(New LampDxfInsertLocation(New Vector3(0, 0, 0)))
-        End If
 
-        RefreshCompleteDrawing()
+
+    Private Sub _new(dxf As LampDxfDocument, guid As String)
+        Me.GUID = guid
+        Me.template = dxf
+
     End Sub
+    ''' <summary>
+    ''' Create a new LampTemplate with default Everything
+    ''' </summary>
+    Public Sub New()
+        _new(New LampDxfDocument(), System.Guid.NewGuid.ToString)
+
+    End Sub
+
+    Public Sub New(dxf As LampDxfDocument)
+        _new(dxf, System.Guid.NewGuid.ToString)
+    End Sub
+
+    Public Sub New(dxf As LampDxfDocument, guid As String)
+        _new(dxf, guid)
+    End Sub
+
+
+
+
 
     ''' <summary>
     ''' Refreshes the _completeDrawing based on the InsertionLocations
@@ -167,6 +184,7 @@ Public NotInheritable Class LampTemplate
 
     Public Shared Operator <>(ByVal first As LampTemplate, ByVal second As LampTemplate) As Boolean
         Return first.GUID <> second.GUID
+    End Operator
 
     End Operator
 

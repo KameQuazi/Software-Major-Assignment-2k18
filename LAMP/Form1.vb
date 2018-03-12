@@ -53,14 +53,16 @@ Public Class Form1
         dxf.AddCircle(0, 0, 10)
 
         template = New LampTemplate(dxf)
+        Dim x = New TemplateDB()
+        x.addEntry(template)
+
         DesignerScreen1.Source = dxf
 
         jsonOutput.Text = template.Serialize(Formatting.Indented)
         template.Save("out.spf", Formatting.Indented)
         LampTemplate.Load("out.spf")
 
-        Dim database As New TemplateDB()
-        database.addEntry(template)
+
 
         'MessageBox.Show("HELLO@")
         'database.removeEntry(template.GUID)

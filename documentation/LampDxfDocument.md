@@ -1,5 +1,14 @@
 # LampDxfDocument
 A way to open, read, alter and write dxf files
+# How to use
+Create an empty `LampDxfDocument` using 
+`Dim bacon as New LampDxfDocument()`
+or 
+`Dim bacon = LampDxfDocument.LoadFromFile(filepath)`
+to load from a .dxf file already on the computer
+
+Lines, Circles, Arcs etc can be added Using `AddLine`, `AddCircle` 
+
 ## Constructor
 - `New()`
 	- Creates an empty DxfDocument

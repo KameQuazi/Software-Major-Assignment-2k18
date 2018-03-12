@@ -321,6 +321,11 @@ Public Class DxfJsonConverter
 
 End Class
 
+Public Class InvalidJsonDxfExceptions
+    Inherits JsonSerializationException
+
+End Class
+
 Public Class LampMath
     Public Shared Function CartesianToGdi(center As PointF, width As Integer, height As Integer, cartesianX As Double, cartesianY As Double) As PointF
         Dim ret As New PointF(-center.X + width / 2, center.Y + height / 2)
