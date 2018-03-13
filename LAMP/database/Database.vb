@@ -13,6 +13,9 @@ Public Class TemplateDatabase
         Return _connection
     End Function
 
+    ''' <summary>
+    ''' Creates all the tables required, if tables not exist
+    ''' </summary>
     Public Sub CreateTable()
         Me.Name = Name
         Dim sqlite_conn = _connection
@@ -20,8 +23,8 @@ Public Class TemplateDatabase
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
         sqlite_cmd.CommandText = "CREATE TABLE if not exists template (
                                   GUID Text PRIMARY KEY Not NULL, 
-                                  DXF Text Not NULL DEFAULT '',
-                                  Tag Text DEFAULT '',
+                                  DXF Text Not NULL,
+                                  Tag Text Not NULL,
                                   material Text Not NULL,
                                   length Int Not NULL,
                                   Height Int Not NULL,
@@ -39,12 +42,8 @@ Public Class TemplateDatabase
     Public Sub New(Optional name As String = "templateDB.sqlite")
         Me.Name = name
         _connection = New SQLiteConnection(String.Format("Data Source={0};Version=3;", name))
-        ' recreate the database if not found
-        Try
-            CreateTable()
-        Catch ex As Exception
-            ' do nothing 
-        End Try
+        ' create tables 
+        CreateTable()
     End Sub
 
     ''' <summary>
