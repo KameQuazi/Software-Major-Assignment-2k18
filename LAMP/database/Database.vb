@@ -100,6 +100,14 @@ Public Class TemplateDatabase
         Return foo
     End Function
 
+    Private Function SerializeTags(template As LampTemplate) As String
+        Return String.Join(",", template.Tags)
+    End Function
+
+    Private Function DeserializeTags(tags As String) As List(Of String)
+        Return String.Split
+    End Function
+
     Sub addEntry(lamp As LampTemplate)
         Dim sqlite_conn = _connection
         sqlite_conn.Open()
@@ -109,7 +117,7 @@ Public Class TemplateDatabase
         sqlite_cmd.CommandText = "INSERT INTO template(Guid,DXF,Tag,material,length,Height,thickness,creatorName,creator_ID,submit_date) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?,DATETIME('now'));"
         sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.GUID))
         sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.template.ToDxfString))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, String.Join(",", lamp.Tags.ToArray())))
+        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, SerializeTags(lamp)))
         sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.Material))
         sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, lamp.Length))
         sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, lamp.Height))
@@ -122,26 +130,33 @@ Public Class TemplateDatabase
         sqlite_conn.Close()
     End Sub
 
-    Function selectEntry(id As Integer) As LampTemplate
+    Function selectEntry(guid As String) As LampTemplate
         Dim sqlite_conn = _connection
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
         Dim sqlite_reader As SQLiteDataReader
 
-        sqlite_cmd.CommandText = "Select * FROM test WHERE Auto_ID = ?"
-        sqlite_cmd.Parameters.Add(id)
+        sqlite_cmd.CommandText = "Select * FROM template WHERE guid = ?"
+        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, guid))
 
         sqlite_reader = sqlite_cmd.ExecuteReader()
         While sqlite_reader.Read()
             'Debug.Write(sqlite_reader.GetInt32(0) & " " & sqlite_reader.GetString(1) & " " & sqlite_reader.GetString(2) & " " & sqlite_reader.GetString(3)& " " & sqlite_reader.GetInt32(4)& " " & sqlite_reader.GetInt32(5) & " "& sqlite_reader.GetInt32(6)& " " & sqlite_reader.GetString(7) & " "& sqlite_reader.GetInt32(8) & " "& sqlite_reader.GetString(9) & " "& sqlite_reader.GetInt32(10))
             Dim LampDXF = LampDxfDocument.LoadFromString(sqlite_reader.GetString(DatabaseColumn.Dxf))
             Dim LampTemp = New LampTemplate(LampDXF)
+
             LampTemp.GUID = sqlite_reader.GetString(DatabaseColumn.Guid)
+            LampTemp.Tags = DeserializeTags(sqlite_reader.GetString(DatabaseColumn.Tags))
+
+            LampTemp.Material = sqlite_reader.GetString(DatabaseColumn.Material)
+            LampTemp.Length = sqlite_reader.GetDouble(DatabaseColumn.Length)
+            LampTemp.Height = sqlite_reader.GetDouble(DatabaseColumn.Height)
+
             LampTemp.ApproverId = sqlite_reader.GetInt32(DatabaseColumn.ApproverId)
             LampTemp.ApproverName = sqlite_reader.GetString(DatabaseColumn.ApproverName)
             LampTemp.CreatorId = sqlite_reader.GetInt32(DatabaseColumn.CreatorId)
             LampTemp.CreatorName = sqlite_reader.GetString(DatabaseColumn.CreatorName)
-            LampTemp.IsComplete = sqlite_reader.GetInt32(DatabaseColumn.IsComplete)
+            LampTemp.IsComplete = sqlite_reader.GetBoolean(DatabaseColumn.IsComplete)
             sqlite_conn.Close()
             Return LampTemp
 
@@ -152,8 +167,13 @@ Public Class TemplateDatabase
 
 
     Public Enum DatabaseColumn
-        Dxf = 1
         Guid = 0
+        Dxf = 1
+        Tags = 2
+        Material = 3
+        Length = 4
+        Height = 5
+        Thickness = 6
         CreatorName = 7
         CreatorId = 8
         ApproverName = 9

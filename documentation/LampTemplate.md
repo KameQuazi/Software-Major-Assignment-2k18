@@ -1,6 +1,12 @@
 # LampTemplate
-A Lamptemplate stores the original item to be cut, with options to duplicate
+A Lamp template stores the original item to be cut, with options to duplicate
 the item several times based off the insertion point system
+## How to use
+Construct a new template using `Dim foo as New LampTempate()` or `Dim foo as New LampTemplate(dxf)`
+, where dxf is a LampDxfDocument. By default, 0,0 will be added as an insertion point. 
+New insertion points can be added by using
+`foo.InsertionLocations(New LampDxfInsertLocation)`
+
 ## Constructor
 - `New(start As LampDxfTemplate=Nothing)`
   - Creates a new Template w/ the drawing. Empty for new empty drawing
