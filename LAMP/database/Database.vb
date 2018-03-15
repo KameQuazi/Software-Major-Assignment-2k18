@@ -88,7 +88,7 @@ Public Class TemplateDatabase
         sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, height))
         sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, materialthickness))
         sqlite_cmd.Parameters.Add(sqlParam(DbType.String, creatorName))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, creator_ID))
+        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, creator_ID))
 
         sqlite_cmd.ExecuteNonQuery()
         sqlite_conn.Close()
@@ -114,16 +114,22 @@ Public Class TemplateDatabase
 
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
 
-        sqlite_cmd.CommandText = "INSERT INTO template(Guid,DXF,Tag,material,length,Height,thickness,creatorName,creator_ID,submit_date) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?,DATETIME('now'));"
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.GUID))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.Template.ToDxfString))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, SerializeTags(lamp)))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.Material))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, lamp.Length))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, lamp.Height))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, lamp.MaterialThickness))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.CreatorName))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, lamp.CreatorId))
+        sqlite_cmd.CommandText = "INSERT INTO template
+                (Guid, DXF, Tag, material, length, Height, thickness, creatorName, creator_ID, submit_date) 
+                VALUES 
+                (@guid, @dxf, @tags, @material, @length, @height, @thickness, @creatorName, @creatorId, DATETIME('now'));"
+
+        sqlite_cmd.Parameters.AddWithValue("@guid", lamp.GUID)
+        sqlite_cmd.Parameters.AddWithValue("@dxf", lamp.Template.ToDxfString)
+        sqlite_cmd.Parameters.AddWithValue("@tags", SerializeTags(lamp))
+        sqlite_cmd.Parameters.AddWithValue("@material", lamp.Material)
+        sqlite_cmd.Parameters.AddWithValue("@length", lamp.Length)
+        sqlite_cmd.Parameters.AddWithValue("@height", lamp.Height)
+        sqlite_cmd.Parameters.AddWithValue("@thickness", lamp.MaterialThickness)
+        sqlite_cmd.Parameters.AddWithValue("@creatorName", lamp.CreatorName)
+        sqlite_cmd.Parameters.AddWithValue("@creatorId", lamp.CreatorId)
+        ' Ensure creatorId and and approverId are strings!
+        ' also add approverid/approvername to the db
 
 
         sqlite_cmd.ExecuteNonQuery()
