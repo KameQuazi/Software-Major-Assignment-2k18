@@ -129,10 +129,10 @@
     <Compile Include="frontend\controls\DesignerScreen.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="frontend\controls\fileDisplay.designer.vb">
-      <DependentUpon>fileDisplay.vb</DependentUpon>
+    <Compile Include="frontend\controls\FileDisplay.designer.vb">
+      <DependentUpon>FileDisplay.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\controls\fileDisplay.vb">
+    <Compile Include="frontend\controls\FileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="frontend\forms\Form1.designer.vb">
@@ -169,11 +169,11 @@
     <Compile Include="template\LampTemplate.vb" />
     <Compile Include="template\LampDxfDocument.vb" />
     <Compile Include="template\DxfText.vb" />
-    <Compile Include="frontend\forms\Form5.vb">
+    <Compile Include="frontend\forms\DesignerForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\forms\Form5.Designer.vb">
-      <DependentUpon>Form5.vb</DependentUpon>
+    <Compile Include="frontend\forms\DesignerForm.Designer.vb">
+      <DependentUpon>DesignerForm.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -199,8 +199,8 @@
     <EmbeddedResource Include="frontend\controls\DesignerScreen.resx">
       <DependentUpon>DesignerScreen.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\controls\fileDisplay.resx">
-      <DependentUpon>fileDisplay.vb</DependentUpon>
+    <EmbeddedResource Include="frontend\controls\FileDisplay.resx">
+      <DependentUpon>FileDisplay.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
@@ -208,8 +208,8 @@
     <EmbeddedResource Include="frontend\forms\Form2.resx">
       <DependentUpon>Form2.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\Form5.resx">
-      <DependentUpon>Form5.vb</DependentUpon>
+    <EmbeddedResource Include="frontend\forms\DesignerForm.resx">
+      <DependentUpon>DesignerForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\Logout.resx">
       <DependentUpon>Logout.vb</DependentUpon>

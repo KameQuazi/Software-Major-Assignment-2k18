@@ -158,9 +158,9 @@ Public Class TemplateDatabase
             LampTemp.Length = sqlite_reader.GetDouble(DatabaseColumn.Length)
             LampTemp.Height = sqlite_reader.GetDouble(DatabaseColumn.Height)
 
-            LampTemp.ApproverId = sqlite_reader.GetInt32(DatabaseColumn.ApproverId)
+            LampTemp.ApproverId = sqlite_reader.GetString(DatabaseColumn.ApproverId)
             LampTemp.ApproverName = sqlite_reader.GetString(DatabaseColumn.ApproverName)
-            LampTemp.CreatorId = sqlite_reader.GetInt32(DatabaseColumn.CreatorId)
+            LampTemp.CreatorId = sqlite_reader.GetString(DatabaseColumn.CreatorId)
             LampTemp.CreatorName = sqlite_reader.GetString(DatabaseColumn.CreatorName)
             LampTemp.IsComplete = sqlite_reader.GetBoolean(DatabaseColumn.IsComplete)
             sqlite_conn.Close()

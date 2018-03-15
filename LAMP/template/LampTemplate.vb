@@ -310,7 +310,7 @@ Public Class OwO
         InitalizeLibraries()
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
-        Application.Run(New Form5())
+        Application.Run(New DesignerForm())
     End Sub
 
     Sub InitalizeLibraries()

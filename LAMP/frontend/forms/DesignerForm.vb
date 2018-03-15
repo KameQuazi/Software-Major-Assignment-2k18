@@ -5,7 +5,7 @@ Imports LAMP.LampMath
 
 
 
-Public Class Form5
+Public Class DesignerForm
     Private dxf As LampDxfDocument
     Private template As LampTemplate
 
@@ -71,8 +71,8 @@ Public Class Form5
 
     Private Sub Button4_Click_1(sender As Object, e As EventArgs) Handles Button4.Click
         Try
-            Dim z = TextBox1.Text.Split(" ")
-            Dim y = TextBox2.Text.Split(" ")
+            Dim z = TextBox1.Text.Split(" "c)
+            Dim y = TextBox2.Text.Split(" "c)
             dxf.AddLine(Double.Parse(z(0)), Double.Parse(z(1)), Double.Parse(y(0)), Double.Parse(y(1)))
             DesignerScreen1.Refresh()
             jsonOutput.Text = template.Serialize(Formatting.Indented)

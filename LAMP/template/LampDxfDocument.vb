@@ -106,9 +106,11 @@ Public Class LampDxfDocument
     End Function
 
     Public Function ToImage() As System.Drawing.Image
+#Disable Warning BC42016 ' Implicit conversion
         Return ToImage(New PointF((BottomLeft.X + TopRight.X) / 2, (BottomLeft.Y + TopRight.Y) / 2),
                        Math.Abs(BottomLeft.X - TopRight.X),
                        Math.Abs(BottomLeft.Y - TopRight.Y))
+#Enable Warning BC42016 ' Implicit conversion
     End Function
 
     Public Property BackgroundBrush As New SolidBrush(Color.LightSlateGray)
@@ -261,12 +263,15 @@ Public Class LampDxfDocument
 
 
 
-    Public Shared Function ConvertPoint3(x As Integer, y As Integer) As Point3
+    Public Shared Function ConvertPoint3(x As Double, y As Double) As Point3
         Return New Point3(x, y, 0)
     End Function
 
+
     Public Shared Function ConvertToPointF(point As Point3) As Drawing.PointF
+#Disable Warning BC42016 ' Implicit conversion
         Return New PointF(point.X, point.Y)
+#Enable Warning BC42016 ' Implicit conversion
     End Function
 
 
@@ -290,7 +295,9 @@ Public Class LampDxfDocument
     ''' <param name="height"></param>
     Public Sub WriteToGraphics(g As Graphics, middle As PointF, width As Integer, height As Integer)
         ' the bounds where entities are rendered
+#Disable Warning BC42016 ' Implicit conversion
         Dim bounds As New RectangleF(middle.X - width / 2, middle.Y + height / 2, width, height)
+#Enable Warning BC42016 ' Implicit conversion
 
         For Each line As Line In _dxfFile.Lines
             If IntersectsWith(bounds, line) Then
@@ -328,7 +335,7 @@ Public Class DxfJsonConverter
     Inherits JsonConverter
 
     Public Overrides Sub WriteJson(writer As JsonWriter, value As Object, serializer As JsonSerializer)
-        Dim document As LampDxfDocument = value
+        Dim document As LampDxfDocument = DirectCast(value, LampDxfDocument)
         Dim dxfString As String = document.ToDxfString()
         writer.WriteValue(dxfString)
     End Sub
@@ -342,7 +349,7 @@ Public Class DxfJsonConverter
         If reader.TokenType <> JsonToken.String Then
             Throw New JsonSerializationException()
         Else
-            Dim value As String = reader.Value
+            Dim value As String = DirectCast(reader.Value, String)
             out = LampDxfDocument.LoadFromString(value)
         End If
 
@@ -358,9 +365,11 @@ End Class
 
 Public Class LampMath
     Public Shared Function CartesianToGdi(center As PointF, width As Integer, height As Integer, cartesianX As Double, cartesianY As Double) As PointF
+#Disable Warning BC42016 ' Implicit conversion
         Dim ret As New PointF(-center.X + width / 2, center.Y + height / 2)
         ret.X += cartesianX
         ret.Y -= cartesianY
+#Enable Warning BC42016 ' Implicit conversion
         Return ret
     End Function
 
@@ -369,8 +378,10 @@ Public Class LampMath
     End Function
 
     Public Shared Function Transform(point As PointF, x As Double, y As Double) As PointF
+#Disable Warning BC42016 ' Implicit conversion
         point.X += x
         point.Y += y
+#Enable Warning BC42016 ' Implicit conversion
         Return point
     End Function
 
