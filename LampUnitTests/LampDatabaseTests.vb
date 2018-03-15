@@ -1,7 +1,8 @@
 ﻿Imports LAMP
 Imports Microsoft.VisualStudio.TestTools.UnitTesting.Assert
 
-<TestClass()> Public Class LampTemplateText
+<TestClass()>
+Public Class LampTemplateText
     Private TemplateTableName As String = "template"
 
 

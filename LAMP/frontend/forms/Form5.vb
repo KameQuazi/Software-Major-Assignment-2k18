@@ -57,7 +57,7 @@ Public Class Form5
 
         jsonOutput.Text = template.Serialize(Formatting.Indented)
         template.Save("out.spf", Formatting.Indented)
-        LampTemplate.Load("out.spf")
+        LampTemplate.LoadFromFile("out.spf")
 
         Dim database As New TemplateDatabase()
         database.addEntry(template)

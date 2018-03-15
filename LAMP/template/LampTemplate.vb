@@ -22,7 +22,7 @@ Public NotInheritable Class LampTemplate
 
     Private _guid As String
     ''' <summary>
-    ''' a unique identifer 
+    ''' a unique identifer for each different template
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("guid")>
@@ -39,6 +39,7 @@ Public NotInheritable Class LampTemplate
     Private _template As LampDxfDocument
     ''' <summary>
     ''' The actual template : contains just 1 of drawing
+    ''' Is serialized last in the file 
     ''' </summary>
     <JsonProperty("template", Order:=1000)>
     Public Property Template As LampDxfDocument
@@ -54,9 +55,10 @@ Public NotInheritable Class LampTemplate
 
     Private _tags As New List(Of String)
     ''' <summary>
-    ''' A list of tags
+    ''' A list of tags. 
     ''' </summary>
     ''' <returns></returns>
+    <JsonProperty("tags")>
     Public Property Tags As List(Of String)
         Get
             Return _tags
@@ -72,21 +74,39 @@ Public NotInheritable Class LampTemplate
     ''' material the trophy is made out of
     ''' </summary>
     ''' <returns></returns>
+    <JsonProperty("material")>
     Public Property Material As String = "Unspecified"
 
-    Public Property Height As Integer
+    ''' <summary>
+    ''' The  height of all the template
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("height")>
+    Public Property Height As Double
 
-    Public Property Length As Integer
+    ''' <summary>
+    ''' The length of all of the template
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("length")>
+    Public Property Length As Double
 
+    ''' <summary>
+    ''' The thickness of the material used
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("thickness")>
     Public Property MaterialThickness As Integer
 
+    ''' <summary>
+    ''' The date item was submitted
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("submitDate")>
     Public Property SubmitDate As Date = Nothing
-
-
 
     ''' <summary>
     ''' Where the dynamic text will be stored:
-    '''
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("dynamicTextList")>
@@ -115,28 +135,55 @@ Public NotInheritable Class LampTemplate
     <JsonProperty("isComplete")>
     Public Property IsComplete As Boolean
 
+    ''' <summary>
+    ''' full name of creator
+    ''' </summary>
+    ''' <returns></returns>
     <JsonProperty("creatorName")>
     Public Property CreatorName As String = ""
 
+    ''' <summary>
+    ''' guid of creator
+    ''' </summary>
+    ''' <returns></returns>
     <JsonProperty("creatorId")>
-    Public Property CreatorId As Integer = -1
+    Public Property CreatorId As String = System.Guid.Empty.ToString
 
-
+    ''' <summary>
+    ''' full name of approver
+    ''' </summary>
+    ''' <returns></returns>
     <JsonProperty("approverName")>
     Public Property ApproverName As String = ""
 
-    Friend Shared Function Load(fileName As String) As LampTemplate
+    ''' <summary>
+    ''' guid of approver
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("approverId")>
+    Public Property ApproverId As String = System.Guid.Empty.ToString
+
+    ''' <summary>
+    ''' Load from a file on disk
+    ''' </summary>
+    ''' <param name="fileName"></param>
+    ''' <returns></returns>
+    Friend Shared Function LoadFromFile(fileName As String) As LampTemplate
         Using file As New StreamReader(fileName)
             Return Deserialize(file.ReadToEnd())
         End Using
     End Function
 
+    ''' <summary>
+    ''' Loads from a json string
+    ''' </summary>
+    ''' <param name="json"></param>
+    ''' <returns></returns>
     Private Shared Function Deserialize(json As String) As LampTemplate
         Return JsonConvert.DeserializeObject(Of LampTemplate)(json)
     End Function
 
-    <JsonProperty("approverId")>
-    Public Property ApproverId As Integer = -1
+
 
     ''' <summary>
     ''' Gets whether or not it has text that is filled in by the user
@@ -157,14 +204,22 @@ Public NotInheritable Class LampTemplate
         Return JsonConvert.SerializeObject(Me, formatting)
     End Function
 
+    ''' <summary>
+    ''' Saves to file on disk
+    ''' </summary>
+    ''' <param name="path"></param>
+    ''' <param name="formatting"></param>
     Public Sub Save(path As String, Optional formatting As Formatting = Formatting.None)
         Using fileStream As New StreamWriter(path)
             fileStream.Write(Serialize(formatting))
         End Using
     End Sub
 
-
-
+    ''' <summary>
+    ''' Helper constructor for LampTemplates
+    ''' </summary>
+    ''' <param name="dxf"></param>
+    ''' <param name="guid"></param>
     Private Sub _new(dxf As LampDxfDocument, guid As String)
         Me.GUID = guid
         Me.template = dxf
