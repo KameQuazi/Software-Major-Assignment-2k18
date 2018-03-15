@@ -5,7 +5,7 @@ Imports LAMP.LampMath
 
 
 
-Public Class Form1
+Public Class Form5
     Private dxf As LampDxfDocument
     Private template As LampTemplate
 

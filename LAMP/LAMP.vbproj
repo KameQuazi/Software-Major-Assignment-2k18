@@ -79,7 +79,9 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
+    <Reference Include="System">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -115,21 +117,63 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="database\Database.vb" />
-    <Compile Include="frontend\DesignerScreen.Designer.vb">
+    <Compile Include="frontend\forms\AboutBox1.designer.vb">
+      <DependentUpon>AboutBox1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\forms\AboutBox1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frontend\controls\DesignerScreen.Designer.vb">
       <DependentUpon>DesignerScreen.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\DesignerScreen.vb">
+    <Compile Include="frontend\controls\DesignerScreen.vb">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="frontend\controls\fileDisplay.designer.vb">
+      <DependentUpon>fileDisplay.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\controls\fileDisplay.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="frontend\forms\Form1.designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\forms\Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frontend\forms\Form2.Designer.vb">
+      <DependentUpon>Form2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\forms\Form2.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frontend\forms\Logout.Designer.vb">
+      <DependentUpon>Logout.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\forms\Logout.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frontend\controls\ToolBar.Designer.vb">
+      <DependentUpon>ToolBar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\controls\ToolBar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="frontend\forms\Viewer.Designer.vb">
+      <DependentUpon>Viewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\forms\Viewer.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="template\DynamicText.vb" />
     <Compile Include="template\LampTemplate.vb" />
     <Compile Include="template\LampDxfDocument.vb" />
     <Compile Include="template\DxfText.vb" />
-    <Compile Include="frontend\Form1.vb">
+    <Compile Include="frontend\forms\Form5.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\Form1.Designer.vb">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <Compile Include="frontend\forms\Form5.Designer.vb">
+      <DependentUpon>Form5.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -147,14 +191,34 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="template\SelectTemplate.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frontend\DesignerScreen.resx">
+    <EmbeddedResource Include="frontend\forms\AboutBox1.resx">
+      <DependentUpon>AboutBox1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frontend\controls\DesignerScreen.resx">
       <DependentUpon>DesignerScreen.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\Form1.resx">
+    <EmbeddedResource Include="frontend\controls\fileDisplay.resx">
+      <DependentUpon>fileDisplay.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frontend\forms\Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frontend\forms\Form2.resx">
+      <DependentUpon>Form2.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frontend\forms\Form5.resx">
+      <DependentUpon>Form5.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frontend\forms\Logout.resx">
+      <DependentUpon>Logout.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frontend\controls\ToolBar.resx">
+      <DependentUpon>ToolBar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frontend\forms\Viewer.resx">
+      <DependentUpon>Viewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

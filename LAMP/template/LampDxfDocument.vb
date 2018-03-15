@@ -11,17 +11,27 @@ Imports LAMP.LampMath
 
 ' WARNING! Aliasing Point3 to vector3
 Imports Point3 = netDxf.Vector3
-
-
+Imports System.ComponentModel
+Imports System.Runtime.CompilerServices
 
 <JsonConverter(GetType(DxfJsonConverter))>
 Public Class LampDxfDocument
+    Implements INotifyPropertyChanged
+    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
+    Private Sub NotifyPropertyChanged(<CallerMemberName()> Optional ByVal propertyName As String = Nothing)
+        RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
+    End Sub
+
+
+
     ''' <summary>
     ''' DxfDocument from .netdxf library
     ''' </summary>
     Private _dxfFile As DxfDocument
 
     Public Property BottomLeft As New Point3
+
     Public Property TopRight As New Point3
 
     ''' <summary>

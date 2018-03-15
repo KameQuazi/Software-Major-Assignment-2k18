@@ -1,29 +1,72 @@
-﻿Imports System.IO
+﻿Imports System.ComponentModel
+Imports System.IO
 Imports System.Reflection
+Imports System.Runtime.CompilerServices
 Imports LAMP
 Imports netDxf
 Imports Newtonsoft.Json
 
 <JsonObject(MemberSerialization.OptIn)>
 Public NotInheritable Class LampTemplate
+    Implements INotifyPropertyChanged
+
+    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
+    Private Sub NotifyPropertyChanged(<CallerMemberName()> Optional ByVal propertyName As String = Nothing)
+        RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
+    End Sub
+
+    Private Sub LampDxfChanged(sender As Object, e As PropertyChangedEventArgs)
+        NotifyPropertyChanged("Template")
+    End Sub
+
+    Private _guid As String
     ''' <summary>
     ''' a unique identifer 
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("guid")>
     Public Property GUID As String
+        Get
+            Return _guid
+        End Get
+        Set(value As String)
+            _guid = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
 
+    Private _template As LampDxfDocument
     ''' <summary>
     ''' The actual template : contains just 1 of drawing
     ''' </summary>
     <JsonProperty("template", Order:=1000)>
-    Public template As LampDxfDocument
+    Public Property Template As LampDxfDocument
+        Get
+            Return _template
+        End Get
+        Set(value As LampDxfDocument)
+            _template = value
+            AddHandler value.PropertyChanged, AddressOf LampDxfChanged
+            NotifyPropertyChanged()
+        End Set
+    End Property
 
+    Private _tags As New List(Of String)
     ''' <summary>
     ''' A list of tags
     ''' </summary>
     ''' <returns></returns>
-    Public Property Tags As New List(Of String)
+    Public Property Tags As List(Of String)
+        Get
+            Return _tags
+        End Get
+        Set(value As List(Of String))
+            _tags = value
+
+            NotifyPropertyChanged()
+        End Set
+    End Property
 
     ''' <summary>
     ''' material the trophy is made out of
@@ -32,7 +75,9 @@ Public NotInheritable Class LampTemplate
     Public Property Material As String = "Unspecified"
 
     Public Property Height As Integer
+
     Public Property Length As Integer
+
     Public Property MaterialThickness As Integer
 
     Public Property SubmitDate As Date = Nothing
@@ -210,7 +255,7 @@ Public Class OwO
         InitalizeLibraries()
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
-        Application.Run(New Form1())
+        Application.Run(New Form5())
     End Sub
 
     Sub InitalizeLibraries()

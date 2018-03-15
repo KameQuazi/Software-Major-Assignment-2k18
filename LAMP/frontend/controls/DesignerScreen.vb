@@ -2,9 +2,7 @@
 
 
 Public Class DesignerScreen
-    Private Sub DesignerScreen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-    End Sub
 
     Private _center As New PointF
     <Description("Where the center of the view is"), Category("Data")>
@@ -18,6 +16,12 @@ Public Class DesignerScreen
         End Set
     End Property
 
+    Private Sub SourceChanged(sender As Object, e As PropertyChangedEventArgs)
+        If sender IsNot Nothing Then
+            UpdateView()
+        End If
+    End Sub
+
     Private _source As LampDxfDocument
     <Description("The dxf document that is rendered onto this control"), Category("Data")>
     Public Property Source As LampDxfDocument
@@ -26,6 +30,7 @@ Public Class DesignerScreen
         End Get
         Set(value As LampDxfDocument)
             _source = value
+            AddHandler value.PropertyChanged, AddressOf SourceChanged
             UpdateView()
         End Set
     End Property
