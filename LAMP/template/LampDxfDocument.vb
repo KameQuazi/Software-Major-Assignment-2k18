@@ -302,6 +302,26 @@ Public Class LampDxfDocument
             End If
         Next
     End Sub
+
+    ''' <summary>
+    ''' Todo actually do
+    ''' </summary>
+    ''' <param name="first"></param>
+    ''' <param name="second"></param>
+    ''' <returns></returns>
+    Public Shared Operator =(ByVal first As LampDxfDocument, ByVal second As LampDxfDocument) As Boolean
+        Return False
+    End Operator
+
+    ''' <summary>
+    ''' Todo actuall do
+    ''' </summary>
+    ''' <param name="first"></param>
+    ''' <param name="second"></param>
+    ''' <returns></returns>
+    Public Shared Operator <>(ByVal first As LampDxfDocument, ByVal second As LampDxfDocument) As Boolean
+        Return True
+    End Operator
 End Class
 
 Public Class DxfJsonConverter

@@ -24,4 +24,8 @@
     Private Sub frmStart_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         curForm = "main"
     End Sub
+
+    Private Sub WelcomePanel_Paint(sender As Object, e As PaintEventArgs) Handles WelcomePanel.Paint
+
+    End Sub
 End Class

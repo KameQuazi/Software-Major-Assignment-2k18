@@ -3,14 +3,20 @@ Short description of what it does
 Copy this file and edit in your stuff
 # How to use
 Basic use cases should be here - only include a few things that
-definately need to be used
+definitely need to be used
 
-First, create a `ClassName` using 
+First, create a `ClassName` using
 
 `Dim bacon as New ClassName`
-`ClassName.CreateTables` 
-creates tables in the database
-`ClassName.AddMe~~()` 
+
+Or
+
+`ClassName.CreateTables`
+
+## Creates tables in the database
+
+`ClassName.AddMe~~()`
+
 adds x to the y
 `ClassName.blahuwu`
 stores the number of eggs

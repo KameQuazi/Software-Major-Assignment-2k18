@@ -29,9 +29,13 @@ Public Class DesignerScreen
             Return _source
         End Get
         Set(value As LampDxfDocument)
-            _source = value
-            AddHandler value.PropertyChanged, AddressOf SourceChanged
-            UpdateView()
+            If value <> _source Then
+                _source = value
+                If _source IsNot Nothing Then
+                    AddHandler value.PropertyChanged, AddressOf SourceChanged
+                    UpdateView()
+                End If
+            End If
         End Set
     End Property
 
