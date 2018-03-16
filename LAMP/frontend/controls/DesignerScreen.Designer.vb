@@ -26,12 +26,11 @@ Partial Class DesignerScreen
         '
         'DesignerScreen
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "DesignerScreen"
-        Me.Size = New System.Drawing.Size(609, 533)
+        Me.Size = New System.Drawing.Size(457, 433)
         Me.ResumeLayout(False)
 
     End Sub
