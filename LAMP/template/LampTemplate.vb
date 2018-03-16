@@ -1,4 +1,6 @@
-﻿Imports System.ComponentModel
+﻿Imports System.Collections.ObjectModel
+Imports System.Collections.Specialized
+Imports System.ComponentModel
 Imports System.IO
 Imports System.Reflection
 Imports System.Runtime.CompilerServices
@@ -36,6 +38,12 @@ Public NotInheritable Class LampTemplate
         End Set
     End Property
 
+    ''' <summary>
+    ''' The completed drawing, w/ all the templates laid out appropriately
+    ''' Not serialized, as it can be generated using _template when deserialized
+    ''' </summary>
+    Public Property CompletedDrawing As LampDxfDocument
+
     Private _template As LampDxfDocument
     ''' <summary>
     ''' The actual template : contains just 1 of drawing
@@ -70,54 +78,109 @@ Public NotInheritable Class LampTemplate
         End Set
     End Property
 
+    Private _material As String = "Unspecified"
     ''' <summary>
     ''' material the trophy is made out of
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("material")>
-    Public Property Material As String = "Unspecified"
+    Public Property Material As String
+        Get
+            Return _material
+        End Get
+        Set(value As String)
+            _material = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
 
+    Private _height As Double
     ''' <summary>
     ''' The  height of all the template
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("height")>
     Public Property Height As Double
+        Get
+            Return _height
+        End Get
+        Set(value As Double)
+            _height = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
 
+    Private _length As Double
     ''' <summary>
     ''' The length of all of the template
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("length")>
     Public Property Length As Double
+        Get
+            Return _length
+        End Get
+        Set(value As Double)
+            _length = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
 
+    Private _materialThickness As Double
     ''' <summary>
     ''' The thickness of the material used
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("thickness")>
-    Public Property MaterialThickness As Integer
+    Public Property MaterialThickness As Double
+        Get
+            Return _materialThickness
+        End Get
+        Set(value As Double)
+            _materialThickness = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
 
+    Private _submitDate As Date?
     ''' <summary>
     ''' The date item was submitted
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("submitDate")>
-    Public Property SubmitDate As Date = Nothing
+    Public Property SubmitDate As Date?
+        Get
+            Return _submitDate
+        End Get
+        Set(value As Date?)
+            _submitDate = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
 
+    Private Sub HandleDynamicChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
+        NotifyPropertyChanged("DynamicTextList")
+    End Sub
+
+    Private _dynamicTextList As New ObservableCollection(Of DynamicText)
     ''' <summary>
     ''' Where the dynamic text will be stored:
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("dynamicTextList")>
-    Public Property DynamicTextList As New List(Of DynamicText)
+    Public Property DynamicTextList As ObservableCollection(Of DynamicText)
+        Get
+            Return _dynamicTextList
+        End Get
+        Set(value As ObservableCollection(Of DynamicText))
+            _dynamicTextList = value
+            If value IsNot Nothing Then
+                AddHandler value.CollectionChanged, AddressOf HandleDynamicChanged
+            End If
+        End Set
+    End Property
 
 
-    ''' <summary>
-    ''' The completed drawing, w/ all the templates laid out appropriately
-    ''' Not serialized, as it can be generated using _template when deserialized
-    ''' </summary>
-    Public Property CompletedDrawing As LampDxfDocument
 
     ''' <summary>
     ''' Where each individual trophy will be inserted (in cartesian form) on the competedDrawing
@@ -222,7 +285,7 @@ Public NotInheritable Class LampTemplate
     ''' <param name="guid"></param>
     Private Sub _new(dxf As LampDxfDocument, guid As String)
         Me.GUID = guid
-        Me.template = dxf
+        Me.Template = dxf
 
     End Sub
     ''' <summary>
@@ -253,7 +316,7 @@ Public NotInheritable Class LampTemplate
         ' TODO!
         CompletedDrawing = New LampDxfDocument()
         For Each point As LampDxfInsertLocation In InsertionLocations
-            template.InsertInto(CompletedDrawing, point)
+            Template.InsertInto(CompletedDrawing, point)
         Next
     End Sub
 
