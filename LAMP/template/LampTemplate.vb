@@ -18,10 +18,6 @@ Public NotInheritable Class LampTemplate
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
 
-    Private Sub LampDxfChanged(sender As Object, e As PropertyChangedEventArgs)
-        NotifyPropertyChanged("Template")
-    End Sub
-
     Private _guid As String
     ''' <summary>
     ''' a unique identifer for each different template
@@ -56,7 +52,9 @@ Public NotInheritable Class LampTemplate
         End Get
         Set(value As LampDxfDocument)
             _template = value
-            AddHandler value.PropertyChanged, AddressOf LampDxfChanged
+            If _template IsNot Nothing Then
+                AddHandler _template.PropertyChanged, (Sub(sender As Object, e As PropertyChangedEventArgs) NotifyPropertyChanged("Template"))
+            End If
             NotifyPropertyChanged()
         End Set
     End Property
@@ -158,10 +156,6 @@ Public NotInheritable Class LampTemplate
         End Set
     End Property
 
-    Private Sub HandleDynamicChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
-        NotifyPropertyChanged("DynamicTextList")
-    End Sub
-
     Private _dynamicTextList As New ObservableCollection(Of DynamicText)
     ''' <summary>
     ''' Where the dynamic text will be stored:
@@ -174,14 +168,14 @@ Public NotInheritable Class LampTemplate
         End Get
         Set(value As ObservableCollection(Of DynamicText))
             _dynamicTextList = value
-            If value IsNot Nothing Then
-                AddHandler value.CollectionChanged, AddressOf HandleDynamicChanged
+            If _dynamicTextList IsNot Nothing Then
+                AddHandler _dynamicTextList.CollectionChanged, (Sub(sender As Object, e As NotifyCollectionChangedEventArgs) NotifyPropertyChanged("DynamicTextList"))
             End If
         End Set
     End Property
 
 
-
+    Private _insertionLocations As New ObservableCollection(Of LampDxfInsertLocation)
     ''' <summary>
     ''' Where each individual trophy will be inserted (in cartesian form) on the competedDrawing
     ''' Contains rotation data, dynamic text data, everything required to rebuild the
@@ -189,7 +183,19 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("insertionLocations")>
-    Public Property InsertionLocations As New List(Of LampDxfInsertLocation)
+    Public Property InsertionLocations As ObservableCollection(Of LampDxfInsertLocation)
+        Get
+            Return _insertionLocations
+        End Get
+        Set(value As ObservableCollection(Of LampDxfInsertLocation))
+            _insertionLocations = value
+            If _insertionLocations IsNot Nothing Then
+                AddHandler _insertionLocations.CollectionChanged, (Sub(sender As Object, e As NotifyCollectionChangedEventArgs) NotifyPropertyChanged("InsertionLocations"))
+            End If
+
+            NotifyPropertyChanged()
+        End Set
+    End Property
 
     ''' <summary>
     ''' where or not the file is in a complete state - if complete, should disable editing

@@ -311,7 +311,7 @@ Public Class LampDxfDocument
     End Sub
 
     ''' <summary>
-    ''' Todo actually do
+    ''' Todo implement equality lampdxf
     ''' </summary>
     ''' <param name="first"></param>
     ''' <param name="second"></param>
@@ -321,7 +321,7 @@ Public Class LampDxfDocument
     End Operator
 
     ''' <summary>
-    ''' Todo actuall do
+    ''' Todo implement equality lampdxf
     ''' </summary>
     ''' <param name="first"></param>
     ''' <param name="second"></param>
