@@ -8,6 +8,7 @@ Imports LAMP.LampMath
 Public Class DesignerForm
     Private dxf As LampDxfDocument
     Private template As LampTemplate
+    Private database As TemplateDatabase
 
 
     Private Sub OpenFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
@@ -52,6 +53,8 @@ Public Class DesignerForm
         dxf.AddLine(0, 0, -100, -100)
         dxf.AddCircle(0, 0, 10)
 
+        Dim database = TemplateDatabase.GetDebugDatabase()
+
         template = New LampTemplate(dxf)
         DesignerScreen1.Source = dxf
 
@@ -59,8 +62,7 @@ Public Class DesignerForm
         template.Save("out.spf", Formatting.Indented)
         LampTemplate.LoadFromFile("out.spf")
 
-        Dim database As New TemplateDatabase()
-        database.addEntry(template)
+        database.AddEntry(template)
 
 
         'MessageBox.Show("HELLO@")

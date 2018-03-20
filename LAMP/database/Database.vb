@@ -108,7 +108,7 @@ Public Class TemplateDatabase
         Return tags.Split(","c).ToList()
     End Function
 
-    Sub addEntry(lamp As LampTemplate)
+    Public Sub AddEntry(lamp As LampTemplate)
         Dim sqlite_conn = _connection
         sqlite_conn.Open()
 
@@ -169,6 +169,10 @@ Public Class TemplateDatabase
         End While
         sqlite_conn.Close()
         Return Nothing
+    End Function
+
+    Public Shared Function GetDebugDatabase() As TemplateDatabase
+        Return New TemplateDatabase("../../debug.sqlite")
     End Function
 
 

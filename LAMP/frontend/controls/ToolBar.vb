@@ -1,9 +1,9 @@
 ﻿Public Class ToolBar
     Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
         frmStart.Show()
-        Form2.Close()
+        Options.Close()
         Logout.Close()
-        fileViewer.Close()
+        FileViewer.Close()
         AboutBox1.Close()
     End Sub
 
@@ -15,14 +15,14 @@
         Select Case frmStart.lastform
             Case = "main"
                 frmStart.Show()
-                fileViewer.Hide()
+                FileViewer.Hide()
                 AboutBox1.Hide()
-                Form2.Hide()
+                Options.Hide()
             Case = "view"
-                fileViewer.Show()
+                FileViewer.Show()
                 frmStart.Hide()
                 AboutBox1.Hide()
-                Form2.Hide()
+                Options.Hide()
         End Select
         frmStart.lastform = frmStart.curForm
     End Sub

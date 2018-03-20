@@ -4,6 +4,6 @@
     End Sub
 
     Private Sub LogoPictureBox_Click(sender As Object, e As EventArgs) Handles LogoPictureBox.Click
-        Form2.Show()
+        Options.Show()
     End Sub
 End Class

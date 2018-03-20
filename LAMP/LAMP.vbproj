@@ -135,16 +135,16 @@
     <Compile Include="frontend\controls\FileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="frontend\forms\Form1.designer.vb">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <Compile Include="frontend\forms\LoginForm.designer.vb">
+      <DependentUpon>LoginForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\Form1.vb">
+    <Compile Include="frontend\forms\LoginForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\forms\Form2.Designer.vb">
-      <DependentUpon>Form2.vb</DependentUpon>
+    <Compile Include="frontend\forms\Options.Designer.vb">
+      <DependentUpon>Options.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\Form2.vb">
+    <Compile Include="frontend\forms\Options.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frontend\forms\Logout.Designer.vb">
@@ -202,11 +202,11 @@
     <EmbeddedResource Include="frontend\controls\FileDisplay.resx">
       <DependentUpon>FileDisplay.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\Form1.resx">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <EmbeddedResource Include="frontend\forms\LoginForm.resx">
+      <DependentUpon>LoginForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\Form2.resx">
-      <DependentUpon>Form2.vb</DependentUpon>
+    <EmbeddedResource Include="frontend\forms\Options.resx">
+      <DependentUpon>Options.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\DesignerForm.resx">
       <DependentUpon>DesignerForm.vb</DependentUpon>
