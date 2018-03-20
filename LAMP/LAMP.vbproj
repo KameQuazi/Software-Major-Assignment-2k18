@@ -135,6 +135,12 @@
     <Compile Include="frontend\controls\FileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="frontend\forms\DebugForm.Designer.vb">
+      <DependentUpon>DebugForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\forms\DebugForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frontend\forms\LoginForm.designer.vb">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </Compile>
@@ -201,6 +207,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\controls\FileDisplay.resx">
       <DependentUpon>FileDisplay.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frontend\forms\DebugForm.resx">
+      <DependentUpon>DebugForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\LoginForm.resx">
       <DependentUpon>LoginForm.vb</DependentUpon>

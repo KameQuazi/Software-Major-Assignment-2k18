@@ -171,9 +171,9 @@ Public Class TemplateDatabase
         Return Nothing
     End Function
 
-    Public Shared Function GetDebugDatabase() As TemplateDatabase
-        Return New TemplateDatabase("../../debug.sqlite")
-    End Function
+    Public Sub FillDebugDatabase()
+
+    End Sub
 
 
     Public Enum DatabaseColumn

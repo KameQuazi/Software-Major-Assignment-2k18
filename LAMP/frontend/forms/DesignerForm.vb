@@ -53,7 +53,7 @@ Public Class DesignerForm
         dxf.AddLine(0, 0, -100, -100)
         dxf.AddCircle(0, 0, 10)
 
-        Dim database = TemplateDatabase.GetDebugDatabase()
+
 
         template = New LampTemplate(dxf)
         DesignerScreen1.Source = dxf
@@ -61,8 +61,6 @@ Public Class DesignerForm
         jsonOutput.Text = template.Serialize(Formatting.Indented)
         template.Save("out.spf", Formatting.Indented)
         LampTemplate.LoadFromFile("out.spf")
-
-        database.AddEntry(template)
 
 
         'MessageBox.Show("HELLO@")
