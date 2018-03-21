@@ -69,7 +69,7 @@ Partial Class DebugForm
         '
         Me.Button5.Location = New System.Drawing.Point(68, 241)
         Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(75, 23)
+        Me.Button5.Size = New System.Drawing.Size(151, 23)
         Me.Button5.TabIndex = 4
         Me.Button5.Text = "Button5"
         Me.Button5.UseVisualStyleBackColor = True

@@ -62,10 +62,6 @@ Public Class DesignerForm
         template.Save("out.spf", Formatting.Indented)
         LampTemplate.LoadFromFile("out.spf")
 
-
-        'MessageBox.Show("HELLO@")
-        'database.removeEntry(template.GUID)
-
     End Sub
 
 
