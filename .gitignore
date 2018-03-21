@@ -240,3 +240,9 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+# autocad backup files
+*.dwl
+*.dwl2
+*.bak
+
