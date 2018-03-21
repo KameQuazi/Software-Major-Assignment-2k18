@@ -171,8 +171,14 @@ Public Class TemplateDatabase
         Return Nothing
     End Function
 
-    Public Sub FillDebugDatabase()
+    Private ExampleDxfFiles() As String = {"one.dxf", "two.dxf"}
 
+    Public Sub FillDebugDatabase()
+        Dim db As New TemplateDatabase()
+        For Each filename As String In ExampleDxfFiles
+            Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", filename))
+            db.AddEntry(LampTemplate.LoadFromFile(fp))
+        Next
     End Sub
 
 
