@@ -67,11 +67,11 @@ Partial Class DebugForm
         '
         'Button5
         '
-        Me.Button5.Location = New System.Drawing.Point(68, 241)
+        Me.Button5.Location = New System.Drawing.Point(246, 52)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(151, 23)
         Me.Button5.TabIndex = 4
-        Me.Button5.Text = "Button5"
+        Me.Button5.Text = "Reset Database"
         Me.Button5.UseVisualStyleBackColor = True
         '
         'DebugForm

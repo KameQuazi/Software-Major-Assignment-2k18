@@ -80,9 +80,16 @@ Public Class LampDxfDocument
     ''' </summary>
     ''' <param name="filePath">Filepath of file to read</param>
     Public Shared Function LoadFromFile(filePath As String) As LampDxfDocument
+        Dim version = DxfDocument.CheckDxfFileVersion(filePath, New Boolean())
+        If version < Header.DxfVersion.AutoCad2000 Then
+            Throw New FormatException(String.Format("DXF version = {0} < AutoCad 2000, cannot be read", version))
+        End If
+
+
         Dim dxf = DxfDocument.Load(filePath)
+
         If dxf Is Nothing Then
-            Throw New InvalidTimeZoneException("dxf cannot be loaded from string")
+            Throw New FormatException("DXF invalid")
         End If
         Return New LampDxfDocument(dxf)
     End Function
