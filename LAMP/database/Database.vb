@@ -174,7 +174,6 @@ Public Class TemplateDatabase
     Private ExampleDxfFiles() As String = {"one.dxf", "two.dxf", "three.dxf", "four.dxf", "five.dxf", "six.dxf", "seven.dxf", "eight.dxf", "nine.dxf"}
 
     Public Sub FillDebugDatabase()
-        ' Dim d As New DxfReader()
 
         Dim db As New TemplateDatabase()
         For Each filename As String In ExampleDxfFiles
