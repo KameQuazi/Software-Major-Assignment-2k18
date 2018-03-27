@@ -159,7 +159,17 @@ Public Class TemplateDatabase
             Dim dummy As New LampTemplate(dxf)
             addEntry(dummy)
         Loop
+    End Sub
 
+    Private ExampleDxfFiles() As String = {"one.dxf", "two.dxf", "three.dxf", "four.dxf", "five.dxf", "six.dxf", "seven.dxf", "eight.dxf", "nine.dxf"}
+
+    Public Sub FillDebugDatabase()
+
+        Dim db As New TemplateDatabase()
+        For Each filename As String In ExampleDxfFiles
+            Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", filename))
+            db.AddEntry(New LampTemplate(LampDxfDocument.LoadFromFile(fp)))
+        Next
     End Sub
 
     Public Enum DatabaseColumn

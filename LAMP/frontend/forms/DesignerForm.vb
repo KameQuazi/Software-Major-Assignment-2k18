@@ -1,15 +1,11 @@
 ﻿Imports System.Drawing.Imaging
 Imports Newtonsoft.Json
-Imports Point = netDxf.Vector3
 Imports LAMP.LampMath
-
-
 
 Public Class DesignerForm
     Private dxf As LampDxfDocument
     Private template As LampTemplate
     Private database As TemplateDatabase
-
 
     Private Sub OpenFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
 
@@ -59,8 +55,6 @@ Public Class DesignerForm
         DesignerScreen1.Source = dxf
 
         jsonOutput.Text = template.Serialize(Formatting.Indented)
-        template.Save("out.spf", Formatting.Indented)
-        LampTemplate.LoadFromFile("out.spf")
 
     End Sub
 
@@ -106,7 +100,7 @@ Public Class DesignerForm
 
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
         If SaveFileDialog2.ShowDialog = DialogResult.OK Then
-            template.template.Save(SaveFileDialog2.FileName)
+            template.Template.Save(SaveFileDialog2.FileName)
         End If
     End Sub
 

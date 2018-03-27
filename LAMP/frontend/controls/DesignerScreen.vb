@@ -1,6 +1,11 @@
 ﻿Imports System.ComponentModel
 
 Public Class DesignerScreen
+    Implements INotifyPropertyChanged
+
+    Public Property BackgroundColorBrush As Brush = New SolidBrush(Color.LimeGreen)
+    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
     Private _center As New PointF
     <Description("Where the center of the view is"), Category("Data")>
     Public Property Center As PointF
@@ -20,6 +25,8 @@ Public Class DesignerScreen
     End Sub
 
     Private _source As LampDxfDocument
+    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
     <Description("The dxf document that is rendered onto this control"), Category("Data")>
     Public Property Source As LampDxfDocument
         Get
@@ -52,7 +59,6 @@ Public Class DesignerScreen
         Me.Invalidate()
     End Sub
 
-    Public BackgroundColorBrush As Brush = New SolidBrush(Color.LimeGreen)
 
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         If Source IsNot Nothing Then
