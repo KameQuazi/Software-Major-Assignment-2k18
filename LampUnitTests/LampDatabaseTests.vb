@@ -52,10 +52,10 @@ Public Class LampTemplateText
 
         Dim guid = GetColumnInformation(data)
         AreEqual(guid.cid, 0)
-        AreEqual(guid.name.ToLower(), "guid")
-        AreEqual(guid.type.ToLower(), "text")
-        AreEqual(guid.notnull, 1)
-        AreEqual(guid.default, "")
+        AreEqual("guid", guid.name.ToLower())
+        AreEqual("text", guid.type.ToLower())
+        AreEqual(1, guid.notnull)
+        AreEqual("", guid.default)
         AreEqual(guid.pk, 1)
 
         Dim dxf = GetColumnInformation(data)
@@ -70,8 +70,8 @@ Public Class LampTemplateText
         AreEqual(tag.cid, 2)
         AreEqual(tag.name.ToLower(), "tag")
         AreEqual(tag.type.ToLower(), "text")
-        AreEqual(tag.notnull, 1)
-        AreEqual(tag.default, "")
+        AreEqual(tag.notnull, 0)
+        AreEqual(tag.default, "''")
         AreEqual(tag.pk, 0)
 
         Dim mat = GetColumnInformation(data)

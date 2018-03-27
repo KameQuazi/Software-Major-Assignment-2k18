@@ -17,6 +17,17 @@
         Displays(6) = FileDisplay7
         Displays(7) = FileDisplay8
         load_Files()
+        Dim template = TemplateDatabase.GetExampleTemplate("one.dxf")
+        Dim dxf = template.Template
+        With Displays(0)
+            .lblName.Text = "Name: test trophy"
+            .lblCreator.Text = "Creator: Waxy by steve"
+            .DisplayBox.Image = dxf.ToImage()
+
+            .lblWidth.Text = "Width: " & dxf.Width
+            .lblMaterial.Text = "Material: " & template.MaterialThickness & "Acrylic"
+            .lblCutTime.Text = "Time to Cut: ?? Min"
+        End With
     End Sub
     Public Sub load_Files() ' Load Files into the viewing screen
         For i = 0 To 7
@@ -30,6 +41,10 @@
     End Sub
 
     Private Sub FileDisplay4_Load(sender As Object, e As EventArgs) Handles FileDisplay4.Load
+
+    End Sub
+
+    Private Sub FileDisplay1_Load(sender As Object, e As EventArgs) Handles FileDisplay1.Load
 
     End Sub
 End Class

@@ -13,6 +13,9 @@ Public Class TemplateDatabase
         Return _connection
     End Function
 
+    ''' <summary> 
+    ''' Creates all the tables required, if tables not exist 
+    ''' </summary> 
     Public Sub CreateTable()
         Me.Name = Name
         Dim sqlite_conn = _connection
@@ -20,7 +23,7 @@ Public Class TemplateDatabase
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
         sqlite_cmd.CommandText = "CREATE TABLE if not exists template (
                                   GUID Text PRIMARY KEY Not NULL, 
-                                  DXF Text Not NULL DEFAULT '',
+                                  DXF Text Not NULL,
                                   Tag Text DEFAULT '',
                                   material Text Not NULL,
                                   length Int Not NULL,
@@ -40,11 +43,7 @@ Public Class TemplateDatabase
         Me.Name = name
         _connection = New SQLiteConnection(String.Format("Data Source={0};Version=3;", name))
         ' recreate the database if not found
-        Try
-            CreateTable()
-        Catch ex As Exception
-            ' do nothing 
-        End Try
+        CreateTable()
     End Sub
 
     ''' <summary>
@@ -101,70 +100,91 @@ Public Class TemplateDatabase
         Return foo
     End Function
 
-    Sub addEntry(lamp As LampTemplate)
+
+    Private Function SerializeTags(template As LampTemplate) As String
+        Return String.Join(",", template.Tags)
+    End Function
+
+    Private Function DeserializeTags(tags As String) As List(Of String)
+        Return tags.Split(","c).ToList()
+    End Function
+
+
+    Public Sub AddEntry(lamp As LampTemplate)
         Dim sqlite_conn = _connection
         sqlite_conn.Open()
 
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
 
-        sqlite_cmd.CommandText = "INSERT INTO template(Guid,DXF,Tag,material,length,Height,thickness,creatorName,creator_ID,submit_date) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?,DATETIME('now'));"
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.GUID))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.template.ToDxfString))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, String.Join(",", lamp.Tags.ToArray())))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.Material))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, lamp.Length))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, lamp.Height))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, lamp.MaterialThickness))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.String, lamp.CreatorName))
-        sqlite_cmd.Parameters.Add(sqlParam(DbType.Int32, lamp.CreatorId))
+        sqlite_cmd.CommandText = "INSERT INTO template 
+                (Guid, DXF, Tag, material, length, Height, thickness, creatorName, creator_ID, submit_date)  
+                VALUES  
+                (@guid, @dxf, @tags, @material, @length, @height, @thickness, @creatorName, @creatorId, DATETIME('now'));"
 
+        sqlite_cmd.Parameters.AddWithValue("@guid", lamp.GUID)
+        sqlite_cmd.Parameters.AddWithValue("@dxf", lamp.Template.ToDxfString)
+        sqlite_cmd.Parameters.AddWithValue("@tags", SerializeTags(lamp))
+        sqlite_cmd.Parameters.AddWithValue("@material", lamp.Material)
+        sqlite_cmd.Parameters.AddWithValue("@length", lamp.Length)
+        sqlite_cmd.Parameters.AddWithValue("@height", lamp.Height)
+        sqlite_cmd.Parameters.AddWithValue("@thickness", lamp.MaterialThickness)
+        sqlite_cmd.Parameters.AddWithValue("@creatorName", lamp.CreatorName)
+        sqlite_cmd.Parameters.AddWithValue("@creatorId", lamp.CreatorId)
+        ' Ensure creatorId and and approverId are strings! 
+        ' also add approverid/approvername to the db 
 
         sqlite_cmd.ExecuteNonQuery()
         sqlite_conn.Close()
     End Sub
 
-    Function selectEntry(id As Integer) As LampTemplate
+    Function selectEntry(guid As Integer) As LampTemplate
         Dim sqlite_conn = _connection
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
         Dim sqlite_reader As SQLiteDataReader
 
-        sqlite_cmd.CommandText = "Select * FROM test WHERE Auto_ID = ?"
-        sqlite_cmd.Parameters.Add(id)
+        sqlite_cmd.CommandText = "Select * FROM template WHERE guid = @guid"
+        sqlite_cmd.Parameters.AddWithValue("@guid", guid)
 
         sqlite_reader = sqlite_cmd.ExecuteReader()
-        While sqlite_reader.Read()
-            'Debug.Write(sqlite_reader.GetInt32(0) & " " & sqlite_reader.GetString(1) & " " & sqlite_reader.GetString(2) & " " & sqlite_reader.GetString(3)& " " & sqlite_reader.GetInt32(4)& " " & sqlite_reader.GetInt32(5) & " "& sqlite_reader.GetInt32(6)& " " & sqlite_reader.GetString(7) & " "& sqlite_reader.GetInt32(8) & " "& sqlite_reader.GetString(9) & " "& sqlite_reader.GetInt32(10))
+
+        If sqlite_reader.Read() Then
             Dim LampDXF = LampDxfDocument.LoadFromString(sqlite_reader.GetString(DatabaseColumn.Dxf))
             Dim LampTemp = New LampTemplate(LampDXF)
             LampTemp.GUID = sqlite_reader.GetString(DatabaseColumn.Guid)
-            LampTemp.ApproverId = sqlite_reader.GetInt32(DatabaseColumn.ApproverId)
+            LampTemp.ApproverId = sqlite_reader.GetString(DatabaseColumn.ApproverId)
             LampTemp.ApproverName = sqlite_reader.GetString(DatabaseColumn.ApproverName)
-            LampTemp.CreatorId = sqlite_reader.GetInt32(DatabaseColumn.CreatorId)
+            LampTemp.CreatorId = sqlite_reader.GetString(DatabaseColumn.CreatorId)
             LampTemp.CreatorName = sqlite_reader.GetString(DatabaseColumn.CreatorName)
-            LampTemp.IsComplete = sqlite_reader.GetInt32(DatabaseColumn.IsComplete)
+            LampTemp.IsComplete = sqlite_reader.GetBoolean(DatabaseColumn.IsComplete)
             sqlite_conn.Close()
             Return LampTemp
-
-        End While
-        sqlite_conn.Close()
-        Return Nothing
+        Else
+            sqlite_conn.Close()
+            Return Nothing
+        End If
     End Function
-    Sub fillDebug()
+
+    ''' <summary>
+    ''' Fills database with 50 empty templates
+    ''' </summary>
+    Public Sub FillDebug()
         Dim iter As Integer
         iter = 1
         Do Until iter = 50
             iter += 1
             Dim dxf As New LampDxfDocument()
             Dim dummy As New LampTemplate(dxf)
-            addEntry(dummy)
+            AddEntry(dummy)
         Loop
     End Sub
 
     Private ExampleDxfFiles() As String = {"one.dxf", "two.dxf", "three.dxf", "four.dxf", "five.dxf", "six.dxf", "seven.dxf", "eight.dxf", "nine.dxf"}
-
+    ''' <summary>
+    ''' Fills database with dxf files located in project root/templates
+    ''' The default files are stored in ExampleDxfFiles
+    ''' </summary>
     Public Sub FillDebugDatabase()
-
         Dim db As New TemplateDatabase()
         For Each filename As String In ExampleDxfFiles
             Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", filename))
@@ -172,9 +192,19 @@ Public Class TemplateDatabase
         Next
     End Sub
 
+    Public Shared Function GetExampleTemplate(name As String) As LampTemplate
+        Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", name))
+        Return New LampTemplate(LampDxfDocument.LoadFromFile(fp))
+    End Function
+
     Public Enum DatabaseColumn
-        Dxf = 1
         Guid = 0
+        Dxf = 1
+        Tags = 2
+        Material = 3
+        Length = 4
+        Height = 5
+        Thickness = 6
         CreatorName = 7
         CreatorId = 8
         ApproverName = 9

@@ -39,7 +39,7 @@ Partial Class fileDisplay
         Me.DisplayBox.Location = New System.Drawing.Point(0, 0)
         Me.DisplayBox.Name = "DisplayBox"
         Me.DisplayBox.Size = New System.Drawing.Size(200, 150)
-        Me.DisplayBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.DisplayBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.DisplayBox.TabIndex = 0
         Me.DisplayBox.TabStop = False
         '

@@ -25,7 +25,6 @@ Public Class DesignerScreen
     End Sub
 
     Private _source As LampDxfDocument
-    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
     <Description("The dxf document that is rendered onto this control"), Category("Data")>
     Public Property Source As LampDxfDocument

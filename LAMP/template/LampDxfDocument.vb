@@ -30,6 +30,18 @@ Public Class LampDxfDocument
     ''' </summary>
     Private _dxfFile As DxfDocument
 
+    Public ReadOnly Property Width As Double
+        Get
+            Return TopRight.X - BottomLeft.X
+        End Get
+    End Property
+
+    Public ReadOnly Property Height As Double
+        Get
+            Return TopRight.Y - BottomLeft.Y
+        End Get
+    End Property
+
     Public Property BottomLeft As New Point3
 
     Public Property TopRight As New Point3

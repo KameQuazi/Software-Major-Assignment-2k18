@@ -178,7 +178,7 @@ Partial Class FileViewer
         Me.ToolBar1.Size = New System.Drawing.Size(1000, 96)
         Me.ToolBar1.TabIndex = 18
         '
-        'fileViewer
+        'FileViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -201,7 +201,7 @@ Partial Class FileViewer
         Me.Controls.Add(Me.btnNext)
         Me.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Name = "fileViewer"
+        Me.Name = "FileViewer"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Viewer"
         Me.ResumeLayout(False)
