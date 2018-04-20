@@ -1,5 +1,5 @@
 ﻿Public Class TemplateViewer
-    Public Displays(7) As fileDisplay
+    Public Displays(7) As FileDisplay
     Private Sub pbLogo_Click(sender As Object, e As EventArgs)
         frmStart.Show()
         Me.Hide()
@@ -18,9 +18,11 @@
         Displays(6) = FileDisplay7
         Displays(7) = FileDisplay8
         LoadFiles()
-        Dim template = TemplateDatabase.GetExampleTemplate("one")
 
-        FileDisplay1.DisplayTemplate(template)
+
+        Displays(0).Template = TemplateDatabase.GetExampleTemplate("one")
+        Displays(1).Template = TemplateDatabase.GetExampleTemplate("two")
+        Displays(2).Template = TemplateDatabase.GetExampleTemplate("three")
     End Sub
 
     ''' <summary>
@@ -50,8 +52,9 @@
     End Sub
 
     Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
-        Dim template = TemplateDatabase.GetExampleTemplate("two")
+    End Sub
 
-        FileDisplay1.DisplayTemplate(template)
+    Private Sub FileDisplay8_Load(sender As Object, e As EventArgs) Handles FileDisplay8.Load
+
     End Sub
 End Class

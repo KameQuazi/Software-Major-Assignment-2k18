@@ -28,14 +28,14 @@ Partial Class TemplateViewer
         Me.Label2 = New System.Windows.Forms.Label()
         Me.cmbSort = New System.Windows.Forms.ComboBox()
         Me.lblSort = New System.Windows.Forms.Label()
-        Me.FileDisplay5 = New LAMP.fileDisplay()
-        Me.FileDisplay6 = New LAMP.fileDisplay()
-        Me.FileDisplay7 = New LAMP.fileDisplay()
-        Me.FileDisplay8 = New LAMP.fileDisplay()
-        Me.FileDisplay4 = New LAMP.fileDisplay()
-        Me.FileDisplay3 = New LAMP.fileDisplay()
-        Me.FileDisplay2 = New LAMP.fileDisplay()
-        Me.FileDisplay1 = New LAMP.fileDisplay()
+        Me.FileDisplay5 = New LAMP.FileDisplay()
+        Me.FileDisplay6 = New LAMP.FileDisplay()
+        Me.FileDisplay7 = New LAMP.FileDisplay()
+        Me.FileDisplay8 = New LAMP.FileDisplay()
+        Me.FileDisplay4 = New LAMP.FileDisplay()
+        Me.FileDisplay3 = New LAMP.FileDisplay()
+        Me.FileDisplay2 = New LAMP.FileDisplay()
+        Me.FileDisplay1 = New LAMP.FileDisplay()
         Me.ToolBar1 = New LAMP.ToolBar()
         Me.SuspendLayout()
         '
@@ -215,12 +215,12 @@ Partial Class TemplateViewer
     Friend WithEvents cmbSort As ComboBox
     Friend WithEvents lblSort As Label
     Friend WithEvents ToolBar1 As ToolBar
-    Friend WithEvents FileDisplay1 As fileDisplay
-    Friend WithEvents FileDisplay2 As fileDisplay
-    Friend WithEvents FileDisplay3 As fileDisplay
-    Friend WithEvents FileDisplay4 As fileDisplay
-    Friend WithEvents FileDisplay5 As fileDisplay
-    Friend WithEvents FileDisplay6 As fileDisplay
-    Friend WithEvents FileDisplay7 As fileDisplay
-    Friend WithEvents FileDisplay8 As fileDisplay
+    Friend WithEvents FileDisplay1 As FileDisplay
+    Friend WithEvents FileDisplay2 As FileDisplay
+    Friend WithEvents FileDisplay3 As FileDisplay
+    Friend WithEvents FileDisplay4 As FileDisplay
+    Friend WithEvents FileDisplay5 As FileDisplay
+    Friend WithEvents FileDisplay6 As FileDisplay
+    Friend WithEvents FileDisplay7 As FileDisplay
+    Friend WithEvents FileDisplay8 As FileDisplay
 End Class
