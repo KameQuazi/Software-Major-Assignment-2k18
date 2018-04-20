@@ -1,6 +1,6 @@
 ﻿Imports System.Drawing.Imaging
 Imports Newtonsoft.Json
-Imports LAMP.LampMath
+Imports LAMP.LampDxfHelper
 
 Public Class DesignerForm
     Private dxf As LampDxfDocument

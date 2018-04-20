@@ -7,7 +7,6 @@ Imports netDxf.Entities
 Imports netDxf.Tables
 Imports netDxf.Units
 Imports Newtonsoft.Json
-Imports LAMP.LampMath
 Imports LAMP.LampDxfHelper
 Imports System.ComponentModel
 Imports System.Runtime.CompilerServices
@@ -315,9 +314,9 @@ Public Class LampDxfDocument
 
         For Each line As Line In _dxfFile.Lines
             If IntersectsWith(bounds, line) Then
-                Dim start = LampMath.CartesianToGdi(middle, width, height, line.StartPoint.X, line.StartPoint.Y)
+                Dim start = CartesianToGdi(middle, width, height, line.StartPoint.X, line.StartPoint.Y)
 
-                Dim [end] = LampMath.CartesianToGdi(middle, width, height, line.EndPoint.X, line.EndPoint.Y)
+                Dim [end] = CartesianToGdi(middle, width, height, line.EndPoint.X, line.EndPoint.Y)
 
                 g.DrawLine(New Pen(line.Color.ToColor()), start, [end])
             End If
@@ -434,7 +433,21 @@ Public Class InvalidJsonDxfExceptions
 
 End Class
 
-Public Class LampMath
+
+Public Class LampDxfHelper
+    Public Shared Function ConvertPoint3(x As Double, y As Double) As Vector3
+        Return New Vector3(x, y, 0)
+    End Function
+
+    Public Shared Function ConvertToPointF(point As Vector3) As Drawing.PointF
+#Disable Warning BC42016 ' Implicit conversion
+        Return New PointF(point.X, point.Y)
+#Enable Warning BC42016 ' Implicit conversion
+    End Function
+
+    Public Shared Function IntersectsWith(rect As RectangleF, line As Line) As Boolean
+        Return True
+    End Function
     Public Shared Function CartesianToGdi(center As PointF, width As Integer, height As Integer, cartesianX As Double, cartesianY As Double) As PointF
 #Disable Warning BC42016 ' Implicit conversion
         Dim ret As New PointF(-center.X + width / 2, center.Y + height / 2)
@@ -449,28 +462,10 @@ Public Class LampMath
     End Function
 
     Public Shared Function Transform(point As PointF, x As Double, y As Double) As PointF
-#Disable Warning BC42016 ' Implicit conversion
+#Disable Warning BC42016 ' Implicit conversion  
         point.X += x
         point.Y += y
 #Enable Warning BC42016 ' Implicit conversion
         Return point
-    End Function
-
-    Public Shared Function IntersectsWith(rect As RectangleF, line As Line) As Boolean
-
-        Return True
-    End Function
-
-End Class
-
-Public Class LampDxfHelper
-    Public Shared Function ConvertPoint3(x As Double, y As Double) As Vector3
-        Return New Vector3(x, y, 0)
-    End Function
-
-    Public Shared Function ConvertToPointF(point As Vector3) As Drawing.PointF
-#Disable Warning BC42016 ' Implicit conversion
-        Return New PointF(point.X, point.Y)
-#Enable Warning BC42016 ' Implicit conversion
     End Function
 End Class

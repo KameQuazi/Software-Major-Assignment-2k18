@@ -339,12 +339,21 @@ Public Class TemplateDatabase
 
     ''' <summary>
     ''' Gets an example template from /templates/{name}
+    ''' Name is without the .dxf extension
+    ''' preview Image must be .png
     ''' </summary>
     ''' <param name="name"></param>
     ''' <returns></returns>
     Public Shared Function GetExampleTemplate(name As String) As LampTemplate
-        Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", name))
-        Return New LampTemplate(LampDxfDocument.FromFile(fp))
+        Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", name + ".dxf"))
+        Dim previewFp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", name + ".png"))
+        Dim template = New LampTemplate(LampDxfDocument.FromFile(fp))
+        If File.Exists(previewFp) Then
+            Using stream = File.OpenRead(previewFp)
+                template.PreviewImages.Add(Image.FromStream(stream))
+            End Using
+        End If
+        Return template
     End Function
 
     ''' <summary>
@@ -365,7 +374,7 @@ Public Class TemplateDatabase
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
 
-        sqlite_cmd.CommandText = "INSERT INTO template(Guid,DXF,Tag,material,length,Height,thickness,creatorName,creator_ID,submit_date) VALUES (?,?,?,?,?,?,?,?,?,DATETIME('now'));"
+        sqlite_cmd.CommandText = "INSERT INTO template(Guid, DXF, Tag, material, length, Height, thickness, creatorName, creator_ID, submit_date) VALUES (?,?,?,?,?,?,?,?,?, DateTime('now'));"
 
         sqlite_cmd.Parameters.Add(CreateSqlParameter(DbType.String, GUID))
         sqlite_cmd.Parameters.Add(CreateSqlParameter(DbType.String, DXF))
