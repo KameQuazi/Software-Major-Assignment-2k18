@@ -13,7 +13,7 @@ Public Class DesignerForm
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles OpenFileBtn.Click
         If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
-            dxf = LampDxfDocument.LoadFromFile(OpenFileDialog1.FileName)
+            dxf = LampDxfDocument.FromFile(OpenFileDialog1.FileName)
             SaveFileBtn.Enabled = True
 
             FilenameTbox.Text = OpenFileDialog1.FileName

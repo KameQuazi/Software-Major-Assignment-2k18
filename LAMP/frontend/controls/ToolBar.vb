@@ -3,7 +3,7 @@
         frmStart.Show()
         Options.Close()
         Logout.Close()
-        FileViewer.Close()
+        TemplateViewer.Close()
         AboutBox1.Close()
     End Sub
 
@@ -15,11 +15,11 @@
         Select Case frmStart.lastform
             Case = "main"
                 frmStart.Show()
-                FileViewer.Hide()
+                TemplateViewer.Hide()
                 AboutBox1.Hide()
                 Options.Hide()
             Case = "view"
-                FileViewer.Show()
+                TemplateViewer.Show()
                 frmStart.Hide()
                 AboutBox1.Hide()
                 Options.Hide()
@@ -40,7 +40,8 @@
     End Sub
 
     Private Sub btnQY_Click(sender As Object, e As EventArgs) Handles btnQY.Click
-        frmStart.Close()
+        Dim parent = CType(Me.Parent, Form)
+        parent.Close()
     End Sub
 
     Private Sub btnLogOut_Click(sender As Object, e As EventArgs) Handles btnLogOut.Click

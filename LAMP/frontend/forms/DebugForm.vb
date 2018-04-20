@@ -1,7 +1,6 @@
 ﻿Public Class DebugForm
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim db As New TemplateDatabase()
-        db.FillDebugDatabase()
+        TemplateDatabase.FillDebugDatabase()
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
@@ -28,7 +27,26 @@
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
-        IO.File.Delete("templateDB.sqlite")
         Dim x = New TemplateDatabase()
+        x.DeleteTables()
+    End Sub
+
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        Dim x = New TemplateViewer()
+        x.ShowDialog()
+
+    End Sub
+
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        Test()
+    End Sub
+
+    Private Sub Test()
+
+    End Sub
+
+    Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
+        Dim x As New AddTemplate
+        x.ShowDialog()
     End Sub
 End Class

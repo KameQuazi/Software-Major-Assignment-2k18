@@ -1,4 +1,4 @@
-﻿Public Class FileViewer
+﻿Public Class TemplateViewer
     Public Displays(7) As fileDisplay
     Private Sub pbLogo_Click(sender As Object, e As EventArgs)
         frmStart.Show()

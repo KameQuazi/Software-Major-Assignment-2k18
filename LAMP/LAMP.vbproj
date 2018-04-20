@@ -135,6 +135,12 @@
     <Compile Include="frontend\controls\FileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="frontend\forms\AddTemplate.Designer.vb">
+      <DependentUpon>AddTemplate.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\forms\AddTemplate.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frontend\forms\DebugForm.Designer.vb">
       <DependentUpon>DebugForm.vb</DependentUpon>
     </Compile>
@@ -165,10 +171,10 @@
     <Compile Include="frontend\controls\ToolBar.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="frontend\forms\Viewer.Designer.vb">
-      <DependentUpon>Viewer.vb</DependentUpon>
+    <Compile Include="frontend\forms\TemplateViewer.Designer.vb">
+      <DependentUpon>TemplateViewer.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\Viewer.vb">
+    <Compile Include="frontend\forms\TemplateViewer.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="template\DynamicText.vb" />
@@ -208,6 +214,9 @@
     <EmbeddedResource Include="frontend\controls\FileDisplay.resx">
       <DependentUpon>FileDisplay.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frontend\forms\AddTemplate.resx">
+      <DependentUpon>AddTemplate.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\DebugForm.resx">
       <DependentUpon>DebugForm.vb</DependentUpon>
     </EmbeddedResource>
@@ -226,8 +235,8 @@
     <EmbeddedResource Include="frontend\controls\ToolBar.resx">
       <DependentUpon>ToolBar.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\Viewer.resx">
-      <DependentUpon>Viewer.vb</DependentUpon>
+    <EmbeddedResource Include="frontend\forms\TemplateViewer.resx">
+      <DependentUpon>TemplateViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

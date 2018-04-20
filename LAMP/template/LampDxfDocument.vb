@@ -49,7 +49,7 @@ Public Class LampDxfDocument
     ''' Creates a new LampDxfDocument from a dxf string
     ''' </summary>
     ''' <param name="dxf"></param>
-    Public Shared Function LoadFromString(dxf As String) As LampDxfDocument
+    Public Shared Function FromString(dxf As String) As LampDxfDocument
         Dim out As LampDxfDocument
         Using stream As New MemoryStream(Encoding.UTF8.GetBytes(dxf))
             out = New LampDxfDocument(DxfDocument.Load(stream))
@@ -90,7 +90,7 @@ Public Class LampDxfDocument
     ''' Creates a new DxfDrawing, reading from a file given in filePath
     ''' </summary>
     ''' <param name="filePath">Filepath of file to read</param>
-    Public Shared Function LoadFromFile(filePath As String) As LampDxfDocument
+    Public Shared Function FromFile(filePath As String) As LampDxfDocument
         Dim version = DxfDocument.CheckDxfFileVersion(filePath, New Boolean())
         If version < Header.DxfVersion.AutoCad2000 Then
             Throw New FormatException(String.Format("DXF version = {0} < AutoCad 2000, cannot be read", version))
@@ -368,7 +368,7 @@ Public Class DxfJsonConverter
             Throw New JsonSerializationException()
         Else
             Dim value As String = DirectCast(reader.Value, String)
-            out = LampDxfDocument.LoadFromString(value)
+            out = LampDxfDocument.FromString(value)
         End If
 
         Return out
