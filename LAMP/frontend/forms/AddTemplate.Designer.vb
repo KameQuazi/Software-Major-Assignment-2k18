@@ -44,6 +44,7 @@ Partial Class AddTemplate
         Me.Preview1.Location = New System.Drawing.Point(30, 267)
         Me.Preview1.Name = "Preview1"
         Me.Preview1.Size = New System.Drawing.Size(141, 120)
+        Me.Preview1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.Preview1.TabIndex = 0
         Me.Preview1.TabStop = False
         '
@@ -53,6 +54,7 @@ Partial Class AddTemplate
         Me.Preview2.Location = New System.Drawing.Point(206, 267)
         Me.Preview2.Name = "Preview2"
         Me.Preview2.Size = New System.Drawing.Size(141, 120)
+        Me.Preview2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.Preview2.TabIndex = 1
         Me.Preview2.TabStop = False
         '
@@ -62,6 +64,7 @@ Partial Class AddTemplate
         Me.Preview3.Location = New System.Drawing.Point(380, 267)
         Me.Preview3.Name = "Preview3"
         Me.Preview3.Size = New System.Drawing.Size(141, 120)
+        Me.Preview3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.Preview3.TabIndex = 2
         Me.Preview3.TabStop = False
         '

@@ -4,23 +4,42 @@ Imports LAMP.DatabaseHelper
 Imports LAMP
 
 Public Class TemplateDatabase
-    Public Property Path As String
-    Private _connection As SQLiteConnection
-
     ''' <summary>
-    ''' Makes a connection for use by other code
+    ''' Path to database file
     ''' </summary>
     ''' <returns></returns>
-    Public Function GetConnection() As SQLiteConnection
-        Return _connection
-    End Function
+    Public Property Path As String
+
+    ''' <summary>
+    ''' sqlite connection. Needs to be closed and opened 
+    ''' whenever used
+    ''' </summary>
+    Public Property Connection As SQLiteConnection
+
+    ''' <summary>
+    ''' file names of example dxf files in /templates/{name}
+    ''' </summary>
+    Private Shared ExampleDxfFiles() As String = {"one.dxf", "two.dxf", "three.dxf", "four.dxf", "five.dxf", "six.dxf", "seven.dxf", "eight.dxf", "nine.dxf"}
+
+    ''' <summary>
+    ''' Constructor for Database
+    ''' By default, the file it will read/write is templateDB.sqlite
+    ''' </summary>
+    ''' <param name="filePath">the filepath that the databse is located at</param>
+    Public Sub New(Optional filePath As String = "templateDB.sqlite")
+        Me.Path = filePath
+        Connection = New SQLiteConnection(String.Format("Data Source={0};Version=3;", filePath))
+        ' recreate the database if not found
+        CreateTables()
+    End Sub
 
     ''' <summary> 
     ''' Creates all the tables required, if tables not exist 
+    ''' Does not delete any data
     ''' </summary> 
     Public Sub CreateTables()
-        _connection.Open()
-        Dim sqlite_cmd = _connection.CreateCommand()
+        Connection.Open()
+        Dim sqlite_cmd = Connection.CreateCommand()
         sqlite_cmd.CommandText = "CREATE TABLE if not exists template (
                                   GUID Text PRIMARY KEY Not NULL, 
                                   DXF Text Not NULL,
@@ -45,91 +64,21 @@ Public Class TemplateDatabase
                                   );"
         sqlite_cmd.ExecuteNonQuery()
 
-        _connection.Close()
+        Connection.Close()
     End Sub
 
-    Friend Sub DeleteTables()
-        _connection.Open()
-        Dim sqlite_cmd = _connection.CreateCommand()
+    ''' <summary>
+    ''' Destroys all tables
+    ''' </summary>
+    Public Sub DeleteTables()
+        Connection.Open()
+        Dim sqlite_cmd = Connection.CreateCommand()
         sqlite_cmd.CommandText = "DROP TABLE If exists template"
         sqlite_cmd.ExecuteNonQuery()
         sqlite_cmd.CommandText = "DROP TABLE If exists images"
         sqlite_cmd.ExecuteNonQuery()
-        _connection.Close()
+        Connection.Close()
     End Sub
-
-
-
-    Public Sub New(Optional name As String = "templateDB.sqlite")
-        Me.Path = name
-        _connection = New SQLiteConnection(String.Format("Data Source={0};Version=3;", name))
-        ' recreate the database if not found
-        CreateTables()
-    End Sub
-
-    ''' <summary>
-    ''' Removes from database based on ID
-    ''' </summary>
-    ''' <param name="guid"></param>
-    Sub RemoveTemplate(guid As String)
-        Dim sqlite_conn = _connection
-        sqlite_conn.Open()
-        Try
-            Dim sqlite_cmd = sqlite_conn.CreateCommand()
-            sqlite_cmd.CommandText = "DELETE from template WHERE GUID = ?"
-            sqlite_cmd.Parameters.Add(guid)
-            sqlite_cmd.ExecuteNonQuery()
-
-            RemoveImage(guid)
-        Finally
-            ' ensure connection is closed
-            sqlite_conn.Close()
-        End Try
-    End Sub
-
-
-    ''' <summary>
-    ''' Adds a template to the database
-    ''' will error if the guid is already in the database
-    ''' </summary>
-    ''' <param name="lamp"></param>
-    Public Sub AddTemplate(lamp As LampTemplate)
-        Dim sqlite_conn = _connection
-
-        sqlite_conn.Open()
-        Try
-            Dim sqlite_cmd = sqlite_conn.CreateCommand()
-
-            sqlite_cmd.CommandText = "INSERT INTO template 
-                    (Guid, DXF, Tag, material, length, Height, thickness, creatorName, creator_ID, submit_date)  
-                    VALUES  
-                    (@guid, @dxf, @tags, @material, @length, @height, @thickness, @creatorName, @creatorId, DATETIME('now'));"
-
-            sqlite_cmd.Parameters.AddWithValue("@guid", lamp.GUID)
-            sqlite_cmd.Parameters.AddWithValue("@dxf", lamp.Template.ToDxfString)
-            sqlite_cmd.Parameters.AddWithValue("@tags", SerializeTags(lamp))
-            sqlite_cmd.Parameters.AddWithValue("@material", lamp.Material)
-            sqlite_cmd.Parameters.AddWithValue("@length", lamp.Length)
-            sqlite_cmd.Parameters.AddWithValue("@height", lamp.Height)
-            sqlite_cmd.Parameters.AddWithValue("@thickness", lamp.MaterialThickness)
-            sqlite_cmd.Parameters.AddWithValue("@creatorName", lamp.CreatorName)
-            sqlite_cmd.Parameters.AddWithValue("@creatorId", lamp.CreatorId)
-            ' Ensure creatorId and and approverId are strings! 
-            ' also add approverid/approvername to the db 
-
-            sqlite_cmd.ExecuteNonQuery()
-
-            ' if there are preview images, store it in the database
-            If lamp.PreviewImages.Count > 0 Then
-                AddImages(lamp.GUID, lamp.PreviewImages)
-            End If
-
-        Finally
-            ' ensure connection is always closed
-            sqlite_conn.Close()
-        End Try
-    End Sub
-
 
     ''' <summary>
     ''' Finds a template in the database, given its corresponding guid
@@ -138,7 +87,7 @@ Public Class TemplateDatabase
     ''' <param name="guid"></param>
     ''' <returns></returns>
     Function SelectTemplate(guid As String) As LampTemplate
-        Dim sqlite_conn = _connection
+        Dim sqlite_conn = Connection
         sqlite_conn.Open()
 
         Try
@@ -177,44 +126,40 @@ Public Class TemplateDatabase
     End Function
 
     ''' <summary>
-    ''' Stores up to 3 preview images in the database
-    ''' images are stored as binary blobs (byte arrays or byte() in vb.net)
-    ''' this function takes a list(of Image), converts them into binary and chucks them in the database
+    ''' Adds a template to the database
+    ''' will error if the guid is already in the database
     ''' </summary>
-    ''' <param name="guid"></param>
-    ''' <param name="images"></param>
-    Public Sub AddImages(guid As String, images As List(Of Image))
-        Dim sqlite_conn = _connection
+    ''' <param name="template"></param>
+    Public Sub AddTemplate(template As LampTemplate)
+        Dim sqlite_conn = Connection
+
         sqlite_conn.Open()
         Try
             Dim sqlite_cmd = sqlite_conn.CreateCommand()
 
-            sqlite_cmd.CommandText = "INSERT INTO images 
-                    (Guid, image1, image2, image3)  
+            sqlite_cmd.CommandText = "INSERT INTO template 
+                    (Guid, DXF, Tag, material, length, Height, thickness, creatorName, creator_ID, submit_date)  
                     VALUES  
-                    (@guid, @image1, @image2, @image3);"
+                    (@guid, @dxf, @tags, @material, @length, @height, @thickness, @creatorName, @creatorId, DATETIME('now'));"
 
-
-            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-            If images.Count = 0 Then
-                Throw New Exception("Must supply at least 1 image")
-            ElseIf images.Count = 1 Then
-                sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
-                sqlite_cmd.Parameters.AddWithValue("@image2", Nothing)
-                sqlite_cmd.Parameters.AddWithValue("@image3", Nothing)
-            ElseIf images.Count = 2 Then
-                sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
-                sqlite_cmd.Parameters.AddWithValue("@image2", ImageToBinary(images(1)))
-                sqlite_cmd.Parameters.AddWithValue("@image3", Nothing)
-            ElseIf images.Count = 3 Then
-                sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
-                sqlite_cmd.Parameters.AddWithValue("@image2", ImageToBinary(images(1)))
-                sqlite_cmd.Parameters.AddWithValue("@image3", ImageToBinary(images(2)))
-            Else
-                Throw New Exception(String.Format("Must supply list of length max 3, {0} elements supplied", images.Count))
-            End If
+            sqlite_cmd.Parameters.AddWithValue("@guid", template.GUID)
+            sqlite_cmd.Parameters.AddWithValue("@dxf", template.Template.ToDxfString)
+            sqlite_cmd.Parameters.AddWithValue("@tags", SerializeTags(template))
+            sqlite_cmd.Parameters.AddWithValue("@material", template.Material)
+            sqlite_cmd.Parameters.AddWithValue("@length", template.Length)
+            sqlite_cmd.Parameters.AddWithValue("@height", template.Height)
+            sqlite_cmd.Parameters.AddWithValue("@thickness", template.MaterialThickness)
+            sqlite_cmd.Parameters.AddWithValue("@creatorName", template.CreatorName)
+            sqlite_cmd.Parameters.AddWithValue("@creatorId", template.CreatorId)
+            ' Ensure creatorId and and approverId are strings! 
+            ' also add approverid/approvername to the db 
 
             sqlite_cmd.ExecuteNonQuery()
+
+            ' if there are preview images, store it in the database
+            If template.PreviewImages.Count > 0 Then
+                AddImages(template.GUID, template.PreviewImages, False)
+            End If
 
         Finally
             ' ensure connection is always closed
@@ -222,6 +167,35 @@ Public Class TemplateDatabase
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Removes from database based on guid
+    ''' Also removes images by default, rmImages can be set to false to not
+    ''' </summary>
+    ''' <param name="guid">string guid</param>
+    ''' <param name="rmImage">whether or not to also delete images</param>
+    ''' <returns>True=Removed, False=None found</returns>
+    Public Function RemoveTemplate(guid As String, Optional rmImage As Boolean = True) As Boolean
+        Dim sqlite_conn = Connection
+        sqlite_conn.Open()
+        Try
+            Dim sqlite_cmd = sqlite_conn.CreateCommand()
+            sqlite_cmd.CommandText = "DELETE from template WHERE GUID = ?"
+            sqlite_cmd.Parameters.Add(guid)
+            Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
+            If rmImage Then
+                RemoveImages(guid)
+            End If
+
+            If rowsRemoved > 0 Then
+                Return True
+            Else
+                Return False
+            End If
+        Finally
+            ' ensure connection is closed
+            sqlite_conn.Close()
+        End Try
+    End Function
 
     ''' <summary>
     ''' Retrieves the images from the database
@@ -230,7 +204,7 @@ Public Class TemplateDatabase
     ''' <param name="guid"></param>
     ''' <returns></returns>
     Public Function SelectImages(guid As String) As List(Of Image)
-        Dim sqlite_conn = _connection
+        Dim sqlite_conn = Connection
         sqlite_conn.Open()
         Try
             Dim sqlite_cmd = sqlite_conn.CreateCommand()
@@ -269,10 +243,84 @@ Public Class TemplateDatabase
         End Try
     End Function
 
+    ''' <summary>
+    ''' Stores up to 3 preview images in the database
+    ''' images are stored as binary blobs (byte arrays or byte() in vb.net)
+    ''' this function takes a list(of Image), converts them into binary and chucks them in the database
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <param name="images"></param>
+    Public Sub AddImages(guid As String, images As List(Of Image), Optional openDb As Boolean = True)
+        Dim sqlite_conn = Connection
+
+        If openDb Then
+            sqlite_conn.Open()
+        End If
+
+        Try
+            Dim sqlite_cmd = sqlite_conn.CreateCommand()
+
+            sqlite_cmd.CommandText = "INSERT INTO images 
+                    (Guid, image1, image2, image3)  
+                    VALUES  
+                    (@guid, @image1, @image2, @image3);"
 
 
+            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+            If images.Count = 0 Then
+                Throw New Exception("Must supply at least 1 image")
+            ElseIf images.Count = 1 Then
+                sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
+                sqlite_cmd.Parameters.AddWithValue("@image2", Nothing)
+                sqlite_cmd.Parameters.AddWithValue("@image3", Nothing)
+            ElseIf images.Count = 2 Then
+                sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
+                sqlite_cmd.Parameters.AddWithValue("@image2", ImageToBinary(images(1)))
+                sqlite_cmd.Parameters.AddWithValue("@image3", Nothing)
+            ElseIf images.Count = 3 Then
+                sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
+                sqlite_cmd.Parameters.AddWithValue("@image2", ImageToBinary(images(1)))
+                sqlite_cmd.Parameters.AddWithValue("@image3", ImageToBinary(images(2)))
+            Else
+                Throw New Exception(String.Format("Must supply list of length max 3, {0} elements supplied", images.Count))
+            End If
 
-    Private Shared ExampleDxfFiles() As String = {"one.dxf", "two.dxf", "three.dxf", "four.dxf", "five.dxf", "six.dxf", "seven.dxf", "eight.dxf", "nine.dxf"}
+            sqlite_cmd.ExecuteNonQuery()
+
+        Finally
+            ' ensure connection is always closed
+            If openDb Then
+                sqlite_conn.Close()
+            End If
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Removes images associated with the guid
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns>True=Removed image, False=None removed</returns>
+    Public Function RemoveImages(guid As String) As Boolean
+        Dim sqlite_conn = Connection
+        sqlite_conn.Open()
+        Try
+            Dim sqlite_cmd = sqlite_conn.CreateCommand()
+            sqlite_cmd.CommandText = "DELETE from images WHERE GUID = ?"
+            sqlite_cmd.Parameters.Add(guid)
+            Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
+
+            If rowsRemoved > 0 Then
+                Return True
+            Else
+                Return False
+            End If
+        Finally
+            ' ensure connection is closed
+            sqlite_conn.Close()
+        End Try
+    End Function
+
+
     ''' <summary>
     ''' Fills database with dxf files located in project root/templates
     ''' The default files are stored in ExampleDxfFiles
@@ -305,7 +353,7 @@ Public Class TemplateDatabase
     ''' <param name="creatorName"></param>
     ''' <param name="creator_ID"></param>
     Private Sub addDebugEntry(GUID As String, DXF As String, tag As String, material As String, length As Integer, height As Integer, materialthickness As Integer, creatorName As String, creator_ID As Integer)
-        Dim sqlite_conn = _connection
+        Dim sqlite_conn = Connection
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
 

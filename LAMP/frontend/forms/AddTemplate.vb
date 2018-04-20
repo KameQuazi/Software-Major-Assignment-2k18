@@ -6,8 +6,16 @@
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         If DxfFileDialog.ShowDialog = DialogResult.OK Then
-            dxf = LampDxfDocument.FromFile(DxfFileDialog.FileName)
-            DxfIndicator.Text = DxfFileDialog.FileName
+            Try
+                dxf = LampDxfDocument.FromFile(DxfFileDialog.FileName)
+                DxfIndicator.Text = DxfFileDialog.FileName
+            Catch ex As FormatException
+                MessageBox.Show(ex.Message)
+            End Try
+
+
+
+
         Else
             dxf = Nothing
             DxfIndicator.Text = "*None*"

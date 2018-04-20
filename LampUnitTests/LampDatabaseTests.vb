@@ -41,7 +41,7 @@ Public Class LampTemplateText
     <TestMethod()>
     Public Sub TestDatabaseCreation()
         Dim database As New TemplateDatabase("testTables.sqlite")
-        Dim conn = database.GetConnection()
+        Dim conn = database.Connection
         conn.Open()
 
         Dim command = conn.CreateCommand
