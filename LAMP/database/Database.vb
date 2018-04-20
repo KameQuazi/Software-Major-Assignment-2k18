@@ -183,7 +183,7 @@ Public Class TemplateDatabase
             sqlite_cmd.Parameters.Add(guid)
             Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
             If rmImage Then
-                RemoveImages(guid)
+                RemoveImages(guid, False)
             End If
 
             If rowsRemoved > 0 Then
@@ -300,9 +300,12 @@ Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="guid"></param>
     ''' <returns>True=Removed image, False=None removed</returns>
-    Public Function RemoveImages(guid As String) As Boolean
+    Public Function RemoveImages(guid As String, Optional openDb As Boolean = True) As Boolean
         Dim sqlite_conn = Connection
-        sqlite_conn.Open()
+        If openDb Then
+            sqlite_conn.Open()
+        End If
+
         Try
             Dim sqlite_cmd = sqlite_conn.CreateCommand()
             sqlite_cmd.CommandText = "DELETE from images WHERE GUID = ?"
@@ -316,10 +319,11 @@ Public Class TemplateDatabase
             End If
         Finally
             ' ensure connection is closed
-            sqlite_conn.Close()
+            If openDb Then
+                sqlite_conn.Close()
+            End If
         End Try
     End Function
-
 
     ''' <summary>
     ''' Fills database with dxf files located in project root/templates
@@ -333,15 +337,19 @@ Public Class TemplateDatabase
         Next
     End Sub
 
+    ''' <summary>
+    ''' Gets an example template from /templates/{name}
+    ''' </summary>
+    ''' <param name="name"></param>
+    ''' <returns></returns>
     Public Shared Function GetExampleTemplate(name As String) As LampTemplate
         Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", name))
         Return New LampTemplate(LampDxfDocument.FromFile(fp))
     End Function
 
-
     ''' <summary>
     ''' DXF, Tag, Material, Length, Height, Thickness, Creator Name, Creator ID
-    ''' For debugging, dunno if it works now
+    ''' For debugging, dunno if it works now since database has changed
     ''' </summary>
     ''' <param name="GUID"></param>
     ''' <param name="DXF"></param>
@@ -395,14 +403,29 @@ End Class
 ''' but dont show up when you do TemplateDatabase.Blah
 ''' </summary>
 Public Class DatabaseHelper
+    ''' <summary>
+    ''' Converts list of tags into string (for database)
+    ''' </summary>
+    ''' <param name="template"></param>
+    ''' <returns></returns>
     Public Shared Function SerializeTags(template As LampTemplate) As String
         Return String.Join(",", template.Tags)
     End Function
 
+    ''' <summary>
+    ''' Converts string into list of tags (for database)
+    ''' </summary>
+    ''' <param name="tags"></param>
+    ''' <returns></returns>
     Public Shared Function DeserializeTags(tags As String) As List(Of String)
         Return tags.Split(","c).ToList()
     End Function
 
+    ''' <summary>
+    ''' Converts an image to its binary representation
+    ''' </summary>
+    ''' <param name="image"></param>
+    ''' <returns></returns>
     Public Shared Function ImageToBinary(image As Image) As Byte()
         If image Is Nothing Then
             Return Nothing
@@ -412,6 +435,11 @@ Public Class DatabaseHelper
         Return stream.ToArray
     End Function
 
+    ''' <summary>
+    ''' Converts binary into image representation
+    ''' </summary>
+    ''' <param name="binary"></param>
+    ''' <returns></returns>
     Public Shared Function BinaryToImage(binary As Byte()) As Image
         If binary Is Nothing Then
             Return Nothing
@@ -420,10 +448,15 @@ Public Class DatabaseHelper
         Return Image.FromStream(stream)
     End Function
 
+    ''' <summary>
+    ''' Creates an sqlite paramater
+    ''' </summary>
+    ''' <param name="type"></param>
+    ''' <param name="data"></param>
+    ''' <returns></returns>
     Public Shared Function CreateSqlParameter(type As DbType, data As Object) As SQLiteParameter
         Dim foo As New SQLiteParameter(type)
         foo.Value = data
         Return foo
     End Function
-
 End Class
