@@ -137,7 +137,8 @@ Public Class TemplateDatabase
         Try
             Dim sqlite_cmd = sqlite_conn.CreateCommand()
 
-            sqlite_cmd.CommandText = "INSERT INTO template 
+            ' Insert if GUID doesnt exist, else replace
+            sqlite_cmd.CommandText = "INSERT OR REPLACE INTO template 
                     (Guid, DXF, Tag, material, length, Height, thickness, creatorName, creator_ID, submit_date)  
                     VALUES  
                     (@guid, @dxf, @tags, @material, @length, @height, @thickness, @creatorName, @creatorId, DATETIME('now'));"
@@ -260,7 +261,7 @@ Public Class TemplateDatabase
         Try
             Dim sqlite_cmd = sqlite_conn.CreateCommand()
 
-            sqlite_cmd.CommandText = "INSERT INTO images 
+            sqlite_cmd.CommandText = "INSERT OR REPLACE INTO images 
                     (Guid, image1, image2, image3)  
                     VALUES  
                     (@guid, @image1, @image2, @image3);"

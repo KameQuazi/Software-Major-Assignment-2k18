@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class AddTemplate
+Partial Class SingleTemplateViewer
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -28,10 +28,10 @@ Partial Class AddTemplate
         Me.Label1 = New System.Windows.Forms.Label()
         Me.NameBox = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.SelectDxf = New System.Windows.Forms.Button()
         Me.DxfFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.ImageFileDialog = New System.Windows.Forms.OpenFileDialog()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.AddToDb = New System.Windows.Forms.Button()
         Me.DxfIndicator = New System.Windows.Forms.Label()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -93,14 +93,14 @@ Partial Class AddTemplate
         Me.Label2.TabIndex = 5
         Me.Label2.Text = "Attach Dxf:"
         '
-        'Button1
+        'SelectDxf
         '
-        Me.Button1.Location = New System.Drawing.Point(146, 192)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 6
-        Me.Button1.Text = "Attach Dxf"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.SelectDxf.Location = New System.Drawing.Point(146, 192)
+        Me.SelectDxf.Name = "SelectDxf"
+        Me.SelectDxf.Size = New System.Drawing.Size(75, 23)
+        Me.SelectDxf.TabIndex = 6
+        Me.SelectDxf.Text = "Attach Dxf"
+        Me.SelectDxf.UseVisualStyleBackColor = True
         '
         'DxfFileDialog
         '
@@ -111,39 +111,38 @@ Partial Class AddTemplate
         Me.ImageFileDialog.FileName = "OpenFileDialog2"
         Me.ImageFileDialog.Filter = "image Files|*.png;*jpg;*jpeg|All files|*.*"
         '
-        'Button2
+        'AddToDb
         '
-        Me.Button2.Location = New System.Drawing.Point(432, 446)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 23)
-        Me.Button2.TabIndex = 7
-        Me.Button2.Text = "add to db"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.AddToDb.Location = New System.Drawing.Point(432, 446)
+        Me.AddToDb.Name = "AddToDb"
+        Me.AddToDb.Size = New System.Drawing.Size(75, 23)
+        Me.AddToDb.TabIndex = 7
+        Me.AddToDb.Text = "add to db"
+        Me.AddToDb.UseVisualStyleBackColor = True
         '
         'DxfIndicator
         '
         Me.DxfIndicator.AutoSize = True
         Me.DxfIndicator.Location = New System.Drawing.Point(247, 197)
         Me.DxfIndicator.Name = "DxfIndicator"
-        Me.DxfIndicator.Size = New System.Drawing.Size(41, 13)
+        Me.DxfIndicator.Size = New System.Drawing.Size(0, 13)
         Me.DxfIndicator.TabIndex = 9
-        Me.DxfIndicator.Text = "*None*"
         '
-        'AddTemplate
+        'SingleTemplateViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(572, 489)
         Me.Controls.Add(Me.DxfIndicator)
-        Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.AddToDb)
+        Me.Controls.Add(Me.SelectDxf)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.NameBox)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Preview3)
         Me.Controls.Add(Me.Preview2)
         Me.Controls.Add(Me.Preview1)
-        Me.Name = "AddTemplate"
+        Me.Name = "SingleTemplateViewer"
         Me.Text = "AddTemplate"
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).EndInit()
@@ -159,9 +158,9 @@ Partial Class AddTemplate
     Friend WithEvents Label1 As Label
     Friend WithEvents NameBox As TextBox
     Friend WithEvents Label2 As Label
-    Friend WithEvents Button1 As Button
+    Friend WithEvents SelectDxf As Button
     Friend WithEvents DxfFileDialog As OpenFileDialog
     Friend WithEvents ImageFileDialog As OpenFileDialog
-    Friend WithEvents Button2 As Button
+    Friend WithEvents AddToDb As Button
     Friend WithEvents DxfIndicator As Label
 End Class

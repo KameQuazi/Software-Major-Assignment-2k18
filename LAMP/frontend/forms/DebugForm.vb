@@ -29,7 +29,7 @@
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        Dim x = New TemplateViewer()
+        Dim x = New TemplateSelect()
         x.ShowDialog()
 
     End Sub
@@ -43,7 +43,7 @@
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
-        Dim x As New AddTemplate
+        Dim x As New SingleTemplateViewer
         x.ShowDialog()
     End Sub
 End Class

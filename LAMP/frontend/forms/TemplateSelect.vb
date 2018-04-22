@@ -1,4 +1,4 @@
-﻿Public Class TemplateViewer
+﻿Public Class TemplateSelect
     Public Displays(7) As FileDisplay
     Private Sub pbLogo_Click(sender As Object, e As EventArgs)
         frmStart.Show()
@@ -23,6 +23,7 @@
         Displays(0).Template = TemplateDatabase.GetExampleTemplate("one")
         Displays(1).Template = TemplateDatabase.GetExampleTemplate("two")
         Displays(2).Template = TemplateDatabase.GetExampleTemplate("three")
+        Displays(0).Enabled = False
     End Sub
 
     ''' <summary>

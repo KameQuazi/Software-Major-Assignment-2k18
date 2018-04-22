@@ -16,6 +16,10 @@
         End Set
     End Property
 
+    ''' <summary>
+    ''' Puts all the details from a template into the control
+    ''' </summary>
+    ''' <param name="template"></param>
     Private Sub DisplayTemplate(template As LampTemplate)
         If template IsNot Nothing Then
             Dim dxf = template.Template
@@ -37,6 +41,17 @@
         End If
     End Sub
 
+
+
     Private Sub FileDisplay_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    End Sub
+
+    Private Sub DisplayBox_Click(sender As Object, e As EventArgs) Handles DisplayBox.Click
+        If Me.Enabled Then
+            ' Oepn up the single template Viewer
+            Dim singleViewer As New SingleTemplateViewer()
+            singleViewer.Template = Me.Template
+            singleViewer.ShowDialog()
+        End If
     End Sub
 End Class

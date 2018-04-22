@@ -3,7 +3,7 @@
         frmStart.Show()
         Options.Close()
         Logout.Close()
-        TemplateViewer.Close()
+        TemplateSelect.Close()
         AboutBox1.Close()
     End Sub
 
@@ -15,11 +15,11 @@
         Select Case frmStart.lastform
             Case = "main"
                 frmStart.Show()
-                TemplateViewer.Hide()
+                TemplateSelect.Hide()
                 AboutBox1.Hide()
                 Options.Hide()
             Case = "view"
-                TemplateViewer.Show()
+                TemplateSelect.Show()
                 frmStart.Hide()
                 AboutBox1.Hide()
                 Options.Hide()

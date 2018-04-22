@@ -135,10 +135,10 @@
     <Compile Include="frontend\controls\FileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="frontend\forms\AddTemplate.Designer.vb">
-      <DependentUpon>AddTemplate.vb</DependentUpon>
+    <Compile Include="frontend\forms\SingleTemplateViewer.Designer.vb">
+      <DependentUpon>SingleTemplateViewer.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\AddTemplate.vb">
+    <Compile Include="frontend\forms\SingleTemplateViewer.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frontend\forms\DebugForm.Designer.vb">
@@ -171,10 +171,10 @@
     <Compile Include="frontend\controls\ToolBar.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="frontend\forms\TemplateViewer.Designer.vb">
-      <DependentUpon>TemplateViewer.vb</DependentUpon>
+    <Compile Include="frontend\forms\TemplateSelect.Designer.vb">
+      <DependentUpon>TemplateSelect.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\TemplateViewer.vb">
+    <Compile Include="frontend\forms\TemplateSelect.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="template\DynamicText.vb" />
@@ -214,8 +214,8 @@
     <EmbeddedResource Include="frontend\controls\FileDisplay.resx">
       <DependentUpon>FileDisplay.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\AddTemplate.resx">
-      <DependentUpon>AddTemplate.vb</DependentUpon>
+    <EmbeddedResource Include="frontend\forms\SingleTemplateViewer.resx">
+      <DependentUpon>SingleTemplateViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\DebugForm.resx">
       <DependentUpon>DebugForm.vb</DependentUpon>
@@ -235,8 +235,8 @@
     <EmbeddedResource Include="frontend\controls\ToolBar.resx">
       <DependentUpon>ToolBar.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\TemplateViewer.resx">
-      <DependentUpon>TemplateViewer.vb</DependentUpon>
+    <EmbeddedResource Include="frontend\forms\TemplateSelect.resx">
+      <DependentUpon>TemplateSelect.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
