@@ -10,6 +10,7 @@ Imports Newtonsoft.Json
 Imports LAMP.LampMath
 
 ' WARNING! Aliasing Point3 to vector3
+Imports Point3 = netDxf.Vector3
 Imports System.ComponentModel
 Imports System.Runtime.CompilerServices
 
@@ -41,9 +42,9 @@ Public Class LampDxfDocument
         End Get
     End Property
 
-    Public Property BottomLeft As New Vector3
+    Public Property BottomLeft As New Point3
 
-    Public Property TopRight As New Vector3
+    Public Property TopRight As New Point3
 
     ''' <summary>
     ''' Creates a new LampDxfDocument from a dxf string
@@ -167,7 +168,7 @@ Public Class LampDxfDocument
     ''' </summary>
     ''' <param name="start">startpoint </param>
     ''' <param name="end">endpoint </param>
-    Public Sub AddLine(start As Vector3, [end] As Vector3)
+    Public Sub AddLine(start As Point3, [end] As Point3)
         AddLine(New Line(start, [end]))
     End Sub
 
@@ -205,7 +206,7 @@ Public Class LampDxfDocument
         ' TODO others
     End Sub
 
-    Private Function IsBottomOrLeft(point As Vector3) As Boolean
+    Private Function IsBottomOrLeft(point As Point3) As Boolean
         If point.X < Me.BottomLeft.X Then
             Return True
         End If
@@ -215,7 +216,7 @@ Public Class LampDxfDocument
         Return False
     End Function
 
-    Private Function IsTopOrRight(point As Vector3) As Boolean
+    Private Function IsTopOrRight(point As Point3) As Boolean
         If point.X > Me.TopRight.X Then
             Return True
         End If
@@ -235,16 +236,16 @@ Public Class LampDxfDocument
         _dxfFile.AddEntity(New Circle(ConvertPoint3(centerX, centerY), radius))
     End Sub
 
-    Public Sub AddCircle(centre As Vector3, radius As Double)
+    Public Sub AddCircle(centre As Point3, radius As Double)
         _dxfFile.AddEntity(New Circle(ConvertPoint3(centre.X, centre.Y), radius))
     End Sub
 
 
-    Public Sub AddPolyline(ParamArray Points() As Vector3)
+    Public Sub AddPolyline(ParamArray Points() As Point3)
         AddPolyline(Points)
     End Sub
 
-    Public Sub AddPolyline(Point3s As IEnumerable(Of Vector3))
+    Public Sub AddPolyline(Point3s As IEnumerable(Of Point3))
 
         _dxfFile.AddEntity(New Polyline(Point3s))
     End Sub
@@ -268,7 +269,7 @@ Public Class LampDxfDocument
     End Sub
 
     Public Sub AddText(x As Integer, y As Integer, text As String, height As Integer)
-        _dxfFile.AddEntity(New Text(text, New Vector3(x, y, 0), height))
+        _dxfFile.AddEntity(New Text(text, New Point3(x, y, 0), height))
     End Sub
 
     Public Sub AddEntity(ent As EntityObject, Optional recalculate As Boolean = True)
@@ -281,12 +282,12 @@ Public Class LampDxfDocument
 
 
 
-    Public Shared Function ConvertPoint3(x As Double, y As Double) As Vector3
-        Return New Vector3(x, y, 0)
+    Public Shared Function ConvertPoint3(x As Double, y As Double) As Point3
+        Return New Point3(x, y, 0)
     End Function
 
 
-    Public Shared Function ConvertToPointF(point As Vector3) As Drawing.PointF
+    Public Shared Function ConvertToPointF(point As Point3) As Drawing.PointF
 #Disable Warning BC42016 ' Implicit conversion
         Return New PointF(point.X, point.Y)
 #Enable Warning BC42016 ' Implicit conversion

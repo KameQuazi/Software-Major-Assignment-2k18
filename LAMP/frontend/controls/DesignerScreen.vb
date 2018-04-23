@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel
 
-Public Class DxfViewerControl
+Public Class DesignerScreen
     Implements INotifyPropertyChanged
 
     Public Property BackgroundColorBrush As Brush = New SolidBrush(Color.LimeGreen)

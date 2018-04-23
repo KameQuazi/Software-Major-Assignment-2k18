@@ -38,7 +38,7 @@ Partial Class DesignerForm
         Me.leftButton = New System.Windows.Forms.Button()
         Me.upButton = New System.Windows.Forms.Button()
         Me.FilenameTbox = New System.Windows.Forms.RichTextBox()
-        Me.DesignerScreen1 = New LAMP.DxfViewerControl()
+        Me.DesignerScreen1 = New LAMP.DesignerScreen()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.SaveFileDialog2 = New System.Windows.Forms.SaveFileDialog()
         Me.SuspendLayout()
@@ -229,7 +229,7 @@ Partial Class DesignerForm
     Friend WithEvents leftButton As Button
     Friend WithEvents upButton As Button
     Friend WithEvents FilenameTbox As RichTextBox
-    Friend WithEvents DesignerScreen1 As DxfViewerControl
+    Friend WithEvents DesignerScreen1 As DesignerScreen
     Friend WithEvents Button1 As Button
     Friend WithEvents SaveFileDialog2 As SaveFileDialog
 End Class
