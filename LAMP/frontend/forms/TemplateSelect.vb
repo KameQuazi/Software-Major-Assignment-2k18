@@ -1,11 +1,12 @@
-﻿Public Class FileViewer
-    Public Displays(7) As fileDisplay
+﻿Public Class TemplateSelect
+    Public Displays(7) As FileDisplay
     Private Sub pbLogo_Click(sender As Object, e As EventArgs)
         frmStart.Show()
         Me.Hide()
         frmStart.lastform = frmStart.curForm
         frmStart.curForm = "view"
     End Sub
+
     Private Sub fileViewer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ToolBar1.lblCurScr.Text = "File Viewer"
         Displays(0) = FileDisplay1
@@ -16,20 +17,19 @@
         Displays(5) = FileDisplay6
         Displays(6) = FileDisplay7
         Displays(7) = FileDisplay8
-        load_Files()
-        Dim template = TemplateDatabase.GetExampleTemplate("one.dxf")
-        Dim dxf = template.Template
-        With Displays(0)
-            .lblName.Text = "Name: test trophy"
-            .lblCreator.Text = "Creator: Waxy by steve"
-            .DisplayBox.Image = dxf.ToImage()
+        LoadFiles()
 
-            .lblWidth.Text = "Width: " & dxf.Width
-            .lblMaterial.Text = "Material: " & template.MaterialThickness & "Acrylic"
-            .lblCutTime.Text = "Time to Cut: ?? Min"
-        End With
+
+        Displays(0).Template = TemplateDatabase.GetExampleTemplate("one")
+        Displays(1).Template = TemplateDatabase.GetExampleTemplate("two")
+        Displays(2).Template = TemplateDatabase.GetExampleTemplate("three")
+        Displays(0).Enabled = False
     End Sub
-    Public Sub load_Files() ' Load Files into the viewing screen
+
+    ''' <summary>
+    ''' Load Files into the viewing screen
+    ''' </summary>
+    Public Sub LoadFiles()
         For i = 0 To 7
             Displays(i).lblName.Text = "Name: Standard trophy"
             Displays(i).lblCreator.Text = "Creator: Steve By Birth"
@@ -45,6 +45,17 @@
     End Sub
 
     Private Sub FileDisplay1_Load(sender As Object, e As EventArgs) Handles FileDisplay1.Load
+
+    End Sub
+
+    Private Sub ToolBar1_Load(sender As Object, e As EventArgs) Handles ToolBar1.Load
+
+    End Sub
+
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+    End Sub
+
+    Private Sub FileDisplay8_Load(sender As Object, e As EventArgs) Handles FileDisplay8.Load
 
     End Sub
 End Class

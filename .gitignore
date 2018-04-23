@@ -241,8 +241,8 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 
-# autocad backup files
+# autocad temp files
 *.dwl
 *.dwl2
 *.bak
-
+acad.err

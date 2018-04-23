@@ -18,6 +18,7 @@ Public NotInheritable Class LampTemplate
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
 
+#Region "Instance Variables"
     Private _guid As String
     ''' <summary>
     ''' a unique identifer for each different template
@@ -34,6 +35,22 @@ Public NotInheritable Class LampTemplate
         End Set
     End Property
 
+    Private _name As String
+    ''' <summary>
+    ''' a unique identifer for each different template
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("name")>
+    Public Property Name As String
+        Get
+            Return _name
+        End Get
+        Set(value As String)
+            _name = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
     ''' <summary>
     ''' The completed drawing, w/ all the templates laid out appropriately
     ''' Not serialized, as it can be generated using _template when deserialized
@@ -46,7 +63,7 @@ Public NotInheritable Class LampTemplate
     ''' Is serialized last in the file 
     ''' </summary>
     <JsonProperty("template", Order:=1000)>
-    Public Property Template As LampDxfDocument
+    Public Property BaseDrawing As LampDxfDocument
         Get
             Return _template
         End Get
@@ -232,12 +249,18 @@ Public NotInheritable Class LampTemplate
     <JsonProperty("approverId")>
     Public Property ApproverId As String = System.Guid.Empty.ToString
 
+    <JsonProperty("PreviewImages")>
+    Public Property PreviewImages As New List(Of Image)
+
+
+#End Region
+
     ''' <summary>
     ''' Load from a file on disk
     ''' </summary>
     ''' <param name="fileName"></param>
     ''' <returns></returns>
-    Friend Shared Function LoadFromFile(fileName As String) As LampTemplate
+    Public Shared Function FromFile(fileName As String) As LampTemplate
         Using file As New StreamReader(fileName)
             Return Deserialize(file.ReadToEnd())
         End Using
@@ -291,7 +314,7 @@ Public NotInheritable Class LampTemplate
     ''' <param name="guid"></param>
     Private Sub _new(dxf As LampDxfDocument, guid As String)
         Me.GUID = guid
-        Me.Template = dxf
+        Me.BaseDrawing = dxf
 
     End Sub
     ''' <summary>
@@ -322,7 +345,7 @@ Public NotInheritable Class LampTemplate
         ' TODO!
         CompletedDrawing = New LampDxfDocument()
         For Each point As LampDxfInsertLocation In InsertionLocations
-            Template.InsertInto(CompletedDrawing, point)
+            BaseDrawing.InsertInto(CompletedDrawing, point)
         Next
     End Sub
 

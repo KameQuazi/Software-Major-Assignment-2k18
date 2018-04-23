@@ -1,6 +1,6 @@
 ﻿Imports System.Drawing.Imaging
 Imports Newtonsoft.Json
-Imports LAMP.LampMath
+Imports LAMP.LampDxfHelper
 
 Public Class DesignerForm
     Private dxf As LampDxfDocument
@@ -13,7 +13,7 @@ Public Class DesignerForm
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles OpenFileBtn.Click
         If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
-            dxf = LampDxfDocument.LoadFromFile(OpenFileDialog1.FileName)
+            dxf = LampDxfDocument.FromFile(OpenFileDialog1.FileName)
             SaveFileBtn.Enabled = True
 
             FilenameTbox.Text = OpenFileDialog1.FileName
@@ -100,7 +100,7 @@ Public Class DesignerForm
 
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
         If SaveFileDialog2.ShowDialog = DialogResult.OK Then
-            template.Template.Save(SaveFileDialog2.FileName)
+            template.BaseDrawing.Save(SaveFileDialog2.FileName)
         End If
     End Sub
 

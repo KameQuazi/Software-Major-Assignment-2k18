@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class fileDisplay
+Partial Class FileDisplay
     Inherits System.Windows.Forms.UserControl
 
     'UserControl overrides dispose to clean up the component list.
@@ -22,7 +22,7 @@ Partial Class fileDisplay
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(fileDisplay))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FileDisplay))
         Me.DisplayBox = New System.Windows.Forms.PictureBox()
         Me.lblName = New System.Windows.Forms.Label()
         Me.lblCreator = New System.Windows.Forms.Label()
@@ -103,7 +103,7 @@ Partial Class fileDisplay
         Me.lblCutTime.TabIndex = 6
         Me.lblCutTime.Text = "Time to Cut:"
         '
-        'fileDisplay
+        'FileDisplay
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
@@ -115,7 +115,7 @@ Partial Class fileDisplay
         Me.Controls.Add(Me.lblName)
         Me.Controls.Add(Me.DisplayBox)
         Me.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Name = "fileDisplay"
+        Me.Name = "FileDisplay"
         Me.Size = New System.Drawing.Size(200, 270)
         CType(Me.DisplayBox, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)

@@ -1,26 +1,23 @@
 ﻿Public Class DebugForm
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim db As New TemplateDatabase()
-        db.FillDebugDatabase()
+        TemplateDatabase.FillDebugDatabase()
         db.GetAllTemplate()
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Dim screen As New Form()
-        ' TODO replace with shourovs form
         screen.ShowDialog()
 
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         Dim screen As New DesignerForm()
-        ' TODO replace with shourovs form
         screen.ShowDialog()
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Dim screen As New frmStart()
-        ' TODO replace with shourovs form
         screen.ShowDialog()
     End Sub
 
@@ -29,7 +26,26 @@
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
-        IO.File.Delete("templateDB.sqlite")
         Dim x = New TemplateDatabase()
+        x.DeleteTables()
+    End Sub
+
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        Dim x = New TemplateSelect()
+        x.ShowDialog()
+
+    End Sub
+
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        Test()
+    End Sub
+
+    Private Sub Test()
+
+    End Sub
+
+    Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
+        Dim x As New SingleTemplateViewer
+        x.ShowDialog()
     End Sub
 End Class

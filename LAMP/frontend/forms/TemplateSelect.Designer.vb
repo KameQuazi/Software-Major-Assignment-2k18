@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class FileViewer
+Partial Class TemplateSelect
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -28,14 +28,14 @@ Partial Class FileViewer
         Me.Label2 = New System.Windows.Forms.Label()
         Me.cmbSort = New System.Windows.Forms.ComboBox()
         Me.lblSort = New System.Windows.Forms.Label()
-        Me.FileDisplay5 = New LAMP.fileDisplay()
-        Me.FileDisplay6 = New LAMP.fileDisplay()
-        Me.FileDisplay7 = New LAMP.fileDisplay()
-        Me.FileDisplay8 = New LAMP.fileDisplay()
-        Me.FileDisplay4 = New LAMP.fileDisplay()
-        Me.FileDisplay3 = New LAMP.fileDisplay()
-        Me.FileDisplay2 = New LAMP.fileDisplay()
-        Me.FileDisplay1 = New LAMP.fileDisplay()
+        Me.FileDisplay5 = New LAMP.FileDisplay()
+        Me.FileDisplay6 = New LAMP.FileDisplay()
+        Me.FileDisplay7 = New LAMP.FileDisplay()
+        Me.FileDisplay8 = New LAMP.FileDisplay()
+        Me.FileDisplay4 = New LAMP.FileDisplay()
+        Me.FileDisplay3 = New LAMP.FileDisplay()
+        Me.FileDisplay2 = New LAMP.FileDisplay()
+        Me.FileDisplay1 = New LAMP.FileDisplay()
         Me.ToolBar1 = New LAMP.ToolBar()
         Me.SuspendLayout()
         '
@@ -178,7 +178,7 @@ Partial Class FileViewer
         Me.ToolBar1.Size = New System.Drawing.Size(1000, 96)
         Me.ToolBar1.TabIndex = 18
         '
-        'FileViewer
+        'TemplateViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -201,7 +201,7 @@ Partial Class FileViewer
         Me.Controls.Add(Me.btnNext)
         Me.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Name = "FileViewer"
+        Me.Name = "TemplateViewer"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Viewer"
         Me.ResumeLayout(False)
@@ -215,12 +215,12 @@ Partial Class FileViewer
     Friend WithEvents cmbSort As ComboBox
     Friend WithEvents lblSort As Label
     Friend WithEvents ToolBar1 As ToolBar
-    Friend WithEvents FileDisplay1 As fileDisplay
-    Friend WithEvents FileDisplay2 As fileDisplay
-    Friend WithEvents FileDisplay3 As fileDisplay
-    Friend WithEvents FileDisplay4 As fileDisplay
-    Friend WithEvents FileDisplay5 As fileDisplay
-    Friend WithEvents FileDisplay6 As fileDisplay
-    Friend WithEvents FileDisplay7 As fileDisplay
-    Friend WithEvents FileDisplay8 As fileDisplay
+    Friend WithEvents FileDisplay1 As FileDisplay
+    Friend WithEvents FileDisplay2 As FileDisplay
+    Friend WithEvents FileDisplay3 As FileDisplay
+    Friend WithEvents FileDisplay4 As FileDisplay
+    Friend WithEvents FileDisplay5 As FileDisplay
+    Friend WithEvents FileDisplay6 As FileDisplay
+    Friend WithEvents FileDisplay7 As FileDisplay
+    Friend WithEvents FileDisplay8 As FileDisplay
 End Class

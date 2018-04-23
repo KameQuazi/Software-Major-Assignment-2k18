@@ -41,7 +41,7 @@ Public Class LampTemplateText
     <TestMethod()>
     Public Sub TestDatabaseCreation()
         Dim database As New TemplateDatabase("testTables.sqlite")
-        Dim conn = database.GetConnection()
+        Dim conn = database.Connection
         conn.Open()
 
         Dim command = conn.CreateCommand
@@ -70,8 +70,8 @@ Public Class LampTemplateText
         AreEqual(tag.cid, 2)
         AreEqual(tag.name.ToLower(), "tag")
         AreEqual(tag.type.ToLower(), "text")
-        AreEqual(tag.notnull, 0)
-        AreEqual(tag.default, "''")
+        AreEqual(tag.notnull, 1)
+        AreEqual(tag.default, "")
         AreEqual(tag.pk, 0)
 
         Dim mat = GetColumnInformation(data)
