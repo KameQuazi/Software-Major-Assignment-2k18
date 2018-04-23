@@ -40,8 +40,13 @@
     End Sub
 
     Private Sub btnQY_Click(sender As Object, e As EventArgs) Handles btnQY.Click
-        Dim parent = CType(Me.Parent, Form)
-        parent.Close()
+        If Me.Parent.GetType().IsSubclassOf(GetType(Form)) Then
+            Dim parent As Form = DirectCast(Me.Parent, Form)
+            parent.Close()
+        Else
+            Throw New Exception("Control must be on top level (must not be in a panel etc)")
+        End If
+
     End Sub
 
     Private Sub btnLogOut_Click(sender As Object, e As EventArgs) Handles btnLogOut.Click

@@ -130,6 +130,46 @@ Public Class TemplateDatabase
     End Function
 
     ''' <summary>
+    ''' Gets all templates in the database
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function GetAllTemplate() As List(Of LampTemplate)
+        Dim sqlite_conn = _Connection
+        sqlite_conn.Open()
+
+        Try
+            Dim sqlite_cmd = sqlite_conn.CreateCommand()
+            Dim sqlite_reader As SQLiteDataReader
+
+            sqlite_cmd.CommandText = "Select * FROM template"
+
+            sqlite_reader = sqlite_cmd.ExecuteReader()
+            Dim LampTempList As New List(Of LampTemplate)
+            Dim LampDxf As New LampDxfDocument
+            Dim LampTemp As New LampTemplate
+            Do While sqlite_reader.Read()
+                Debug.Write(sqlite_reader.GetString(0))
+                LampDxf = LampDxfDocument.FromString(sqlite_reader.GetString(sqlite_reader.GetOrdinal("dxf")))
+                LampTemp = New LampTemplate(LampDxf)
+                LampTemp.GUID = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
+                'LampTemp.ApproverId = sqlite_reader.GetString(DatabaseColumn.ApproverId)
+                LampTemp.ApproverName = sqlite_reader.GetString(sqlite_reader.GetOrdinal("approverName"))
+                LampTemp.CreatorId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("creatorId"))
+                LampTemp.CreatorName = sqlite_reader.GetString(sqlite_reader.GetOrdinal("creatorName"))
+                'LampTemp.IsComplete = sqlite_reader.GetBoolean(DatabaseColumn.IsComplete)
+                'still debugging these 2 ;-;
+                LampTempList.Add(LampTemp)
+            Loop
+            sqlite_conn.Close()
+            Return LampTempList
+
+        Finally
+            sqlite_conn.Close()
+        End Try
+
+    End Function
+
+    ''' <summary>
     ''' Adds a template to the database
     ''' will error if the guid is already in the database
     ''' </summary>
@@ -248,6 +288,8 @@ Public Class TemplateDatabase
         End Try
     End Function
 
+
+
     ''' <summary>
     ''' Stores up to 3 preview images in the database
     ''' images are stored as binary blobs (byte arrays or byte() in vb.net)
@@ -362,35 +404,6 @@ Public Class TemplateDatabase
     End Function
 
 
-    Public Function GetAllTemplate() As List(Of LampTemplate)
-        Dim sqlite_conn = _connection
-        sqlite_conn.Open()
-        Dim sqlite_cmd = sqlite_conn.CreateCommand()
-        Dim sqlite_reader As SQLiteDataReader
-
-        sqlite_cmd.CommandText = "Select * FROM template"
-
-        sqlite_reader = sqlite_cmd.ExecuteReader()
-        Dim LampTempList As New List(Of LampTemplate)
-        Dim LampDxf As New LampDxfDocument
-        Dim LampTemp As New LampTemplate
-        Do While sqlite_reader.Read()
-            Debug.Write(sqlite_reader.GetString(0))
-            LampDxf = LampDxfDocument.FromString(sqlite_reader.GetString(sqlite_reader.GetOrdinal("dxf")))
-            LampTemp = New LampTemplate(LampDxf)
-            LampTemp.GUID = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
-            'LampTemp.ApproverId = sqlite_reader.GetString(DatabaseColumn.ApproverId)
-            LampTemp.ApproverName = sqlite_reader.GetString(sqlite_reader.GetOrdinal("approverName"))
-            LampTemp.CreatorId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("creatorId"))
-            LampTemp.CreatorName = sqlite_reader.GetString(sqlite_reader.GetOrdinal("creatorName"))
-            'LampTemp.IsComplete = sqlite_reader.GetBoolean(DatabaseColumn.IsComplete)
-            'still debugging these 2 ;-;
-            LampTempList.Add(LampTemp)
-        Loop
-        sqlite_conn.Close()
-        Return LampTempList
-
-    End Function
     ''' <summary>
     ''' DXF, Tag, Material, Length, Height, Thickness, Creator Name, Creator ID
     ''' For debugging, dunno if it works now since database has changed
