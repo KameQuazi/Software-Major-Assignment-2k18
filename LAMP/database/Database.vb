@@ -165,6 +165,36 @@ Public Class TemplateDatabase
         End If
     End Function
 
+
+    Public Function GetAllTemplate() As List(Of LampTemplate)
+        Dim sqlite_conn = _connection
+        sqlite_conn.Open()
+        Dim sqlite_cmd = sqlite_conn.CreateCommand()
+        Dim sqlite_reader As SQLiteDataReader
+
+        sqlite_cmd.CommandText = "Select * FROM template"
+
+        sqlite_reader = sqlite_cmd.ExecuteReader()
+        Dim LampTempList As New List(Of LampTemplate)
+        Dim LampDxf As New LampDxfDocument
+        Dim LampTemp As New LampTemplate
+        Do While sqlite_reader.Read()
+            Debug.Write(sqlite_reader.GetString(0))
+            LampDxf = LampDxfDocument.LoadFromString(sqlite_reader.GetString(DatabaseColumn.Dxf))
+            LampTemp = New LampTemplate(LampDxf)
+            LampTemp.GUID = sqlite_reader.GetString(DatabaseColumn.Guid)
+            'LampTemp.ApproverId = sqlite_reader.GetString(DatabaseColumn.ApproverId)
+            LampTemp.ApproverName = sqlite_reader.GetString(DatabaseColumn.ApproverName)
+            LampTemp.CreatorId = sqlite_reader.GetString(DatabaseColumn.CreatorId)
+            LampTemp.CreatorName = sqlite_reader.GetString(DatabaseColumn.CreatorName)
+            'LampTemp.IsComplete = sqlite_reader.GetBoolean(DatabaseColumn.IsComplete)
+            'still debugging these 2 ;-;
+            LampTempList.Add(LampTemp)
+        Loop
+        sqlite_conn.Close()
+        Return LampTempList
+
+    End Function
     ''' <summary>
     ''' Fills database with 50 empty templates
     ''' </summary>
