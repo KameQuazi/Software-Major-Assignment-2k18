@@ -376,13 +376,13 @@ Public Class TemplateDatabase
         Dim LampTemp As New LampTemplate
         Do While sqlite_reader.Read()
             Debug.Write(sqlite_reader.GetString(0))
-            LampDxf = LampDxfDocument.LoadFromString(sqlite_reader.GetString(DatabaseColumn.Dxf))
+            LampDxf = LampDxfDocument.FromString(sqlite_reader.GetString(sqlite_reader.GetOrdinal("dxf")))
             LampTemp = New LampTemplate(LampDxf)
-            LampTemp.GUID = sqlite_reader.GetString(DatabaseColumn.Guid)
+            LampTemp.GUID = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
             'LampTemp.ApproverId = sqlite_reader.GetString(DatabaseColumn.ApproverId)
-            LampTemp.ApproverName = sqlite_reader.GetString(DatabaseColumn.ApproverName)
-            LampTemp.CreatorId = sqlite_reader.GetString(DatabaseColumn.CreatorId)
-            LampTemp.CreatorName = sqlite_reader.GetString(DatabaseColumn.CreatorName)
+            LampTemp.ApproverName = sqlite_reader.GetString(sqlite_reader.GetOrdinal("approverName"))
+            LampTemp.CreatorId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("creatorId"))
+            LampTemp.CreatorName = sqlite_reader.GetString(sqlite_reader.GetOrdinal("creatorName"))
             'LampTemp.IsComplete = sqlite_reader.GetBoolean(DatabaseColumn.IsComplete)
             'still debugging these 2 ;-;
             LampTempList.Add(LampTemp)
