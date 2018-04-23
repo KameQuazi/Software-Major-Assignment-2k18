@@ -100,7 +100,7 @@ Public Class DesignerForm
 
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
         If SaveFileDialog2.ShowDialog = DialogResult.OK Then
-            template.Template.Save(SaveFileDialog2.FileName)
+            template.BaseDrawing.Save(SaveFileDialog2.FileName)
         End If
     End Sub
 

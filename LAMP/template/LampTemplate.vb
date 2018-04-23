@@ -63,7 +63,7 @@ Public NotInheritable Class LampTemplate
     ''' Is serialized last in the file 
     ''' </summary>
     <JsonProperty("template", Order:=1000)>
-    Public Property Template As LampDxfDocument
+    Public Property BaseDrawing As LampDxfDocument
         Get
             Return _template
         End Get
@@ -314,7 +314,7 @@ Public NotInheritable Class LampTemplate
     ''' <param name="guid"></param>
     Private Sub _new(dxf As LampDxfDocument, guid As String)
         Me.GUID = guid
-        Me.Template = dxf
+        Me.BaseDrawing = dxf
 
     End Sub
     ''' <summary>
@@ -345,7 +345,7 @@ Public NotInheritable Class LampTemplate
         ' TODO!
         CompletedDrawing = New LampDxfDocument()
         For Each point As LampDxfInsertLocation In InsertionLocations
-            Template.InsertInto(CompletedDrawing, point)
+            BaseDrawing.InsertInto(CompletedDrawing, point)
         Next
     End Sub
 

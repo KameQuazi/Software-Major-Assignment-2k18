@@ -32,7 +32,7 @@ Public Class SingleTemplateViewer
     ''' </summary>
     Private Sub UpdateViewer()
         NameBox.Text = Template.Name
-
+        DxfViewerControl1.Source = Template.BaseDrawing
         UpdateViewerImages()
     End Sub
 
@@ -49,7 +49,7 @@ Public Class SingleTemplateViewer
     Private Sub SelectDxf_Click(sender As Object, e As EventArgs) Handles SelectDxf.Click
         If DxfFileDialog.ShowDialog = DialogResult.OK Then
             Try
-                Template.Template = LampDxfDocument.FromFile(DxfFileDialog.FileName)
+                Template.BaseDrawing = LampDxfDocument.FromFile(DxfFileDialog.FileName)
                 DxfIndicator.Text = DxfFileDialog.FileName
             Catch ex As FormatException
                 MessageBox.Show(ex.Message)
@@ -115,5 +115,17 @@ Public Class SingleTemplateViewer
     Private Sub AddToDb_Click(sender As Object, e As EventArgs) Handles AddToDb.Click
         Dim db As New TemplateDatabase()
         db.AddTemplate(Template)
+    End Sub
+
+    Private Sub ExportDxf_Click(sender As Object, e As EventArgs) Handles ExportDxf.Click
+        If DxfSaveDialog.ShowDialog = DialogResult.OK Then
+            Template.BaseDrawing.Save(DxfSaveDialog.FileName)
+        End If
+    End Sub
+
+    Private Sub ExportSpf_Click(sender As Object, e As EventArgs) Handles ExportSpf.Click
+        If SpfSaveDialog.ShowDialog = DialogResult.OK Then
+            Template.Save(SpfSaveDialog.FileName)
+        End If
     End Sub
 End Class

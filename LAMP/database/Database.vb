@@ -43,6 +43,8 @@ Public Class TemplateDatabase
         sqlite_cmd.CommandText = "CREATE TABLE if not exists template (
                                   GUID Text PRIMARY KEY Not NULL, 
                                   DXF Text Not NULL,
+                                  Name Text DEFAULT '' Not NULL,
+                                  ShortDescription Text DEFAULT '' Not NULL,
                                   Tag Text DEFAULT '',
                                   material Text Not NULL,
                                   length Int Not NULL,
@@ -60,7 +62,9 @@ Public Class TemplateDatabase
                                   GUID Text PRIMARY KEY Not NULL, 
                                   image1 blob Not NULL,
                                   image2 blob,
-                                  image3 blob
+                                  image3 blob,
+
+                                  FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );"
         sqlite_cmd.ExecuteNonQuery()
 
@@ -144,7 +148,7 @@ Public Class TemplateDatabase
                     (@guid, @dxf, @tags, @material, @length, @height, @thickness, @creatorName, @creatorId, DATETIME('now'));"
 
             sqlite_cmd.Parameters.AddWithValue("@guid", template.GUID)
-            sqlite_cmd.Parameters.AddWithValue("@dxf", template.Template.ToDxfString)
+            sqlite_cmd.Parameters.AddWithValue("@dxf", template.BaseDrawing.ToDxfString)
             sqlite_cmd.Parameters.AddWithValue("@tags", SerializeTags(template))
             sqlite_cmd.Parameters.AddWithValue("@material", template.Material)
             sqlite_cmd.Parameters.AddWithValue("@length", template.Length)

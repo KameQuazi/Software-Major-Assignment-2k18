@@ -123,10 +123,10 @@
     <Compile Include="frontend\forms\AboutBox1.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\controls\DesignerScreen.Designer.vb">
-      <DependentUpon>DesignerScreen.vb</DependentUpon>
+    <Compile Include="frontend\controls\DxfViewerControl.Designer.vb">
+      <DependentUpon>DxfViewerControl.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\controls\DesignerScreen.vb">
+    <Compile Include="frontend\controls\DxfViewerControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="frontend\controls\FileDisplay.designer.vb">
@@ -208,8 +208,8 @@
     <EmbeddedResource Include="frontend\forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\controls\DesignerScreen.resx">
-      <DependentUpon>DesignerScreen.vb</DependentUpon>
+    <EmbeddedResource Include="frontend\controls\DxfViewerControl.resx">
+      <DependentUpon>DxfViewerControl.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\controls\FileDisplay.resx">
       <DependentUpon>FileDisplay.vb</DependentUpon>

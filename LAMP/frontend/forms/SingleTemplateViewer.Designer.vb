@@ -22,6 +22,7 @@ Partial Class SingleTemplateViewer
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SingleTemplateViewer))
         Me.Preview1 = New System.Windows.Forms.PictureBox()
         Me.Preview2 = New System.Windows.Forms.PictureBox()
         Me.Preview3 = New System.Windows.Forms.PictureBox()
@@ -33,6 +34,11 @@ Partial Class SingleTemplateViewer
         Me.ImageFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.AddToDb = New System.Windows.Forms.Button()
         Me.DxfIndicator = New System.Windows.Forms.Label()
+        Me.ExportSpf = New System.Windows.Forms.Button()
+        Me.ExportDxf = New System.Windows.Forms.Button()
+        Me.DxfSaveDialog = New System.Windows.Forms.SaveFileDialog()
+        Me.SpfSaveDialog = New System.Windows.Forms.SaveFileDialog()
+        Me.DxfViewerControl1 = New LAMP.DxfViewerControl()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -128,11 +134,50 @@ Partial Class SingleTemplateViewer
         Me.DxfIndicator.Size = New System.Drawing.Size(0, 13)
         Me.DxfIndicator.TabIndex = 9
         '
+        'ExportSpf
+        '
+        Me.ExportSpf.Location = New System.Drawing.Point(163, 446)
+        Me.ExportSpf.Name = "ExportSpf"
+        Me.ExportSpf.Size = New System.Drawing.Size(118, 23)
+        Me.ExportSpf.TabIndex = 10
+        Me.ExportSpf.Text = "Export To SPF"
+        Me.ExportSpf.UseVisualStyleBackColor = True
+        '
+        'ExportDxf
+        '
+        Me.ExportDxf.Location = New System.Drawing.Point(305, 446)
+        Me.ExportDxf.Name = "ExportDxf"
+        Me.ExportDxf.Size = New System.Drawing.Size(101, 23)
+        Me.ExportDxf.TabIndex = 11
+        Me.ExportDxf.Text = "Export To DXF"
+        Me.ExportDxf.UseVisualStyleBackColor = True
+        '
+        'DxfSaveDialog
+        '
+        Me.DxfSaveDialog.Filter = "dxf file|*.dxf"
+        '
+        'SpfSaveDialog
+        '
+        Me.SpfSaveDialog.Filter = "spf file|*.spf"
+        '
+        'DxfViewerControl1
+        '
+        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
+        Me.DxfViewerControl1.Location = New System.Drawing.Point(240, 62)
+        Me.DxfViewerControl1.Name = "DxfViewerControl1"
+        Me.DxfViewerControl1.Size = New System.Drawing.Size(281, 172)
+        Me.DxfViewerControl1.Source = Nothing
+        Me.DxfViewerControl1.TabIndex = 12
+        '
         'SingleTemplateViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(572, 489)
+        Me.Controls.Add(Me.DxfViewerControl1)
+        Me.Controls.Add(Me.ExportDxf)
+        Me.Controls.Add(Me.ExportSpf)
         Me.Controls.Add(Me.DxfIndicator)
         Me.Controls.Add(Me.AddToDb)
         Me.Controls.Add(Me.SelectDxf)
@@ -163,4 +208,9 @@ Partial Class SingleTemplateViewer
     Friend WithEvents ImageFileDialog As OpenFileDialog
     Friend WithEvents AddToDb As Button
     Friend WithEvents DxfIndicator As Label
+    Friend WithEvents ExportSpf As Button
+    Friend WithEvents ExportDxf As Button
+    Friend WithEvents DxfSaveDialog As SaveFileDialog
+    Friend WithEvents SpfSaveDialog As SaveFileDialog
+    Friend WithEvents DxfViewerControl1 As DxfViewerControl
 End Class

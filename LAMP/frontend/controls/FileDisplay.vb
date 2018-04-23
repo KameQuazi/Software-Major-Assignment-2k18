@@ -22,7 +22,7 @@
     ''' <param name="template"></param>
     Private Sub DisplayTemplate(template As LampTemplate)
         If template IsNot Nothing Then
-            Dim dxf = template.Template
+            Dim dxf = template.BaseDrawing
             lblName.Text = "Name: " & template.Name
             lblCreator.Text = "Creator: Waxy by steve"
             If template.PreviewImages.Count > 0 Then
