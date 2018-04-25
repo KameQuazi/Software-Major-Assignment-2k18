@@ -30,6 +30,7 @@ Partial Class DebugForm
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Button7 = New System.Windows.Forms.Button()
         Me.Button8 = New System.Windows.Forms.Button()
+        Me.MultipleTemplateViewer1 = New LAMP.MultipleTemplateViewer()
         Me.SuspendLayout()
         '
         'Button1
@@ -88,7 +89,7 @@ Partial Class DebugForm
         '
         'Button7
         '
-        Me.Button7.Location = New System.Drawing.Point(575, 483)
+        Me.Button7.Location = New System.Drawing.Point(184, 517)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(151, 23)
         Me.Button7.TabIndex = 6
@@ -104,11 +105,22 @@ Partial Class DebugForm
         Me.Button8.Text = "Add template"
         Me.Button8.UseVisualStyleBackColor = True
         '
+        'MultipleTemplateViewer1
+        '
+        Me.MultipleTemplateViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.MultipleTemplateViewer1.Location = New System.Drawing.Point(572, 12)
+        Me.MultipleTemplateViewer1.ColumnCount = 4
+        Me.MultipleTemplateViewer1.RowCount = 2
+        Me.MultipleTemplateViewer1.Name = "MultipleTemplateViewer1"
+        Me.MultipleTemplateViewer1.Size = New System.Drawing.Size(716, 534)
+        Me.MultipleTemplateViewer1.TabIndex = 8
+        '
         'DebugForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(792, 518)
+        Me.ClientSize = New System.Drawing.Size(1343, 587)
+        Me.Controls.Add(Me.MultipleTemplateViewer1)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.Button6)
@@ -131,4 +143,5 @@ Partial Class DebugForm
     Friend WithEvents Button6 As Button
     Friend WithEvents Button7 As Button
     Friend WithEvents Button8 As Button
+    Friend WithEvents MultipleTemplateViewer1 As MultipleTemplateViewer
 End Class

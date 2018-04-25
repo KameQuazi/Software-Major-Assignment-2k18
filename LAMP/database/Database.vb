@@ -130,6 +130,18 @@ Public Class TemplateDatabase
     End Function
 
     ''' <summary>
+    ''' Reads 
+    ''' </summary> 
+    Private Function ReadTemplateTable() As LampTemplate
+        Throw New NotImplementedException
+    End Function
+
+    Private Function ReadImageTable() As LampTemplate
+        Throw New NotImplementedException()
+    End Function
+
+
+    ''' <summary>
     ''' Gets all templates in the database
     ''' </summary>
     ''' <returns></returns>

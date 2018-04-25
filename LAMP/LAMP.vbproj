@@ -117,6 +117,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="database\Database.vb" />
+    <Compile Include="frontend\controls\MultipleTemplateViewer.Designer.vb">
+      <DependentUpon>MultipleTemplateViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\controls\MultipleTemplateViewer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="frontend\forms\AboutBox1.designer.vb">
       <DependentUpon>AboutBox1.vb</DependentUpon>
     </Compile>
@@ -205,6 +211,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frontend\controls\MultipleTemplateViewer.resx">
+      <DependentUpon>MultipleTemplateViewer.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.vb</DependentUpon>
     </EmbeddedResource>

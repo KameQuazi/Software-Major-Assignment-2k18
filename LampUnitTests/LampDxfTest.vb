@@ -2,9 +2,10 @@
 Imports LAMP
 Imports Microsoft.VisualStudio.TestTools.UnitTesting.Assert
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
-Imports LAMP.LampMath
 Imports System.Drawing
 Imports System.IO
+Imports LAMP.LampDxfHelper
+
 Imports netDxf
 
 <TestClass()> Public Class LampDxfTest
@@ -12,7 +13,7 @@ Imports netDxf
     <TestMethod()> Public Sub CartesianToGdiTest()
         Dim zero = New PointF(0, 0)
         ' test P(0, 0) with zero center
-        AreEqual(LampMath.CartesianToGdi(zero, 200, 200, 0, 0), New PointF(100, 100))
+        AreEqual(CartesianToGdi(zero, 200, 200, 0, 0), New PointF(100, 100))
         ' test P(0, 0) with (100, 100) as center
         AreEqual(CartesianToGdi(New PointF(100, 100), 200, 200, 0, 0), New PointF(0, 200))
         ' test P(100, 100) with (100, 100)
