@@ -42,7 +42,10 @@ Partial Class MultipleTemplateViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoSize = True
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.Margin = New System.Windows.Forms.Padding(0)
         Me.Name = "MultipleTemplateViewer"
         Me.Size = New System.Drawing.Size(716, 534)
         Me.ResumeLayout(False)

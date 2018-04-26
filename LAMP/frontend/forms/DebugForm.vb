@@ -42,6 +42,28 @@
 
     Private Sub Test()
         MultipleTemplateViewer1.Items.Add(TemplateDatabase.GetExampleTemplate("one"))
+        MultipleTemplateViewer1.Items.Add(TemplateDatabase.GetExampleTemplate("two"))
+        MultipleTemplateViewer1.Items.Add(TemplateDatabase.GetExampleTemplate("three"))
+        MultipleTemplateViewer1.Items.Add(TemplateDatabase.GetExampleTemplate("four"))
+        MultipleTemplateViewer1.Items.Add(TemplateDatabase.GetExampleTemplate("five"))
+        MultipleTemplateViewer1.Items.Add(TemplateDatabase.GetExampleTemplate("six"))
+        'MultipleTemplateViewer1.Items.Add(TemplateDatabase.GetExampleTemplate("seven"))
+        'MultipleTemplateViewer1.Items.Add(TemplateDatabase.GetExampleTemplate("eight"))
+        'Dim x As New Button()
+        'x.Text = "asdf"
+        'MultipleTemplateViewer1.TableLayoutPanel1.Controls.Add(x)
+    End Sub
+
+    Private Sub Swap()
+        Dim c1 As Control = MultipleTemplateViewer1.TableLayoutPanel1.GetControlFromPosition(0, 0)
+        Dim c2 As Control = MultipleTemplateViewer1.TableLayoutPanel1.GetControlFromPosition(1, 0)
+
+        If c1 IsNot Nothing And c2 IsNot Nothing Then
+
+            MultipleTemplateViewer1.TableLayoutPanel1.SetColumn(c1, 1)
+            MultipleTemplateViewer1.TableLayoutPanel1.SetColumn(c2, 0)
+
+        End If
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click

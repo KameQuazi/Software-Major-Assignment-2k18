@@ -6,6 +6,8 @@
 
     Public Property Items As TemplateItemCollection
 
+    Public Property TemplateViewers As New List(Of FileDisplay)
+
     Public Property RowCount As Integer
         Get
             Return _rowCount
@@ -34,8 +36,29 @@
         ' This call is required by the designer.
         InitializeComponent()
 
+        ResetLayout()
+
         ' Add any initialization after the InitializeComponent() call.
         Items = New TemplateItemCollection(Me)
+        'Dim y = New Button()
+        'y.Text = "asd"
+        'TableLayoutPanel1.Controls.Add(y)
+        'TableLayoutPanel1.SetRow(y, 0)
+        'TableLayoutPanel1.SetColumn(y, 0)
+
+        'y = New Button
+        'y.Text = "123456"
+        'TableLayoutPanel1.Controls.Add(y)
+        'TableLayoutPanel1.SetRow(y, 0)
+        'TableLayoutPanel1.SetColumn(y, 0)
+
+        'y = New Button
+        'y.Text = "12312"
+        'TableLayoutPanel1.Controls.Add(y)
+        'TableLayoutPanel1.SetRow(y, 0)
+        'TableLayoutPanel1.SetColumn(y, 0)
+
+
     End Sub
 
     Private Sub ResetLayout()
@@ -47,19 +70,7 @@
         Return _rowCount * _columnCount
     End Function
 
-    Private Sub UpdateItems()
-        For pos As Integer = 0 To TotalItemsShown()
-            Dim index = pos + _startIndex
-            If Items.Count > index Then
-                Dim singleTemplate As New FileDisplay
-                Me.Controls.Add(singleTemplate)
 
-                singleTemplate.Template = DirectCast(Items(index), LampTemplate)
-                TableLayoutPanel1.SetRow(singleTemplate, GetRow(pos))
-                TableLayoutPanel1.SetColumn(singleTemplate, GetCol(pos))
-            End If
-        Next
-    End Sub
 
 
     Private Function GetRow(index As Integer) As Integer
@@ -69,6 +80,21 @@
     Private Function GetCol(index As Integer) As Integer
         Return index Mod ColumnCount
     End Function
+
+    Private Sub UpdateControls()
+        ' clear all the controls 
+        TableLayoutPanel1.Controls.Clear()
+        TemplateViewers.Clear()
+        For Each template As LampTemplate In Items
+            Dim viewer As New FileDisplay
+            viewer.Template = template
+            Me.TableLayoutPanel1.Controls.Add(viewer)
+        Next
+    End Sub
+
+    Private Sub RemoveControls()
+        Throw New NotImplementedException()
+    End Sub
 
     Public Class TemplateItemCollection
         Implements IList, ICollection, IEnumerable
@@ -134,38 +160,38 @@
 #Region "IList updateowner"
         Public Sub Clear() Implements IList.Clear
             DirectCast(_templates, IList).Clear()
-            owner.UpdateItems()
+            owner.UpdateControls()
         End Sub
 
         Public Sub CopyTo(array As Array, index As Integer) Implements ICollection.CopyTo
             DirectCast(_templates, IList).CopyTo(array, index)
-            owner.UpdateItems()
+            owner.UpdateControls()
         End Sub
 
         Public Sub Insert(index As Integer, value As Object) Implements IList.Insert
             DirectCast(_templates, IList).Insert(index, value)
-            owner.UpdateItems()
+            owner.UpdateControls()
         End Sub
 
         Public Sub Remove(value As Object) Implements IList.Remove
             DirectCast(_templates, IList).Remove(value)
-            owner.UpdateItems()
+            owner.UpdateControls()
         End Sub
 
         Public Sub RemoveAt(index As Integer) Implements IList.RemoveAt
             DirectCast(_templates, IList).RemoveAt(index)
-            owner.UpdateItems()
+            owner.UpdateControls()
         End Sub
 
         Public Function Add(value As Object) As Integer Implements IList.Add
             Dim val = DirectCast(_templates, IList).Add(value)
-            owner.UpdateItems()
+            owner.UpdateControls()
             Return val
         End Function
 
         Public Function Contains(value As Object) As Boolean Implements IList.Contains
             Dim val = DirectCast(_templates, IList).Contains(value)
-            owner.UpdateItems()
+            owner.UpdateControls()
             Return val
         End Function
 

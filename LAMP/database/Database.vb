@@ -412,6 +412,7 @@ Public Class TemplateDatabase
                 template.PreviewImages.Add(Image.FromStream(stream))
             End Using
         End If
+        template.Name = name
         Return template
     End Function
 

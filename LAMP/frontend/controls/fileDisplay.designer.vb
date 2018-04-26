@@ -30,6 +30,7 @@ Partial Class FileDisplay
         Me.lblWidth = New System.Windows.Forms.Label()
         Me.lblMaterial = New System.Windows.Forms.Label()
         Me.lblCutTime = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
         CType(Me.DisplayBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -103,10 +104,20 @@ Partial Class FileDisplay
         Me.lblCutTime.TabIndex = 6
         Me.lblCutTime.Text = "Time to Cut:"
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(122, 226)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 7
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'FileDisplay
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
+        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.lblCutTime)
         Me.Controls.Add(Me.lblMaterial)
         Me.Controls.Add(Me.lblWidth)
@@ -130,4 +141,5 @@ Partial Class FileDisplay
     Friend WithEvents lblWidth As Label
     Friend WithEvents lblMaterial As Label
     Friend WithEvents lblCutTime As Label
+    Friend WithEvents Button1 As Button
 End Class
