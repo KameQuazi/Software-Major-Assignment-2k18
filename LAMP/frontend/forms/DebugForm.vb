@@ -41,7 +41,6 @@
     End Sub
 
     Private Sub Test()
-        MultipleTemplateViewer1.Items.Add(TemplateDatabase.GetExampleTemplate("one"))
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
@@ -49,7 +48,4 @@
         x.ShowDialog()
     End Sub
 
-    Private Sub MultipleTemplateViewer1_Load(sender As Object, e As EventArgs) Handles MultipleTemplateViewer1.Load
-
-    End Sub
 End Class

@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class DebugForm
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class DebugForm
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
@@ -30,7 +30,6 @@ Partial Class DebugForm
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Button7 = New System.Windows.Forms.Button()
         Me.Button8 = New System.Windows.Forms.Button()
-        Me.MultipleTemplateViewer1 = New LAMP.MultipleTemplateViewer()
         Me.SuspendLayout()
         '
         'Button1
@@ -105,22 +104,11 @@ Partial Class DebugForm
         Me.Button8.Text = "Add template"
         Me.Button8.UseVisualStyleBackColor = True
         '
-        'MultipleTemplateViewer1
-        '
-        Me.MultipleTemplateViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.MultipleTemplateViewer1.Location = New System.Drawing.Point(572, 12)
-        Me.MultipleTemplateViewer1.ColumnCount = 4
-        Me.MultipleTemplateViewer1.RowCount = 2
-        Me.MultipleTemplateViewer1.Name = "MultipleTemplateViewer1"
-        Me.MultipleTemplateViewer1.Size = New System.Drawing.Size(716, 534)
-        Me.MultipleTemplateViewer1.TabIndex = 8
-        '
         'DebugForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1343, 587)
-        Me.Controls.Add(Me.MultipleTemplateViewer1)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.Button6)
@@ -143,5 +131,4 @@ Partial Class DebugForm
     Friend WithEvents Button6 As Button
     Friend WithEvents Button7 As Button
     Friend WithEvents Button8 As Button
-    Friend WithEvents MultipleTemplateViewer1 As MultipleTemplateViewer
 End Class
