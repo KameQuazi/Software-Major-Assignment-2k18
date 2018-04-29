@@ -31,23 +31,28 @@ Public Class SingleTemplateViewer
     ''' .Template
     ''' </summary>
     Private Sub UpdateViewer()
+
         UpdateText()
 
         UpdateViewerImages()
     End Sub
 
     Private Sub UpdateText()
-        NameBox.Text = Template.Name
-        DxfViewerControl1.Source = Template.BaseDrawing
+        If Template IsNot Nothing Then
+            NameBox.Text = Template.Name
+            DxfViewerControl1.Source = Template.BaseDrawing
+        End If
     End Sub
 
     ''' <summary>
     ''' Updates the PictureBoxes in the form with the internal image array
     ''' </summary>
     Private Sub UpdateViewerImages()
-        Preview1.Image = images(0)
-        Preview2.Image = images(1)
-        Preview3.Image = images(2)
+        If Template IsNot Nothing Then
+            Preview1.Image = images(0)
+            Preview2.Image = images(1)
+            Preview3.Image = images(2)
+        End If
     End Sub
 
 

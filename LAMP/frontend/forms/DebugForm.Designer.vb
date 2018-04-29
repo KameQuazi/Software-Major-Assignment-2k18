@@ -32,7 +32,7 @@ Partial Class DebugForm
         Me.Button8 = New System.Windows.Forms.Button()
         Me.Button9 = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.MutliTemplateViewer1 = New LAMP.MutliTemplateViewer()
+        Me.TemplateViewer = New LAMP.MutliTemplateViewer()
         Me.SuspendLayout()
         '
         'Button1
@@ -123,21 +123,21 @@ Partial Class DebugForm
         Me.TextBox1.Size = New System.Drawing.Size(100, 20)
         Me.TextBox1.TabIndex = 10
         '
-        'MutliTemplateViewer1
+        'TemplateViewer
         '
-        Me.MutliTemplateViewer1.ColumnCount = 3
-        Me.MutliTemplateViewer1.Location = New System.Drawing.Point(561, 52)
-        Me.MutliTemplateViewer1.Name = "MutliTemplateViewer1"
-        Me.MutliTemplateViewer1.RowCount = 2
-        Me.MutliTemplateViewer1.Size = New System.Drawing.Size(609, 523)
-        Me.MutliTemplateViewer1.TabIndex = 11
+        Me.TemplateViewer.ColumnCount = 3
+        Me.TemplateViewer.Location = New System.Drawing.Point(532, 0)
+        Me.TemplateViewer.Name = "TemplateViewer"
+        Me.TemplateViewer.RowCount = 2
+        Me.TemplateViewer.Size = New System.Drawing.Size(643, 561)
+        Me.TemplateViewer.TabIndex = 11
         '
         'DebugForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1343, 587)
-        Me.Controls.Add(Me.MutliTemplateViewer1)
+        Me.Controls.Add(Me.TemplateViewer)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button9)
         Me.Controls.Add(Me.Button8)
@@ -165,5 +165,5 @@ Partial Class DebugForm
     Friend WithEvents Button8 As Button
     Friend WithEvents Button9 As Button
     Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents MutliTemplateViewer1 As MutliTemplateViewer
+    Friend WithEvents TemplateViewer As MutliTemplateViewer
 End Class

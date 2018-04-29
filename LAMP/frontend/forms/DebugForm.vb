@@ -41,12 +41,11 @@
     End Sub
 
     Private Sub Test()
-
+        TemplateViewer.SetTemplateToPosition(0, 0, TemplateDatabase.GetExampleTemplate("one"))
     End Sub
 
     Private Sub Test2()
-        Dim y = New FileDisplay()
-        y.Name = TextBox1.Text
+
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
