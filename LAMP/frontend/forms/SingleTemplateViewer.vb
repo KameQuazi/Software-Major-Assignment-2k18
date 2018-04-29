@@ -31,9 +31,14 @@ Public Class SingleTemplateViewer
     ''' .Template
     ''' </summary>
     Private Sub UpdateViewer()
+        UpdateText()
+
+        UpdateViewerImages()
+    End Sub
+
+    Private Sub UpdateText()
         NameBox.Text = Template.Name
         DxfViewerControl1.Source = Template.BaseDrawing
-        UpdateViewerImages()
     End Sub
 
     ''' <summary>
@@ -100,6 +105,10 @@ Public Class SingleTemplateViewer
     ''' from the Template
     ''' </summary>
     Private Sub UpdateInternalImages()
+        If _template Is Nothing Then
+            Return
+        End If
+
         For i As Integer = 0 To 3
             images(i) = Nothing
             If _template.PreviewImages.Count > i Then

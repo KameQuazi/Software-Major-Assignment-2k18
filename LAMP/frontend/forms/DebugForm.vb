@@ -41,6 +41,12 @@
     End Sub
 
     Private Sub Test()
+
+    End Sub
+
+    Private Sub Test2()
+        Dim y = New FileDisplay()
+        y.Name = TextBox1.Text
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
@@ -48,4 +54,7 @@
         x.ShowDialog()
     End Sub
 
+    Private Sub Button9_Click(sender As Object, e As EventArgs) Handles Button9.Click
+        Test2()
+    End Sub
 End Class

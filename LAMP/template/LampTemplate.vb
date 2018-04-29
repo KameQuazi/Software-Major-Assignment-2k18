@@ -40,13 +40,45 @@ Public NotInheritable Class LampTemplate
     ''' a unique identifer for each different template
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("name")>
+    <JsonProperty("Name")>
     Public Property Name As String
         Get
             Return _name
         End Get
         Set(value As String)
             _name = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
+    Private _shortDescription As String
+    ''' <summary>
+    ''' a unique identifer for each different template
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("ShortDescription")>
+    Public Property ShortDescription As String
+        Get
+            Return _shortDescription
+        End Get
+        Set(value As String)
+            _shortDescription = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
+    Private _longDescription As String
+    ''' <summary>
+    ''' a unique identifer for each different template
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("LongDescription")>
+    Public Property LongDescription As String
+        Get
+            Return _longDescription
+        End Get
+        Set(value As String)
+            _longDescription = value
             NotifyPropertyChanged()
         End Set
     End Property

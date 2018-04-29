@@ -24,12 +24,12 @@ Partial Class DxfViewerControl
     Private Sub InitializeComponent()
         Me.SuspendLayout()
         '
-        'DesignerScreen
+        'DxfViewerControl
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Name = "DesignerScreen"
+        Me.Name = "DxfViewerControl"
         Me.Size = New System.Drawing.Size(457, 433)
         Me.ResumeLayout(False)
 

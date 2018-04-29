@@ -117,6 +117,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="database\Database.vb" />
+    <Compile Include="frontend\controls\MutliTemplateViewer.Designer.vb">
+      <DependentUpon>MutliTemplateViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\controls\MutliTemplateViewer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="frontend\forms\AboutBox1.designer.vb">
       <DependentUpon>AboutBox1.vb</DependentUpon>
     </Compile>
@@ -205,6 +211,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frontend\controls\MutliTemplateViewer.resx">
+      <DependentUpon>MutliTemplateViewer.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.vb</DependentUpon>
     </EmbeddedResource>

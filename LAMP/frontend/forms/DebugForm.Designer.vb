@@ -30,6 +30,9 @@ Partial Class DebugForm
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Button7 = New System.Windows.Forms.Button()
         Me.Button8 = New System.Windows.Forms.Button()
+        Me.Button9 = New System.Windows.Forms.Button()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.MutliTemplateViewer1 = New LAMP.MutliTemplateViewer()
         Me.SuspendLayout()
         '
         'Button1
@@ -104,11 +107,39 @@ Partial Class DebugForm
         Me.Button8.Text = "Add template"
         Me.Button8.UseVisualStyleBackColor = True
         '
+        'Button9
+        '
+        Me.Button9.Location = New System.Drawing.Point(356, 517)
+        Me.Button9.Name = "Button9"
+        Me.Button9.Size = New System.Drawing.Size(75, 23)
+        Me.Button9.TabIndex = 9
+        Me.Button9.Text = "Test2"
+        Me.Button9.UseVisualStyleBackColor = True
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(331, 479)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox1.TabIndex = 10
+        '
+        'MutliTemplateViewer1
+        '
+        Me.MutliTemplateViewer1.ColumnCount = 3
+        Me.MutliTemplateViewer1.Location = New System.Drawing.Point(561, 52)
+        Me.MutliTemplateViewer1.Name = "MutliTemplateViewer1"
+        Me.MutliTemplateViewer1.RowCount = 2
+        Me.MutliTemplateViewer1.Size = New System.Drawing.Size(609, 523)
+        Me.MutliTemplateViewer1.TabIndex = 11
+        '
         'DebugForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1343, 587)
+        Me.Controls.Add(Me.MutliTemplateViewer1)
+        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.Button9)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.Button6)
@@ -120,6 +151,7 @@ Partial Class DebugForm
         Me.Name = "DebugForm"
         Me.Text = "DebugForm"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
@@ -131,4 +163,7 @@ Partial Class DebugForm
     Friend WithEvents Button6 As Button
     Friend WithEvents Button7 As Button
     Friend WithEvents Button8 As Button
+    Friend WithEvents Button9 As Button
+    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents MutliTemplateViewer1 As MutliTemplateViewer
 End Class
