@@ -1,12 +1,12 @@
 ﻿
-Public Class SingleTemplateViewer
+Public Class TemplateEditor
     ''' <summary>
     ''' Array of 3 images
     ''' </summary>
     Private images(3) As Image
 
 #Region "Properties"
-    Private _template As New LampTemplate
+    Private _template As LampTemplate = LampTemplate.Empty
 
     ''' <summary>
     ''' Determines the template 

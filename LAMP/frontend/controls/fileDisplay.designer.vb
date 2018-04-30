@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FileDisplay
     Inherits System.Windows.Forms.UserControl
 
     'UserControl overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class FileDisplay
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FileDisplay))
         Me.DisplayBox = New System.Windows.Forms.PictureBox()
@@ -30,7 +30,6 @@ Partial Class FileDisplay
         Me.lblWidth = New System.Windows.Forms.Label()
         Me.lblMaterial = New System.Windows.Forms.Label()
         Me.lblCutTime = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
         CType(Me.DisplayBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -104,20 +103,10 @@ Partial Class FileDisplay
         Me.lblCutTime.TabIndex = 6
         Me.lblCutTime.Text = "Time to Cut:"
         '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(122, 226)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 7
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
-        '
         'FileDisplay
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
-        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.lblCutTime)
         Me.Controls.Add(Me.lblMaterial)
         Me.Controls.Add(Me.lblWidth)
@@ -141,5 +130,4 @@ Partial Class FileDisplay
     Friend WithEvents lblWidth As Label
     Friend WithEvents lblMaterial As Label
     Friend WithEvents lblCutTime As Label
-    Friend WithEvents Button1 As Button
 End Class

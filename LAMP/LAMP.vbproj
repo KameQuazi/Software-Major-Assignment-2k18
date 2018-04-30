@@ -117,10 +117,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="database\Database.vb" />
-    <Compile Include="frontend\controls\MutliTemplateViewer.Designer.vb">
-      <DependentUpon>MutliTemplateViewer.vb</DependentUpon>
+    <Compile Include="frontend\controls\MultiTemplateViewer.Designer.vb">
+      <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\controls\MutliTemplateViewer.vb">
+    <Compile Include="frontend\controls\MultiTemplateViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="frontend\forms\AboutBox1.designer.vb">
@@ -141,10 +141,10 @@
     <Compile Include="frontend\controls\FileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="frontend\forms\SingleTemplateViewer.Designer.vb">
-      <DependentUpon>SingleTemplateViewer.vb</DependentUpon>
+    <Compile Include="frontend\forms\TemplateEditor.Designer.vb">
+      <DependentUpon>TemplateEditor.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\SingleTemplateViewer.vb">
+    <Compile Include="frontend\forms\TemplateEditor.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frontend\forms\DebugForm.Designer.vb">
@@ -211,8 +211,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frontend\controls\MutliTemplateViewer.resx">
-      <DependentUpon>MutliTemplateViewer.vb</DependentUpon>
+    <EmbeddedResource Include="frontend\controls\MultiTemplateViewer.resx">
+      <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.vb</DependentUpon>
@@ -223,8 +223,8 @@
     <EmbeddedResource Include="frontend\controls\FileDisplay.resx">
       <DependentUpon>FileDisplay.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\SingleTemplateViewer.resx">
-      <DependentUpon>SingleTemplateViewer.vb</DependentUpon>
+    <EmbeddedResource Include="frontend\forms\TemplateEditor.resx">
+      <DependentUpon>TemplateEditor.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\DebugForm.resx">
       <DependentUpon>DebugForm.vb</DependentUpon>

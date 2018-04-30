@@ -1,6 +1,6 @@
 ﻿Public Class FileDisplay
 
-    Private _template As LampTemplate
+    Private _template As LampTemplate = LampTemplate.Empty
 
     ''' <summary>
     ''' Change template to change the text on the display
@@ -49,13 +49,13 @@
     Private Sub DisplayBox_Click(sender As Object, e As EventArgs) Handles DisplayBox.Click
         If Me.Enabled Then
             ' Oepn up the single template Viewer
-            Dim singleViewer As New SingleTemplateViewer()
+            Dim singleViewer As New TemplateEditor()
             singleViewer.Template = Me.Template
             singleViewer.ShowDialog()
         End If
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs)
         Me.Visible = False
     End Sub
 End Class

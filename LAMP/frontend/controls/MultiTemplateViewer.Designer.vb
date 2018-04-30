@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class MutliTemplateViewer
+Partial Class MultiTemplateViewer
     Inherits System.Windows.Forms.UserControl
 
     'UserControl overrides dispose to clean up the component list.
@@ -27,25 +27,27 @@ Partial Class MutliTemplateViewer
         '
         'GridPanel
         '
-        Me.GridPanel.ColumnCount = 2
-        Me.GridPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.GridPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.GridPanel.ColumnCount = 4
+        Me.GridPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.GridPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.GridPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.GridPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.GridPanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GridPanel.Location = New System.Drawing.Point(0, 0)
         Me.GridPanel.Name = "GridPanel"
         Me.GridPanel.RowCount = 2
         Me.GridPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.GridPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.GridPanel.Size = New System.Drawing.Size(400, 333)
+        Me.GridPanel.Size = New System.Drawing.Size(800, 600)
         Me.GridPanel.TabIndex = 0
         '
-        'MutliTemplateViewer
+        'MultiTemplateViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.GridPanel)
-        Me.Name = "MutliTemplateViewer"
-        Me.Size = New System.Drawing.Size(400, 333)
+        Me.Name = "MultiTemplateViewer"
+        Me.Size = New System.Drawing.Size(800, 600)
         Me.ResumeLayout(False)
 
     End Sub

@@ -321,6 +321,17 @@ Public NotInheritable Class LampTemplate
     End Property
 
     ''' <summary>
+    ''' Gets an empty lamptemplte
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property Empty As LampTemplate
+        Get
+            Return New LampTemplate With {.GUID = New Guid().ToString()} 'Gets a New Default guid (0000-0000-0000...)
+        End Get
+    End Property
+
+
+    ''' <summary>
     ''' Converts -> json format to be saved as a .spf
     ''' </summary>
     ''' <returns></returns>
@@ -333,7 +344,11 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <param name="path"></param>
     ''' <param name="formatting"></param>
+#If DEBUG Then
+    Public Sub Save(path As String, Optional formatting As Formatting = Formatting.Indented)
+#Else
     Public Sub Save(path As String, Optional formatting As Formatting = Formatting.None)
+#End If
         Using fileStream As New StreamWriter(path)
             fileStream.Write(Serialize(formatting))
         End Using

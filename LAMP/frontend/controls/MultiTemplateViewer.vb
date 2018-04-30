@@ -1,11 +1,11 @@
-﻿Public Class MutliTemplateViewer
+﻿Public Class MultiTemplateViewer
     Private Property TemplateViewers As New Dictionary(Of Point, FileDisplay)
 
     Private NewColumnStyle As Func(Of ColumnStyle) = Function() New ColumnStyle(SizeType.AutoSize)
 
     Private NewRowStyle As Func(Of RowStyle) = Function() New RowStyle(SizeType.AutoSize)
 
-    Private _columnCount As Integer = 2
+    Private _columnCount As Integer = 4
 
     Public Property ColumnCount As Integer
         Get
@@ -141,4 +141,20 @@
         SetViewerToPosition(column, row, New FileDisplay() With {.Template = template})
     End Sub
 
+    Public Sub LoadExample()
+        SetTemplateToPosition(0, 0, TemplateDatabase.GetExampleTemplate("one"))
+        SetTemplateToPosition(1, 0, TemplateDatabase.GetExampleTemplate("two"))
+        SetTemplateToPosition(2, 0, TemplateDatabase.GetExampleTemplate("three"))
+        SetTemplateToPosition(3, 0, TemplateDatabase.GetExampleTemplate("four"))
+
+
+        SetTemplateToPosition(0, 1, TemplateDatabase.GetExampleTemplate("five"))
+        SetTemplateToPosition(1, 1, TemplateDatabase.GetExampleTemplate("six"))
+        SetTemplateToPosition(2, 1, TemplateDatabase.GetExampleTemplate("seven"))
+        SetTemplateToPosition(3, 1, TemplateDatabase.GetExampleTemplate("eight"))
+    End Sub
+
+    Private Sub GridPanel_Paint(sender As Object, e As PaintEventArgs) Handles GridPanel.Paint
+
+    End Sub
 End Class
