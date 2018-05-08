@@ -116,6 +116,11 @@
         Return DirectCast(GridPanel.GetControlFromPosition(column, row), FileDisplay)
     End Function
 
+    Public Function GetTemplateFromPosition(column As Integer, row As Integer) As LampTemplate
+        Dim filedisplay = DirectCast(GridPanel.GetControlFromPosition(column, row), FileDisplay)
+        Return filedisplay.Template
+    End Function
+
     Public Sub SetViewerToPosition(column As Integer, row As Integer, display As FileDisplay)
         ' >= used as columncount is 1 index, column is 0 indexed
         If column >= ColumnCount Then

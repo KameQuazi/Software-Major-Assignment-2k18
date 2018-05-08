@@ -43,6 +43,8 @@
     Private Sub Test()
 
         MultiTemplateViewer.LoadExample()
+        Dim db As New TemplateDatabase
+
     End Sub
 
     Private Sub Test2()

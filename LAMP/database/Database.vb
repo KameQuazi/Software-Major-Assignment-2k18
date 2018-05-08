@@ -67,6 +67,13 @@ Public Class TemplateDatabase
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );"
         sqlite_cmd.ExecuteNonQuery()
+        sqlite_cmd.CommandText = "CREATE TABLE if not exists tags (
+                                  GUID Text Not Null,
+                                  TagName Text Not Null,
+
+                                  FOREIGN KEY(GUID) REFERENCES template(GUID)   
+                        "
+        sqlite_cmd.ExecuteNonQuery()
 
         Connection.Close()
     End Sub
@@ -80,6 +87,8 @@ Public Class TemplateDatabase
         sqlite_cmd.CommandText = "DROP TABLE If exists template"
         sqlite_cmd.ExecuteNonQuery()
         sqlite_cmd.CommandText = "DROP TABLE If exists images"
+        sqlite_cmd.ExecuteNonQuery()
+        sqlite_cmd.CommandText = "DROP TABLE If exists tags"
         sqlite_cmd.ExecuteNonQuery()
         Connection.Close()
     End Sub
@@ -201,6 +210,7 @@ Public Class TemplateDatabase
 
             sqlite_cmd.Parameters.AddWithValue("@guid", template.GUID)
             sqlite_cmd.Parameters.AddWithValue("@dxf", template.BaseDrawing.ToDxfString)
+            ' todo use tags table instead of as string
             sqlite_cmd.Parameters.AddWithValue("@tags", SerializeTags(template))
             sqlite_cmd.Parameters.AddWithValue("@material", template.Material)
             sqlite_cmd.Parameters.AddWithValue("@length", template.Length)
@@ -216,6 +226,10 @@ Public Class TemplateDatabase
             ' if there are preview images, store it in the database
             If template.PreviewImages.Count > 0 Then
                 AddImages(template.GUID, template.PreviewImages, False)
+            End If
+
+            If template.Tags.Count > 0 Then
+                AddTags(template.GUID, template.Tags, False)
             End If
 
         Finally
@@ -352,6 +366,11 @@ Public Class TemplateDatabase
                 sqlite_conn.Close()
             End If
         End Try
+    End Sub
+
+
+    Public Sub AddTags()
+        '' TODO
     End Sub
 
     ''' <summary>
