@@ -135,6 +135,12 @@
     <Compile Include="frontend\controls\FileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="frontend\forms\DBViewer.Designer.vb">
+      <DependentUpon>DBViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\forms\DBViewer.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frontend\forms\DebugForm.Designer.vb">
       <DependentUpon>DebugForm.vb</DependentUpon>
     </Compile>
@@ -207,6 +213,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\controls\FileDisplay.resx">
       <DependentUpon>FileDisplay.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frontend\forms\DBViewer.resx">
+      <DependentUpon>DBViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\DebugForm.resx">
       <DependentUpon>DebugForm.vb</DependentUpon>
