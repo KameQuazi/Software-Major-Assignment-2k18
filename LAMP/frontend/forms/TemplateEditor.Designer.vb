@@ -42,7 +42,12 @@ Partial Class TemplateEditor
         Me.ImportSpf = New System.Windows.Forms.Button()
         Me.AddTag = New System.Windows.Forms.Button()
         Me.RemoveTag = New System.Windows.Forms.Button()
+        Me.ShortDescription = New System.Windows.Forms.RichTextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.LongDescription = New System.Windows.Forms.RichTextBox()
         Me.DxfViewerControl1 = New LAMP.DxfViewerControl()
+        Me.Button1 = New System.Windows.Forms.Button()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -89,9 +94,9 @@ Partial Class TemplateEditor
         '
         'NameBox
         '
-        Me.NameBox.Location = New System.Drawing.Point(146, 20)
+        Me.NameBox.Location = New System.Drawing.Point(96, 20)
         Me.NameBox.Name = "NameBox"
-        Me.NameBox.Size = New System.Drawing.Size(100, 20)
+        Me.NameBox.Size = New System.Drawing.Size(261, 20)
         Me.NameBox.TabIndex = 4
         '
         'SelectDxf
@@ -159,9 +164,9 @@ Partial Class TemplateEditor
         '
         Me.TagsBox.FormattingEnabled = True
         Me.TagsBox.Items.AddRange(New Object() {""})
-        Me.TagsBox.Location = New System.Drawing.Point(33, 62)
+        Me.TagsBox.Location = New System.Drawing.Point(576, 12)
         Me.TagsBox.Name = "TagsBox"
-        Me.TagsBox.Size = New System.Drawing.Size(120, 95)
+        Me.TagsBox.Size = New System.Drawing.Size(322, 134)
         Me.TagsBox.TabIndex = 13
         '
         'SpfOpenDialog
@@ -179,37 +184,85 @@ Partial Class TemplateEditor
         '
         'AddTag
         '
-        Me.AddTag.Location = New System.Drawing.Point(12, 163)
+        Me.AddTag.Location = New System.Drawing.Point(670, 164)
         Me.AddTag.Name = "AddTag"
         Me.AddTag.Size = New System.Drawing.Size(75, 23)
         Me.AddTag.TabIndex = 15
         Me.AddTag.Text = "Add Tag"
         Me.AddTag.UseVisualStyleBackColor = True
         '
-        'Button2
+        'RemoveTag
         '
-        Me.RemoveTag.Location = New System.Drawing.Point(96, 163)
-        Me.RemoveTag.Name = "Button2"
-        Me.RemoveTag.Size = New System.Drawing.Size(75, 23)
+        Me.RemoveTag.Location = New System.Drawing.Point(751, 164)
+        Me.RemoveTag.Name = "RemoveTag"
+        Me.RemoveTag.Size = New System.Drawing.Size(113, 23)
         Me.RemoveTag.TabIndex = 16
         Me.RemoveTag.Text = "Remove Tag"
         Me.RemoveTag.UseVisualStyleBackColor = True
+        '
+        'ShortDescription
+        '
+        Me.ShortDescription.Location = New System.Drawing.Point(93, 58)
+        Me.ShortDescription.Name = "ShortDescription"
+        Me.ShortDescription.Size = New System.Drawing.Size(264, 36)
+        Me.ShortDescription.TabIndex = 17
+        Me.ShortDescription.Text = ""
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(30, 121)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(60, 13)
+        Me.Label2.TabIndex = 18
+        Me.Label2.Text = "Description"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(30, 61)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(50, 13)
+        Me.Label3.TabIndex = 19
+        Me.Label3.Text = "Summary"
+        '
+        'LongDescription
+        '
+        Me.LongDescription.Location = New System.Drawing.Point(93, 118)
+        Me.LongDescription.Name = "LongDescription"
+        Me.LongDescription.Size = New System.Drawing.Size(264, 122)
+        Me.LongDescription.TabIndex = 20
+        Me.LongDescription.Text = ""
         '
         'DxfViewerControl1
         '
         Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
-        Me.DxfViewerControl1.Location = New System.Drawing.Point(240, 62)
+        Me.DxfViewerControl1.Location = New System.Drawing.Point(566, 197)
         Me.DxfViewerControl1.Name = "DxfViewerControl1"
-        Me.DxfViewerControl1.Size = New System.Drawing.Size(281, 172)
+        Me.DxfViewerControl1.Size = New System.Drawing.Size(342, 311)
         Me.DxfViewerControl1.Source = Nothing
         Me.DxfViewerControl1.TabIndex = 12
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(432, 417)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 21
+        Me.Button1.Text = "Save"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'TemplateEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(572, 489)
+        Me.ClientSize = New System.Drawing.Size(920, 520)
+        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.LongDescription)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.ShortDescription)
         Me.Controls.Add(Me.RemoveTag)
         Me.Controls.Add(Me.AddTag)
         Me.Controls.Add(Me.ImportSpf)
@@ -255,4 +308,9 @@ Partial Class TemplateEditor
     Friend WithEvents ImportSpf As Button
     Friend WithEvents AddTag As Button
     Friend WithEvents RemoveTag As Button
+    Friend WithEvents ShortDescription As RichTextBox
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Label3 As Label
+    Friend WithEvents LongDescription As RichTextBox
+    Friend WithEvents Button1 As Button
 End Class

@@ -39,7 +39,7 @@
         Me.LabelText = labelText
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles CancelButton.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles CancelExitButon.Click
         Me.DialogResult = DialogResult.Cancel
         Me.Close()
     End Sub

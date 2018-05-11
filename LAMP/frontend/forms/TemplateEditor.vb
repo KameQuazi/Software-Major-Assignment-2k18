@@ -26,7 +26,27 @@ Public Class TemplateEditor
     End Property
 
     Private Sub Template_PropertyChanged(sender As Object, args As PropertyChangedEventArgs)
-        UpdateViewer()
+        Dim template As LampTemplate = DirectCast(sender, LampTemplate)
+        Select Case args.PropertyName
+            Case NameOf(LampTemplate.Tags)
+                UpdateTags()
+            Case NameOf(LampTemplate.PreviewImages)
+                UpdateTemplateImages()
+            Case NameOf(LampTemplate.BaseDrawing)
+                UpdateDxfFromTemplate()
+            Case NameOf(LampTemplate.Name)
+                NameBox.Text = template.Name
+            Case NameOf(LampTemplate.ShortDescription)
+                ShortDescription.Text = template.ShortDescription
+            Case NameOf(LampTemplate.LongDescription)
+                LongDescription.Text = template.LongDescription
+
+
+            Case Else
+                Throw New Exception()
+
+        End Select
+
     End Sub
 #End Region
 
@@ -46,7 +66,8 @@ Public Class TemplateEditor
     Private Sub UpdateViewer()
         UpdateInternalImages()
 
-        UpdateText()
+        UpdateTextFromTemplate()
+        UpdateDxfFromTemplate()
 
         UpdateTags()
 
@@ -60,11 +81,32 @@ Public Class TemplateEditor
         Next
     End Sub
 
-    Private Sub UpdateText()
+
+    Private Sub UpdateTextFromTemplate()
         If Template IsNot Nothing Then
             NameBox.Text = Template.Name
-            DxfViewerControl1.Source = Template.BaseDrawing
+            ShortDescription.Text = Template.ShortDescription
+            LongDescription.Text = Template.LongDescription
+
         End If
+    End Sub
+
+
+    Private Sub UpdateTemplateFromText()
+        If Template IsNot Nothing Then
+            Template.Name = NameBox.Text
+            Template.ShortDescription = ShortDescription.Text
+            Template.LongDescription = LongDescription.Text
+
+        End If
+    End Sub
+
+    Private Sub UpdateDxfFromTemplate()
+        DxfViewerControl1.Source = Template.BaseDrawing
+    End Sub
+
+    Private Sub UpdateTemplateFromDxf()
+        Template.BaseDrawing = DxfViewerControl1.Source
     End Sub
 
     ''' <summary>
@@ -137,7 +179,7 @@ Public Class TemplateEditor
             Return
         End If
 
-        For i As Integer = 0 To 3
+        For i As Integer = 0 To 2
             images(i) = Nothing
             If _template.PreviewImages.Count > i Then
                 images(i) = _template.PreviewImages(i)
@@ -156,12 +198,14 @@ Public Class TemplateEditor
 
     Private Sub ExportDxf_Click(sender As Object, e As EventArgs) Handles ExportDxf.Click
         If DxfSaveDialog.ShowDialog = DialogResult.OK Then
+            UpdateDxfFromTemplate()
             Template.BaseDrawing.Save(DxfSaveDialog.FileName)
         End If
     End Sub
 
     Private Sub ExportSpf_Click(sender As Object, e As EventArgs) Handles ExportSpf.Click
         If SpfSaveDialog.ShowDialog = DialogResult.OK Then
+            UpdateTemplateFromText()
             Template.Save(SpfSaveDialog.FileName)
         End If
     End Sub
@@ -194,5 +238,28 @@ Public Class TemplateEditor
             Me.Template.Tags.Remove(selectedTag)
 
         End If
+    End Sub
+
+    Private Sub RichTextBox1_TextChanged(sender As Object, e As EventArgs) Handles ShortDescription.TextChanged
+
+    End Sub
+
+    Private Sub LongDescription_TextChanged(sender As Object, e As EventArgs) Handles LongDescription.TextChanged
+
+    End Sub
+
+    Private Sub DxfViewerControl1_Load(sender As Object, e As EventArgs) Handles DxfViewerControl1.Load
+
+    End Sub
+
+    Private Sub DxfViewerControl1_Click(sender As Object, e As EventArgs) Handles DxfViewerControl1.Click
+        Dim viewer As New DesignerForm(DxfViewerControl1.Source)
+        viewer.ShowDialog()
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        UpdateTemplateFromDxf()
+        UpdateTemplateFromText()
+
     End Sub
 End Class

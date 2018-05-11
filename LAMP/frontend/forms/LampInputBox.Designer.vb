@@ -24,7 +24,7 @@ Partial Class LampInputBox
     Private Sub InitializeComponent()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
-        Me.CancelButton = New System.Windows.Forms.Button()
+        Me.CancelExitButon = New System.Windows.Forms.Button()
         Me.OkButton = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
@@ -47,13 +47,13 @@ Partial Class LampInputBox
         '
         'Button1
         '
-        Me.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.CancelButton.Location = New System.Drawing.Point(108, 181)
-        Me.CancelButton.Name = "Button1"
-        Me.CancelButton.Size = New System.Drawing.Size(75, 23)
-        Me.CancelButton.TabIndex = 2
-        Me.CancelButton.Text = "Cancel"
-        Me.CancelButton.UseVisualStyleBackColor = True
+        Me.CancelExitButon.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.CancelExitButon.Location = New System.Drawing.Point(108, 181)
+        Me.CancelExitButon.Name = "Button1"
+        Me.CancelExitButon.Size = New System.Drawing.Size(75, 23)
+        Me.CancelExitButon.TabIndex = 2
+        Me.CancelExitButon.Text = "Cancel"
+        Me.CancelExitButon.UseVisualStyleBackColor = True
         '
         'Button2
         '
@@ -71,7 +71,7 @@ Partial Class LampInputBox
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(293, 216)
         Me.Controls.Add(Me.OkButton)
-        Me.Controls.Add(Me.CancelButton)
+        Me.Controls.Add(Me.CancelExitButon)
         Me.Controls.Add(Me.RichTextBox1)
         Me.Controls.Add(Me.Label1)
         Me.Name = "LampInputBox"
@@ -83,6 +83,6 @@ Partial Class LampInputBox
 
     Friend WithEvents Label1 As Label
     Friend WithEvents RichTextBox1 As RichTextBox
-    Friend WithEvents CancelButton As Button
+    Friend WithEvents CancelExitButon As Button
     Friend WithEvents OkButton As Button
 End Class

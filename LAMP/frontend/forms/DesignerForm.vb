@@ -40,21 +40,22 @@ Public Class DesignerForm
     End Sub
 
     Sub New()
+
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        dxf = New LampDxfDocument()
 
-        dxf.AddLine(0, 0, -100, -100)
-        dxf.AddCircle(0, 0, 10)
+    End Sub
 
+    Sub New(Optional dxf As LampDxfDocument = Nothing)
+        ' This call is required by the designer.
+        InitializeComponent()
 
-
-        template = New LampTemplate(dxf)
+        ' Add any initialization after the InitializeComponent() call.
         DesignerScreen1.Source = dxf
+        Me.dxf = dxf
 
-        jsonOutput.Text = template.Serialize(Formatting.Indented)
 
     End Sub
 
@@ -65,8 +66,6 @@ Public Class DesignerForm
             Dim y = TextBox2.Text.Split(" "c)
             dxf.AddLine(Double.Parse(z(0)), Double.Parse(z(1)), Double.Parse(y(0)), Double.Parse(y(1)))
             DesignerScreen1.Refresh()
-            jsonOutput.Text = template.Serialize(Formatting.Indented)
-            template.Save("out.spf", Formatting.Indented)
         Catch ex As FormatException
             MessageBox.Show("The format is incorrect!")
         End Try
