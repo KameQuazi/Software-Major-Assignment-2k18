@@ -23,6 +23,7 @@ Partial Class DBViewer
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.DBGrid = New System.Windows.Forms.DataGridView()
+        Me.btnUpdate = New System.Windows.Forms.Button()
         CType(Me.DBGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -34,11 +35,21 @@ Partial Class DBViewer
         Me.DBGrid.Size = New System.Drawing.Size(751, 315)
         Me.DBGrid.TabIndex = 0
         '
+        'btnUpdate
+        '
+        Me.btnUpdate.Location = New System.Drawing.Point(466, 382)
+        Me.btnUpdate.Name = "btnUpdate"
+        Me.btnUpdate.Size = New System.Drawing.Size(75, 23)
+        Me.btnUpdate.TabIndex = 1
+        Me.btnUpdate.Text = "Button1"
+        Me.btnUpdate.UseVisualStyleBackColor = True
+        '
         'DBViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(814, 440)
+        Me.Controls.Add(Me.btnUpdate)
         Me.Controls.Add(Me.DBGrid)
         Me.Name = "DBViewer"
         Me.Text = "DBViewer"
@@ -48,4 +59,5 @@ Partial Class DBViewer
     End Sub
 
     Friend WithEvents DBGrid As DataGridView
+    Friend WithEvents btnUpdate As Button
 End Class

@@ -55,7 +55,7 @@ Public Class TemplateDatabase
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
         sqlite_cmd.CommandText = "DELETE from template WHERE GUID = ?"
-        sqlite_cmd.Parameters.Add(guid)
+        sqlite_cmd.Parameters.Add(guid, DbType.String)
         sqlite_cmd.ExecuteNonQuery()
         sqlite_conn.Close()
 
