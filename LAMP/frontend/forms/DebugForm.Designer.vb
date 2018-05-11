@@ -123,11 +123,11 @@ Partial Class DebugForm
         Me.TextBox1.Size = New System.Drawing.Size(100, 20)
         Me.TextBox1.TabIndex = 10
         '
-        'MutliTemplateViewer1
+        'MultiTemplateViewer
         '
         Me.MultiTemplateViewer.ColumnCount = 4
         Me.MultiTemplateViewer.Location = New System.Drawing.Point(491, 15)
-        Me.MultiTemplateViewer.Name = "MutliTemplateViewer1"
+        Me.MultiTemplateViewer.Name = "MultiTemplateViewer"
         Me.MultiTemplateViewer.RowCount = 2
         Me.MultiTemplateViewer.Size = New System.Drawing.Size(829, 560)
         Me.MultiTemplateViewer.TabIndex = 11

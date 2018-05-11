@@ -45,6 +45,24 @@
         MultiTemplateViewer.LoadExample()
         Dim db As New TemplateDatabase
 
+        Dim lamp As New LampTemplate
+
+        lamp.Tags.Add("wood")
+        lamp.Tags.Add("test")
+
+        MultiTemplateViewer.SetTemplateToPosition(0, 0, lamp)
+
+        db.AddTemplate(lamp)
+
+        Dim out = db.SelectTemplate(lamp.GUID)
+
+        MultiTemplateViewer.SetTemplateToPosition(1, 0, out)
+
+        Dim testTags As New List(Of String)
+        testTags.Add("wood")
+        Dim withTags = db.SelectTemplateWithTags(testTags)
+
+        MultiTemplateViewer.SetTemplateToPosition(2, 0, withTags(0))
     End Sub
 
     Private Sub Test2()
@@ -58,5 +76,9 @@
 
     Private Sub Button9_Click(sender As Object, e As EventArgs) Handles Button9.Click
         Test2()
+    End Sub
+
+    Private Sub MultiTemplateViewer_Load(sender As Object, e As EventArgs) Handles MultiTemplateViewer.Load
+
     End Sub
 End Class

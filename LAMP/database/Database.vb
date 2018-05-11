@@ -2,6 +2,7 @@
 Imports System.IO
 Imports LAMP.DatabaseHelper
 Imports LAMP
+Imports System.Text
 
 Public Class TemplateDatabase
     ''' <summary>
@@ -33,32 +34,75 @@ Public Class TemplateDatabase
         CreateTables()
     End Sub
 
+    Private Opened As Boolean = False
+
+    ''' <summary>
+    ''' Opens the database if required. Returns true if database was opened,
+    ''' False if it was already open
+    ''' </summary>
+    Public Function OpenDatabase() As Boolean
+        If Me.Opened = False Then
+            Me.Connection.Open()
+            Me.Opened = True
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Closes the database if necessary. Returns true if database was closed,
+    ''' false if database was never opened
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function CloseDatabase() As Boolean
+        If Me.Opened = True Then
+            Me.Connection.Close()
+            Me.Opened = False
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Function GetCommand() As SQLiteCommand
+        If Opened = False Then
+            Throw New Exception("Database connection Not open! Use OpenDatabase()")
+        End If
+        Return _Connection.CreateCommand
+    End Function
+
     ''' <summary> 
     ''' Creates all the tables required, if tables not exist 
     ''' Does not delete any data
     ''' </summary> 
     Public Sub CreateTables()
-        Connection.Open()
-        Dim sqlite_cmd = Connection.CreateCommand()
-        sqlite_cmd.CommandText = "CREATE TABLE if not exists template (
+        ' If the databse is open already, dont close it
+
+        Dim closeDatabaseAfter = OpenDatabase()
+        Try
+            Dim sqlite_cmd = GetCommand()
+
+            sqlite_cmd.CommandText = "CREATE TABLE if not exists template (
                                   GUID Text PRIMARY KEY Not NULL, 
                                   DXF Text Not NULL,
                                   Name Text DEFAULT '' Not NULL,
                                   ShortDescription Text DEFAULT '' Not NULL,
+                                  LongDescription Text DEFAULT '' NOT NULL,
                                   Tag Text DEFAULT '',
                                   material Text Not NULL,
                                   length Int Not NULL,
                                   Height Int Not NULL,
-                                  thickness Int Not NULL,
+                                  materialThickness Int Not NULL,
                                   creatorName Text Not NULL DEFAULT '',
-                                  creator_ID Int Not NULL DEFAULT -1,
+                                  creatorID Text Not NULL DEFAULT -1,
                                   approverName Text DEFAULT '',
-                                  approver_ID Int Default -1,
-                                  submit_date STRING,
+                                  approverID Text Default -1,
+                                  submitDate Text,
                                   complete Int DEFAULT FALSE);"
-        sqlite_cmd.ExecuteNonQuery()
+            sqlite_cmd.ExecuteNonQuery()
 
-        sqlite_cmd.CommandText = "CREATE TABLE if not exists images (
+            sqlite_cmd.CommandText = "CREATE TABLE if not exists images (
                                   GUID Text PRIMARY KEY Not NULL, 
                                   image1 blob Not NULL,
                                   image2 blob,
@@ -66,32 +110,98 @@ Public Class TemplateDatabase
 
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );"
-        sqlite_cmd.ExecuteNonQuery()
-        sqlite_cmd.CommandText = "CREATE TABLE if not exists tags (
+            sqlite_cmd.ExecuteNonQuery()
+            sqlite_cmd.CommandText = "CREATE TABLE if not exists tags (
                                   GUID Text Not Null,
                                   TagName Text Not Null,
-
+                                  
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)   
+                                  );
                         "
-        sqlite_cmd.ExecuteNonQuery()
+            sqlite_cmd.ExecuteNonQuery()
+        Finally
 
-        Connection.Close()
+            If closeDatabaseAfter Then
+                CloseDatabase()
+
+            End If
+        End Try
     End Sub
+
 
     ''' <summary>
     ''' Destroys all tables
     ''' </summary>
     Public Sub DeleteTables()
-        Connection.Open()
-        Dim sqlite_cmd = Connection.CreateCommand()
-        sqlite_cmd.CommandText = "DROP TABLE If exists template"
-        sqlite_cmd.ExecuteNonQuery()
-        sqlite_cmd.CommandText = "DROP TABLE If exists images"
-        sqlite_cmd.ExecuteNonQuery()
-        sqlite_cmd.CommandText = "DROP TABLE If exists tags"
-        sqlite_cmd.ExecuteNonQuery()
-        Connection.Close()
+        ' If the databse is open already, dont close it
+        Dim closeDatabaseAfter = OpenDatabase()
+        Try
+            Dim sqlite_cmd = GetCommand()
+
+            sqlite_cmd.CommandText = "DROP TABLE If exists template"
+            sqlite_cmd.ExecuteNonQuery()
+            sqlite_cmd.CommandText = "DROP TABLE If exists images"
+            sqlite_cmd.ExecuteNonQuery()
+            sqlite_cmd.CommandText = "DROP TABLE If exists tags"
+            sqlite_cmd.ExecuteNonQuery()
+        Finally
+            If closeDatabaseAfter Then
+                Connection.Close()
+            End If
+        End Try
     End Sub
+
+    ''' <summary>
+    ''' Reads 1 row off the sqliteReader, returning a lampTemplate with its variables set 
+    ''' This is so you dont have to duplicate code over SelectTemplate, SelectAllTemplate etc
+    ''' Does not call reader.Read(), the reader must have data in it
+    ''' </summary> 
+    Private Function ReadTemplateTable(reader As SQLiteDataReader, Optional start As LampTemplate = Nothing) As LampTemplate
+        If reader.HasRows <> True Then
+            Throw New DataException(NameOf(reader))
+        End If
+
+        If start Is Nothing Then
+            start = New LampTemplate
+        End If
+
+        Dim LampDXF = LampDxfDocument.FromString(reader.GetString(reader.GetOrdinal("dxf")))
+
+        Dim LampTemp = New LampTemplate(LampDXF)
+        LampTemp.GUID = reader.GetString(reader.GetOrdinal("guid"))
+        LampTemp.Name = reader.GetString(reader.GetOrdinal("name"))
+        LampTemp.ShortDescription = reader.GetString(reader.GetOrdinal("ShortDescription"))
+        LampTemp.LongDescription = reader.GetString(reader.GetOrdinal("LongDescription"))
+        LampTemp.Material = reader.GetString(reader.GetOrdinal("material"))
+        LampTemp.Height = reader.GetDouble(reader.GetOrdinal("height"))
+        LampTemp.Length = reader.GetDouble(reader.GetOrdinal("length"))
+        LampTemp.MaterialThickness = reader.GetDouble(reader.GetOrdinal("MaterialThickness"))
+        LampTemp.SubmitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
+
+
+        LampTemp.ApproverId = reader.GetString(reader.GetOrdinal("ApproverId"))
+        LampTemp.ApproverName = reader.GetString(reader.GetOrdinal("ApproverName"))
+        LampTemp.CreatorId = reader.GetString(reader.GetOrdinal("CreatorId"))
+        LampTemp.CreatorName = reader.GetString(reader.GetOrdinal("CreatorName"))
+        LampTemp.IsComplete = reader.GetBoolean(reader.GetOrdinal("complete"))
+
+        Return start
+    End Function
+
+    Private Function ReadImageTable(reader As SQLiteDataReader, Optional start As LampTemplate = Nothing) As LampTemplate
+        If start Is Nothing Then
+            start = New LampTemplate()
+        End If
+        Throw New NotImplementedException()
+    End Function
+
+    Private Function ReadTagTable(reader As SQLiteDataReader, Optional start As LampTemplate = Nothing) As LampTemplate
+        If start Is Nothing Then
+            start = New LampTemplate()
+        End If
+
+        Throw New NotImplementedException()
+    End Function
 
     ''' <summary>
     ''' Finds a template in the database, given its corresponding guid
@@ -100,11 +210,11 @@ Public Class TemplateDatabase
     ''' <param name="guid"></param>
     ''' <returns></returns>
     Function SelectTemplate(guid As String) As LampTemplate
-        Dim sqlite_conn = Connection
-        sqlite_conn.Open()
+        ' If the databse is open already, dont close it
+        Dim closeDatabaseAfter = OpenDatabase()
 
         Try
-            Dim sqlite_cmd = sqlite_conn.CreateCommand()
+            Dim sqlite_cmd = GetCommand()
             Dim sqlite_reader As SQLiteDataReader
 
             sqlite_cmd.CommandText = "Select * FROM template WHERE guid = @guid"
@@ -113,19 +223,14 @@ Public Class TemplateDatabase
             sqlite_reader = sqlite_cmd.ExecuteReader()
 
             If sqlite_reader.Read() Then
-                Dim LampDXF = LampDxfDocument.FromString(sqlite_reader.GetString(sqlite_reader.GetOrdinal("dxf")))
-
-                Dim LampTemp = New LampTemplate(LampDXF)
-                LampTemp.GUID = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
-                LampTemp.ApproverId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("ApproverId"))
-                LampTemp.ApproverName = sqlite_reader.GetString(sqlite_reader.GetOrdinal("ApproverName"))
-                LampTemp.CreatorId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("CreatorId"))
-                LampTemp.CreatorName = sqlite_reader.GetString(sqlite_reader.GetOrdinal("CreatorName"))
-                LampTemp.IsComplete = sqlite_reader.GetBoolean(sqlite_reader.GetOrdinal("IsComplete"))
+                Dim LampTemp = ReadTemplateTable(sqlite_reader)
 
                 ' check if there are any preview images
                 Dim images As List(Of Image) = SelectImages(guid)
                 LampTemp.PreviewImages = images
+
+                ' get all the tags from the db as well
+                LampTemp.Tags = SelectTags(guid)
 
                 Return LampTemp
             Else
@@ -134,20 +239,61 @@ Public Class TemplateDatabase
 
         Finally
             ' ensure connection is always closed
-            sqlite_conn.Close()
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
         End Try
     End Function
 
+
     ''' <summary>
-    ''' Reads 
-    ''' </summary> 
-    Private Function ReadTemplateTable() As LampTemplate
-        Throw New NotImplementedException
+    ''' Finds a template in the database, given its corresponding guid
+    ''' If no template is found, returns nothing
+    ''' </summary>
+    ''' <returns></returns>
+    Function SelectTemplateWithTags(tags As List(Of String), Optional limit As Integer = 10, Optional offset As Integer = 0) As List(Of LampTemplate)
+        ' If the databse is open already, dont close it
+        Dim closeDatabaseAfter = OpenDatabase()
+
+        Try
+            Dim sqlite_cmd = GetCommand()
+            Dim sqlite_reader As SQLiteDataReader
+
+            Dim matchingTemplates As New List(Of LampTemplate)
+
+            Dim tagParameters As New StringBuilder()
+            For i = 0 To tags.Count - 1
+                tagParameters.Insert(i, "@tag" + i.ToString())
+            Next
+            ' find all templates w/
+            sqlite_cmd.CommandText = String.Format("Select * from tags
+                                      WHERE tagName IN ({0}) 
+                                      LIMIT @limit
+                                      OFFSET @offset
+                                     ", tagParameters.ToString())
+            For i = 0 To tags.Count - 1
+                sqlite_cmd.Parameters.AddWithValue("@tag" + i.ToString(), tags(i).ToLower())
+            Next
+            sqlite_cmd.Parameters.AddWithValue("@limit", limit)
+            sqlite_cmd.Parameters.AddWithValue("@offset", offset)
+
+            sqlite_reader = sqlite_cmd.ExecuteReader()
+
+            While sqlite_reader.Read()
+                Dim guid = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
+                matchingTemplates.Add(SelectTemplate(guid))
+
+            End While
+
+            Return matchingTemplates
+        Finally
+            ' ensure connection is always closed
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+        End Try
     End Function
 
-    Private Function ReadImageTable() As LampTemplate
-        Throw New NotImplementedException()
-    End Function
 
 
     ''' <summary>
@@ -155,37 +301,35 @@ Public Class TemplateDatabase
     ''' </summary>
     ''' <returns></returns>
     Public Function GetAllTemplate() As List(Of LampTemplate)
-        Dim sqlite_conn = _Connection
-        sqlite_conn.Open()
+        Dim closeDatabaseAfter = OpenDatabase()
 
         Try
-            Dim sqlite_cmd = sqlite_conn.CreateCommand()
+            Dim sqlite_cmd = GetCommand()
             Dim sqlite_reader As SQLiteDataReader
 
             sqlite_cmd.CommandText = "Select * FROM template"
 
             sqlite_reader = sqlite_cmd.ExecuteReader()
             Dim LampTempList As New List(Of LampTemplate)
-            Dim LampDxf As New LampDxfDocument
-            Dim LampTemp As New LampTemplate
-            Do While sqlite_reader.Read()
-                Debug.Write(sqlite_reader.GetString(0))
-                LampDxf = LampDxfDocument.FromString(sqlite_reader.GetString(sqlite_reader.GetOrdinal("dxf")))
-                LampTemp = New LampTemplate(LampDxf)
-                LampTemp.GUID = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
-                'LampTemp.ApproverId = sqlite_reader.GetString(DatabaseColumn.ApproverId)
-                LampTemp.ApproverName = sqlite_reader.GetString(sqlite_reader.GetOrdinal("approverName"))
-                LampTemp.CreatorId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("creatorId"))
-                LampTemp.CreatorName = sqlite_reader.GetString(sqlite_reader.GetOrdinal("creatorName"))
-                'LampTemp.IsComplete = sqlite_reader.GetBoolean(DatabaseColumn.IsComplete)
-                'still debugging these 2 ;-;
+            Dim LampTemp As LampTemplate
+
+            While sqlite_reader.Read()
+                ' read the data off this sqlite_reader
+                LampTemp = ReadTemplateTable(sqlite_reader)
+
+                ' Set images and tags
+                LampTemp.PreviewImages = SelectImages(LampTemp.GUID)
+                LampTemp.Tags = SelectTags(LampTemp.GUID)
+
                 LampTempList.Add(LampTemp)
-            Loop
-            sqlite_conn.Close()
+            End While
+
             Return LampTempList
 
         Finally
-            sqlite_conn.Close()
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
         End Try
 
     End Function
@@ -196,28 +340,28 @@ Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="template"></param>
     Public Sub AddTemplate(template As LampTemplate)
-        Dim sqlite_conn = Connection
+        Dim closeDatabaseAfter = OpenDatabase()
 
-        sqlite_conn.Open()
         Try
-            Dim sqlite_cmd = sqlite_conn.CreateCommand()
+            Dim sqlite_cmd = GetCommand()
 
             ' Insert if GUID doesnt exist, else replace
             sqlite_cmd.CommandText = "INSERT OR REPLACE INTO template 
-                    (Guid, DXF, Tag, material, length, Height, thickness, creatorName, creator_ID, submit_date)  
+                    (Guid, DXF, material, length, Height, materialthickness, creatorName, creatorID, complete, submitdate)  
                     VALUES  
-                    (@guid, @dxf, @tags, @material, @length, @height, @thickness, @creatorName, @creatorId, DATETIME('now'));"
+                    (@guid, @dxf, @material, @length, @height, @materialthickness, @creatorName, @creatorId, @complete, DATETIME('now'));"
 
             sqlite_cmd.Parameters.AddWithValue("@guid", template.GUID)
             sqlite_cmd.Parameters.AddWithValue("@dxf", template.BaseDrawing.ToDxfString)
             ' todo use tags table instead of as string
-            sqlite_cmd.Parameters.AddWithValue("@tags", SerializeTags(template))
             sqlite_cmd.Parameters.AddWithValue("@material", template.Material)
             sqlite_cmd.Parameters.AddWithValue("@length", template.Length)
             sqlite_cmd.Parameters.AddWithValue("@height", template.Height)
-            sqlite_cmd.Parameters.AddWithValue("@thickness", template.MaterialThickness)
+            sqlite_cmd.Parameters.AddWithValue("@materialthickness", template.MaterialThickness)
             sqlite_cmd.Parameters.AddWithValue("@creatorName", template.CreatorName)
             sqlite_cmd.Parameters.AddWithValue("@creatorId", template.CreatorId)
+            sqlite_cmd.Parameters.AddWithValue("@complete", template.IsComplete)
+
             ' Ensure creatorId and and approverId are strings! 
             ' also add approverid/approvername to the db 
 
@@ -229,12 +373,15 @@ Public Class TemplateDatabase
             End If
 
             If template.Tags.Count > 0 Then
-                AddTags(template.GUID, template.Tags, False)
+                AddTags(template.GUID, template.Tags)
             End If
+
 
         Finally
             ' ensure connection is always closed
-            sqlite_conn.Close()
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
         End Try
     End Sub
 
@@ -275,10 +422,10 @@ Public Class TemplateDatabase
     ''' <param name="guid"></param>
     ''' <returns></returns>
     Public Function SelectImages(guid As String) As List(Of Image)
-        Dim sqlite_conn = Connection
-        sqlite_conn.Open()
+        Dim shouldCloseAfter = OpenDatabase()
+
         Try
-            Dim sqlite_cmd = sqlite_conn.CreateCommand()
+            Dim sqlite_cmd = GetCommand()
             Dim sqlite_reader As SQLiteDataReader
             sqlite_cmd.CommandText = "Select * FROM images WHERE guid = @guid"
             sqlite_cmd.Parameters.AddWithValue("@guid", guid)
@@ -309,8 +456,9 @@ Public Class TemplateDatabase
             End If
 
         Finally
-            ' ensure connection is always closed
-            sqlite_conn.Close()
+            If shouldCloseAfter Then
+                CloseDatabase()
+            End If
         End Try
     End Function
 
@@ -368,9 +516,54 @@ Public Class TemplateDatabase
         End Try
     End Sub
 
+    Public Function SelectTags(guid As String) As List(Of String)
+        Dim closeDatabaseAfter = OpenDatabase()
+        Try
+            Dim sqlite_cmd = GetCommand()
 
-    Public Sub AddTags()
-        '' TODO
+            sqlite_cmd.CommandText = "SELECT * FROM tags 
+                                      WHERE guid=@guid;"
+
+
+            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+            Dim tags As New List(Of String)
+            Dim reader = sqlite_cmd.ExecuteReader()
+            While reader.Read()
+                tags.Add(reader.GetString(reader.GetOrdinal("tagName")))
+            End While
+
+            Return tags
+        Finally
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+
+        End Try
+    End Function
+
+
+    Public Sub AddTags(guid As String, tags As List(Of String))
+        Dim closeDatabaseAfter = OpenDatabase()
+
+        Try
+            Dim sqlite_cmd = GetCommand()
+            sqlite_cmd.CommandText = "INSERT OR REPLACE INTO tags 
+                    (Guid, tagName)  
+                    VALUES  
+                    (@guid, @tagName);"
+
+
+            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+            For Each tag In tags
+                sqlite_cmd.Parameters.AddWithValue("@tagName", tag)
+                sqlite_cmd.ExecuteNonQuery()
+            Next
+
+        Finally
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+        End Try
     End Sub
 
     ''' <summary>
@@ -435,41 +628,6 @@ Public Class TemplateDatabase
         Return template
     End Function
 
-
-    ''' <summary>
-    ''' DXF, Tag, Material, Length, Height, Thickness, Creator Name, Creator ID
-    ''' For debugging, dunno if it works now since database has changed
-    ''' </summary>
-    ''' <param name="GUID"></param>
-    ''' <param name="DXF"></param>
-    ''' <param name="tag"></param>
-    ''' <param name="material"></param>
-    ''' <param name="length"></param>
-    ''' <param name="height"></param>
-    ''' <param name="materialthickness"></param>
-    ''' <param name="creatorName"></param>
-    ''' <param name="creator_ID"></param>
-    Private Sub addDebugEntry(GUID As String, DXF As String, tag As String, material As String, length As Integer, height As Integer, materialthickness As Integer, creatorName As String, creator_ID As Integer)
-        Dim sqlite_conn = Connection
-        sqlite_conn.Open()
-        Dim sqlite_cmd = sqlite_conn.CreateCommand()
-
-        sqlite_cmd.CommandText = "INSERT INTO template(Guid, DXF, Tag, material, length, Height, thickness, creatorName, creator_ID, submit_date) VALUES (?,?,?,?,?,?,?,?,?, DateTime('now'));"
-
-        sqlite_cmd.Parameters.Add(CreateSqlParameter(DbType.String, GUID))
-        sqlite_cmd.Parameters.Add(CreateSqlParameter(DbType.String, DXF))
-        sqlite_cmd.Parameters.Add(CreateSqlParameter(DbType.String, tag))
-        sqlite_cmd.Parameters.Add(CreateSqlParameter(DbType.String, material))
-        sqlite_cmd.Parameters.Add(CreateSqlParameter(DbType.Int32, length))
-        sqlite_cmd.Parameters.Add(CreateSqlParameter(DbType.Int32, height))
-        sqlite_cmd.Parameters.Add(CreateSqlParameter(DbType.Int32, materialthickness))
-        sqlite_cmd.Parameters.Add(CreateSqlParameter(DbType.String, creatorName))
-        sqlite_cmd.Parameters.Add(CreateSqlParameter(DbType.Int32, creator_ID))
-
-        sqlite_cmd.ExecuteNonQuery()
-        sqlite_conn.Close()
-    End Sub
-
     ''' <summary>
     ''' Fills database with 50 empty templates
     ''' </summary>
@@ -519,9 +677,10 @@ Public Class DatabaseHelper
         If image Is Nothing Then
             Return Nothing
         End If
-        Dim stream As New MemoryStream
-        image.Save(stream, Imaging.ImageFormat.Png)
-        Return stream.ToArray
+        Using ms = New MemoryStream
+            image.Save(ms, Imaging.ImageFormat.Png)
+            Return ms.ToArray
+        End Using
     End Function
 
     ''' <summary>

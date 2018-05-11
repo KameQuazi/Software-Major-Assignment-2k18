@@ -399,6 +399,26 @@ Public Class LampDxfDocument
     Private Sub NotifyPropertyChanged(<CallerMemberName()> Optional ByVal propertyName As String = Nothing)
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
+
+    Public Shared Function ImageToBase64(image As System.Drawing.Image) As String
+        If image Is Nothing Then
+            Return Nothing
+        End If
+        Using ms = New MemoryStream()
+            image.Save(ms, Imaging.ImageFormat.Png)
+            Return System.Convert.ToBase64String(ms.ToArray)
+        End Using
+    End Function
+
+    Public Shared Function Base64ToImage(base64 As String) As Drawing.Image
+        If base64 Is Nothing Then
+            Return Nothing
+        End If
+        Dim bytes = Convert.FromBase64String(base64)
+        Using ms = New MemoryStream(bytes)
+            Return Drawing.Image.FromStream(ms)
+        End Using
+    End Function
 End Class
 
 Public Class DxfJsonConverter

@@ -178,7 +178,7 @@ Public NotInheritable Class LampTemplate
     ''' The thickness of the material used
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("thickness")>
+    <JsonProperty("material)thickness")>
     Public Property MaterialThickness As Double
         Get
             Return _materialThickness
@@ -194,7 +194,7 @@ Public NotInheritable Class LampTemplate
     ''' The date item was submitted
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("submitDate")>
+    <JsonProperty("submit_date")>
     Public Property SubmitDate As Date?
         Get
             Return _submitDate
@@ -210,7 +210,7 @@ Public NotInheritable Class LampTemplate
     ''' Where the dynamic text will be stored:
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("dynamicTextList")>
+    <JsonProperty("dynamic_text_list")>
     Public Property DynamicTextList As ObservableCollection(Of DynamicText)
         Get
             Return _dynamicTextList
@@ -231,7 +231,7 @@ Public NotInheritable Class LampTemplate
     ''' completeddrawing
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("insertionLocations")>
+    <JsonProperty("insertion_locations")>
     Public Property InsertionLocations As ObservableCollection(Of LampDxfInsertLocation)
         Get
             Return _insertionLocations
@@ -250,38 +250,39 @@ Public NotInheritable Class LampTemplate
     ''' where or not the file is in a complete state - if complete, should disable editing
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("isComplete")>
+    <JsonProperty("is_complete")>
     Public Property IsComplete As Boolean
 
     ''' <summary>
     ''' full name of creator
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("creatorName")>
+    <JsonProperty("creator_name")>
     Public Property CreatorName As String = ""
 
     ''' <summary>
     ''' guid of creator
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("creatorId")>
+    <JsonProperty("creator_id")>
     Public Property CreatorId As String = System.Guid.Empty.ToString
 
     ''' <summary>
     ''' full name of approver
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("approverName")>
+    <JsonProperty("approver_name")>
     Public Property ApproverName As String = ""
 
     ''' <summary>
     ''' guid of approver
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("approverId")>
+    <JsonProperty("approver_id")>
     Public Property ApproverId As String = System.Guid.Empty.ToString
 
-    <JsonProperty("PreviewImages")>
+    <JsonProperty("preview_images")>
+    <JsonConverter(GetType(ImageJsonConverter))>
     Public Property PreviewImages As New List(Of Image)
 
 
@@ -429,10 +430,36 @@ Public NotInheritable Class LampTemplate
         Return String.Format("LampTemplate Guid:{0}", Me.GUID.ToString())
     End Function
 
+
 End Class
 
 
+Public Class ImageJsonConverter
+    Inherits JsonConverter
 
+    Public Overrides Sub WriteJson(writer As JsonWriter, value As Object, serializer As JsonSerializer)
+        Dim ImageList = DirectCast(value, List(Of Image))
+
+    End Sub
+
+    Public Overrides Function CanConvert(objectType As Type) As Boolean
+        Return objectType = GetType(DxfDocument)
+    End Function
+
+    Public Overrides Function ReadJson(reader As JsonReader, objectType As Type, existingValue As Object, serializer As JsonSerializer) As Object
+        Dim out As LampDxfDocument
+        If reader.TokenType <> JsonToken.String Then
+            Throw New JsonSerializationException()
+        Else
+            Dim value As String = DirectCast(reader.Value, String)
+            out = LampDxfDocument.FromString(value)
+        End If
+
+        Return out
+    End Function
+
+
+End Class
 
 
 

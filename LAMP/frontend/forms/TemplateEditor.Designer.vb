@@ -39,6 +39,7 @@ Partial Class TemplateEditor
         Me.DxfSaveDialog = New System.Windows.Forms.SaveFileDialog()
         Me.SpfSaveDialog = New System.Windows.Forms.SaveFileDialog()
         Me.DxfViewerControl1 = New LAMP.DxfViewerControl()
+        Me.TagsBox = New System.Windows.Forms.ListBox()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -170,11 +171,21 @@ Partial Class TemplateEditor
         Me.DxfViewerControl1.Source = Nothing
         Me.DxfViewerControl1.TabIndex = 12
         '
-        'SingleTemplateViewer
+        'TagsBox
+        '
+        Me.TagsBox.FormattingEnabled = True
+        Me.TagsBox.Items.AddRange(New Object() {""})
+        Me.TagsBox.Location = New System.Drawing.Point(33, 62)
+        Me.TagsBox.Name = "TagsBox"
+        Me.TagsBox.Size = New System.Drawing.Size(120, 95)
+        Me.TagsBox.TabIndex = 13
+        '
+        'TemplateEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(572, 489)
+        Me.Controls.Add(Me.TagsBox)
         Me.Controls.Add(Me.DxfViewerControl1)
         Me.Controls.Add(Me.ExportDxf)
         Me.Controls.Add(Me.ExportSpf)
@@ -187,7 +198,7 @@ Partial Class TemplateEditor
         Me.Controls.Add(Me.Preview3)
         Me.Controls.Add(Me.Preview2)
         Me.Controls.Add(Me.Preview1)
-        Me.Name = "SingleTemplateViewer"
+        Me.Name = "TemplateEditor"
         Me.Text = "AddTemplate"
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).EndInit()
@@ -213,4 +224,5 @@ Partial Class TemplateEditor
     Friend WithEvents DxfSaveDialog As SaveFileDialog
     Friend WithEvents SpfSaveDialog As SaveFileDialog
     Friend WithEvents DxfViewerControl1 As DxfViewerControl
+    Friend WithEvents TagsBox As ListBox
 End Class

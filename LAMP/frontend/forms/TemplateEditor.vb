@@ -34,7 +34,16 @@ Public Class TemplateEditor
 
         UpdateText()
 
+        UpdateTags()
+
         UpdateViewerImages()
+    End Sub
+
+    Private Sub UpdateTags()
+        TagsBox.Items.Clear()
+        For Each item In Template.Tags
+            TagsBox.Items.Add(item)
+        Next
     End Sub
 
     Private Sub UpdateText()
