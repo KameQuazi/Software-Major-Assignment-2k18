@@ -94,8 +94,6 @@ Public Class LampTemplateText
 
 
 
-
-
     End Sub
 
 End Class

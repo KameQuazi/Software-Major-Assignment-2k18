@@ -52,6 +52,7 @@
             Dim singleViewer As New TemplateEditor()
             singleViewer.Template = Me.Template
             singleViewer.ShowDialog()
+            Me.Template = singleViewer.Template
         End If
     End Sub
 

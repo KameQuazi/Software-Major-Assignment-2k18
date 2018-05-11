@@ -67,6 +67,8 @@
 
     Private Sub Test2()
 
+        'Dim temp = LampTemplate.FromFile()
+        ' MultiTemplateViewer.SetTemplateToPosition(0, 0, temp)
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click

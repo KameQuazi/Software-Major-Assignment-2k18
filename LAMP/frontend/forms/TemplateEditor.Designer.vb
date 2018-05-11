@@ -40,6 +40,8 @@ Partial Class TemplateEditor
         Me.SpfSaveDialog = New System.Windows.Forms.SaveFileDialog()
         Me.DxfViewerControl1 = New LAMP.DxfViewerControl()
         Me.TagsBox = New System.Windows.Forms.ListBox()
+        Me.SpfOpenDialog = New System.Windows.Forms.OpenFileDialog()
+        Me.ImportSpf = New System.Windows.Forms.Button()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -102,7 +104,7 @@ Partial Class TemplateEditor
         '
         'SelectDxf
         '
-        Me.SelectDxf.Location = New System.Drawing.Point(146, 192)
+        Me.SelectDxf.Location = New System.Drawing.Point(224, 446)
         Me.SelectDxf.Name = "SelectDxf"
         Me.SelectDxf.Size = New System.Drawing.Size(75, 23)
         Me.SelectDxf.TabIndex = 6
@@ -137,7 +139,7 @@ Partial Class TemplateEditor
         '
         'ExportSpf
         '
-        Me.ExportSpf.Location = New System.Drawing.Point(163, 446)
+        Me.ExportSpf.Location = New System.Drawing.Point(93, 446)
         Me.ExportSpf.Name = "ExportSpf"
         Me.ExportSpf.Size = New System.Drawing.Size(118, 23)
         Me.ExportSpf.TabIndex = 10
@@ -180,11 +182,25 @@ Partial Class TemplateEditor
         Me.TagsBox.Size = New System.Drawing.Size(120, 95)
         Me.TagsBox.TabIndex = 13
         '
+        'SpfOpenDialog
+        '
+        Me.SpfOpenDialog.FileName = "SpfFileDialog"
+        '
+        'Button1
+        '
+        Me.ImportSpf.Location = New System.Drawing.Point(12, 446)
+        Me.ImportSpf.Name = "Button1"
+        Me.ImportSpf.Size = New System.Drawing.Size(75, 23)
+        Me.ImportSpf.TabIndex = 14
+        Me.ImportSpf.Text = "Load Spf"
+        Me.ImportSpf.UseVisualStyleBackColor = True
+        '
         'TemplateEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(572, 489)
+        Me.Controls.Add(Me.ImportSpf)
         Me.Controls.Add(Me.TagsBox)
         Me.Controls.Add(Me.DxfViewerControl1)
         Me.Controls.Add(Me.ExportDxf)
@@ -225,4 +241,6 @@ Partial Class TemplateEditor
     Friend WithEvents SpfSaveDialog As SaveFileDialog
     Friend WithEvents DxfViewerControl1 As DxfViewerControl
     Friend WithEvents TagsBox As ListBox
+    Friend WithEvents SpfOpenDialog As OpenFileDialog
+    Friend WithEvents ImportSpf As Button
 End Class

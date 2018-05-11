@@ -151,4 +151,10 @@ Public Class TemplateEditor
             Template.Save(SpfSaveDialog.FileName)
         End If
     End Sub
+
+    Private Sub ImportSpf_Click(sender As Object, e As EventArgs) Handles ImportSpf.Click
+        If SpfOpenDialog.ShowDialog() = DialogResult.OK Then
+            Me.Template = LampTemplate.FromFile(SpfOpenDialog.FileName)
+        End If
+    End Sub
 End Class

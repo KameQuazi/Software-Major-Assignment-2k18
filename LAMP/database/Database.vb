@@ -81,9 +81,8 @@ Public Class TemplateDatabase
 
         Dim closeDatabaseAfter = OpenDatabase()
         Try
-            Dim sqlite_cmd = GetCommand()
-
-            sqlite_cmd.CommandText = "CREATE TABLE if not exists template (
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "CREATE TABLE if not exists template (
                                   GUID Text PRIMARY KEY Not NULL, 
                                   DXF Text Not NULL,
                                   Name Text DEFAULT '' Not NULL,
@@ -100,9 +99,9 @@ Public Class TemplateDatabase
                                   approverID Text Default -1,
                                   submitDate Text,
                                   complete Int DEFAULT FALSE);"
-            sqlite_cmd.ExecuteNonQuery()
+                sqlite_cmd.ExecuteNonQuery()
 
-            sqlite_cmd.CommandText = "CREATE TABLE if not exists images (
+                sqlite_cmd.CommandText = "CREATE TABLE if not exists images (
                                   GUID Text PRIMARY KEY Not NULL, 
                                   image1 blob Not NULL,
                                   image2 blob,
@@ -110,15 +109,17 @@ Public Class TemplateDatabase
 
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );"
-            sqlite_cmd.ExecuteNonQuery()
-            sqlite_cmd.CommandText = "CREATE TABLE if not exists tags (
+                sqlite_cmd.ExecuteNonQuery()
+                sqlite_cmd.CommandText = "CREATE TABLE if not exists tags (
                                   GUID Text Not Null,
                                   TagName Text Not Null,
                                   
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)   
                                   );
                         "
-            sqlite_cmd.ExecuteNonQuery()
+                sqlite_cmd.ExecuteNonQuery()
+            End Using
+
         Finally
 
             If closeDatabaseAfter Then
@@ -136,14 +137,14 @@ Public Class TemplateDatabase
         ' If the databse is open already, dont close it
         Dim closeDatabaseAfter = OpenDatabase()
         Try
-            Dim sqlite_cmd = GetCommand()
-
-            sqlite_cmd.CommandText = "DROP TABLE If exists template"
-            sqlite_cmd.ExecuteNonQuery()
-            sqlite_cmd.CommandText = "DROP TABLE If exists images"
-            sqlite_cmd.ExecuteNonQuery()
-            sqlite_cmd.CommandText = "DROP TABLE If exists tags"
-            sqlite_cmd.ExecuteNonQuery()
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "DROP TABLE If exists template"
+                sqlite_cmd.ExecuteNonQuery()
+                sqlite_cmd.CommandText = "DROP TABLE If exists images"
+                sqlite_cmd.ExecuteNonQuery()
+                sqlite_cmd.CommandText = "DROP TABLE If exists tags"
+                sqlite_cmd.ExecuteNonQuery()
+            End Using
         Finally
             If closeDatabaseAfter Then
                 Connection.Close()
@@ -214,28 +215,30 @@ Public Class TemplateDatabase
         Dim closeDatabaseAfter = OpenDatabase()
 
         Try
-            Dim sqlite_cmd = GetCommand()
-            Dim sqlite_reader As SQLiteDataReader
+            Using sqlite_cmd = GetCommand()
 
-            sqlite_cmd.CommandText = "Select * FROM template WHERE guid = @guid"
-            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+                sqlite_cmd.CommandText = "Select * FROM template WHERE guid = @guid"
+                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
 
-            sqlite_reader = sqlite_cmd.ExecuteReader()
+                Using sqlite_reader = sqlite_cmd.ExecuteReader()
+                    ' read only 1 row off the database
+                    If sqlite_reader.Read() Then
+                        Dim LampTemp = ReadTemplateTable(sqlite_reader)
 
-            If sqlite_reader.Read() Then
-                Dim LampTemp = ReadTemplateTable(sqlite_reader)
+                        ' get all the preview images
+                        Dim images As List(Of Image) = SelectImages(guid)
+                        LampTemp.PreviewImages = images
 
-                ' check if there are any preview images
-                Dim images As List(Of Image) = SelectImages(guid)
-                LampTemp.PreviewImages = images
+                        ' get all the tags from the db as well
+                        LampTemp.Tags = SelectTags(guid)
 
-                ' get all the tags from the db as well
-                LampTemp.Tags = SelectTags(guid)
+                        Return LampTemp
+                    Else
+                        Return Nothing
+                    End If
+                End Using
+            End Using
 
-                Return LampTemp
-            Else
-                Return Nothing
-            End If
 
         Finally
             ' ensure connection is always closed
@@ -256,8 +259,8 @@ Public Class TemplateDatabase
         Dim closeDatabaseAfter = OpenDatabase()
 
         Try
-            Dim sqlite_cmd = GetCommand()
-            Dim sqlite_reader As SQLiteDataReader
+            Using sqlite_cmd = GetCommand()
+                Dim sqlite_reader As SQLiteDataReader
 
             Dim matchingTemplates As New List(Of LampTemplate)
 
