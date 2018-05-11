@@ -1,4 +1,6 @@
 ﻿
+Imports System.ComponentModel
+
 Public Class TemplateEditor
     ''' <summary>
     ''' Array of 3 images
@@ -6,7 +8,7 @@ Public Class TemplateEditor
     Private images(3) As Image
 
 #Region "Properties"
-    Private _template As LampTemplate = LampTemplate.Empty
+    Private _template As LampTemplate
 
     ''' <summary>
     ''' Determines the template 
@@ -18,19 +20,31 @@ Public Class TemplateEditor
         End Get
         Set(value As LampTemplate)
             _template = value
-
-            UpdateInternalImages()
-
+            AddHandler _template.PropertyChanged, AddressOf Template_PropertyChanged
             UpdateViewer()
         End Set
     End Property
+
+    Private Sub Template_PropertyChanged(sender As Object, args As PropertyChangedEventArgs)
+        UpdateViewer()
+    End Sub
 #End Region
+
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Template = LampTemplate.Empty
+    End Sub
 
     ''' <summary>
     ''' Updates the viewer using the template in 
     ''' .Template
     ''' </summary>
     Private Sub UpdateViewer()
+        UpdateInternalImages()
 
         UpdateText()
 
@@ -155,6 +169,30 @@ Public Class TemplateEditor
     Private Sub ImportSpf_Click(sender As Object, e As EventArgs) Handles ImportSpf.Click
         If SpfOpenDialog.ShowDialog() = DialogResult.OK Then
             Me.Template = LampTemplate.FromFile(SpfOpenDialog.FileName)
+        End If
+    End Sub
+
+    Private Sub AddTag_Click(sender As Object, e As EventArgs) Handles AddTag.Click
+        Dim dialog As New LampInputBox("New tag", "Enter new tag")
+        If dialog.ShowDialog() = DialogResult.OK Then
+            Dim newTag = dialog.InputText.ToLower()
+            If Me.Template.Tags.Contains(newTag) Then
+                ' dont allow duplicates
+                MessageBox.Show("tags must be unique ")
+            Else
+                ' add them to the tags in the template
+                Me.Template.Tags.Add(dialog.InputText)
+            End If
+        End If
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles RemoveTag.Click
+        Dim selectedPosition = TagsBox.SelectedIndex
+        If selectedPosition <> -1 Then
+            ' an item is selected
+            Dim selectedTag = TagsBox.SelectedItem.ToString().ToLower()
+            Me.Template.Tags.Remove(selectedTag)
+
         End If
     End Sub
 End Class

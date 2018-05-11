@@ -3,6 +3,7 @@ Imports System.IO
 Imports LAMP.DatabaseHelper
 Imports LAMP
 Imports System.Text
+Imports System.Collections.ObjectModel
 
 Public Class TemplateDatabase
     ''' <summary>
@@ -230,7 +231,7 @@ Public Class TemplateDatabase
                         LampTemp.PreviewImages = images
 
                         ' get all the tags from the db as well
-                        LampTemp.Tags = SelectTags(guid)
+                        LampTemp.Tags = SelectTags(guid).ToObservableList
 
                         Return LampTemp
                     Else
@@ -260,35 +261,35 @@ Public Class TemplateDatabase
 
         Try
             Using sqlite_cmd = GetCommand()
-                Dim sqlite_reader As SQLiteDataReader
+                Dim matchingTemplates As New List(Of LampTemplate)
 
-            Dim matchingTemplates As New List(Of LampTemplate)
-
-            Dim tagParameters As New StringBuilder()
-            For i = 0 To tags.Count - 1
-                tagParameters.Insert(i, "@tag" + i.ToString())
-            Next
-            ' find all templates w/
-            sqlite_cmd.CommandText = String.Format("Select * from tags
+                Dim tagParameters As New StringBuilder()
+                For i = 0 To tags.Count - 1
+                    tagParameters.Insert(i, "@tag" + i.ToString())
+                Next
+                ' find all templates w/
+                sqlite_cmd.CommandText = String.Format("Select * from tags
                                       WHERE tagName IN ({0}) 
                                       LIMIT @limit
                                       OFFSET @offset
                                      ", tagParameters.ToString())
-            For i = 0 To tags.Count - 1
-                sqlite_cmd.Parameters.AddWithValue("@tag" + i.ToString(), tags(i).ToLower())
-            Next
-            sqlite_cmd.Parameters.AddWithValue("@limit", limit)
-            sqlite_cmd.Parameters.AddWithValue("@offset", offset)
+                For i = 0 To tags.Count - 1
+                    sqlite_cmd.Parameters.AddWithValue("@tag" + i.ToString(), tags(i).ToLower())
+                Next
+                sqlite_cmd.Parameters.AddWithValue("@limit", limit)
+                sqlite_cmd.Parameters.AddWithValue("@offset", offset)
 
-            sqlite_reader = sqlite_cmd.ExecuteReader()
 
-            While sqlite_reader.Read()
-                Dim guid = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
-                matchingTemplates.Add(SelectTemplate(guid))
+                Using sqlite_reader = sqlite_cmd.ExecuteReader()
+                    While sqlite_reader.Read()
+                        Dim guid = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
+                        matchingTemplates.Add(SelectTemplate(guid))
+                    End While
 
-            End While
+                End Using
 
-            Return matchingTemplates
+                Return matchingTemplates
+            End Using
         Finally
             ' ensure connection is always closed
             If closeDatabaseAfter Then
@@ -307,28 +308,29 @@ Public Class TemplateDatabase
         Dim closeDatabaseAfter = OpenDatabase()
 
         Try
-            Dim sqlite_cmd = GetCommand()
-            Dim sqlite_reader As SQLiteDataReader
+            Using sqlite_cmd = GetCommand()
 
-            sqlite_cmd.CommandText = "Select * FROM template"
+                sqlite_cmd.CommandText = "Select * FROM template"
 
-            sqlite_reader = sqlite_cmd.ExecuteReader()
-            Dim LampTempList As New List(Of LampTemplate)
-            Dim LampTemp As LampTemplate
+                Using sqlite_reader = sqlite_cmd.ExecuteReader()
+                    Dim LampTempList As New List(Of LampTemplate)
+                    Dim LampTemp As LampTemplate
 
-            While sqlite_reader.Read()
-                ' read the data off this sqlite_reader
-                LampTemp = ReadTemplateTable(sqlite_reader)
+                    While sqlite_reader.Read()
+                        ' read the data off this sqlite_reader
+                        LampTemp = ReadTemplateTable(sqlite_reader)
 
-                ' Set images and tags
-                LampTemp.PreviewImages = SelectImages(LampTemp.GUID)
-                LampTemp.Tags = SelectTags(LampTemp.GUID)
+                        ' Set images and tags
+                        LampTemp.PreviewImages = SelectImages(LampTemp.GUID)
+                        LampTemp.Tags = SelectTags(LampTemp.GUID).ToObservableList
 
-                LampTempList.Add(LampTemp)
-            End While
+                        LampTempList.Add(LampTemp)
+                    End While
 
-            Return LampTempList
+                    Return LampTempList
+                End Using
 
+            End Using
         Finally
             If closeDatabaseAfter Then
                 CloseDatabase()
@@ -346,40 +348,40 @@ Public Class TemplateDatabase
         Dim closeDatabaseAfter = OpenDatabase()
 
         Try
-            Dim sqlite_cmd = GetCommand()
+            Using sqlite_cmd = GetCommand()
 
-            ' Insert if GUID doesnt exist, else replace
-            sqlite_cmd.CommandText = "INSERT OR REPLACE INTO template 
+                ' Insert if GUID doesnt exist, else replace
+                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO template 
                     (Guid, DXF, material, length, Height, materialthickness, creatorName, creatorID, complete, submitdate)  
                     VALUES  
                     (@guid, @dxf, @material, @length, @height, @materialthickness, @creatorName, @creatorId, @complete, DATETIME('now'));"
 
-            sqlite_cmd.Parameters.AddWithValue("@guid", template.GUID)
-            sqlite_cmd.Parameters.AddWithValue("@dxf", template.BaseDrawing.ToDxfString)
-            ' todo use tags table instead of as string
-            sqlite_cmd.Parameters.AddWithValue("@material", template.Material)
-            sqlite_cmd.Parameters.AddWithValue("@length", template.Length)
-            sqlite_cmd.Parameters.AddWithValue("@height", template.Height)
-            sqlite_cmd.Parameters.AddWithValue("@materialthickness", template.MaterialThickness)
-            sqlite_cmd.Parameters.AddWithValue("@creatorName", template.CreatorName)
-            sqlite_cmd.Parameters.AddWithValue("@creatorId", template.CreatorId)
-            sqlite_cmd.Parameters.AddWithValue("@complete", template.IsComplete)
+                sqlite_cmd.Parameters.AddWithValue("@guid", template.GUID)
+                sqlite_cmd.Parameters.AddWithValue("@dxf", template.BaseDrawing.ToDxfString)
+                ' todo use tags table instead of as string
+                sqlite_cmd.Parameters.AddWithValue("@material", template.Material)
+                sqlite_cmd.Parameters.AddWithValue("@length", template.Length)
+                sqlite_cmd.Parameters.AddWithValue("@height", template.Height)
+                sqlite_cmd.Parameters.AddWithValue("@materialthickness", template.MaterialThickness)
+                sqlite_cmd.Parameters.AddWithValue("@creatorName", template.CreatorName)
+                sqlite_cmd.Parameters.AddWithValue("@creatorId", template.CreatorId)
+                sqlite_cmd.Parameters.AddWithValue("@complete", template.IsComplete)
 
-            ' Ensure creatorId and and approverId are strings! 
-            ' also add approverid/approvername to the db 
+                ' Ensure creatorId and and approverId are strings! 
+                ' also add approverid/approvername to the db 
 
-            sqlite_cmd.ExecuteNonQuery()
+                sqlite_cmd.ExecuteNonQuery()
 
-            ' if there are preview images, store it in the database
-            If template.PreviewImages.Count > 0 Then
-                AddImages(template.GUID, template.PreviewImages, False)
-            End If
+                ' if there are preview images, store it in the database
+                If template.PreviewImages.Count > 0 Then
+                    AddImages(template.GUID, template.PreviewImages)
+                End If
 
-            If template.Tags.Count > 0 Then
-                AddTags(template.GUID, template.Tags)
-            End If
+                If template.Tags.Count > 0 Then
+                    AddTags(template.GUID, template.Tags)
+                End If
 
-
+            End Using
         Finally
             ' ensure connection is always closed
             If closeDatabaseAfter Then
@@ -396,25 +398,30 @@ Public Class TemplateDatabase
     ''' <param name="rmImage">whether or not to also delete images</param>
     ''' <returns>True=Removed, False=None found</returns>
     Public Function RemoveTemplate(guid As String, Optional rmImage As Boolean = True) As Boolean
-        Dim sqlite_conn = Connection
-        sqlite_conn.Open()
-        Try
-            Dim sqlite_cmd = sqlite_conn.CreateCommand()
-            sqlite_cmd.CommandText = "DELETE from template WHERE GUID = ?"
-            sqlite_cmd.Parameters.Add(guid)
-            Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
-            If rmImage Then
-                RemoveImages(guid, False)
-            End If
+        Dim closeDatabaseAfter = OpenDatabase()
 
-            If rowsRemoved > 0 Then
-                Return True
-            Else
-                Return False
-            End If
+        Try
+
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "DELETE from template WHERE GUID = ?"
+                sqlite_cmd.Parameters.Add(guid)
+                Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
+
+                If rmImage Then
+                    RemoveImages(guid, False)
+                End If
+
+                If rowsRemoved > 0 Then
+                    Return True
+                Else
+                    Return False
+                End If
+            End Using
         Finally
             ' ensure connection is closed
-            sqlite_conn.Close()
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
         End Try
     End Function
 
@@ -428,35 +435,36 @@ Public Class TemplateDatabase
         Dim shouldCloseAfter = OpenDatabase()
 
         Try
-            Dim sqlite_cmd = GetCommand()
-            Dim sqlite_reader As SQLiteDataReader
-            sqlite_cmd.CommandText = "Select * FROM images WHERE guid = @guid"
-            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "Select * FROM images WHERE guid = @guid"
+                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
 
-            sqlite_reader = sqlite_cmd.ExecuteReader()
+                Using sqlite_reader = sqlite_cmd.ExecuteReader()
 
-            If sqlite_reader.Read() Then
-                Dim list As New List(Of Image)
+                    If sqlite_reader.Read() Then
+                        Dim list As New List(Of Image)
 
-                ' should be guaranteed success since image1 is NotNull
-                Dim image1 As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(sqlite_reader.GetOrdinal("image1")), Byte()))
-                list.Add(image1)
+                        ' should be guaranteed success since image1 is NotNull
+                        Dim image1 As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(sqlite_reader.GetOrdinal("image1")), Byte()))
+                        list.Add(image1)
 
-                If Not sqlite_reader.IsDBNull(sqlite_reader.GetOrdinal("image2")) Then
-                    Dim image2 As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(sqlite_reader.GetOrdinal("image2")), Byte()))
-                    list.Add(image2)
-                End If
+                        If Not sqlite_reader.IsDBNull(sqlite_reader.GetOrdinal("image2")) Then
+                            Dim image2 As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(sqlite_reader.GetOrdinal("image2")), Byte()))
+                            list.Add(image2)
+                        End If
 
-                If Not sqlite_reader.IsDBNull(sqlite_reader.GetOrdinal("image3")) Then
-                    Dim image3 As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(sqlite_reader.GetOrdinal("image3")), Byte()))
-                    list.Add(image3)
-                End If
+                        If Not sqlite_reader.IsDBNull(sqlite_reader.GetOrdinal("image3")) Then
+                            Dim image3 As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(sqlite_reader.GetOrdinal("image3")), Byte()))
+                            list.Add(image3)
+                        End If
 
-                Return list
-            Else
-                Return New List(Of Image)
+                        Return list
+                    Else
+                        Return New List(Of Image)
 
-            End If
+                    End If
+                End Using
+            End Using
 
         Finally
             If shouldCloseAfter Then
@@ -474,47 +482,44 @@ Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="guid"></param>
     ''' <param name="images"></param>
-    Public Sub AddImages(guid As String, images As List(Of Image), Optional openDb As Boolean = True)
-        Dim sqlite_conn = Connection
-
-        If openDb Then
-            sqlite_conn.Open()
-        End If
+    Public Sub AddImages(guid As String, images As List(Of Image))
+        Dim closeDatabaseAfter = OpenDatabase()
 
         Try
-            Dim sqlite_cmd = sqlite_conn.CreateCommand()
-
-            sqlite_cmd.CommandText = "INSERT OR REPLACE INTO images 
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO images 
                     (Guid, image1, image2, image3)  
                     VALUES  
                     (@guid, @image1, @image2, @image3);"
 
 
-            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-            If images.Count = 0 Then
-                Throw New Exception("Must supply at least 1 image")
-            ElseIf images.Count = 1 Then
-                sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
-                sqlite_cmd.Parameters.AddWithValue("@image2", Nothing)
-                sqlite_cmd.Parameters.AddWithValue("@image3", Nothing)
-            ElseIf images.Count = 2 Then
-                sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
-                sqlite_cmd.Parameters.AddWithValue("@image2", ImageToBinary(images(1)))
-                sqlite_cmd.Parameters.AddWithValue("@image3", Nothing)
-            ElseIf images.Count = 3 Then
-                sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
-                sqlite_cmd.Parameters.AddWithValue("@image2", ImageToBinary(images(1)))
-                sqlite_cmd.Parameters.AddWithValue("@image3", ImageToBinary(images(2)))
-            Else
-                Throw New Exception(String.Format("Must supply list of length max 3, {0} elements supplied", images.Count))
-            End If
+                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+                If images.Count = 0 Then
+                    Throw New Exception("Must supply at least 1 image")
+                ElseIf images.Count = 1 Then
+                    sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
+                    sqlite_cmd.Parameters.AddWithValue("@image2", Nothing)
+                    sqlite_cmd.Parameters.AddWithValue("@image3", Nothing)
+                ElseIf images.Count = 2 Then
+                    sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
+                    sqlite_cmd.Parameters.AddWithValue("@image2", ImageToBinary(images(1)))
+                    sqlite_cmd.Parameters.AddWithValue("@image3", Nothing)
+                ElseIf images.Count = 3 Then
+                    sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
+                    sqlite_cmd.Parameters.AddWithValue("@image2", ImageToBinary(images(1)))
+                    sqlite_cmd.Parameters.AddWithValue("@image3", ImageToBinary(images(2)))
+                Else
+                    Throw New Exception(String.Format("Must supply list of length max 3, {0} elements supplied", images.Count))
+                End If
 
-            sqlite_cmd.ExecuteNonQuery()
+                sqlite_cmd.ExecuteNonQuery()
+            End Using
+
 
         Finally
             ' ensure connection is always closed
-            If openDb Then
-                sqlite_conn.Close()
+            If closeDatabaseAfter Then
+                CloseDatabase()
             End If
         End Try
     End Sub
@@ -522,20 +527,23 @@ Public Class TemplateDatabase
     Public Function SelectTags(guid As String) As List(Of String)
         Dim closeDatabaseAfter = OpenDatabase()
         Try
-            Dim sqlite_cmd = GetCommand()
+            Using sqlite_cmd = GetCommand()
 
-            sqlite_cmd.CommandText = "SELECT * FROM tags 
+                sqlite_cmd.CommandText = "SELECT tagName FROM tags 
                                       WHERE guid=@guid;"
 
 
-            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-            Dim tags As New List(Of String)
-            Dim reader = sqlite_cmd.ExecuteReader()
-            While reader.Read()
-                tags.Add(reader.GetString(reader.GetOrdinal("tagName")))
-            End While
+                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+                Dim tags As New List(Of String)
+                Dim reader = sqlite_cmd.ExecuteReader()
 
-            Return tags
+                While reader.Read()
+                    tags.Add(reader.GetString(reader.GetOrdinal("tagName")))
+                End While
+
+                Return tags
+            End Using
+
         Finally
             If closeDatabaseAfter Then
                 CloseDatabase()
@@ -545,22 +553,25 @@ Public Class TemplateDatabase
     End Function
 
 
-    Public Sub AddTags(guid As String, tags As List(Of String))
+    Public Sub AddTags(guid As String, tags As IList(Of String))
         Dim closeDatabaseAfter = OpenDatabase()
 
         Try
-            Dim sqlite_cmd = GetCommand()
-            sqlite_cmd.CommandText = "INSERT OR REPLACE INTO tags 
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO tags 
                     (Guid, tagName)  
                     VALUES  
                     (@guid, @tagName);"
 
 
-            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-            For Each tag In tags
-                sqlite_cmd.Parameters.AddWithValue("@tagName", tag)
-                sqlite_cmd.ExecuteNonQuery()
-            Next
+                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+                For Each tag In tags
+                    sqlite_cmd.Parameters.AddWithValue("@tagName", tag)
+                    sqlite_cmd.ExecuteNonQuery()
+                Next
+
+            End Using
+
 
         Finally
             If closeDatabaseAfter Then
@@ -575,26 +586,24 @@ Public Class TemplateDatabase
     ''' <param name="guid"></param>
     ''' <returns>True=Removed image, False=None removed</returns>
     Public Function RemoveImages(guid As String, Optional openDb As Boolean = True) As Boolean
-        Dim sqlite_conn = Connection
-        If openDb Then
-            sqlite_conn.Open()
-        End If
+        Dim closeDatabaseAfter = OpenDatabase()
 
         Try
-            Dim sqlite_cmd = sqlite_conn.CreateCommand()
-            sqlite_cmd.CommandText = "DELETE from images WHERE GUID = ?"
-            sqlite_cmd.Parameters.Add(guid)
-            Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "DELETE from images WHERE GUID = ?"
+                sqlite_cmd.Parameters.Add(guid)
+                Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
 
-            If rowsRemoved > 0 Then
-                Return True
-            Else
-                Return False
-            End If
+                If rowsRemoved > 0 Then
+                    Return True
+                Else
+                    Return False
+                End If
+            End Using
         Finally
             ' ensure connection is closed
-            If openDb Then
-                sqlite_conn.Close()
+            If closeDatabaseAfter Then
+                CloseDatabase()
             End If
         End Try
     End Function
@@ -711,3 +720,16 @@ Public Class DatabaseHelper
         Return foo
     End Function
 End Class
+
+Public Module Extensions
+    <System.Runtime.CompilerServices.Extension>
+    Public Function ToObservableList(Of T)(this As List(Of T)) As ObservableCollection(Of T)
+        Return New ObservableCollection(Of T)(this)
+    End Function
+
+    <System.Runtime.CompilerServices.Extension>
+    Public Function ToList(Of T)(this As ObservableCollection(Of T)) As List(Of T)
+        Return New List(Of T)(this)
+    End Function
+End Module
+

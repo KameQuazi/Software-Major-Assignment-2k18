@@ -90,7 +90,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     Public Property CompletedDrawing As LampDxfDocument
 
-    Private _template As LampDxfDocument
+    Private _baseDrawing As LampDxfDocument
     ''' <summary>
     ''' The actual template : contains just 1 of drawing
     ''' Is serialized last in the file 
@@ -98,33 +98,38 @@ Public NotInheritable Class LampTemplate
     <JsonProperty("template", Order:=1000)>
     Public Property BaseDrawing As LampDxfDocument
         Get
-            Return _template
+            Return _baseDrawing
         End Get
         Set(value As LampDxfDocument)
-            _template = value
-            If _template IsNot Nothing Then
-                AddHandler _template.PropertyChanged, (Sub(sender As Object, e As PropertyChangedEventArgs) NotifyPropertyChanged("Template"))
+            _baseDrawing = value
+            If _baseDrawing IsNot Nothing Then
+                AddHandler _baseDrawing.PropertyChanged, (Sub(sender As Object, e As PropertyChangedEventArgs) NotifyPropertyChanged(NameOf(BaseDrawing)))
             End If
             NotifyPropertyChanged()
         End Set
     End Property
 
-    Private _tags As New List(Of String)
+    Private _tags As ObservableCollection(Of String)
     ''' <summary>
     ''' A list of tags. 
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("tags")>
-    Public Property Tags As List(Of String)
+    Public Property Tags As ObservableCollection(Of String)
         Get
             Return _tags
         End Get
-        Set(value As List(Of String))
+        Set(value As ObservableCollection(Of String))
             _tags = value
+            AddHandler _tags.CollectionChanged, AddressOf HandleTag_CollectionChanged
 
             NotifyPropertyChanged()
         End Set
     End Property
+
+    Private Sub HandleTag_CollectionChanged(sender As Object, args As NotifyCollectionChangedEventArgs)
+        NotifyPropertyChanged(NameOf(Tags))
+    End Sub
 
     Private _material As String = "Unspecified"
     ''' <summary>
@@ -364,6 +369,7 @@ Public NotInheritable Class LampTemplate
     Private Sub _new(dxf As LampDxfDocument, guid As String)
         Me.GUID = guid
         Me.BaseDrawing = dxf
+        Me.Tags = New ObservableCollection(Of String)
 
     End Sub
     ''' <summary>

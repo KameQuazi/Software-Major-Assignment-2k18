@@ -141,6 +141,12 @@
     <Compile Include="frontend\controls\FileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="frontend\forms\LampInputBox.Designer.vb">
+      <DependentUpon>LampInputBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\forms\LampInputBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frontend\forms\TemplateEditor.Designer.vb">
       <DependentUpon>TemplateEditor.vb</DependentUpon>
     </Compile>
@@ -222,6 +228,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\controls\FileDisplay.resx">
       <DependentUpon>FileDisplay.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frontend\forms\LampInputBox.resx">
+      <DependentUpon>LampInputBox.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\TemplateEditor.resx">
       <DependentUpon>TemplateEditor.vb</DependentUpon>
