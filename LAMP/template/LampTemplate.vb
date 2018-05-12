@@ -19,6 +19,8 @@ Public NotInheritable Class LampTemplate
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
 
+    Public Shared ReadOnly Property MaxImages As Integer = 3
+
 #Region "Instance Variables"
     Private _guid As String
     ''' <summary>
