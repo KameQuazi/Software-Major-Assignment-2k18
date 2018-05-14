@@ -104,7 +104,7 @@ Public Class TemplateDatabase
 
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists images (
                                   GUID Text PRIMARY KEY Not NULL, 
-                                  image1 blob Not NULL,
+                                  image1 blob,
                                   image2 blob,
                                   image3 blob,
 
@@ -227,8 +227,10 @@ Public Class TemplateDatabase
                         Dim LampTemp = ReadTemplateTable(sqlite_reader)
 
                         ' get all the preview images
-                        Dim images As List(Of Image) = SelectImages(guid)
-                        LampTemp.PreviewImages = images
+
+                        For Each image In SelectImages(guid)
+                            LampTemp.PreviewImages.Add(image)
+                        Next
 
                         ' get all the tags from the db as well
                         LampTemp.Tags = SelectTags(guid).ToObservableList
@@ -320,9 +322,18 @@ Public Class TemplateDatabase
                         ' read the data off this sqlite_reader
                         LampTemp = ReadTemplateTable(sqlite_reader)
 
-                        ' Set images and tags
-                        LampTemp.PreviewImages = SelectImages(LampTemp.GUID)
-                        LampTemp.Tags = SelectTags(LampTemp.GUID).ToObservableList
+
+                        ' Set images
+                        LampTemp.PreviewImages.Clear()
+                        For Each image In SelectImages(LampTemp.GUID)
+                            LampTemp.PreviewImages.Add(image)
+                        Next
+
+                        ' set tags
+                        LampTemp.Tags.Clear()
+                        For Each tag In SelectTags(LampTemp.GUID)
+                            LampTemp.Tags.Add(tag)
+                        Next
 
                         LampTempList.Add(LampTemp)
                     End While
@@ -372,10 +383,11 @@ Public Class TemplateDatabase
 
                 sqlite_cmd.ExecuteNonQuery()
 
-                ' if there are preview images, store it in the database
-                If template.PreviewImages.Count > 0 Then
+                ' check that there is at least 1 image
+                If template.PreviewImages.HasNotNothing() Then
                     AddImages(template.GUID, template.PreviewImages)
                 End If
+
 
                 If template.Tags.Count > 0 Then
                     AddTags(template.GUID, template.Tags)
@@ -428,6 +440,7 @@ Public Class TemplateDatabase
     ''' <summary>
     ''' Retrieves the images from the database
     ''' given guid of the template, returns the images associated with it, or nothing if none was found
+    ''' returns a list of <see cref="LampTemplate.MaxImages"/> size.
     ''' </summary>
     ''' <param name="guid"></param>
     ''' <returns></returns>
@@ -436,33 +449,29 @@ Public Class TemplateDatabase
 
         Try
             Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "Select * FROM images WHERE guid = @guid"
+                sqlite_cmd.CommandText = "Select image1, image2, image3 FROM images WHERE guid = @guid"
                 sqlite_cmd.Parameters.AddWithValue("@guid", guid)
 
                 Using sqlite_reader = sqlite_cmd.ExecuteReader()
+                    Dim images As New List(Of Image)
 
                     If sqlite_reader.Read() Then
-                        Dim list As New List(Of Image)
 
-                        ' should be guaranteed success since image1 is NotNull
-                        Dim image1 As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(sqlite_reader.GetOrdinal("image1")), Byte()))
-                        list.Add(image1)
+                        For i = 1 To LampTemplate.MaxImages
 
-                        If Not sqlite_reader.IsDBNull(sqlite_reader.GetOrdinal("image2")) Then
-                            Dim image2 As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(sqlite_reader.GetOrdinal("image2")), Byte()))
-                            list.Add(image2)
-                        End If
+                            Dim columnNumber = sqlite_reader.GetOrdinal(String.Format("image{0}", i))
 
-                        If Not sqlite_reader.IsDBNull(sqlite_reader.GetOrdinal("image3")) Then
-                            Dim image3 As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(sqlite_reader.GetOrdinal("image3")), Byte()))
-                            list.Add(image3)
-                        End If
+                            If Not sqlite_reader.IsDBNull(columnNumber) Then
+                                Dim readImage As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(columnNumber), Byte()))
+                                images.Add(readImage)
+                            Else
 
-                        Return list
-                    Else
-                        Return New List(Of Image)
-
+                                images.Add(Nothing)
+                            End If
+                        Next
                     End If
+
+                    Return images
                 End Using
             End Using
 
@@ -482,7 +491,7 @@ Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="guid"></param>
     ''' <param name="images"></param>
-    Public Sub AddImages(guid As String, images As List(Of Image))
+    Public Sub AddImages(guid As String, images As IList(Of Image))
         Dim closeDatabaseAfter = OpenDatabase()
 
         Try
@@ -492,12 +501,27 @@ Public Class TemplateDatabase
                     VALUES  
                     (@guid, @image1, @image2, @image3);"
 
-
                 sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-                If images.Count = 0 Then
-                    Throw New Exception("Must supply at least 1 image")
-                ElseIf images.Count = 1 Then
+
+                If images.Count > LampTemplate.MaxImages Then
+                    Throw New ArgumentOutOfRangeException(NameOf(images), images, String.Format("images array must have {0} or less elements", LampTemplate.MaxImages))
+                End If
+
+                Dim insertedAtLeastOne As Boolean = False
+
+                For i = 0 To images.Count - 1
+                    Dim columnName = String.Format("images{0}", i + 1)
                     sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
+                Next
+
+                If insertedAtLeastOne = False Then
+                    Throw New ArgumentOutOfRangeException(NameOf(images), images, "Images must have at least 1 not-null element")
+                End If
+
+                If images.Count = 0 Then
+
+                ElseIf images.Count = 1 Then
+
                     sqlite_cmd.Parameters.AddWithValue("@image2", Nothing)
                     sqlite_cmd.Parameters.AddWithValue("@image3", Nothing)
                 ElseIf images.Count = 2 Then
@@ -633,7 +657,7 @@ Public Class TemplateDatabase
         Dim template = New LampTemplate(LampDxfDocument.FromFile(fp))
         If File.Exists(previewFp) Then
             Using stream = File.OpenRead(previewFp)
-                template.PreviewImages.Add(Image.FromStream(stream))
+                template.PreviewImages(0) = (Image.FromStream(stream))
             End Using
         End If
         template.Name = name
@@ -731,5 +755,29 @@ Public Module Extensions
     Public Function ToList(Of T)(this As ObservableCollection(Of T)) As List(Of T)
         Return New List(Of T)(this)
     End Function
+
+    ''' <summary>
+    ''' Clears a list so that it has that many elements left
+    ''' </summary>
+    ''' <typeparam name="T"></typeparam>
+    ''' <param name="this"></param>
+    <System.Runtime.CompilerServices.Extension>
+    Public Sub ClearAsArray(Of T)(this As IList(Of T), Optional size As Integer = LampTemplate.MaxImages)
+        this.Clear()
+        For i = 0 To size - 1
+            this.Add(Nothing)
+        Next
+    End Sub
+
+    <System.Runtime.CompilerServices.Extension>
+    Public Function HasNotNothing(Of T)(this As IList(Of T)) As Boolean
+        For Each item In this
+            If item IsNot Nothing Then
+                Return True
+            End If
+        Next
+        Return False
+    End Function
+
 End Module
 

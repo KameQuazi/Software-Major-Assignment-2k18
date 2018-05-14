@@ -21,7 +21,7 @@
     ''' </summary>
     ''' <param name="template"></param>
     Private Sub DisplayTemplate(template As LampTemplate)
-        If template IsNot Nothing Then
+        If template IsNot Nothing And template IsNot LampTemplate.Empty Then
             Dim dxf = template.BaseDrawing
             lblName.Text = "Name: " & template.Name
             lblCreator.Text = "Creator: Waxy by steve"

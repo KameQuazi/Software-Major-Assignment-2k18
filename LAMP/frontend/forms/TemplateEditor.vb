@@ -5,7 +5,7 @@ Public Class TemplateEditor
     ''' <summary>
     ''' Array of 3 images
     ''' </summary>
-    Private images(3) As Image
+    Private ViewerImages(LampTemplate.MaxImages - 1) As Image
 
 #Region "Properties"
     Private _template As LampTemplate
@@ -21,31 +21,50 @@ Public Class TemplateEditor
         Set(value As LampTemplate)
             _template = value
             AddHandler _template.PropertyChanged, AddressOf Template_PropertyChanged
-            UpdateViewer()
+            UpdateAllFromTempate
+
         End Set
     End Property
 
+    Private Sub UpdateAllFromTempate()
+        UpdateTextFromTemplate()
+        UpdateTagsFromTemplate()
+        UpdateDxfFromTemplate()
+    End Sub
+
+    Private Sub UpdateTemplateFromAll()
+        UpdateTemplateFromText()
+        UpdateTemplateFromImages()
+        UpdateTemplateFromDxf()
+    End Sub
+
     Private Sub Template_PropertyChanged(sender As Object, args As PropertyChangedEventArgs)
-        Dim template As LampTemplate = DirectCast(sender, LampTemplate)
-        Select Case args.PropertyName
-            Case NameOf(LampTemplate.Tags)
-                UpdateTags()
-            Case NameOf(LampTemplate.PreviewImages)
-                UpdateTemplateImages()
-            Case NameOf(LampTemplate.BaseDrawing)
-                UpdateDxfFromTemplate()
-            Case NameOf(LampTemplate.Name)
-                NameBox.Text = template.Name
-            Case NameOf(LampTemplate.ShortDescription)
-                ShortDescription.Text = template.ShortDescription
-            Case NameOf(LampTemplate.LongDescription)
-                LongDescription.Text = template.LongDescription
+
+        If shouldUpdateViewer Then
+            Dim template As LampTemplate = DirectCast(sender, LampTemplate)
+            Select Case args.PropertyName
+                Case NameOf(LampTemplate.Tags)
+                    UpdateTagsFromTemplate()
+                Case NameOf(LampTemplate.PreviewImages)
+                    UpdateTemplateFromImages()
+                Case NameOf(LampTemplate.BaseDrawing)
+                    UpdateDxfFromTemplate()
+
+                ' text
+                Case NameOf(LampTemplate.Name)
+                    NameBox.Text = template.Name
+                Case NameOf(LampTemplate.ShortDescription)
+                    ShortDescription.Text = template.ShortDescription
+                Case NameOf(LampTemplate.LongDescription)
+                    LongDescription.Text = template.LongDescription
+                Case NameOf(LampTemplate.GUID)
+                    GuidBox.Text = template.GUID
 
 
-            Case Else
-                Throw New Exception()
-
-        End Select
+                Case Else
+                    Throw New Exception()
+            End Select
+        End If
 
     End Sub
 #End Region
@@ -59,47 +78,82 @@ Public Class TemplateEditor
         Template = LampTemplate.Empty
     End Sub
 
-    ''' <summary>
-    ''' Updates the viewer using the template in 
-    ''' .Template
-    ''' </summary>
-    Private Sub UpdateViewer()
-        UpdateInternalImages()
-
-        UpdateTextFromTemplate()
-        UpdateDxfFromTemplate()
-
-        UpdateTags()
-
-        UpdateViewerImages()
-    End Sub
-
-    Private Sub UpdateTags()
+    Private Sub UpdateTagsFromTemplate()
         TagsBox.Items.Clear()
         For Each item In Template.Tags
             TagsBox.Items.Add(item)
         Next
+
     End Sub
 
+    Private Sub UpdateTemplateFromTags()
+        Template.Tags.Clear()
+        For Each item In TagsBox.Items
+            Template.Tags.Add(item.ToString())
+        Next
+    End Sub
 
     Private Sub UpdateTextFromTemplate()
-        If Template IsNot Nothing Then
-            NameBox.Text = Template.Name
-            ShortDescription.Text = Template.ShortDescription
-            LongDescription.Text = Template.LongDescription
-
-        End If
+        NameBox.Text = Template.Name
+        ShortDescription.Text = Template.ShortDescription
+        LongDescription.Text = Template.LongDescription
+        GuidBox.Text = Template.GUID
     End Sub
-
 
     Private Sub UpdateTemplateFromText()
-        If Template IsNot Nothing Then
-            Template.Name = NameBox.Text
-            Template.ShortDescription = ShortDescription.Text
-            Template.LongDescription = LongDescription.Text
-
-        End If
+        SuspendViewerUpdate()
+        Template.Name = NameBox.Text
+        Template.ShortDescription = ShortDescription.Text
+        Template.LongDescription = LongDescription.Text
+        Template.GUID = GuidBox.Text
+        ResumeViewerUpdate()
     End Sub
+
+
+    ''' <summary>
+    ''' Updates the images in the Template from the images
+    ''' in the internal image array
+    ''' </summary>
+    Private Sub UpdateImagesFromTemplate()
+        Array.Clear(ViewerImages, 0, ViewerImages.Count)
+
+        For Each image As Image In Template.PreviewImages
+            If image IsNot Nothing Then
+                Template.PreviewImages.Add(image)
+            End If
+        Next
+    End Sub
+
+    ''' <summary>
+    ''' Updates the images in the Template from the images
+    ''' in the internal image array
+    ''' </summary>
+    Private Sub UpdateTemplateFromImages()
+        Me.SuspendViewerUpdate()
+        Template.PreviewImages.ClearAsArray()
+
+        For Each image As Image In ViewerImages
+            If image IsNot Nothing Then
+                Template.PreviewImages.Add(image)
+            End If
+        Next
+        ResumeViewerUpdate()
+    End Sub
+
+    Private shouldUpdateViewer As Boolean = True
+
+    Public Sub SuspendViewerUpdate()
+        shouldUpdateViewer = False
+    End Sub
+
+    Public Sub ResumeViewerUpdate()
+        shouldUpdateViewer = True
+    End Sub
+
+
+
+
+
 
     Private Sub UpdateDxfFromTemplate()
         DxfViewerControl1.Source = Template.BaseDrawing
@@ -113,11 +167,9 @@ Public Class TemplateEditor
     ''' Updates the PictureBoxes in the form with the internal image array
     ''' </summary>
     Private Sub UpdateViewerImages()
-        If Template IsNot Nothing Then
-            Preview1.Image = images(0)
-            Preview2.Image = images(1)
-            Preview3.Image = images(2)
-        End If
+        Preview1.Image = ViewerImages(0)
+        Preview2.Image = ViewerImages(1)
+        Preview3.Image = ViewerImages(2)
     End Sub
 
 
@@ -130,62 +182,34 @@ Public Class TemplateEditor
                 MessageBox.Show(ex.Message)
             End Try
         End If
-        UpdateViewer()
+
     End Sub
 
     Private Sub Preview1_Click(sender As Object, e As EventArgs) Handles Preview1.Click
         If ImageFileDialog.ShowDialog = DialogResult.OK Then
-            images(0) = Image.FromFile(ImageFileDialog.FileName)
-            Preview1.Image = images(0)
-            UpdateTemplateImages()
+            ViewerImages(0) = Image.FromFile(ImageFileDialog.FileName)
+            Preview1.Image = ViewerImages(0)
+            UpdateTemplateFromImages()
         End If
     End Sub
 
     Private Sub Preview2_Click(sender As Object, e As EventArgs) Handles Preview2.Click
         If ImageFileDialog.ShowDialog = DialogResult.OK Then
-            images(1) = Image.FromFile(ImageFileDialog.FileName)
-            Preview2.Image = images(1)
-            UpdateTemplateImages()
+            ViewerImages(1) = Image.FromFile(ImageFileDialog.FileName)
+            Preview2.Image = ViewerImages(1)
+            UpdateTemplateFromImages()
         End If
     End Sub
 
     Private Sub Preview3_Click(sender As Object, e As EventArgs) Handles Preview3.Click
         If ImageFileDialog.ShowDialog = DialogResult.OK Then
-            images(2) = Image.FromFile(ImageFileDialog.FileName)
-            Preview3.Image = images(2)
-            UpdateTemplateImages()
+            ViewerImages(2) = Image.FromFile(ImageFileDialog.FileName)
+            Preview3.Image = ViewerImages(2)
+            UpdateTemplateFromImages()
         End If
     End Sub
 
-    ''' <summary>
-    ''' Updates the images in the Template from the images
-    ''' in the internal image array
-    ''' </summary>
-    Private Sub UpdateTemplateImages()
-        Template.PreviewImages.Clear()
-        For Each image As Image In images
-            If image IsNot Nothing Then
-                Template.PreviewImages.Add(image)
-            End If
-        Next
-    End Sub
 
-    ''' <summary>
-    ''' Updates the array of images
-    ''' from the Template
-    ''' </summary>
-    Private Sub UpdateInternalImages()
-        If _template Is Nothing Then
-            Return
-        End If
-
-        For i As Integer = 0 To 2
-            images(i) = Nothing
-            If _template.PreviewImages.Count > i Then
-                images(i) = _template.PreviewImages(i)
-            End If
-        Next
-    End Sub
 
     Private Sub AddTemplate_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -258,8 +282,7 @@ Public Class TemplateEditor
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        UpdateTemplateFromDxf()
-        UpdateTemplateFromText()
-
+        UpdateTemplateFromAll()
+        MessageBox.Show("Saved to memory (to multitemplateviewer) ")
     End Sub
 End Class

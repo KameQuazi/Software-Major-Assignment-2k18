@@ -46,8 +46,10 @@ Partial Class TemplateEditor
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.LongDescription = New System.Windows.Forms.RichTextBox()
-        Me.DxfViewerControl1 = New LAMP.DxfViewerControl()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.DxfViewerControl1 = New LAMP.DxfViewerControl()
+        Me.GuidBox = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -234,6 +236,15 @@ Partial Class TemplateEditor
         Me.LongDescription.TabIndex = 20
         Me.LongDescription.Text = ""
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(432, 417)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 21
+        Me.Button1.Text = "Save"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'DxfViewerControl1
         '
         Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -244,20 +255,30 @@ Partial Class TemplateEditor
         Me.DxfViewerControl1.Source = Nothing
         Me.DxfViewerControl1.TabIndex = 12
         '
-        'Button1
+        'GuidBox
         '
-        Me.Button1.Location = New System.Drawing.Point(432, 417)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 21
-        Me.Button1.Text = "Save"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.GuidBox.Enabled = False
+        Me.GuidBox.Location = New System.Drawing.Point(398, 20)
+        Me.GuidBox.Name = "GuidBox"
+        Me.GuidBox.Size = New System.Drawing.Size(172, 20)
+        Me.GuidBox.TabIndex = 22
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(363, 23)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(29, 13)
+        Me.Label4.TabIndex = 23
+        Me.Label4.Text = "Guid"
         '
         'TemplateEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(920, 520)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.GuidBox)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.LongDescription)
         Me.Controls.Add(Me.Label3)
@@ -313,4 +334,6 @@ Partial Class TemplateEditor
     Friend WithEvents Label3 As Label
     Friend WithEvents LongDescription As RichTextBox
     Friend WithEvents Button1 As Button
+    Friend WithEvents GuidBox As TextBox
+    Friend WithEvents Label4 As Label
 End Class

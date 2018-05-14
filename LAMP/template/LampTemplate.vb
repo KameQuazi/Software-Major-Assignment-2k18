@@ -19,7 +19,7 @@ Public NotInheritable Class LampTemplate
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
 
-    Public Shared ReadOnly Property MaxImages As Integer = 3
+    Public Const MaxImages As Integer = 3
 
 #Region "Instance Variables"
     Private _guid As String
@@ -289,9 +289,32 @@ Public NotInheritable Class LampTemplate
     <JsonProperty("approver_id")>
     Public Property ApproverId As String = System.Guid.Empty.ToString
 
+    Private Sub PreviewImages_CollectionChanged(sender As Object, args As NotifyCollectionChangedEventArgs)
+        NotifyPropertyChanged(NameOf(PreviewImages))
+    End Sub
+
+    Private _previewImages As ObservableCollection(Of Image)
+
+    ''' <summary>
+    ''' List of 3 images
+    ''' </summary>
+    ''' <returns></returns>
     <JsonProperty("preview_images")>
     <JsonConverter(GetType(ImageJsonConverter))>
-    Public Property PreviewImages As New List(Of Image)
+    Public Property PreviewImages As ObservableCollection(Of Image)
+        Get
+            Return _previewImages
+        End Get
+        Private Set(value As ObservableCollection(Of Image))
+            If value.Count < LampTemplate.MaxImages Then
+                Throw New ArgumentOutOfRangeException(NameOf(value), value, String.Format("Collection must have at least {0} elements", MaxImages))
+            End If
+
+            _previewImages = value
+            AddHandler _previewImages.CollectionChanged, AddressOf PreviewImages_CollectionChanged
+        End Set
+    End Property
+
 
 
 #End Region
@@ -373,6 +396,10 @@ Public NotInheritable Class LampTemplate
         Me.BaseDrawing = dxf
         Me.Tags = New ObservableCollection(Of String)
 
+        Dim collection = New ObservableCollection(Of Image)
+        collection.ClearAsArray()
+        Me.PreviewImages = collection
+
     End Sub
     ''' <summary>
     ''' Create a new LampTemplate with default Everything
@@ -428,6 +455,8 @@ Public NotInheritable Class LampTemplate
 
     ' TODO - ACtually compare all the elements of the template
     Public Shared Operator =(ByVal first As LampTemplate, ByVal second As LampTemplate) As Boolean
+        If (first = Nothing OrElse GetType()!= obj.GetType()) Then
+            Return False;
         Return first.GUID = second.GUID
     End Operator
 
