@@ -13,7 +13,7 @@ Public Class TemplateDatabase
     Public Property Path As String
 
     ''' <summary>
-    ''' sqlite connection. Needs to be closed and opened 
+    ''' sqlite connection. Needs to be closed and opened
     ''' whenever used
     ''' </summary>
     Public Property Connection As SQLiteConnection
@@ -73,10 +73,10 @@ Public Class TemplateDatabase
         Return _Connection.CreateCommand
     End Function
 
-    ''' <summary> 
-    ''' Creates all the tables required, if tables not exist 
+    ''' <summary>
+    ''' Creates all the tables required, if tables not exist
     ''' Does not delete any data
-    ''' </summary> 
+    ''' </summary>
     Public Sub CreateTables()
         ' If the databse is open already, dont close it
 
@@ -84,15 +84,14 @@ Public Class TemplateDatabase
         Try
             Using sqlite_cmd = GetCommand()
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists template (
-                                  GUID Text PRIMARY KEY Not NULL, 
+                                  GUID Text PRIMARY KEY Not NULL,
                                   DXF Text Not NULL,
                                   Name Text DEFAULT '' Not NULL,
-                                  ShortDescription Text DEFAULT '' Not NULL,
+                                  ShortDescription Text DEFAULT '' NOT NULL,
                                   LongDescription Text DEFAULT '' NOT NULL,
-                                  Tag Text DEFAULT '',
-                                  material Text Not NULL,
-                                  length Int Not NULL,
-                                  Height Int Not NULL,
+                                  material Text Not NULL DEFAULT 'none',
+                                  length real Not NULL DEFAULT -1,
+                                  Height real Not NULL DEFAULT -1,
                                   materialThickness Int Not NULL,
                                   creatorName Text Not NULL DEFAULT '',
                                   creatorID Text Not NULL DEFAULT -1,
@@ -103,7 +102,7 @@ Public Class TemplateDatabase
                 sqlite_cmd.ExecuteNonQuery()
 
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists images (
-                                  GUID Text PRIMARY KEY Not NULL, 
+                                  GUID Text PRIMARY KEY Not NULL,
                                   image1 blob Not NULL,
                                   image2 blob,
                                   image3 blob,
@@ -114,8 +113,8 @@ Public Class TemplateDatabase
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists tags (
                                   GUID Text Not Null,
                                   TagName Text Not Null,
-                                  
-                                  FOREIGN KEY(GUID) REFERENCES template(GUID)   
+
+                                  FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );
                         "
                 sqlite_cmd.ExecuteNonQuery()
@@ -154,10 +153,10 @@ Public Class TemplateDatabase
     End Sub
 
     ''' <summary>
-    ''' Reads 1 row off the sqliteReader, returning a lampTemplate with its variables set 
+    ''' Reads 1 row off the sqliteReader, returning a lampTemplate with its variables set
     ''' This is so you dont have to duplicate code over SelectTemplate, SelectAllTemplate etc
     ''' Does not call reader.Read(), the reader must have data in it
-    ''' </summary> 
+    ''' </summary>
     Private Function ReadTemplateTable(reader As SQLiteDataReader, Optional start As LampTemplate = Nothing) As LampTemplate
         If reader.HasRows <> True Then
             Throw New DataException(NameOf(reader))
@@ -268,8 +267,8 @@ Public Class TemplateDatabase
                     tagParameters.Insert(i, "@tag" + i.ToString())
                 Next
                 ' find all templates w/
-                sqlite_cmd.CommandText = String.Format("Select * from tags
-                                      WHERE tagName IN ({0}) 
+                sqlite_cmd.CommandText = String.Format("Select guid from tags
+                                      WHERE tagName IN ({0})
                                       LIMIT @limit
                                       OFFSET @offset
                                      ", tagParameters.ToString())
@@ -351,9 +350,9 @@ Public Class TemplateDatabase
             Using sqlite_cmd = GetCommand()
 
                 ' Insert if GUID doesnt exist, else replace
-                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO template 
-                    (Guid, DXF, material, length, Height, materialthickness, creatorName, creatorID, complete, submitdate)  
-                    VALUES  
+                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO template
+                    (Guid, DXF, material, length, Height, materialthickness, creatorName, creatorID, complete, submitdate)
+                    VALUES
                     (@guid, @dxf, @material, @length, @height, @materialthickness, @creatorName, @creatorId, @complete, DATETIME('now'));"
 
                 sqlite_cmd.Parameters.AddWithValue("@guid", template.GUID)
@@ -367,8 +366,8 @@ Public Class TemplateDatabase
                 sqlite_cmd.Parameters.AddWithValue("@creatorId", template.CreatorId)
                 sqlite_cmd.Parameters.AddWithValue("@complete", template.IsComplete)
 
-                ' Ensure creatorId and and approverId are strings! 
-                ' also add approverid/approvername to the db 
+                ' Ensure creatorId and and approverId are strings!
+                ' also add approverid/approvername to the db
 
                 sqlite_cmd.ExecuteNonQuery()
 
@@ -487,9 +486,9 @@ Public Class TemplateDatabase
 
         Try
             Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO images 
-                    (Guid, image1, image2, image3)  
-                    VALUES  
+                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO images
+                    (Guid, image1, image2, image3)
+                    VALUES
                     (@guid, @image1, @image2, @image3);"
 
 
@@ -529,7 +528,7 @@ Public Class TemplateDatabase
         Try
             Using sqlite_cmd = GetCommand()
 
-                sqlite_cmd.CommandText = "SELECT tagName FROM tags 
+                sqlite_cmd.CommandText = "SELECT tagName FROM tags
                                       WHERE guid=@guid;"
 
 
@@ -558,9 +557,9 @@ Public Class TemplateDatabase
 
         Try
             Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO tags 
-                    (Guid, tagName)  
-                    VALUES  
+                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO tags
+                    (Guid, tagName)
+                    VALUES
                     (@guid, @tagName);"
 
 
@@ -732,4 +731,3 @@ Public Module Extensions
         Return New List(Of T)(this)
     End Function
 End Module
-
