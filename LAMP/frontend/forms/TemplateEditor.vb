@@ -21,7 +21,7 @@ Public Class TemplateEditor
         Set(value As LampTemplate)
             _template = value
             AddHandler _template.PropertyChanged, AddressOf Template_PropertyChanged
-            UpdateAllFromTempate
+            UpdateAllFromTempate()
 
         End Set
     End Property

@@ -300,7 +300,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("preview_images")>
-    <JsonConverter(GetType(ImageJsonConverter))>
+    <JsonConverter(GetType(ImageListJsonConverter))>
     Public Property PreviewImages As ObservableCollection(Of Image)
         Get
             Return _previewImages
@@ -455,8 +455,6 @@ Public NotInheritable Class LampTemplate
 
     ' TODO - ACtually compare all the elements of the template
     Public Shared Operator =(ByVal first As LampTemplate, ByVal second As LampTemplate) As Boolean
-        If (first = Nothing OrElse GetType()!= obj.GetType()) Then
-            Return False;
         Return first.GUID = second.GUID
     End Operator
 
@@ -472,11 +470,11 @@ Public NotInheritable Class LampTemplate
 End Class
 
 
-Public Class ImageJsonConverter
+Public Class ImageListJsonConverter
     Inherits JsonConverter
 
     Public Overrides Sub WriteJson(writer As JsonWriter, value As Object, serializer As JsonSerializer)
-        Dim ImageList = DirectCast(value, List(Of Image))
+        Dim ImageList = DirectCast(value, IList(Of Image))
         Dim encodedImages As New List(Of String)
 
         For Each image In ImageList

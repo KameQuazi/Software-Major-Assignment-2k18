@@ -5,6 +5,8 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports System.Drawing
 Imports System.IO
 Imports LAMP.LampDxfHelper
+Imports netDxf.Entities
+
 
 Imports netDxf
 
@@ -41,6 +43,13 @@ Imports netDxf
         template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(60, 0, 0)))
         template.Save("template.spf")
         template.CompletedDrawing.Save("finished drawing.dxf")
+    End Sub
+
+    <TestMethod>
+    Public Sub DrawLines()
+        Dim dxf As New LampDxfDocument
+        dxf.AddLine(0, 0, 10, 10)
+        IsTrue(dxf.DxfFile.Lines.Contains(New Line(New Vector2(0, 0), New Vector2(10, 10))))
     End Sub
 
 End Class

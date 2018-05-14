@@ -92,7 +92,7 @@ Public Class TemplateDatabase
                                   material Text Not NULL DEFAULT 'none',
                                   length real Not NULL DEFAULT -1,
                                   Height real Not NULL DEFAULT -1,
-                                  materialThickness Int Not NULL,
+                                  materialThickness real Not NULL DEFAULT -1,
                                   creatorName Text Not NULL DEFAULT '',
                                   creatorID Text Not NULL DEFAULT -1,
                                   approverName Text DEFAULT '',
@@ -147,7 +147,7 @@ Public Class TemplateDatabase
             End Using
         Finally
             If closeDatabaseAfter Then
-                Connection.Close()
+                CloseDatabase()
             End If
         End Try
     End Sub
