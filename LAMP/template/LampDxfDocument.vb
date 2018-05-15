@@ -313,12 +313,18 @@ Public Class LampDxfDocument
 #Enable Warning BC42016 ' Implicit conversion
 
         For Each line As Line In _dxfFile.Lines
-            If IntersectsWith(bounds, line) Then
+            If InsideBounds(bounds, line) Then
                 Dim start = CartesianToGdi(middle, width, height, line.StartPoint.X, line.StartPoint.Y)
 
                 Dim [end] = CartesianToGdi(middle, width, height, line.EndPoint.X, line.EndPoint.Y)
 
                 g.DrawLine(New Pen(line.Color.ToColor()), start, [end])
+            End If
+        Next
+
+        For Each arc As Arc In _DxfFile.Arcs
+            If InsideBounds(bounds, Line) Then
+
             End If
         Next
     End Sub
@@ -347,7 +353,7 @@ Public Class LampDxfDocument
     ''' Calculates the width, height bottomleft and right of the document
     ''' </summary>
     Private Sub RecalculateBounds()
-        For Each line As Line In _dxfFile.Lines
+        For Each line As Line In _DxfFile.Lines
             If IsBottomOrLeft(line.StartPoint) Then
                 BottomLeft = line.StartPoint
             End If
@@ -465,7 +471,7 @@ Public Class LampDxfHelper
 #Enable Warning BC42016 ' Implicit conversion
     End Function
 
-    Public Shared Function IntersectsWith(rect As RectangleF, line As Line) As Boolean
+    Public Shared Function InsideBounds(rect As RectangleF, line As Line) As Boolean
         Return True
     End Function
     Public Shared Function CartesianToGdi(center As PointF, width As Integer, height As Integer, cartesianX As Double, cartesianY As Double) As PointF

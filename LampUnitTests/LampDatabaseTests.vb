@@ -164,11 +164,6 @@ Public Class LampDatabaseTests
         Finally
             database.CloseDatabase()
         End Try
-
-
-
-
-
     End Sub
 
 End Class

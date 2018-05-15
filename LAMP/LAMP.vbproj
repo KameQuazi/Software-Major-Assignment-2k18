@@ -141,6 +141,12 @@
     <Compile Include="frontend\controls\FileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="frontend\controls\DynamicFormCreation.Designer.vb">
+      <DependentUpon>DynamicFormCreation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\controls\DynamicFormCreation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="frontend\forms\LampInputBox.Designer.vb">
       <DependentUpon>LampInputBox.vb</DependentUpon>
     </Compile>
@@ -228,6 +234,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\controls\FileDisplay.resx">
       <DependentUpon>FileDisplay.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frontend\controls\DynamicFormCreation.resx">
+      <DependentUpon>DynamicFormCreation.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\LampInputBox.resx">
       <DependentUpon>LampInputBox.vb</DependentUpon>

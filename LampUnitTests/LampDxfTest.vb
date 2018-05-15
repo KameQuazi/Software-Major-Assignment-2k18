@@ -49,7 +49,18 @@ Imports netDxf
     Public Sub DrawLines()
         Dim dxf As New LampDxfDocument
         dxf.AddLine(0, 0, 10, 10)
-        IsTrue(dxf.DxfFile.Lines.Contains(New Line(New Vector2(0, 0), New Vector2(10, 10))))
+
     End Sub
 
 End Class
+
+Public Module DxfExtensions
+    <System.Runtime.CompilerServices.Extension()>
+    Public Function EntityEquals(line1 As Line, line2 As Line) As Boolean
+        If line1.StartPoint = line2.StartPoint And line1.EndPoint = line2.EndPoint Then
+            Return True
+        End If
+        Return False
+
+    End Function
+End Module
