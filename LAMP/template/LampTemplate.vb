@@ -492,13 +492,15 @@ Public Class ImageListJsonConverter
     End Function
 
     Public Overrides Function ReadJson(reader As JsonReader, objectType As Type, existingValue As Object, serializer As JsonSerializer) As Object
-        Dim out As New List(Of Image)
+        Dim out As New ObservableCollection(Of Image)
 
         Dim token = JToken.Load(reader)
         If token.Type = JTokenType.Array Then
             For Each base64Image In token.ToArray()
                 If base64Image.Type = JTokenType.String Then
                     out.Add(LampDxfDocument.Base64ToImage(base64Image.ToString))
+                ElseIf base64Image.Type = JTokenType.Null Then
+                    out.Add(Nothing)
                 Else
                     Throw New JsonSerializationException()
                 End If

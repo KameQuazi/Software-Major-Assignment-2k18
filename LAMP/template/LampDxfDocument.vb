@@ -304,19 +304,19 @@ Public Class LampDxfDocument
     ''' </summary>
     ''' <param name="g"></param>
     ''' <param name="focalPoint">where the center of the view is</param>
-    ''' <param name="width">the width of the scene to render</param>
-    ''' <param name="height">the height of the scene to render</param>
-    Public Sub WriteToGraphics(g As Graphics, focalPoint As PointF, width As Integer, height As Integer)
+    ''' <param name="renderWidth">the width of the scene to render</param>
+    ''' <param name="renderHeight">the height of the scene to render</param>
+    Public Sub WriteToGraphics(g As Graphics, focalPoint As PointF, renderWidth As Integer, renderHeight As Integer)
         ' the bounds where entities are rendered
 #Disable Warning BC42016 ' Implicit conversion
-        Dim bounds As New RectangleF(focalPoint.X - width / 2, focalPoint.Y + height / 2, width, height)
+        Dim bounds As New RectangleF(focalPoint.X - renderWidth / 2, focalPoint.Y + renderHeight / 2, renderWidth, renderHeight)
 #Enable Warning BC42016 ' Implicit conversion
 
         For Each line As Line In _DxfFile.Lines
             If InsideBounds(bounds, line) Then
-                Dim start = CartesianToGdi(focalPoint, width, height, line.StartPoint.X, line.StartPoint.Y)
+                Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, line.StartPoint.X, line.StartPoint.Y)
 
-                Dim [end] = CartesianToGdi(focalPoint, width, height, line.EndPoint.X, line.EndPoint.Y)
+                Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, line.EndPoint.X, line.EndPoint.Y)
 
                 g.DrawLine(New Pen(line.Color.ToColor()), start, [end])
             End If
@@ -327,17 +327,33 @@ Public Class LampDxfDocument
                 ' draw arc takes in the upper left corner, width/height of the ellipse (equal=radius since it is always circular)
                 ' start angle and total angle subtended
 
-                Dim GdiCenter = CartesianToGdi(focalPoint, width, height, arc.Center)
-                ' GDI center is where the center of the arc (there is none) should be rendered
-                ' However, we need the top left corner, lesser Y and less X, by radius
-                GdiCenter.Y -= arc.Radius
-                GdiCenter.X -= arc.Radius
+                ' However, we need the top left corner, from center
+                Dim upperLeft = arc.Center
+                upperLeft.X -= arc.Radius
+                upperLeft.Y += arc.Radius
+
+                Dim GdiUpperleft = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperLeft)
 
                 Dim angleRotated = arc.StartAngle - arc.EndAngle
 
-                Dim arcBound As New RectangleF(GdiCenter, New SizeF(arc.Radius * 2, arc.Radius * 2))
+                ' Width, height = 2x radius
+                Dim arcBound As New RectangleF(GdiUpperleft, New SizeF(arc.Radius * 2, arc.Radius * 2))
 
                 g.DrawArc(New Pen(arc.Color.ToColor()), arcBound, arc.StartAngle, angleRotated)
+            End If
+        Next
+
+        For Each circle As Circle In _DxfFile.Circles
+            If InsideBounds(bounds, circle) Then
+                ' get upper left point (in cartesian point)
+                Dim upperleft = circle.Center
+                upperleft.Y += circle.Radius
+                upperleft.X -= circle.Radius
+
+                Dim gdiCenter = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperleft)
+                Dim circleBound As New RectangleF(gdiCenter, New SizeF(circle.Radius * 2, circle.Radius * 2))
+
+                g.DrawEllipse(New Pen(circle.Color.ToColor()), circleBound)
             End If
         Next
     End Sub
@@ -492,6 +508,11 @@ Public Class LampDxfHelper
         Return True
     End Function
 
+
+    Public Shared Function InsideBounds(rect As RectangleF, circle As Circle) As Boolean
+        Return True
+    End Function
+
     Public Shared Function CartesianToGdi(center As PointF, width As Integer, height As Integer, cartesianPoint As Vector3) As PointF
         Return CartesianToGdi(center, width, height, cartesianPoint.X, cartesianPoint.Y)
     End Function
@@ -504,6 +525,8 @@ Public Class LampDxfHelper
 #Enable Warning BC42016 ' Implicit conversion
         Return ret
     End Function
+
+
 
     Public Shared Function GdiToCartesian(center As PointF, width As Integer, height As Integer, location As PointF) As PointF
         Throw New Exception("TODO")

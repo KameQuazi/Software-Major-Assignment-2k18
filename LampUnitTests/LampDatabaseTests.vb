@@ -69,101 +69,136 @@ Public Class LampDatabaseTests
                 command.CommandText = String.Format("Pragma table_info(template)", TemplateTableName)
 
 
-                Dim data = command.ExecuteReader()
+                Using data = command.ExecuteReader()
 
-                Dim guid = GetColumnInformation(data)
-                AreEqual(0, guid.cid)
-                AreEqual("guid", guid.name.ToLower())
-                AreEqual("text", guid.type.ToLower())
-                AreEqual(True, guid.notnull)
-                AreEqual(Nothing, guid.default)
-                AreEqual(True, guid.pk)
+                    Dim guid = GetColumnInformation(data)
+                    AreEqual(0, guid.cid)
+                    AreEqual("guid", guid.name.ToLower())
+                    AreEqual("text", guid.type.ToLower())
+                    AreEqual(True, guid.notnull)
+                    AreEqual(Nothing, guid.default)
+                    AreEqual(True, guid.pk)
 
-                Dim dxf = GetColumnInformation(data)
-                AreEqual(1, dxf.cid)
-                AreEqual("dxf", dxf.name.ToLower())
-                AreEqual("text", dxf.type.ToLower())
-                AreEqual(True, dxf.notnull)
-                AreEqual(Nothing, dxf.default)
-                AreEqual(False, dxf.pk)
+                    Dim dxf = GetColumnInformation(data)
+                    AreEqual(1, dxf.cid)
+                    AreEqual("dxf", dxf.name.ToLower())
+                    AreEqual("text", dxf.type.ToLower())
+                    AreEqual(True, dxf.notnull)
+                    AreEqual(Nothing, dxf.default)
+                    AreEqual(False, dxf.pk)
 
-                Dim name = GetColumnInformation(data)
-                AreEqual(2, name.cid)
-                AreEqual("name", name.name.ToLower())
-                AreEqual("text", name.type.ToLower())
-                AreEqual(True, name.notnull)
-                AreEqual("''", name.default)
-                AreEqual(False, name.pk)
+                    Dim name = GetColumnInformation(data)
+                    AreEqual(2, name.cid)
+                    AreEqual("name", name.name.ToLower())
+                    AreEqual("text", name.type.ToLower())
+                    AreEqual(True, name.notnull)
+                    AreEqual("''", name.default)
+                    AreEqual(False, name.pk)
 
-                Dim shortDescription = GetColumnInformation(data)
-                AreEqual(3, shortDescription.cid)
-                AreEqual("shortdescription", shortDescription.name.ToLower())
-                AreEqual("text", shortDescription.type.ToLower())
-                AreEqual(True, shortDescription.notnull)
-                AreEqual("''", shortDescription.default)
-                AreEqual(False, shortDescription.pk)
+                    Dim shortDescription = GetColumnInformation(data)
+                    AreEqual(3, shortDescription.cid)
+                    AreEqual("shortdescription", shortDescription.name.ToLower())
+                    AreEqual("text", shortDescription.type.ToLower())
+                    AreEqual(True, shortDescription.notnull)
+                    AreEqual("''", shortDescription.default)
+                    AreEqual(False, shortDescription.pk)
 
-                Dim longDescription = GetColumnInformation(data)
-                AreEqual(4, longDescription.cid)
-                AreEqual("longdescription", longDescription.name.ToLower())
-                AreEqual("text", longDescription.type.ToLower())
-                AreEqual(True, longDescription.notnull)
-                AreEqual("''", longDescription.default)
-                AreEqual(False, longDescription.pk)
+                    Dim longDescription = GetColumnInformation(data)
+                    AreEqual(4, longDescription.cid)
+                    AreEqual("longdescription", longDescription.name.ToLower())
+                    AreEqual("text", longDescription.type.ToLower())
+                    AreEqual(True, longDescription.notnull)
+                    AreEqual("''", longDescription.default)
+                    AreEqual(False, longDescription.pk)
 
-                Dim mat = GetColumnInformation(data)
-                AreEqual(5, mat.cid)
-                AreEqual("material", mat.name.ToLower())
-                AreEqual("text", mat.type.ToLower())
-                AreEqual(True, mat.notnull)
-                AreEqual("none", mat.default)
-                AreEqual(False, mat.pk)
+                    Dim mat = GetColumnInformation(data)
+                    AreEqual(5, mat.cid)
+                    AreEqual("material", mat.name.ToLower())
+                    AreEqual("text", mat.type.ToLower())
+                    AreEqual(True, mat.notnull)
+                    AreEqual("'none'", mat.default)
+                    AreEqual(False, mat.pk)
 
-                Dim length = GetColumnInformation(data)
-                AreEqual(6, length.cid)
-                AreEqual("length", length.name.ToLower())
-                AreEqual("real", length.type.ToLower())
-                AreEqual(True, length.notnull)
-                AreEqual(-1, length.default, 0.01)
-                AreEqual(False, length.pk)
+                    Dim length = GetColumnInformation(data)
+                    AreEqual(6, length.cid)
+                    AreEqual("length", length.name.ToLower())
+                    AreEqual("real", length.type.ToLower())
+                    AreEqual(True, length.notnull)
+                    AreEqual(-1, length.default, 0.01)
+                    AreEqual(False, length.pk)
 
-                Dim height = GetColumnInformation(data)
-                AreEqual(7, height.cid)
-                AreEqual("height", height.name.ToLower())
-                AreEqual("real", height.type.ToLower())
-                AreEqual(True, height.notnull)
-                AreEqual(-1, height.default, 0.01)
-                AreEqual(False, height.pk)
+                    Dim height = GetColumnInformation(data)
+                    AreEqual(7, height.cid)
+                    AreEqual("height", height.name.ToLower())
+                    AreEqual("real", height.type.ToLower())
+                    AreEqual(True, height.notnull)
+                    AreEqual(-1, height.default, 0.01)
+                    AreEqual(False, height.pk)
 
 
-                Dim materialThickness = GetColumnInformation(data)
-                AreEqual(8, materialThickness.cid)
-                AreEqual("materialthickness", materialThickness.name.ToLower())
-                AreEqual("real", materialThickness.type.ToLower())
-                AreEqual(True, materialThickness.notnull)
-                AreEqual(-1, materialThickness.default, 0.01)
-                AreEqual(False, materialThickness.pk)
+                    Dim materialThickness = GetColumnInformation(data)
+                    AreEqual(8, materialThickness.cid)
+                    AreEqual("materialthickness", materialThickness.name.ToLower())
+                    AreEqual("real", materialThickness.type.ToLower())
+                    AreEqual(True, materialThickness.notnull)
+                    AreEqual(-1, materialThickness.default, 0.01)
+                    AreEqual(False, materialThickness.pk)
 
-                Dim creatorName = GetColumnInformation(data)
-                AreEqual(6, creatorName.cid)
-                AreEqual("creatorname", creatorName.name.ToLower())
-                AreEqual("text", creatorName.type.ToLower())
-                AreEqual(True, creatorName.notnull)
-                AreEqual("''", creatorName.default)
-                AreEqual(False, creatorName.pk)
+                    Dim creatorName = GetColumnInformation(data)
+                    AreEqual(9, creatorName.cid)
+                    AreEqual("creatorname", creatorName.name.ToLower())
+                    AreEqual("text", creatorName.type.ToLower())
+                    AreEqual(True, creatorName.notnull)
+                    AreEqual("''", creatorName.default)
+                    AreEqual(False, creatorName.pk)
 
-                Dim creatorId = GetColumnInformation(data)
-                AreEqual(7, creatorId.cid)
-                AreEqual("creatorid", creatorId.name.ToLower())
-                AreEqual("text", creatorId.type.ToLower())
-                AreEqual(True, creatorId.notnull)
-                AreEqual("''", creatorId.default)
-                AreEqual(False, creatorId.pk)
+                    Dim creatorId = GetColumnInformation(data)
+                    AreEqual(10, creatorId.cid)
+                    AreEqual("creatorid", creatorId.name.ToLower())
+                    AreEqual("text", creatorId.type.ToLower())
+                    AreEqual(True, creatorId.notnull)
+                    AreEqual("'0000-0000-0000-0000'", creatorId.default)
+                    AreEqual(False, creatorId.pk)
+                End Using
             End Using
 
         Finally
             database.CloseDatabase()
+            TestConnectionClosed()
         End Try
     End Sub
+
+    <TestMethod()>
+    Public Sub TestTemplate()
+        Dim temp As New LampTemplate()
+        temp.Save("test.spf")
+        temp = LampTemplate.FromFile("test.spf")
+
+    End Sub
+
+    <TestMethod()>
+    Public Sub TestConnectionClosed()
+
+        For i = 0 To RepeatConnectionTestTimes - 1
+            With Nothing ' test database creation / deletion
+                Dim db As New TemplateDatabase
+                db.OpenDatabase()
+                db.CreateTables()
+                db.DeleteTables()
+                db.CloseDatabase()
+            End With
+
+            With Nothing ' test select and adding template
+                Dim db As New TemplateDatabase
+                Dim temp As New LampTemplate
+                db.AddTemplate(temp)
+                db.SelectTemplate(temp.GUID)
+            End With
+
+
+        Next
+    End Sub
+
+    Private RepeatConnectionTestTimes = 3
 
 End Class

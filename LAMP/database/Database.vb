@@ -94,9 +94,9 @@ Public Class TemplateDatabase
                                   Height real Not NULL DEFAULT -1,
                                   materialThickness real Not NULL DEFAULT -1,
                                   creatorName Text Not NULL DEFAULT '',
-                                  creatorID Text Not NULL DEFAULT -1,
+                                  creatorID Text Not NULL DEFAULT '0000-0000-0000-0000',
                                   approverName Text DEFAULT '',
-                                  approverID Text Default -1,
+                                  approverID Text Default '0000-0000-0000-0000',
                                   submitDate Text,
                                   complete Int DEFAULT FALSE);"
                 sqlite_cmd.ExecuteNonQuery()
