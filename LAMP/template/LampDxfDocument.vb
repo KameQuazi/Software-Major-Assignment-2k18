@@ -63,7 +63,7 @@ Public Class LampDxfDocument
     ''' Constructor for LampDxfDocument
     ''' </summary>
     Sub New()
-        _dxfFile = New DxfDocument()
+        _DxfFile = New DxfDocument()
         RecalculateBounds()
     End Sub
 
@@ -158,7 +158,7 @@ Public Class LampDxfDocument
     ''' <param name="point"></param>
     Public Sub InsertInto(otherDrawing As LampDxfDocument, point As LampDxfInsertLocation)
         Dim offset = point.InsertPoint
-        For Each line As Line In _dxfFile.Lines
+        For Each line As Line In _DxfFile.Lines
             Dim start = line.StartPoint
 
         Next
@@ -170,7 +170,7 @@ Public Class LampDxfDocument
     ''' <param name="filepath"></param>
     Public Sub Save(filepath As String)
         Using fs = New FileStream(filepath, FileMode.Create)
-            _dxfFile.Save(fs)
+            _DxfFile.Save(fs)
         End Using
     End Sub
 
@@ -199,7 +199,7 @@ Public Class LampDxfDocument
     ''' </summary>
     ''' <param name="line">Line object to add</param>
     Public Sub AddLine(line As Line)
-        _dxfFile.AddEntity(line)
+        _DxfFile.AddEntity(line)
     End Sub
 
     ''' <summary>
@@ -207,7 +207,7 @@ Public Class LampDxfDocument
     ''' </summary>
    	''' <param name="circle">Circle object to add</param>
     Public Sub AddCircle(circle As Circle)
-        _dxfFile.AddEntity(circle)
+        _DxfFile.AddEntity(circle)
     End Sub
 
     ''' <summary>
@@ -217,7 +217,7 @@ Public Class LampDxfDocument
     ''' <param name="centerY">Point3 2</param>
     ''' <param name="radius">radius of circle</param>
     Public Sub AddCircle(centerX As Double, centerY As Double, radius As Double)
-        _dxfFile.AddEntity(New Circle(ConvertPoint3(centerX, centerY), radius))
+        _DxfFile.AddEntity(New Circle(ConvertPoint3(centerX, centerY), radius))
     End Sub
 
     ''' <summary>
@@ -226,7 +226,7 @@ Public Class LampDxfDocument
     ''' <param name="centre"></param>
     ''' <param name="radius"></param>
     Public Sub AddCircle(centre As Vector3, radius As Double)
-        _dxfFile.AddEntity(New Circle(ConvertPoint3(centre.X, centre.Y), radius))
+        _DxfFile.AddEntity(New Circle(ConvertPoint3(centre.X, centre.Y), radius))
     End Sub
 
     ''' <summary>
@@ -242,7 +242,7 @@ Public Class LampDxfDocument
     ''' </summary>
     ''' <param name="Point3s"></param>
     Public Sub AddPolyline(Point3s As IEnumerable(Of Vector3))
-        _dxfFile.AddEntity(New Polyline(Point3s))
+        _DxfFile.AddEntity(New Polyline(Point3s))
     End Sub
 
     ''' <summary>
@@ -254,7 +254,7 @@ Public Class LampDxfDocument
     ''' <param name="startAngle"></param>
     ''' <param name="endAngle"></param>
     Public Sub AddArc(centerX As Integer, centerY As Integer, radius As Double, startAngle As Double, endAngle As Double)
-        _dxfFile.AddEntity(New Arc(ConvertPoint3(centerX, centerY), radius, startAngle, endAngle))
+        _DxfFile.AddEntity(New Arc(ConvertPoint3(centerX, centerY), radius, startAngle, endAngle))
     End Sub
 
     ''' <summary>
@@ -268,7 +268,7 @@ Public Class LampDxfDocument
     ''' <param name="textHeight"></param>
     ''' <param name="width"></param>
     Public Sub AddMultiText(x As Integer, y As Integer, text As String, textHeight As Double, width As Double, Optional tstyle As TextStyle = Nothing)
-        _dxfFile.AddEntity(New MText(text, ConvertPoint3(x, y), textHeight, width))
+        _DxfFile.AddEntity(New MText(text, ConvertPoint3(x, y), textHeight, width))
     End Sub
 
     ''' <summary>
@@ -279,7 +279,7 @@ Public Class LampDxfDocument
     ''' <param name="text"></param>
     ''' <param name="height"></param>
     Public Sub AddText(x As Integer, y As Integer, text As String, height As Integer)
-        _dxfFile.AddEntity(New Text(text, New Vector3(x, y, 0), height))
+        _DxfFile.AddEntity(New Text(text, New Vector3(x, y, 0), height))
     End Sub
 
     ''' <summary>
@@ -288,14 +288,14 @@ Public Class LampDxfDocument
     ''' <param name="ent"></param>
     ''' <param name="recalculate"></param>
     Public Sub AddEntity(ent As EntityObject, Optional recalculate As Boolean = True)
-        _dxfFile.AddEntity(ent)
+        _DxfFile.AddEntity(ent)
         If recalculate = True Then
             RecalculateBounds()
         End If
     End Sub
 
     Public Overrides Function ToString() As String
-        Return String.Format("CustomDxfDrawing: {0}", _dxfFile)
+        Return String.Format("CustomDxfDrawing: {0}", _DxfFile)
     End Function
 
     ''' <summary>
@@ -303,28 +303,41 @@ Public Class LampDxfDocument
     ''' Only draws lines right now
     ''' </summary>
     ''' <param name="g"></param>
-    ''' <param name="middle"></param>
-    ''' <param name="width"></param>
-    ''' <param name="height"></param>
-    Public Sub WriteToGraphics(g As Graphics, middle As PointF, width As Integer, height As Integer)
+    ''' <param name="focalPoint">where the center of the view is</param>
+    ''' <param name="width">the width of the scene to render</param>
+    ''' <param name="height">the height of the scene to render</param>
+    Public Sub WriteToGraphics(g As Graphics, focalPoint As PointF, width As Integer, height As Integer)
         ' the bounds where entities are rendered
 #Disable Warning BC42016 ' Implicit conversion
-        Dim bounds As New RectangleF(middle.X - width / 2, middle.Y + height / 2, width, height)
+        Dim bounds As New RectangleF(focalPoint.X - width / 2, focalPoint.Y + height / 2, width, height)
 #Enable Warning BC42016 ' Implicit conversion
 
-        For Each line As Line In _dxfFile.Lines
+        For Each line As Line In _DxfFile.Lines
             If InsideBounds(bounds, line) Then
-                Dim start = CartesianToGdi(middle, width, height, line.StartPoint.X, line.StartPoint.Y)
+                Dim start = CartesianToGdi(focalPoint, width, height, line.StartPoint.X, line.StartPoint.Y)
 
-                Dim [end] = CartesianToGdi(middle, width, height, line.EndPoint.X, line.EndPoint.Y)
+                Dim [end] = CartesianToGdi(focalPoint, width, height, line.EndPoint.X, line.EndPoint.Y)
 
                 g.DrawLine(New Pen(line.Color.ToColor()), start, [end])
             End If
         Next
 
         For Each arc As Arc In _DxfFile.Arcs
-            If InsideBounds(bounds, Line) Then
+            If InsideBounds(bounds, arc) Then
+                ' draw arc takes in the upper left corner, width/height of the ellipse (equal=radius since it is always circular)
+                ' start angle and total angle subtended
 
+                Dim GdiCenter = CartesianToGdi(focalPoint, width, height, arc.Center)
+                ' GDI center is where the center of the arc (there is none) should be rendered
+                ' However, we need the top left corner, lesser Y and less X, by radius
+                GdiCenter.Y -= arc.Radius
+                GdiCenter.X -= arc.Radius
+
+                Dim angleRotated = arc.StartAngle - arc.EndAngle
+
+                Dim arcBound As New RectangleF(GdiCenter, New SizeF(arc.Radius * 2, arc.Radius * 2))
+
+                g.DrawArc(New Pen(arc.Color.ToColor()), arcBound, arc.StartAngle, angleRotated)
             End If
         Next
     End Sub
@@ -474,6 +487,15 @@ Public Class LampDxfHelper
     Public Shared Function InsideBounds(rect As RectangleF, line As Line) As Boolean
         Return True
     End Function
+
+    Public Shared Function InsideBounds(rect As RectangleF, arc As Arc) As Boolean
+        Return True
+    End Function
+
+    Public Shared Function CartesianToGdi(center As PointF, width As Integer, height As Integer, cartesianPoint As Vector3) As PointF
+        Return CartesianToGdi(center, width, height, cartesianPoint.X, cartesianPoint.Y)
+    End Function
+
     Public Shared Function CartesianToGdi(center As PointF, width As Integer, height As Integer, cartesianX As Double, cartesianY As Double) As PointF
 #Disable Warning BC42016 ' Implicit conversion
         Dim ret As New PointF(-center.X + width / 2, center.Y + height / 2)
