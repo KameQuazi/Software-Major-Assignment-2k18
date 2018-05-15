@@ -203,6 +203,16 @@ Public Class TemplateDatabase
 
         Throw New NotImplementedException()
     End Function
+    
+     Sub removeEntry(guid As String)
+        Dim sqlite_conn = _connection
+        sqlite_conn.Open()
+        Dim sqlite_cmd = sqlite_conn.CreateCommand()
+        sqlite_cmd.CommandText = "DELETE from template WHERE GUID = ?"
+        sqlite_cmd.Parameters.Add(guid, DbType.String)
+        sqlite_cmd.ExecuteNonQuery()
+        sqlite_conn.Close()
+      End Sub
 
     ''' <summary>
     ''' Finds a template in the database, given its corresponding guid
@@ -213,6 +223,7 @@ Public Class TemplateDatabase
     Function SelectTemplate(guid As String) As LampTemplate
         ' If the databse is open already, dont close it
         Dim closeDatabaseAfter = OpenDatabase()
+   
 
         Try
             Using sqlite_cmd = GetCommand()
