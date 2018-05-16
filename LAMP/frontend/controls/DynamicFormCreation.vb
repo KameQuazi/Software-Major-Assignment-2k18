@@ -1,14 +1,10 @@
 ﻿Imports System.Collections.ObjectModel
+Imports System.Collections.Specialized
 
 Public Class DynamicFormCreation
-    Private AllPanels As New List(Of Panel)
+    Private AllControls As New ObservableCollection(Of SingleDynamicText)
 
-    Public Property Source As New ObservableCollection(Of DynamicText)
-
-    Private Function MakePanel() As Panel
-        Dim newPanel As New Panel
-        Return newPanel
-    End Function
+    Public ReadOnly Property Source As New ObservableCollection(Of DynamicText)
 
 
     Protected Overrides Sub OnPaddingChanged(e As EventArgs)
@@ -18,34 +14,36 @@ Public Class DynamicFormCreation
     End Sub
 
     Public Sub UpdatePanels()
-        For Each panel In AllPanels
-            Me.Controls.Remove(panel)
+        For Each panel In AllControls
+            Me.FlowLayoutPanel1.Controls.Remove(panel)
         Next
+        AllControls.Clear()
+
         Dim i = 0
         For Each dynText In Source
-            Dim x As New Button()
-            Me.Controls.Add(x)
-            x.Height = i * 100
-            i += 1
+            Dim newControl As New SingleDynamicText
+            AllControls.Add(newControl)
+            newControl.Width = Me.Width
+
+            Me.FlowLayoutPanel1.Controls.Add(newControl)
+            ' use SetChildIndex to set control's index if needed mayyybe
         Next
     End Sub
 
     Sub New()
-
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Dim x As New Button()
-        Me.Controls.Add(x)
-        Source.Add(New DynamicText("1", Nothing))
-        Source.Add(New DynamicText("2", Nothing))
-        Source.Add(New DynamicText("3", Nothing))
-        Source.Add(New DynamicText("4", Nothing))
-        UpdatePanels()
+        AddHandler Source.CollectionChanged, Sub(sender As Object, args As NotifyCollectionChangedEventArgs) UpdatePanels()
+
     End Sub
 
     Private Sub DynamicFormCreation_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub FlowLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles FlowLayoutPanel1.Paint
 
     End Sub
 End Class

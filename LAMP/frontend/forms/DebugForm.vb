@@ -1,8 +1,8 @@
 ﻿Public Class DebugForm
     Dim db As New TemplateDatabase()
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
-        db.FillDebugDatabase()
+        Await Task.Run(AddressOf TemplateDatabase.FillDebugDatabase)
         db.GetAllTemplate()
     End Sub
 
@@ -39,10 +39,13 @@
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
         Test()
+
     End Sub
 
     Private Sub Test()
         Dim MultiTemplateViewer As New MultiTemplateViewer()
+        Me.Controls.Add(MultiTemplateViewer)
+
         MultiTemplateViewer.LoadExample()
         Dim db As New TemplateDatabase
 
@@ -67,9 +70,7 @@
     End Sub
 
     Private Sub Test2()
-
-        'Dim temp = LampTemplate.FromFile()
-        ' MultiTemplateViewer.SetTemplateToPosition(0, 0, temp)
+        DynamicFormCreation1.Source.Add(New DynamicText("hello!", Nothing))
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
@@ -87,6 +88,7 @@
 
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
         Dim frm As New DynamicTextCreationForm
+
         frm.ShowDialog()
     End Sub
 

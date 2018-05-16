@@ -29,15 +29,21 @@
     End Sub
 
     Private Sub RefreshInputControl()
+        If InputControl IsNot Nothing Then
+            Me.TablePanel.Controls.Remove(InputControl)
+        End If
+
         Select Case InputType
             Case InputType.RichTextBox
-                Me.TablePanel.Controls.Remove(InputControl)
+
                 Dim newControl As New RichTextBox()
-                InputControl = newControl
+                _inputControl = newControl
                 newControl.AutoSize = False
                 newControl.Dock = DockStyle.Fill
 
                 Me.TablePanel.Controls.Add(InputControl)
+            Case Else
+                Throw New Exception("InputType must be from enum InputType")
         End Select
     End Sub
 End Class
