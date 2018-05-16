@@ -32,7 +32,8 @@ Partial Class DebugForm
         Me.Button8 = New System.Windows.Forms.Button()
         Me.Button9 = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.MultiTemplateViewer = New LAMP.MultiTemplateViewer()
+        Me.Button10 = New System.Windows.Forms.Button()
+        Me.DynamicFormCreation1 = New LAMP.DynamicFormCreation()
         Me.SuspendLayout()
         '
         'Button1
@@ -123,21 +124,30 @@ Partial Class DebugForm
         Me.TextBox1.Size = New System.Drawing.Size(100, 20)
         Me.TextBox1.TabIndex = 10
         '
-        'MultiTemplateViewer
+        'Button10
         '
-        Me.MultiTemplateViewer.ColumnCount = 4
-        Me.MultiTemplateViewer.Location = New System.Drawing.Point(491, 15)
-        Me.MultiTemplateViewer.Name = "MultiTemplateViewer"
-        Me.MultiTemplateViewer.RowCount = 2
-        Me.MultiTemplateViewer.Size = New System.Drawing.Size(829, 560)
-        Me.MultiTemplateViewer.TabIndex = 11
+        Me.Button10.Location = New System.Drawing.Point(246, 186)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(151, 23)
+        Me.Button10.TabIndex = 12
+        Me.Button10.Text = "ddynamictext"
+        Me.Button10.UseVisualStyleBackColor = True
+        '
+        'DynamicFormCreation1
+        '
+        Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DynamicFormCreation1.Location = New System.Drawing.Point(486, 52)
+        Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
+        Me.DynamicFormCreation1.Size = New System.Drawing.Size(684, 480)
+        Me.DynamicFormCreation1.TabIndex = 13
         '
         'DebugForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1343, 587)
-        Me.Controls.Add(Me.MultiTemplateViewer)
+        Me.Controls.Add(Me.DynamicFormCreation1)
+        Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button9)
         Me.Controls.Add(Me.Button8)
@@ -165,5 +175,6 @@ Partial Class DebugForm
     Friend WithEvents Button8 As Button
     Friend WithEvents Button9 As Button
     Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents MultiTemplateViewer As MultiTemplateViewer
+    Friend WithEvents Button10 As Button
+    Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
 End Class

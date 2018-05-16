@@ -42,7 +42,7 @@
     End Sub
 
     Private Sub Test()
-
+        Dim MultiTemplateViewer As New MultiTemplateViewer()
         MultiTemplateViewer.LoadExample()
         Dim db As New TemplateDatabase
 
@@ -81,7 +81,16 @@
         Test2()
     End Sub
 
-    Private Sub MultiTemplateViewer_Load(sender As Object, e As EventArgs) Handles MultiTemplateViewer.Load
+    Private Sub MultiTemplateViewer_Load(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
+        Dim frm As New DynamicTextCreationForm
+        frm.ShowDialog()
+    End Sub
+
+    Private Sub DynamicFormCreation1_Load(sender As Object, e As EventArgs) Handles DynamicFormCreation1.Load
 
     End Sub
 End Class

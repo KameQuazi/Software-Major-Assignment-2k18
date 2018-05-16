@@ -123,6 +123,12 @@
     <Compile Include="frontend\controls\MultiTemplateViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="frontend\controls\SingleDynamicText.Designer.vb">
+      <DependentUpon>SingleDynamicText.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\controls\SingleDynamicText.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="frontend\forms\AboutBox1.designer.vb">
       <DependentUpon>AboutBox1.vb</DependentUpon>
     </Compile>
@@ -146,6 +152,12 @@
     </Compile>
     <Compile Include="frontend\controls\DynamicFormCreation.vb">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="frontend\forms\DynamicTextCreationForm.Designer.vb">
+      <DependentUpon>DynamicTextCreationForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frontend\forms\DynamicTextCreationForm.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="frontend\forms\LampInputBox.Designer.vb">
       <DependentUpon>LampInputBox.vb</DependentUpon>
@@ -232,6 +244,9 @@
     <EmbeddedResource Include="frontend\controls\MultiTemplateViewer.resx">
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frontend\controls\SingleDynamicText.resx">
+      <DependentUpon>SingleDynamicText.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.vb</DependentUpon>
     </EmbeddedResource>
@@ -243,6 +258,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\controls\DynamicFormCreation.resx">
       <DependentUpon>DynamicFormCreation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frontend\forms\DynamicTextCreationForm.resx">
+      <DependentUpon>DynamicTextCreationForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frontend\forms\LampInputBox.resx">
       <DependentUpon>LampInputBox.vb</DependentUpon>
