@@ -22,7 +22,6 @@ Public Class TemplateEditor
             _template = value
             AddHandler _template.PropertyChanged, AddressOf Template_PropertyChanged
             UpdateAllFromTempate()
-
         End Set
     End Property
 

@@ -70,7 +70,7 @@
     End Sub
 
     Private Sub Test2()
-        DynamicFormCreation1.Source.Add(New DynamicText("hello!", Nothing))
+        DynamicFormCreation1.Source.Add(New DynamicTemplateInput("whats this?", "a working form apparently", Nothing))
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click

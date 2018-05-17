@@ -39,13 +39,31 @@
         btnQuit.Show()
     End Sub
 
+    ''' <summary>
+    ''' Closes the first form that is a parent of control
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub btnQY_Click(sender As Object, e As EventArgs) Handles btnQY.Click
-        If Me.Parent.GetType().IsSubclassOf(GetType(Form)) Then
-            Dim parent As Form = DirectCast(Me.Parent, Form)
-            parent.Close()
-        Else
+        Dim currentParent As Control = Me.Parent
+        Dim closed As Boolean = False
+
+        While currentParent IsNot Nothing
+            If currentParent.GetType().IsSubclassOf(GetType(Form)) Then
+                Dim parent As Form = DirectCast(currentParent, Form)
+                parent.Close()
+                closed = True
+                Exit While
+            End If
+
+            currentParent = currentParent.Parent
+        End While
+
+#If DEBUG Then
+        If Not closed Then
             Throw New Exception("Control must be on top level (must not be in a panel etc)")
         End If
+#End If
 
     End Sub
 

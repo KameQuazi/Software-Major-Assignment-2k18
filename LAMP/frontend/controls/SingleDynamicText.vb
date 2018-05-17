@@ -20,6 +20,14 @@
         Return InputControl
     End Function
 
+    Public Sub SetParameterText(text As String)
+        ParameterName.Text = text
+    End Sub
+
+    Public Sub SetDescriptionText(text As String)
+        DescriptionText.Text = text
+    End Sub
+
     Sub New()
         ' This call is required by the designer.
         InitializeComponent()

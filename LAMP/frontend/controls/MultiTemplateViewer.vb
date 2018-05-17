@@ -56,12 +56,16 @@
         ' set flag to update the grid if necessary
         Dim mustUpdateGrid As Boolean = False
 
+        Dim toRemove As New List(Of Point)
         ' trim the columns
         For Each key As Point In TemplateViewers.Keys
             ' greater or equal here, as column is 1 indexed, while X is 0 indexed
             If key.X >= ColumnCount OrElse key.Y >= RowCount Then
-                TemplateViewers.Remove(key)
+                toRemove.Add(key)
             End If
+        Next
+        For Each point In toRemove
+            TemplateViewers.Remove(point)
         Next
 
         ' check if there are any gaps in the Grid

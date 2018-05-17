@@ -28,7 +28,7 @@ Partial Class SingleDynamicText
         Me.TablePanel.SuspendLayout()
         Me.SuspendLayout()
         '
-        'TablePabel
+        'TablePanel
         '
         Me.TablePanel.ColumnCount = 3
         Me.TablePanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
@@ -38,7 +38,8 @@ Partial Class SingleDynamicText
         Me.TablePanel.Controls.Add(Me.DescriptionText, 1, 0)
         Me.TablePanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TablePanel.Location = New System.Drawing.Point(0, 0)
-        Me.TablePanel.Name = "TablePabel"
+        Me.TablePanel.Margin = New System.Windows.Forms.Padding(0)
+        Me.TablePanel.Name = "TablePanel"
         Me.TablePanel.RowCount = 1
         Me.TablePanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TablePanel.Size = New System.Drawing.Size(749, 110)
@@ -67,9 +68,9 @@ Partial Class SingleDynamicText
         '
         'SingleDynamicText
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.Controls.Add(Me.TablePanel)
+        Me.Margin = New System.Windows.Forms.Padding(0)
         Me.Name = "SingleDynamicText"
         Me.Size = New System.Drawing.Size(749, 110)
         Me.TablePanel.ResumeLayout(False)

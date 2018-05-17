@@ -135,6 +135,7 @@ Partial Class DebugForm
         '
         'DynamicFormCreation1
         '
+        Me.DynamicFormCreation1.AutoScroll = True
         Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.DynamicFormCreation1.Location = New System.Drawing.Point(486, 52)
         Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
@@ -143,8 +144,7 @@ Partial Class DebugForm
         '
         'DebugForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(1343, 587)
         Me.Controls.Add(Me.DynamicFormCreation1)
         Me.Controls.Add(Me.Button10)
