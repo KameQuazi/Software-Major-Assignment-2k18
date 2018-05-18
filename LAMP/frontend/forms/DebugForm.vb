@@ -71,6 +71,16 @@
 
     Private Sub Test2()
         DynamicFormCreation1.Source.Add(New DynamicTemplateInput("whats this?", "a working form apparently", Nothing))
+
+        Dim x As New Bitmap(500, 500)
+        Using g = Graphics.FromImage(x)
+            g.DrawRectangle(Pens.Black, 0, 0, x.Width - 1, x.Height - 1)
+
+            g.RotateTransform(45)
+
+            g.DrawString("hewwo `uwu` whos this", SystemFonts.DefaultFont, Brushes.Black, New PointF(0, 0))
+        End Using
+        x.Save("out.png")
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
