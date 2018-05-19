@@ -27,6 +27,7 @@ Public Class DynamicFormCreation
             newControl.SetDescriptionText(dynText.Description)
             newControl.SetParameterText(dynText.ParameterName)
             newControl.InputType = dynText.InputType
+
             AllControls.Add(newControl)
             newControl.Width = Me.Width - ScrollBarOffset
 

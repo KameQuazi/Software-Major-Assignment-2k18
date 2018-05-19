@@ -22,10 +22,18 @@ Public Class DynamicTemplateInput
 
     ''' <summary>
     ''' The text to insert into the finished Template
+    ''' Value will be:
+    ''' String, for richtextbox
+    ''' boolean, for checkbox
+    ''' Nothing, for nothing
+    ''' Image, for PictureBox
+    ''' IList(Of text), for ListView
+    ''' String, for combobox
+    ''' NOTE - not all are actually implemented ;-;
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("text")>
-    Public Property Text As String = ""
+    <JsonProperty("value")>
+    Public Property Value As Object
 
     <JsonProperty("location")>
     Public Property Location As Point
@@ -33,15 +41,27 @@ Public Class DynamicTemplateInput
     <JsonProperty("font")>
     Public Property Font As Font
 
+    ''' <summary>
+    ''' The type of input. <see cref="Value"/> to see what data type each one will return
+    ''' </summary>
+    ''' <returns></returns>
     <JsonProperty("inputType")>
-    Public Property InputType As InputType = InputType.RichTextBox
+    Public Property InputType As InputType
 
     Private defaultFont As Font = SystemFonts.DefaultFont
 
-    Public Sub New(parameterName As String, description As String, location As Point, Optional font As Font = Nothing)
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="parameterName">Name of parameter</param>
+    ''' <param name="description">description of parameter</param>
+    ''' <param name="location">where it should be inserted, rel bottom left of the template</param>
+    ''' <param name="font">font to use (for text)</param>
+    Public Sub New(parameterName As String, description As String, location As Point, Optional inputType As InputType = InputType.RichTextBox, Optional font As Font = Nothing)
         Me.ParameterName = parameterName
         Me.Description = description
         Me.Location = location
+        Me.InputType = inputType
         If font IsNot Nothing Then
             Me.Font = defaultFont
         Else

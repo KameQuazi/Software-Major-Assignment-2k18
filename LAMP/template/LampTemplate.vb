@@ -187,7 +187,7 @@ Public NotInheritable Class LampTemplate
     ''' The thickness of the material used
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("material)thickness")>
+    <JsonProperty("material_thickness")>
     Public Property MaterialThickness As Double
         Get
             Return _materialThickness
@@ -506,10 +506,19 @@ Public Class ImageListJsonConverter
                     Throw New JsonSerializationException()
                 End If
             Next
+
         Else
             Throw New JsonSerializationException()
         End If
-
+#If DEBUG Then
+        If out.Count > LampTemplate.MaxImages Then
+            Throw New JsonSerializationException("too many images!")
+        End If
+#Else
+        While out.Count > LampTemplate.MaxImages
+            out.RemoveAt(out.Count - 1)
+        End While
+#End If
         Return out
     End Function
 

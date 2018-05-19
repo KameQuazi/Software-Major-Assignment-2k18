@@ -27,12 +27,14 @@ Public Class TemplateEditor
 
     Private Sub UpdateAllFromTempate()
         UpdateTextFromTemplate()
+        UpdateImagesFromTemplate()
         UpdateTagsFromTemplate()
         UpdateDxfFromTemplate()
     End Sub
 
     Private Sub UpdateTemplateFromAll()
         UpdateTemplateFromText()
+        UpdateTemplateFromImages()
         UpdateTemplateFromImages()
         UpdateTemplateFromDxf()
     End Sub
@@ -77,18 +79,24 @@ Public Class TemplateEditor
         Template = LampTemplate.Empty
     End Sub
 
+    ''' <summary>
+    ''' Updates tag from the template
+    ''' </summary>
     Private Sub UpdateTagsFromTemplate()
         TagsBox.Items.Clear()
         For Each item In Template.Tags
-            TagsBox.Items.Add(item)
+            TagsBox.Items.Add(NormalizeTags(item))
         Next
 
     End Sub
 
+    ''' <summary>
+    ''' updates template from tag
+    ''' </summary>
     Private Sub UpdateTemplateFromTags()
         Template.Tags.Clear()
         For Each item In TagsBox.Items
-            Template.Tags.Add(item.ToString())
+            Template.Tags.Add(NormalizeTags(item.ToString))
         Next
     End Sub
 
@@ -116,11 +124,11 @@ Public Class TemplateEditor
     Private Sub UpdateImagesFromTemplate()
         Array.Clear(ViewerImages, 0, ViewerImages.Count)
 
-        For Each image As Image In Template.PreviewImages
-            If image IsNot Nothing Then
-                Template.PreviewImages.Add(image)
-            End If
+        For i = 0 To Template.PreviewImages.Count() - 1
+            Dim image = Template.PreviewImages(i)
+            ViewerImages(i) = image
         Next
+        UpdateViewerImages()
     End Sub
 
     ''' <summary>
@@ -131,11 +139,12 @@ Public Class TemplateEditor
         Me.SuspendViewerUpdate()
         Template.PreviewImages.ClearAsArray()
 
-        For Each image As Image In ViewerImages
-            If image IsNot Nothing Then
-                Template.PreviewImages.Add(image)
-            End If
+        For i = 0 To ViewerImages.Count() - 1
+            Dim image = ViewerImages(i)
+            Template.PreviewImages(i) = image
         Next
+
+
         ResumeViewerUpdate()
     End Sub
 
@@ -145,8 +154,11 @@ Public Class TemplateEditor
         shouldUpdateViewer = False
     End Sub
 
-    Public Sub ResumeViewerUpdate()
+    Public Sub ResumeViewerUpdate(Optional doUpdate As Boolean = False)
         shouldUpdateViewer = True
+        If doUpdate Then
+            UpdateAllFromTempate()
+        End If
     End Sub
 
 
@@ -242,22 +254,27 @@ Public Class TemplateEditor
     Private Sub AddTag_Click(sender As Object, e As EventArgs) Handles AddTag.Click
         Dim dialog As New LampInputBox("New tag", "Enter new tag")
         If dialog.ShowDialog() = DialogResult.OK Then
-            Dim newTag = dialog.InputText.ToLower()
+            Dim newTag = NormalizeTags(dialog.InputText)
+
             If Me.Template.Tags.Contains(newTag) Then
                 ' dont allow duplicates
                 MessageBox.Show("tags must be unique ")
             Else
                 ' add them to the tags in the template
-                Me.Template.Tags.Add(dialog.InputText)
+                Me.Template.Tags.Add(newTag)
             End If
         End If
     End Sub
+
+    Private Function NormalizeTags(text As String) As String
+        Return New String(text.Where(Function(x) Not Char.IsWhiteSpace(x)).ToArray()).ToLower
+    End Function
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles RemoveTag.Click
         Dim selectedPosition = TagsBox.SelectedIndex
         If selectedPosition <> -1 Then
             ' an item is selected
-            Dim selectedTag = TagsBox.SelectedItem.ToString().ToLower()
+            Dim selectedTag = NormalizeTags(TagsBox.SelectedItem.ToString)
             Me.Template.Tags.Remove(selectedTag)
 
         End If

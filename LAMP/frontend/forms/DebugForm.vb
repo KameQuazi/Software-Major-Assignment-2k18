@@ -1,4 +1,6 @@
-﻿Public Class DebugForm
+﻿Imports netDxf
+
+Public Class DebugForm
     Dim db As New TemplateDatabase()
     Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
@@ -81,6 +83,16 @@
             g.DrawString("hewwo `uwu` whos this", SystemFonts.DefaultFont, Brushes.Black, New PointF(0, 0))
         End Using
         x.Save("out.png")
+
+        Dim y As New DxfDocument
+        Dim txt = New Entities.Text("hello", New Vector3(0, 0, 0), 10, Tables.TextStyle.Default)
+        txt.ObliqueAngle = 10
+        Dim t2 = New Entities.MText("hello", New Vector2(0, 0), 10, 10, Tables.TextStyle.Default)
+        t2.Rotation = 10
+        y.AddEntity(t2)
+        y.AddEntity(txt)
+        y.Save("helow.dxf")
+
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click

@@ -23,22 +23,35 @@ Partial Class DynamicTextCreationForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.DynamicFormCreation1 = New LAMP.DynamicFormCreation()
+        Me.ToolBar1 = New LAMP.ToolBar()
         Me.SuspendLayout()
         '
         'DynamicFormCreation1
         '
         Me.DynamicFormCreation1.AutoScroll = True
-        Me.DynamicFormCreation1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.DynamicFormCreation1.Location = New System.Drawing.Point(0, 0)
+        Me.DynamicFormCreation1.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.DynamicFormCreation1.Location = New System.Drawing.Point(0, 92)
         Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
-        Me.DynamicFormCreation1.Size = New System.Drawing.Size(835, 526)
+        Me.DynamicFormCreation1.Size = New System.Drawing.Size(984, 619)
         Me.DynamicFormCreation1.TabIndex = 0
+        '
+        'ToolBar1
+        '
+        Me.ToolBar1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ToolBar1.BackColor = System.Drawing.Color.White
+        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolBar1.Location = New System.Drawing.Point(-6, 0)
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.Size = New System.Drawing.Size(1000, 91)
+        Me.ToolBar1.TabIndex = 1
         '
         'DynamicTextCreationForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(835, 526)
+        Me.ClientSize = New System.Drawing.Size(984, 711)
+        Me.Controls.Add(Me.ToolBar1)
         Me.Controls.Add(Me.DynamicFormCreation1)
         Me.Name = "DynamicTextCreationForm"
         Me.Text = "DynamicTextCreationForm"
@@ -47,4 +60,5 @@ Partial Class DynamicTextCreationForm
     End Sub
 
     Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
+    Friend WithEvents ToolBar1 As ToolBar
 End Class
