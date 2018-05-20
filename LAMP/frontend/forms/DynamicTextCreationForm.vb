@@ -36,4 +36,6 @@ Public Class DynamicTextCreationForm
         ' Add any initialization after the InitializeComponent() call.
         Source = LampTemplate.Empty
     End Sub
+
+
 End Class

@@ -1,4 +1,13 @@
 ﻿Public Class ToolBar
+    Public Property ScreenName As String
+        Get
+            Return lblCurScr.Text
+        End Get
+        Set(value As String)
+            lblCurScr.Text = value
+        End Set
+    End Property
+
     Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
         frmStart.Show()
         Options.Close()

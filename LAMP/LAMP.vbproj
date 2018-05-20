@@ -217,7 +217,6 @@
     <Compile Include="template\TemplateParts\DynamicText.vb" />
     <Compile Include="template\LampTemplate.vb" />
     <Compile Include="template\LampDxfDocument.vb" />
-    <Compile Include="template\TemplateParts\DxfText.vb" />
     <Compile Include="frontend\forms\DesignerForm.vb">
       <SubType>Form</SubType>
     </Compile>
