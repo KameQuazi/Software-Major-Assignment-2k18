@@ -334,12 +334,15 @@ Public Class LampDxfDocument
 
                 Dim GdiUpperleft = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperLeft)
 
-                Dim angleRotated = arc.StartAngle - arc.EndAngle
+                ' if startAngle > endangle, 
+                Dim angleRotated = (arc.EndAngle - arc.StartAngle + 360) Mod 360
+
 
                 ' Width, height = 2x radius
-                Dim arcBound As New RectangleF(GdiUpperleft, New SizeF(arc.Radius * 2, arc.Radius * 2))
+                Dim arcBound As New RectangleF(GdiUpperleft, New SizeF(Convert.ToSingle(arc.Radius * 2), Convert.ToSingle(arc.Radius * 2)))
 
-                g.DrawArc(New Pen(arc.Color.ToColor()), arcBound, arc.StartAngle, angleRotated)
+                g.DrawArc(New Pen(arc.Color.ToColor()), arcBound, Convert.ToSingle(arc.StartAngle), Convert.ToSingle(angleRotated))
+                g.DrawArc(New Pen(arc.Color.ToColor()), New RectangleF(0, 0, 100, 100), Convert.ToSingle(arc.StartAngle), Convert.ToSingle(angleRotated))
             End If
         Next
 

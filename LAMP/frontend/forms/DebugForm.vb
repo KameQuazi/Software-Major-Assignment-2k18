@@ -76,11 +76,7 @@ Public Class DebugForm
 
         Dim x As New Bitmap(500, 500)
         Using g = Graphics.FromImage(x)
-            g.DrawRectangle(Pens.Black, 0, 0, x.Width - 1, x.Height - 1)
-
-            g.RotateTransform(45)
-
-            g.DrawString("hewwo `uwu` whos this", SystemFonts.DefaultFont, Brushes.Black, New PointF(0, 0))
+            g.DrawArc(New Pen(Color.AliceBlue), New RectangleF(0, 0, 500, 500), 0, 90)
         End Using
         x.Save("out.png")
 
