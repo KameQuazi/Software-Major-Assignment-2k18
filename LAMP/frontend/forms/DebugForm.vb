@@ -76,7 +76,7 @@ Public Class DebugForm
 
         Dim x As New Bitmap(500, 500)
         Using g = Graphics.FromImage(x)
-            g.DrawArc(New Pen(Color.AliceBlue), New RectangleF(0, 0, 500, 500), 0, 90)
+            g.DrawArc(New Pen(Color.AliceBlue), New RectangleF(0, 0, 500, 500), 45, 120)
         End Using
         x.Save("out.png")
 

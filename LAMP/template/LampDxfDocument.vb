@@ -298,6 +298,7 @@ Public Class LampDxfDocument
         Return String.Format("CustomDxfDrawing: {0}", _DxfFile)
     End Function
 
+
     ''' <summary>
     ''' Draws the contents onto a graphics object
     ''' Only draws lines right now
@@ -333,6 +334,11 @@ Public Class LampDxfDocument
                 upperLeft.Y += arc.Radius
 
                 Dim GdiUpperleft = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperLeft)
+                ' arc startangle is anti-clockwise from the positive x axis, then further anticlockwise till endangle
+                ' however, gdi draws clockwise from positive x axis, then clockwise theta degrees sweepangle
+                ' therefore, the arc's endpoint is actually the arc originates
+
+                Dim gdiStartAngle = 360 - arc.EndAngle
 
                 ' if startAngle > endangle, 
                 Dim angleRotated = (arc.EndAngle - arc.StartAngle + 360) Mod 360
@@ -341,8 +347,8 @@ Public Class LampDxfDocument
                 ' Width, height = 2x radius
                 Dim arcBound As New RectangleF(GdiUpperleft, New SizeF(Convert.ToSingle(arc.Radius * 2), Convert.ToSingle(arc.Radius * 2)))
 
-                g.DrawArc(New Pen(arc.Color.ToColor()), arcBound, Convert.ToSingle(arc.StartAngle), Convert.ToSingle(angleRotated))
-                g.DrawArc(New Pen(arc.Color.ToColor()), New RectangleF(0, 0, 100, 100), Convert.ToSingle(arc.StartAngle), Convert.ToSingle(angleRotated))
+                g.DrawArc(New Pen(arc.Color.ToColor()), arcBound, Convert.ToSingle(gdiStartAngle), Convert.ToSingle(angleRotated))
+
             End If
         Next
 
@@ -354,9 +360,26 @@ Public Class LampDxfDocument
                 upperleft.X -= circle.Radius
 
                 Dim gdiCenter = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperleft)
-                Dim circleBound As New RectangleF(gdiCenter, New SizeF(circle.Radius * 2, circle.Radius * 2))
+                Dim circleBound As New RectangleF(gdiCenter, New SizeF(Convert.ToSingle(circle.Radius * 2), Convert.ToSingle(circle.Radius * 2)))
 
                 g.DrawEllipse(New Pen(circle.Color.ToColor()), circleBound)
+            End If
+        Next
+
+        For Each polyline As Polyline In DxfFile.Polylines
+            If InsideBounds(bounds, polyline) Then
+                Dim previousPoint As PolylineVertex = Nothing
+                For Each vertex In polyline.Vertexes
+                    If previousPoint IsNot Nothing Then
+                        Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, previousPoint.Position.X, previousPoint.Position.Y)
+
+                        Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, vertex.Position.X, vertex.Position.Y)
+
+                        g.DrawLine(New Pen(polyline.Color.ToColor()), start, [end])
+                    End If
+
+                    previousPoint = vertex
+                Next
             End If
         Next
     End Sub
@@ -513,6 +536,10 @@ Public Class LampDxfHelper
 
 
     Public Shared Function InsideBounds(rect As RectangleF, circle As Circle) As Boolean
+        Return True
+    End Function
+
+    Public Shared Function InsideBounds(rect As RectangleF, polyLine As Polyline) As Boolean
         Return True
     End Function
 
