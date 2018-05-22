@@ -214,6 +214,9 @@
     <Compile Include="frontend\forms\TemplateSelect.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="template\JobReceiver.vb" />
+    <Compile Include="template\JobSubmitter.vb" />
+    <Compile Include="template\LampJob.vb" />
     <Compile Include="template\TemplateParts\DynamicText.vb" />
     <Compile Include="template\LampTemplate.vb" />
     <Compile Include="template\LampDxfDocument.vb" />
@@ -240,6 +243,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="template\TemplateParts\LampDxfInsertLocation.vb" />
+    <Compile Include="template\User.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frontend\controls\MultiTemplateViewer.resx">

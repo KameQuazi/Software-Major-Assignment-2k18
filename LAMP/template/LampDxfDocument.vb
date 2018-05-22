@@ -397,7 +397,7 @@ Public Class LampDxfDocument
     ''' <summary>
     ''' Todo implement equality lampdxf
     ''' </summary>
-    ''' <param name="first"></param>
+    ''' <param name="first"></param>    
     ''' <param name="second"></param>
     ''' <returns></returns>
     Public Shared Operator <>(ByVal first As LampDxfDocument, ByVal second As LampDxfDocument) As Boolean

@@ -110,13 +110,37 @@ Public Class TemplateDatabase
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );"
                 sqlite_cmd.ExecuteNonQuery()
+
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists tags (
                                   GUID Text Not Null,
                                   TagName Text Not Null,
-
+                        
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );
                         "
+                sqlite_cmd.ExecuteNonQuery()
+
+                sqlite_cmd.CommandText = "CREATE TABLE if not exists user (
+                                  UserId Text Not Null,
+                                  email Text Not Null,
+                                  Password Text Null,
+                                  PermissionLevel Integer Not Null
+                                  );
+                        "
+                sqlite_cmd.ExecuteNonQuery()
+
+
+                sqlite_cmd.CommandText = "CREATE TABLE if not exists jobs (
+                                  GUID Text Not Null,
+                                  templateId Text Not NULL,
+                                  submitterId Text Not NULL,
+                                  approverId Text,
+                                  approved integer Not Null default 0,
+                                  submitDate Text Not null,
+
+                                  FOREIGN KEY(submitterId) REFERENCES user(UserId),
+                                  FOREIGN KEY(approverId) REFERENCES user(UserId)
+                                  );"
                 sqlite_cmd.ExecuteNonQuery()
             End Using
 
@@ -203,16 +227,16 @@ Public Class TemplateDatabase
 
         Throw New NotImplementedException()
     End Function
-    
-     Sub removeEntry(guid As String)
-        Dim sqlite_conn = _connection
+
+    Sub removeEntry(guid As String)
+        Dim sqlite_conn = _Connection
         sqlite_conn.Open()
         Dim sqlite_cmd = sqlite_conn.CreateCommand()
         sqlite_cmd.CommandText = "DELETE from template WHERE GUID = ?"
         sqlite_cmd.Parameters.Add(guid, DbType.String)
         sqlite_cmd.ExecuteNonQuery()
         sqlite_conn.Close()
-      End Sub
+    End Sub
 
     ''' <summary>
     ''' Finds a template in the database, given its corresponding guid
@@ -223,7 +247,7 @@ Public Class TemplateDatabase
     Function SelectTemplate(guid As String) As LampTemplate
         ' If the databse is open already, dont close it
         Dim closeDatabaseAfter = OpenDatabase()
-   
+
 
         Try
             Using sqlite_cmd = GetCommand()
@@ -528,24 +552,6 @@ Public Class TemplateDatabase
                     Throw New ArgumentOutOfRangeException(NameOf(images), images, "Images must have at least 1 not-null element")
                 End If
 
-                If images.Count = 0 Then
-
-                ElseIf images.Count = 1 Then
-
-                    sqlite_cmd.Parameters.AddWithValue("@image2", Nothing)
-                    sqlite_cmd.Parameters.AddWithValue("@image3", Nothing)
-                ElseIf images.Count = 2 Then
-                    sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
-                    sqlite_cmd.Parameters.AddWithValue("@image2", ImageToBinary(images(1)))
-                    sqlite_cmd.Parameters.AddWithValue("@image3", Nothing)
-                ElseIf images.Count = 3 Then
-                    sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
-                    sqlite_cmd.Parameters.AddWithValue("@image2", ImageToBinary(images(1)))
-                    sqlite_cmd.Parameters.AddWithValue("@image3", ImageToBinary(images(2)))
-                Else
-                    Throw New Exception(String.Format("Must supply list of length max 3, {0} elements supplied", images.Count))
-                End If
-
                 sqlite_cmd.ExecuteNonQuery()
             End Using
 
@@ -586,7 +592,11 @@ Public Class TemplateDatabase
         End Try
     End Function
 
-
+    ''' <summary>
+    ''' TODO !
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <param name="tags"></param>
     Public Sub AddTags(guid As String, tags As IList(Of String))
         Dim closeDatabaseAfter = OpenDatabase()
 
@@ -643,6 +653,76 @@ Public Class TemplateDatabase
     End Function
 
     ''' <summary>
+    ''' Adds a user to the database
+    ''' </summary>
+    ''' <param name="user"></param>
+    Public Sub AddUser(user As LampUser)
+        Dim closeDatabaseAfter = OpenDatabase()
+
+        Try
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO user
+                    (UserId, email, password, permissionLevel)
+                    VALUES
+                    (@UserId, @email, @password, @permissionLevel);"
+
+
+                sqlite_cmd.Parameters.AddWithValue("@UserId", user.UserId)
+                sqlite_cmd.Parameters.AddWithValue("@email", user.Email)
+                sqlite_cmd.Parameters.AddWithValue("@password", user.Password)
+                sqlite_cmd.Parameters.AddWithValue("@permissionLevel", user.PermissionLevel)
+
+                sqlite_cmd.ExecuteNonQuery()
+
+            End Using
+
+
+        Finally
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Adds a job to the database
+    ''' </summary>
+    Public Sub AddJob(job As LampJob)
+        Dim closeDatabaseAfter = OpenDatabase()
+
+        Try
+            Using sqlite_cmd = GetCommand()
+                ' check if the template is already in the database
+                If SelectTemplate(job.Template.GUID) IsNot Nothing Then
+                    AddTemplate(job.Template)
+                End If
+
+                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO tags
+                    (GUID, templateId, submitterId, approverId, approved)
+                    VALUES
+                    (@guid, @templateId, @submitterId, @approverId, @approved);"
+
+
+                sqlite_cmd.Parameters.AddWithValue("@guid", job.GUID)
+                sqlite_cmd.Parameters.AddWithValue("@templateId", job.Template.GUID)
+                sqlite_cmd.Parameters.AddWithValue("@submitterId", job.SubmitId)
+                sqlite_cmd.Parameters.AddWithValue("@approverId", job.ApproverId)
+                sqlite_cmd.Parameters.AddWithValue("@approved", job.Approved)
+
+                sqlite_cmd.ExecuteNonQuery()
+
+            End Using
+
+
+        Finally
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+        End Try
+    End Sub
+
+
+    ''' <summary>
     ''' Fills database with dxf files located in project root/templates
     ''' The default files are stored in ExampleDxfFiles
     ''' </summary>
@@ -687,6 +767,8 @@ Public Class TemplateDatabase
             AddTemplate(dummy)
         Loop
     End Sub
+
+
 End Class
 
 ''' <summary>
