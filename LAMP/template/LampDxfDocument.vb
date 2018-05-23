@@ -10,11 +10,14 @@ Imports Newtonsoft.Json
 Imports LAMP.LampDxfHelper
 Imports System.ComponentModel
 Imports System.Runtime.CompilerServices
+Imports System.Drawing.Drawing2D
 
 <JsonConverter(GetType(DxfJsonConverter))>
 Public Class LampDxfDocument
     Implements INotifyPropertyChanged
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
+    Public ReadOnly Property DefaultFont As New FontFamily("Arial")
 
     ''' <summary>
     ''' DxfDocument from .netdxf library
@@ -382,6 +385,22 @@ Public Class LampDxfDocument
                 Next
             End If
         Next
+
+        For Each text As Text In DxfFile.Texts
+            If InsideBounds(bounds, text) Then
+                Using path = New GraphicsPath
+                    Dim style = text.Style
+
+                    path.AddString(text.Value, New FontFamily(style.FontFamilyName), DirectCast(FontStyle.Regular, Integer), text.Height, New PointF(0, 0), StringFormat.GenericDefault)
+                    Dim matrix As New Matrix
+                    matrix.Shear(text.ObliqueAngle, 0)
+
+                    g.MultiplyTransform(matrix)
+                    g.FillPath(New SolidBrush(text.Color.ToColor), path)
+                    g.ResetTransform()
+                End Using
+            End If
+        Next
     End Sub
 
     ''' <summary>
@@ -524,6 +543,14 @@ Public Class LampDxfHelper
 #Disable Warning BC42016 ' Implicit conversion
         Return New PointF(point.X, point.Y)
 #Enable Warning BC42016 ' Implicit conversion
+    End Function
+
+    Public Shared Function InsideBounds(rect As RectangleF, text As Text) As Boolean
+        Return True
+    End Function
+
+    Public Shared Function InsideBounds(rect As RectangleF, MText As MText) As Boolean
+        Return True
     End Function
 
     Public Shared Function InsideBounds(rect As RectangleF, line As Line) As Boolean

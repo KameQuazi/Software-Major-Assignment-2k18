@@ -468,7 +468,7 @@ Public Class TemplateDatabase
                     If template.Tags.Count > 0 Then
                         AddTags(template.GUID, template.Tags)
                     End If
-
+                End If
             End Using
         Finally
             ' ensure connection is always closed
