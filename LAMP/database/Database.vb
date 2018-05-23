@@ -120,7 +120,7 @@ Public Class TemplateDatabase
                         "
                 sqlite_cmd.ExecuteNonQuery()
 
-                sqlite_cmd.CommandText = "CREATE TABLE if not exists user (
+                sqlite_cmd.CommandText = "CREATE TABLE if not exists users (
                                   UserId Text Not Null,
                                   email Text Not Null,
                                   Password Text Null,
@@ -138,8 +138,8 @@ Public Class TemplateDatabase
                                   approved integer Not Null default 0,
                                   submitDate Text Not null,
 
-                                  FOREIGN KEY(submitterId) REFERENCES user(UserId),
-                                  FOREIGN KEY(approverId) REFERENCES user(UserId)
+                                  FOREIGN KEY(submitterId) REFERENCES users(UserId),
+                                  FOREIGN KEY(approverId) REFERENCES users(UserId)
                                   );"
                 sqlite_cmd.ExecuteNonQuery()
             End Using
@@ -334,8 +334,6 @@ Public Class TemplateDatabase
         End Try
     End Function
 
-
-
     ''' <summary>
     ''' Gets all templates in the database
     ''' </summary>
@@ -385,93 +383,6 @@ Public Class TemplateDatabase
     End Function
 
     ''' <summary>
-    ''' Adds a template to the database
-    ''' will error if the guid is already in the database
-    ''' </summary>
-    ''' <param name="template"></param>
-    Public Sub AddTemplate(template As LampTemplate)
-        Dim closeDatabaseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-
-                ' Insert if GUID doesnt exist, else replace
-                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO template
-                    (Guid, DXF, material, length, Height, materialthickness, creatorName, creatorID, complete, submitdate)
-                    VALUES
-                    (@guid, @dxf, @material, @length, @height, @materialthickness, @creatorName, @creatorId, @complete, DATETIME('now'));"
-
-                sqlite_cmd.Parameters.AddWithValue("@guid", template.GUID)
-                sqlite_cmd.Parameters.AddWithValue("@dxf", template.BaseDrawing.ToDxfString)
-                ' todo use tags table instead of as string
-                sqlite_cmd.Parameters.AddWithValue("@material", template.Material)
-                sqlite_cmd.Parameters.AddWithValue("@length", template.Length)
-                sqlite_cmd.Parameters.AddWithValue("@height", template.Height)
-                sqlite_cmd.Parameters.AddWithValue("@materialthickness", template.MaterialThickness)
-                sqlite_cmd.Parameters.AddWithValue("@creatorName", template.CreatorName)
-                sqlite_cmd.Parameters.AddWithValue("@creatorId", template.CreatorId)
-                sqlite_cmd.Parameters.AddWithValue("@complete", template.IsComplete)
-
-                ' Ensure creatorId and and approverId are strings!
-                ' also add approverid/approvername to the db
-
-                sqlite_cmd.ExecuteNonQuery()
-
-                ' check that there is at least 1 image
-                If template.PreviewImages.HasNotNothing() Then
-                    AddImages(template.GUID, template.PreviewImages)
-                End If
-
-
-                If template.Tags.Count > 0 Then
-                    AddTags(template.GUID, template.Tags)
-                End If
-
-            End Using
-        Finally
-            ' ensure connection is always closed
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Sub
-
-    ''' <summary>
-    ''' Removes from database based on guid
-    ''' Also removes images by default, rmImages can be set to false to not
-    ''' </summary>
-    ''' <param name="guid">string guid</param>
-    ''' <param name="rmImage">whether or not to also delete images</param>
-    ''' <returns>True=Removed, False=None found</returns>
-    Public Function RemoveTemplate(guid As String, Optional rmImage As Boolean = True) As Boolean
-        Dim closeDatabaseAfter = OpenDatabase()
-
-        Try
-
-            Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "DELETE from template WHERE GUID = ?"
-                sqlite_cmd.Parameters.Add(guid)
-                Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
-
-                If rmImage Then
-                    RemoveImages(guid, False)
-                End If
-
-                If rowsRemoved > 0 Then
-                    Return True
-                Else
-                    Return False
-                End If
-            End Using
-        Finally
-            ' ensure connection is closed
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Function
-
-    ''' <summary>
     ''' Retrieves the images from the database
     ''' given guid of the template, returns the images associated with it, or nothing if none was found
     ''' returns a list of <see cref="LampTemplate.MaxImages"/> size.
@@ -511,6 +422,94 @@ Public Class TemplateDatabase
 
         Finally
             If shouldCloseAfter Then
+                CloseDatabase()
+            End If
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Adds a template to the database
+    ''' will error if the guid is already in the database
+    ''' </summary>
+    ''' <param name="template"></param>
+    Public Sub AddTemplate(template As LampTemplate)
+        Dim closeDatabaseAfter = OpenDatabase()
+
+        Try
+            Using sqlite_cmd = GetCommand()
+
+                ' Insert if GUID doesnt exist, else replace
+                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO template
+                    (Guid, DXF, material, length, Height, materialthickness, creatorName, creatorID, complete, submitdate)
+                    VALUES
+                    (@guid, @dxf, @material, @length, @height, @materialthickness, @creatorName, @creatorId, @complete, DATETIME('now'));"
+
+                sqlite_cmd.Parameters.AddWithValue("@guid", template.GUID)
+                sqlite_cmd.Parameters.AddWithValue("@dxf", template.BaseDrawing.ToDxfString)
+                ' todo use tags table instead of as string
+                sqlite_cmd.Parameters.AddWithValue("@material", template.Material)
+                sqlite_cmd.Parameters.AddWithValue("@length", template.Length)
+                sqlite_cmd.Parameters.AddWithValue("@height", template.Height)
+                sqlite_cmd.Parameters.AddWithValue("@materialthickness", template.MaterialThickness)
+                sqlite_cmd.Parameters.AddWithValue("@creatorName", template.CreatorName)
+                sqlite_cmd.Parameters.AddWithValue("@creatorId", template.CreatorId)
+                sqlite_cmd.Parameters.AddWithValue("@complete", template.IsComplete)
+
+                ' Ensure creatorId and and approverId are strings!
+                ' also add approverid/approvername to the db
+
+                sqlite_cmd.ExecuteNonQuery()
+
+                ' check that there is at least 1 image
+                If template.PreviewImages.HasNotNothing() Then
+                    AddImages(template.GUID, template.PreviewImages)
+                    End
+
+                    If template.Tags.Count > 0 Then
+                        AddTags(template.GUID, template.Tags)
+                    End If
+
+            End Using
+        Finally
+            ' ensure connection is always closed
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+        End Try
+    End Sub
+
+
+    ''' <summary>
+    ''' Removes from database based on guid
+    ''' Also removes images by default, rmImages can be set to false to not
+    ''' </summary>
+    ''' <param name="guid">string guid</param>
+    ''' <param name="rmImage">whether or not to also delete images</param>
+    ''' <returns>True=Removed, False=None found</returns>
+    Public Function RemoveTemplate(guid As String, Optional rmImage As Boolean = True) As Boolean
+        Dim closeDatabaseAfter = OpenDatabase()
+
+        Try
+
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "DELETE from template WHERE GUID = @guid"
+                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+                Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
+
+                If rmImage Then
+                    RemoveImages(guid, False)
+                End If
+                RemoveTags(guid)
+
+                If rowsRemoved > 0 Then
+                    Return True
+                Else
+                    Return False
+                End If
+            End Using
+        Finally
+            ' ensure connection is closed
+            If closeDatabaseAfter Then
                 CloseDatabase()
             End If
         End Try
@@ -564,6 +563,42 @@ Public Class TemplateDatabase
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Removes images associated with the guid
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns>True=Removed image, False=None removed</returns>
+    Public Function RemoveImages(guid As String, Optional openDb As Boolean = True) As Boolean
+        Dim closeDatabaseAfter = OpenDatabase()
+
+        Try
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "DELETE from images WHERE GUID = ?"
+                sqlite_cmd.Parameters.Add(guid)
+                Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
+
+                If rowsRemoved > 0 Then
+                    Return True
+                Else
+                    Return False
+                End If
+            End Using
+        Finally
+            ' ensure connection is closed
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+        End Try
+    End Function
+
+
+
+
+    ''' <summary>
+    ''' Gets all tags that belong to a template's guid
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
     Public Function SelectTags(guid As String) As List(Of String)
         Dim closeDatabaseAfter = OpenDatabase()
         Try
@@ -625,24 +660,21 @@ Public Class TemplateDatabase
     End Sub
 
     ''' <summary>
-    ''' Removes images associated with the guid
+    ''' Removes all tags associated with the guid
     ''' </summary>
     ''' <param name="guid"></param>
-    ''' <returns>True=Removed image, False=None removed</returns>
-    Public Function RemoveImages(guid As String, Optional openDb As Boolean = True) As Boolean
+    ''' <returns></returns>
+    Public Function RemoveTags(guid As String) As Integer
         Dim closeDatabaseAfter = OpenDatabase()
 
         Try
             Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "DELETE from images WHERE GUID = ?"
-                sqlite_cmd.Parameters.Add(guid)
+                sqlite_cmd.CommandText = "DELETE from tags WHERE guid = @guid"
+                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
                 Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
 
-                If rowsRemoved > 0 Then
-                    Return True
-                Else
-                    Return False
-                End If
+
+                Return rowsRemoved
             End Using
         Finally
             ' ensure connection is closed
@@ -651,6 +683,7 @@ Public Class TemplateDatabase
             End If
         End Try
     End Function
+
 
     ''' <summary>
     ''' Adds a user to the database
@@ -661,7 +694,7 @@ Public Class TemplateDatabase
 
         Try
             Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO user
+                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO users
                     (UserId, email, password, permissionLevel)
                     VALUES
                     (@UserId, @email, @password, @permissionLevel);"
@@ -692,7 +725,7 @@ Public Class TemplateDatabase
 
         Try
             Using sqlite_cmd = GetCommand()
-                ' check if the template is already in the database
+                ' check if the template is already in the database      
                 If SelectTemplate(job.Template.GUID) IsNot Nothing Then
                     AddTemplate(job.Template)
                 End If

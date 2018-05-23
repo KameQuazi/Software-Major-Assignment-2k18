@@ -15,6 +15,7 @@
         Me.Template = template
         Me.SubmitId = SubmitID
         Me.ApproverId = System.Guid.Empty.ToString()
+        Me.Approved = False
 
     End Sub
 

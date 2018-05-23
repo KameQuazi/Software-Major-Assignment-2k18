@@ -243,7 +243,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="template\TemplateParts\LampDxfInsertLocation.vb" />
-    <Compile Include="template\User.vb" />
+    <Compile Include="template\LampUser.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frontend\controls\MultiTemplateViewer.resx">

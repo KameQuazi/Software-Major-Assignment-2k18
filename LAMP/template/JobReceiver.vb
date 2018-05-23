@@ -7,7 +7,8 @@
 
     Public Sub Receive(template As LampTemplate, User As LampUser)
         Dim db As New TemplateDatabase()
-        db.AddJob(template)
+        Dim job As New LampJob(template, User.UserId)
+        db.AddJob(job)
     End Sub
 
     Public Sub StartListener()
