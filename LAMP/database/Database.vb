@@ -28,12 +28,17 @@ Public Class TemplateDatabase
     ''' By default, the file it will read/write is templateDB.sqlite
     ''' </summary>
     ''' <param name="filePath">the filepath that the databse is located at</param>
-    Public Sub New(Optional filePath As String = "templateDB.sqlite")
+    Public Sub New(Optional filePath As String = "templateDB.sqlite", Optional dbLocation As LampCommunication = Nothing)
+        If dbLocation IsNot Nothing Then
+            Throw New NotImplementedException(NameOf(dbLocation))
+        End If
         Me.Path = filePath
         Connection = New SQLiteConnection(String.Format("Data Source={0};Version=3;", filePath))
         ' recreate the database if not found
         CreateTables()
     End Sub
+
+
 
     Private Opened As Boolean = False
 
@@ -121,9 +126,9 @@ Public Class TemplateDatabase
                 sqlite_cmd.ExecuteNonQuery()
 
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists users (
-                                  UserId Text Not Null,
-                                  email Text Not Null,
-                                  Username text Not NULL,
+                                  UserId Text PRIMARY KEY Not Null,
+                                  email Text Not Null UNIQUE,
+                                  Username text Not NULL UNIQUE,
                                   Password Text Not Null,
                                   PermissionLevel Integer Not Null
                                   );
@@ -725,7 +730,36 @@ Public Class TemplateDatabase
     End Function
 
     Public Function SelectUser(username As String, password As String) As LampUser
+        Dim shouldCloseAfter = OpenDatabase()
 
+        Try
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "Select username, permissionLevel from Users 
+                                          WHERE username=@username AND password=@password"
+                sqlite_cmd.Parameters.AddWithValue("@username", username)
+                sqlite_cmd.Parameters.AddWithValue("@password", password)
+
+                Using sqlite_reader = sqlite_cmd.ExecuteReader()
+                    Dim user As LampUser
+                    If sqlite_reader.Read() Then
+                        Dim email = sqlite_reader.GetString(sqlite_reader.GetOrdinal("email"))
+                        Dim userId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("userId"))
+                        Dim permissionLevel = sqlite_reader.GetInt32(sqlite_reader.GetOrdinal("permissionLevel"))
+                        user = New LampUser(email, password, username, userId, permissionLevel)
+
+                    Else
+                        user = Nothing
+                    End If
+
+                    Return user
+                End Using
+            End Using
+
+        Finally
+            If shouldCloseAfter Then
+                CloseDatabase()
+            End If
+        End Try
     End Function
 
 

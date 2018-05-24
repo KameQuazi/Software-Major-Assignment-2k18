@@ -302,6 +302,7 @@ Public Class LampDxfDocument
     End Function
 
 
+
     ''' <summary>
     ''' Draws the contents onto a graphics object
     ''' Only draws lines right now
@@ -388,12 +389,13 @@ Public Class LampDxfDocument
 
         For Each text As Text In DxfFile.Texts
             If InsideBounds(bounds, text) Then
+                g.DrawString(text.Value, New Font(New FontFamily(text.Style.FontFamilyName), 30), New SolidBrush(text.Color.ToColor()), New PointF(0, 0))
                 Using path = New GraphicsPath
                     Dim style = text.Style
 
                     path.AddString(text.Value, New FontFamily(style.FontFamilyName), DirectCast(FontStyle.Regular, Integer), text.Height, New PointF(0, 0), StringFormat.GenericDefault)
                     Dim matrix As New Matrix
-                    matrix.Shear(text.ObliqueAngle, 0)
+                    matrix.Shear(0, 0)
 
                     g.MultiplyTransform(matrix)
                     g.FillPath(New SolidBrush(text.Color.ToColor), path)

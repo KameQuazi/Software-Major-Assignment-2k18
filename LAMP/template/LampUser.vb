@@ -21,8 +21,13 @@
     ''' <param name="username"></param>
     ''' <param name="password"></param>
     ''' <returns></returns>
-    Public Shared Function LoginUser(username As String, password As String) As LampUser
+    Public Shared Function LoginUser(username As String, password As String, Optional loginLocation As LampCommunication = Nothing) As LampUser
+        If loginLocation Is Nothing Then
+            loginLocation = New LampCommunication(SubmitType.Local)
+        End If
 
+        Dim sender As New LampSender(loginLocation)
+        Return sender.Authenticate(username, password)
     End Function
 
 

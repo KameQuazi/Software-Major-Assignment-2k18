@@ -1,26 +1,38 @@
-﻿Public Class JobReceiver
-    Public Type As SubmitType
+﻿
+Public Class LampReciever
+    Public Property Protocol As LampCommunication
 
-    Public Sub New(type As SubmitType)
-        Me.Type = type
+    Public Property Database As TemplateDatabase
+
+    Public Sub New(protocol As LampCommunication)
+        If protocol.Type <> SubmitType.Local Then
+            Throw New NotImplementedException()
+        End If
+
+        Me.Protocol = protocol
+        Me.Database = New TemplateDatabase()
     End Sub
 
-    Public Sub Receive(template As LampTemplate, User As LampUser)
-        Dim db As New TemplateDatabase()
+    Public Sub ReceiveTemplate(template As LampTemplate, User As LampUser)
         Dim job As New LampJob(template, User)
-        db.AddJob(job)
+        Database.AddJob(job)
     End Sub
 
     ''' <summary>
     ''' Starts the ip listener
     ''' </summary>
     Public Sub StartListener()
-        If Me.Type <> SubmitType.Server Then
+        If Protocol.Type <> SubmitType.Server Then
             Throw New Exception("must be in different mode")
         End If
         Throw New NotImplementedException()
     End Sub
+
+    Public Function Authenticate(username As String, password As String) As LampUser
+        Return Database.SelectUser(username, password)
+    End Function
 End Class
+
 
 Public Class LampCommunication
     Public Type As SubmitType
