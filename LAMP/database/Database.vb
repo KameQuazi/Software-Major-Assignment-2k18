@@ -123,7 +123,8 @@ Public Class TemplateDatabase
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists users (
                                   UserId Text Not Null,
                                   email Text Not Null,
-                                  Password Text Null,
+                                  Username text Not NULL,
+                                  Password Text Not Null,
                                   PermissionLevel Integer Not Null
                                   );
                         "
@@ -131,7 +132,7 @@ Public Class TemplateDatabase
 
 
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists jobs (
-                                  GUID Text Not Null,
+                                  jobId Text Not Null,
                                   templateId Text Not NULL,
                                   submitterId Text Not NULL,
                                   approverId Text,
@@ -382,50 +383,7 @@ Public Class TemplateDatabase
 
     End Function
 
-    ''' <summary>
-    ''' Retrieves the images from the database
-    ''' given guid of the template, returns the images associated with it, or nothing if none was found
-    ''' returns a list of <see cref="LampTemplate.MaxImages"/> size.
-    ''' </summary>
-    ''' <param name="guid"></param>
-    ''' <returns></returns>
-    Public Function SelectImages(guid As String) As List(Of Image)
-        Dim shouldCloseAfter = OpenDatabase()
 
-        Try
-            Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "Select image1, image2, image3 FROM images WHERE guid = @guid"
-                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-
-                Using sqlite_reader = sqlite_cmd.ExecuteReader()
-                    Dim images As New List(Of Image)
-
-                    If sqlite_reader.Read() Then
-
-                        For i = 1 To LampTemplate.MaxImages
-
-                            Dim columnNumber = sqlite_reader.GetOrdinal(String.Format("image{0}", i))
-
-                            If Not sqlite_reader.IsDBNull(columnNumber) Then
-                                Dim readImage As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(columnNumber), Byte()))
-                                images.Add(readImage)
-                            Else
-
-                                images.Add(Nothing)
-                            End If
-                        Next
-                    End If
-
-                    Return images
-                End Using
-            End Using
-
-        Finally
-            If shouldCloseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Function
 
     ''' <summary>
     ''' Adds a template to the database
@@ -510,6 +468,51 @@ Public Class TemplateDatabase
         Finally
             ' ensure connection is closed
             If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Retrieves the images from the database
+    ''' given guid of the template, returns the images associated with it, or nothing if none was found
+    ''' returns a list of <see cref="LampTemplate.MaxImages"/> size.
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
+    Public Function SelectImages(guid As String) As List(Of Image)
+        Dim shouldCloseAfter = OpenDatabase()
+
+        Try
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "Select image1, image2, image3 FROM images WHERE guid = @guid"
+                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+
+                Using sqlite_reader = sqlite_cmd.ExecuteReader()
+                    Dim images As New List(Of Image)
+
+                    If sqlite_reader.Read() Then
+
+                        For i = 1 To LampTemplate.MaxImages
+
+                            Dim columnNumber = sqlite_reader.GetOrdinal(String.Format("image{0}", i))
+
+                            If Not sqlite_reader.IsDBNull(columnNumber) Then
+                                Dim readImage As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(columnNumber), Byte()))
+                                images.Add(readImage)
+                            Else
+
+                                images.Add(Nothing)
+                            End If
+                        Next
+                    End If
+
+                    Return images
+                End Using
+            End Using
+
+        Finally
+            If shouldCloseAfter Then
                 CloseDatabase()
             End If
         End Try
@@ -684,6 +687,47 @@ Public Class TemplateDatabase
         End Try
     End Function
 
+    ''' <summary>
+    ''' </summary>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
+    Public Function SelectUser(userId As String) As LampUser
+        Dim shouldCloseAfter = OpenDatabase()
+
+        Try
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "Select email, password, permissionLevel from Users 
+                                          WHERE userId = guid"
+                sqlite_cmd.Parameters.AddWithValue("@guid", userId)
+
+                Using sqlite_reader = sqlite_cmd.ExecuteReader()
+                    Dim user As LampUser
+                    If sqlite_reader.Read() Then
+                        Dim email = sqlite_reader.GetString(sqlite_reader.GetOrdinal("email"))
+                        Dim username = sqlite_reader.GetString(sqlite_reader.GetOrdinal("username"))
+                        Dim password = sqlite_reader.GetString(sqlite_reader.GetOrdinal("password"))
+                        Dim permissionLevel = sqlite_reader.GetInt32(sqlite_reader.GetOrdinal("permissionLevel"))
+                        user = New LampUser(email, password, username, userId, permissionLevel)
+
+                    Else
+                        user = Nothing
+                    End If
+
+                    Return user
+                End Using
+            End Using
+
+        Finally
+            If shouldCloseAfter Then
+                CloseDatabase()
+            End If
+        End Try
+    End Function
+
+    Public Function SelectUser(username As String, password As String) As LampUser
+
+    End Function
+
 
     ''' <summary>
     ''' Adds a user to the database
@@ -695,13 +739,14 @@ Public Class TemplateDatabase
         Try
             Using sqlite_cmd = GetCommand()
                 sqlite_cmd.CommandText = "INSERT OR REPLACE INTO users
-                    (UserId, email, password, permissionLevel)
+                    (UserId, email, username, password, permissionLevel)
                     VALUES
                     (@UserId, @email, @password, @permissionLevel);"
 
 
                 sqlite_cmd.Parameters.AddWithValue("@UserId", user.UserId)
                 sqlite_cmd.Parameters.AddWithValue("@email", user.Email)
+                sqlite_cmd.Parameters.AddWithValue("@username", user.Username)
                 sqlite_cmd.Parameters.AddWithValue("@password", user.Password)
                 sqlite_cmd.Parameters.AddWithValue("@permissionLevel", user.PermissionLevel)
 
@@ -718,6 +763,75 @@ Public Class TemplateDatabase
     End Sub
 
     ''' <summary>
+    ''' removes a user from db
+    ''' </summary>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
+    Public Function RemoveUser(userId As String) As Integer
+        Dim closeDatabaseAfter = OpenDatabase()
+
+        Try
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "DELETE from users WHERE userId = @userid"
+                sqlite_cmd.Parameters.AddWithValue("@userid", userId)
+                Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
+
+                Return rowsRemoved
+            End Using
+        Finally
+            ' ensure connection is closed
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function SelectJob(jobId As String) As LampJob
+        Dim shouldCloseAfter = OpenDatabase()
+
+        Try
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "Select templateId, submitterId, approverId, approved, submitDate from Users 
+                                          WHERE jobId = @jobId"
+                sqlite_cmd.Parameters.AddWithValue("@jobId", jobId)
+
+                Using sqlite_reader = sqlite_cmd.ExecuteReader()
+                    Dim job As LampJob
+
+                    If sqlite_reader.Read() Then
+                        Dim templateId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("templateId"))
+                        Dim template = SelectTemplate(templateId)
+
+                        Dim submitterId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("submitterId"))
+                        Dim submitter As LampUser = SelectUser(submitterId)
+
+
+                        Dim approverId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("approverId"))
+                        Dim approved = sqlite_reader.GetString(sqlite_reader.GetOrdinal("approved"))
+                        Dim submitDate = sqlite_reader.GetDateTime(sqlite_reader.GetOrdinal("submitDate"))
+
+                        job = New LampJob(template, submitter)
+
+                    Else
+                        job = Nothing
+                    End If
+
+                    Return job
+                End Using
+            End Using
+
+        Finally
+            If shouldCloseAfter Then
+                CloseDatabase()
+            End If
+        End Try
+    End Function
+
+
+    ''' <summary>
     ''' Adds a job to the database
     ''' </summary>
     Public Sub AddJob(job As LampJob)
@@ -730,13 +844,13 @@ Public Class TemplateDatabase
                     AddTemplate(job.Template)
                 End If
 
-                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO tags
-                    (GUID, templateId, submitterId, approverId, approved)
+                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO jobs
+                    (jobId, templateId, submitterId, approverId, approved)
                     VALUES
-                    (@guid, @templateId, @submitterId, @approverId, @approved);"
+                    (@jobId, @templateId, @submitterId, @approverId, @approved);"
 
 
-                sqlite_cmd.Parameters.AddWithValue("@guid", job.GUID)
+                sqlite_cmd.Parameters.AddWithValue("@jobId", job.JobId)
                 sqlite_cmd.Parameters.AddWithValue("@templateId", job.Template.GUID)
                 sqlite_cmd.Parameters.AddWithValue("@submitterId", job.SubmitId)
                 sqlite_cmd.Parameters.AddWithValue("@approverId", job.ApproverId)
@@ -753,6 +867,26 @@ Public Class TemplateDatabase
             End If
         End Try
     End Sub
+
+
+    Public Function RemoveJob(jobId As String) As Integer
+        Dim closeDatabaseAfter = OpenDatabase()
+
+        Try
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "DELETE from jobs WHERE jobId = @jobId"
+                sqlite_cmd.Parameters.AddWithValue("@jobId", jobId)
+                Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
+
+                Return rowsRemoved
+            End Using
+        Finally
+            ' ensure connection is closed
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+        End Try
+    End Function
 
 
     ''' <summary>
