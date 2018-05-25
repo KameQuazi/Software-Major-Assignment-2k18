@@ -50,6 +50,7 @@ Partial Class TemplateEditor
         Me.DxfViewerControl1 = New LAMP.DxfViewerControl()
         Me.GuidBox = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.NewGuidButton = New System.Windows.Forms.Button()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -272,11 +273,21 @@ Partial Class TemplateEditor
         Me.Label4.TabIndex = 23
         Me.Label4.Text = "Guid"
         '
+        'NewGuidButton
+        '
+        Me.NewGuidButton.Location = New System.Drawing.Point(457, 51)
+        Me.NewGuidButton.Name = "NewGuidButton"
+        Me.NewGuidButton.Size = New System.Drawing.Size(75, 23)
+        Me.NewGuidButton.TabIndex = 24
+        Me.NewGuidButton.Text = "New guid"
+        Me.NewGuidButton.UseVisualStyleBackColor = True
+        '
         'TemplateEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(920, 520)
+        Me.Controls.Add(Me.NewGuidButton)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.GuidBox)
         Me.Controls.Add(Me.Button1)
@@ -336,4 +347,5 @@ Partial Class TemplateEditor
     Friend WithEvents Button1 As Button
     Friend WithEvents GuidBox As TextBox
     Friend WithEvents Label4 As Label
+    Friend WithEvents NewGuidButton As Button
 End Class

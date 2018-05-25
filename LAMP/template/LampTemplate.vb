@@ -122,7 +122,7 @@ Public NotInheritable Class LampTemplate
         Get
             Return _tags
         End Get
-        Set(value As ObservableCollection(Of String))
+        Private Set(value As ObservableCollection(Of String))
             _tags = value
             AddHandler _tags.CollectionChanged, AddressOf HandleTag_CollectionChanged
 
@@ -534,10 +534,12 @@ End Class
 
 
 
+Public Module OwO
 
-Public Class OwO
-    Sub Main()
+    Public Sub Main()
         InitalizeLibraries()
+
+
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
         Application.Run(New DesignerForm())
@@ -548,7 +550,9 @@ Public Class OwO
         ' put folder in DLL path
     End Sub
 
+    Public Function GetNewGuid() As String
+        Return Guid.NewGuid().ToString()
+    End Function
 
 
-
-End Class
+End Module

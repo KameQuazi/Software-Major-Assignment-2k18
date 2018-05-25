@@ -18,19 +18,15 @@ Public Class TemplateDatabase
     ''' </summary>
     Public Property Connection As SQLiteConnection
 
-    ''' <summary>
-    ''' file names of example dxf files in /templates/{name}
-    ''' </summary>
-    Private Shared ExampleDxfFiles() As String = {"one.dxf", "two.dxf", "three.dxf", "four.dxf", "five.dxf", "six.dxf", "seven.dxf", "eight.dxf", "nine.dxf"}
 
     ''' <summary>
     ''' Constructor for Database
     ''' By default, the file it will read/write is templateDB.sqlite
     ''' </summary>
     ''' <param name="filePath">the filepath that the databse is located at</param>
-    Public Sub New(Optional filePath As String = "templateDB.sqlite", Optional dbLocation As LampCommunication = Nothing)
-        If dbLocation IsNot Nothing Then
-            Throw New NotImplementedException(NameOf(dbLocation))
+    Public Sub New(Optional filePath As String = "templateDB.sqlite")
+        If filePath Is Nothing Then
+            filePath = "templateDB.sqlite"
         End If
         Me.Path = filePath
         Connection = New SQLiteConnection(String.Format("Data Source={0};Version=3;", filePath))
@@ -90,7 +86,6 @@ Public Class TemplateDatabase
             Using sqlite_cmd = GetCommand()
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists template (
                                   GUID Text PRIMARY KEY Not NULL,
-                                  DXF Text Not NULL,
                                   Name Text DEFAULT '' Not NULL,
                                   ShortDescription Text DEFAULT '' NOT NULL,
                                   LongDescription Text DEFAULT '' NOT NULL,
@@ -98,13 +93,18 @@ Public Class TemplateDatabase
                                   length real Not NULL DEFAULT -1,
                                   Height real Not NULL DEFAULT -1,
                                   materialThickness real Not NULL DEFAULT -1,
-                                  creatorName Text Not NULL DEFAULT '',
                                   creatorID Text Not NULL DEFAULT '0000-0000-0000-0000',
-                                  approverName Text DEFAULT '',
-                                  approverID Text Default '0000-0000-0000-0000',
+                                  approverID Text DEFAULT NULL,
                                   submitDate Text,
                                   complete Int DEFAULT FALSE);"
                 sqlite_cmd.ExecuteNonQuery()
+
+                sqlite_cmd.CommandText = "CREATE TABLE if not exists dxf (
+                                  GUID Text PRIMARY KEY not null,
+                                  DXF Text Not NULL
+                                  
+                                  FOREIGN KEY(GUID) REFERENCES template(GUID)
+                                  );"
 
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists images (
                                   GUID Text PRIMARY KEY Not NULL, 
@@ -170,9 +170,15 @@ Public Class TemplateDatabase
             Using sqlite_cmd = GetCommand()
                 sqlite_cmd.CommandText = "DROP TABLE If exists template"
                 sqlite_cmd.ExecuteNonQuery()
+                sqlite_cmd.CommandText = "DROP TABLE If exists dxf"
+                sqlite_cmd.ExecuteNonQuery()
                 sqlite_cmd.CommandText = "DROP TABLE If exists images"
                 sqlite_cmd.ExecuteNonQuery()
                 sqlite_cmd.CommandText = "DROP TABLE If exists tags"
+                sqlite_cmd.ExecuteNonQuery()
+                sqlite_cmd.CommandText = "DROP TABLE If exists users"
+                sqlite_cmd.ExecuteNonQuery()
+                sqlite_cmd.CommandText = "DROP TABLE If exists jobs"
                 sqlite_cmd.ExecuteNonQuery()
             End Using
         Finally
@@ -187,18 +193,14 @@ Public Class TemplateDatabase
     ''' This is so you dont have to duplicate code over SelectTemplate, SelectAllTemplate etc
     ''' Does not call reader.Read(), the reader must have data in it
     ''' </summary>
-    Private Function ReadTemplateTable(reader As SQLiteDataReader, Optional start As LampTemplate = Nothing) As LampTemplate
+    <Obsolete("do not use anymore", False)>
+    Private Function ReadTemplateTable(reader As SQLiteDataReader) As LampTemplate
         If reader.HasRows <> True Then
             Throw New DataException(NameOf(reader))
         End If
+        Console.WriteLine("depecated")
 
-        If start Is Nothing Then
-            start = New LampTemplate
-        End If
-
-        Dim LampDXF = LampDxfDocument.FromString(reader.GetString(reader.GetOrdinal("dxf")))
-
-        Dim LampTemp = New LampTemplate(LampDXF)
+        Dim LampTemp = New LampTemplate()
         LampTemp.GUID = reader.GetString(reader.GetOrdinal("guid"))
         LampTemp.Name = reader.GetString(reader.GetOrdinal("name"))
         LampTemp.ShortDescription = reader.GetString(reader.GetOrdinal("ShortDescription"))
@@ -209,14 +211,11 @@ Public Class TemplateDatabase
         LampTemp.MaterialThickness = reader.GetDouble(reader.GetOrdinal("MaterialThickness"))
         LampTemp.SubmitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
 
-
         LampTemp.ApproverId = reader.GetString(reader.GetOrdinal("ApproverId"))
-        LampTemp.ApproverName = reader.GetString(reader.GetOrdinal("ApproverName"))
         LampTemp.CreatorId = reader.GetString(reader.GetOrdinal("CreatorId"))
-        LampTemp.CreatorName = reader.GetString(reader.GetOrdinal("CreatorName"))
         LampTemp.IsComplete = reader.GetBoolean(reader.GetOrdinal("complete"))
 
-        Return start
+        Return LampTemp
     End Function
 
     Private Function ReadImageTable(reader As SQLiteDataReader, Optional start As LampTemplate = Nothing) As LampTemplate
@@ -226,23 +225,93 @@ Public Class TemplateDatabase
         Throw New NotImplementedException()
     End Function
 
-    Private Function ReadTagTable(reader As SQLiteDataReader, Optional start As LampTemplate = Nothing) As LampTemplate
-        If start Is Nothing Then
-            start = New LampTemplate()
-        End If
+    ''' <summary>
+    ''' Gets a dxf
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
+    Function SelectDxf(guid As String) As LampDxfDocument
+        ' If the databse is open already, dont close it
+        Dim closeDatabaseAfter = OpenDatabase()
 
-        Throw New NotImplementedException()
+        Try
+            Using sqlite_cmd = GetCommand()
+
+                sqlite_cmd.CommandText = "Select DXF from dxf WHERE guid=@guid"
+                Dim dxfString = DirectCast(sqlite_cmd.ExecuteScalar(), String)
+
+                Return LampDxfDocument.FromString(dxfString)
+            End Using
+        Finally
+            ' ensure connection is always closed
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+        End Try
     End Function
 
-    Sub removeEntry(guid As String)
-        Dim sqlite_conn = _Connection
-        sqlite_conn.Open()
-        Dim sqlite_cmd = sqlite_conn.CreateCommand()
-        sqlite_cmd.CommandText = "DELETE from template WHERE GUID = ?"
-        sqlite_cmd.Parameters.Add(guid, DbType.String)
-        sqlite_cmd.ExecuteNonQuery()
-        sqlite_conn.Close()
+    ''' <summary>
+    ''' Adds dxf to the db
+    ''' </summary>
+    Public Sub AddDxf(guid As String, dxf As LampDxfDocument)
+        Dim closeDatabaseAfter = OpenDatabase()
+        Try
+            Using sqlite_cmd = GetCommand()
+
+                ' Add in templateData
+                sqlite_cmd.CommandText = "INSERT OR REPLACE DXF
+                    (guid, DXF)
+                    VALUES
+                    (@guid, @DXF)"
+
+                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+                sqlite_cmd.Parameters.AddWithValue("@DXF", dxf.ToDxfString())
+
+
+                sqlite_cmd.ExecuteNonQuery()
+            End Using
+        Finally
+            ' ensure connection is always closed
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+        End Try
     End Sub
+
+
+    ''' <summary>
+    ''' Removes from database based on guid
+    ''' Also removes images by default, rmImages can be set to false to not
+    ''' </summary>
+    ''' <param name="guid">string guid</param>
+    ''' <returns>True=Removed, False=None found</returns>
+    Public Function RemoveDxf(guid As String) As Boolean
+        Dim closeDatabaseAfter = OpenDatabase()
+
+        Try
+
+            Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "DELETE from dxf WHERE GUID = @guid"
+                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+                Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
+
+                RemoveImages(guid, False)
+                RemoveTags(guid)
+
+                If rowsRemoved > 0 Then
+                    Return True
+                Else
+                    Return False
+                End If
+            End Using
+        Finally
+            ' ensure connection is closed
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+        End Try
+    End Function
+
 
     ''' <summary>
     ''' Finds a template in the database, given its corresponding guid
@@ -254,35 +323,58 @@ Public Class TemplateDatabase
         ' If the databse is open already, dont close it
         Dim closeDatabaseAfter = OpenDatabase()
 
-
         Try
             Using sqlite_cmd = GetCommand()
 
-                sqlite_cmd.CommandText = "Select * FROM template WHERE guid = @guid"
+                sqlite_cmd.CommandText = "Select DXF from dxf WHERE guid=@guid"
                 sqlite_cmd.Parameters.AddWithValue("@guid", guid)
 
-                Using sqlite_reader = sqlite_cmd.ExecuteReader()
-                    ' read only 1 row off the database
-                    If sqlite_reader.Read() Then
-                        Dim LampTemp = ReadTemplateTable(sqlite_reader)
+                's Dim dxf As LampDxfDocument = SelectDxf(guid)
+                Dim dxfString As String = DirectCast(sqlite_cmd.ExecuteScalar(), String)
+                ' this reads the dxf table and returns a dxf string if found, else nothing
 
-                        ' get all the preview images
+                If dxfString IsNot Nothing Then
+                    sqlite_cmd.CommandText = "Select 
+                                    name, shortDescription, longDescription, material, 
+                                    length, height, materialthickness, 
+                                    creatorId, approverId, submitDate, complete 
 
-                        For Each image In SelectImages(guid)
-                            LampTemp.PreviewImages.Add(image)
-                        Next
+                                    FROM template WHERE guid = @guid"
+                    Using reader = sqlite_cmd.ExecuteReader()
+                        ' read only 1 row off the database
+                        If reader.Read() Then
+                            Dim document = LampDxfDocument.FromString(dxfString)
 
-                        ' get all the tags from the db as well
-                        LampTemp.Tags = SelectTags(guid).ToObservableList
+                            Dim LampTemp = New LampTemplate(document)
+                            LampTemp.GUID = reader.GetString(reader.GetOrdinal("guid"))
+                            LampTemp.Name = reader.GetString(reader.GetOrdinal("name"))
+                            LampTemp.ShortDescription = reader.GetString(reader.GetOrdinal("ShortDescription"))
+                            LampTemp.LongDescription = reader.GetString(reader.GetOrdinal("LongDescription"))
+                            LampTemp.Material = reader.GetString(reader.GetOrdinal("material"))
+                            LampTemp.Height = reader.GetDouble(reader.GetOrdinal("height"))
+                            LampTemp.Length = reader.GetDouble(reader.GetOrdinal("length"))
+                            LampTemp.MaterialThickness = reader.GetDouble(reader.GetOrdinal("MaterialThickness"))
+                            LampTemp.CreatorId = reader.GetString(reader.GetOrdinal("CreatorId"))
+                            LampTemp.ApproverId = reader.GetString(reader.GetOrdinal("ApproverId"))
+                            LampTemp.SubmitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
+                            LampTemp.IsComplete = reader.GetBoolean(reader.GetOrdinal("complete"))
 
-                        Return LampTemp
-                    Else
-                        Return Nothing
-                    End If
-                End Using
+                            ' get all the preview 
+                            For Each image In SelectImages(guid)
+                                LampTemp.PreviewImages.Add(image)
+                            Next
+
+                            ' get all the tags from the db as well
+                            For Each tag In SelectTags(guid)
+                                LampTemp.Tags.Add(tag)
+                            Next
+
+                            Return LampTemp
+                        End If
+                    End Using
+                End If
+                Return Nothing
             End Using
-
-
         Finally
             ' ensure connection is always closed
             If closeDatabaseAfter Then
@@ -297,7 +389,7 @@ Public Class TemplateDatabase
     ''' If no template is found, returns nothing
     ''' </summary>
     ''' <returns></returns>
-    Function SelectTemplateWithTags(tags As List(Of String), Optional limit As Integer = 10, Optional offset As Integer = 0) As List(Of LampTemplate)
+    Public Function SelectTemplateWithTags(tags As List(Of String), Optional limit As Integer = 10, Optional offset As Integer = 0) As List(Of LampTemplate)
         ' If the databse is open already, dont close it
         Dim closeDatabaseAfter = OpenDatabase()
 
@@ -388,8 +480,6 @@ Public Class TemplateDatabase
 
     End Function
 
-
-
     ''' <summary>
     ''' Adds a template to the database
     ''' will error if the guid is already in the database
@@ -401,36 +491,48 @@ Public Class TemplateDatabase
         Try
             Using sqlite_cmd = GetCommand()
 
-                ' Insert if GUID doesnt exist, else replace
+                ' Add in templateData
                 sqlite_cmd.CommandText = "INSERT OR REPLACE INTO template
-                    (Guid, DXF, material, length, Height, materialthickness, creatorName, creatorID, complete, submitdate)
+                    (guid, name, shortDescription, longDescription, material,
+                    length, Height, materialthickness, 
+                    creatorID, submitdate, complete)
                     VALUES
-                    (@guid, @dxf, @material, @length, @height, @materialthickness, @creatorName, @creatorId, @complete, DATETIME('now'));"
+                    (@guid, @name, @shortDescription, @longDescription, @material, 
+                    @length, @height, @materialthickness, 
+                    @creatorId, @approverId, DATETIME('now'), @complete);"
 
                 sqlite_cmd.Parameters.AddWithValue("@guid", template.GUID)
-                sqlite_cmd.Parameters.AddWithValue("@dxf", template.BaseDrawing.ToDxfString)
-                ' todo use tags table instead of as string
+
+                sqlite_cmd.Parameters.AddWithValue("@name", template.Name)
+                sqlite_cmd.Parameters.AddWithValue("@shortDescription", template.ShortDescription)
+                sqlite_cmd.Parameters.AddWithValue("@longDescription", template.LongDescription)
                 sqlite_cmd.Parameters.AddWithValue("@material", template.Material)
+
                 sqlite_cmd.Parameters.AddWithValue("@length", template.Length)
                 sqlite_cmd.Parameters.AddWithValue("@height", template.Height)
                 sqlite_cmd.Parameters.AddWithValue("@materialthickness", template.MaterialThickness)
-                sqlite_cmd.Parameters.AddWithValue("@creatorName", template.CreatorName)
+
                 sqlite_cmd.Parameters.AddWithValue("@creatorId", template.CreatorId)
+                sqlite_cmd.Parameters.AddWithValue("@approverId", template.ApproverId)
                 sqlite_cmd.Parameters.AddWithValue("@complete", template.IsComplete)
 
-                ' Ensure creatorId and and approverId are strings!
-                ' also add approverid/approvername to the db
+                sqlite_cmd.ExecuteNonQuery()
 
+
+                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO DXF
+                    (Guid, DXF)
+                    VALUES
+                    (@Guid, @dxf); "
+                sqlite_cmd.Parameters.AddWithValue("@DXF", template.BaseDrawing.ToDxfString)
                 sqlite_cmd.ExecuteNonQuery()
 
                 ' check that there is at least 1 image
                 If template.PreviewImages.HasNotNothing() Then
                     AddImages(template.GUID, template.PreviewImages)
-                    End
+                End If
 
-                    If template.Tags.Count > 0 Then
-                        AddTags(template.GUID, template.Tags)
-                    End If
+                If template.Tags.Count > 0 Then
+                    AddTags(template.GUID, template.Tags)
                 End If
             End Using
         Finally
@@ -447,9 +549,8 @@ Public Class TemplateDatabase
     ''' Also removes images by default, rmImages can be set to false to not
     ''' </summary>
     ''' <param name="guid">string guid</param>
-    ''' <param name="rmImage">whether or not to also delete images</param>
     ''' <returns>True=Removed, False=None found</returns>
-    Public Function RemoveTemplate(guid As String, Optional rmImage As Boolean = True) As Boolean
+    Public Function RemoveTemplate(guid As String) As Boolean
         Dim closeDatabaseAfter = OpenDatabase()
 
         Try
@@ -459,9 +560,7 @@ Public Class TemplateDatabase
                 sqlite_cmd.Parameters.AddWithValue("@guid", guid)
                 Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
 
-                If rmImage Then
-                    RemoveImages(guid, False)
-                End If
+                RemoveImages(guid, False)
                 RemoveTags(guid)
 
                 If rowsRemoved > 0 Then
@@ -551,8 +650,12 @@ Public Class TemplateDatabase
                 Dim insertedAtLeastOne As Boolean = False
 
                 For i = 0 To images.Count - 1
-                    Dim columnName = String.Format("images{0}", i + 1)
-                    sqlite_cmd.Parameters.AddWithValue("@image1", ImageToBinary(images(0)))
+                    Dim columnName = String.Format("@image{0}", i + 1)
+                    sqlite_cmd.Parameters.AddWithValue(columnName, ImageToBinary(images(i)))
+
+                    If images(i) IsNot Nothing Then
+                        insertedAtLeastOne = True
+                    End If
                 Next
 
                 If insertedAtLeastOne = False Then
@@ -775,7 +878,7 @@ Public Class TemplateDatabase
                 sqlite_cmd.CommandText = "INSERT OR REPLACE INTO users
                     (UserId, email, username, password, permissionLevel)
                     VALUES
-                    (@UserId, @email, @password, @permissionLevel);"
+                    (@UserId, @email, @username, @password, @permissionLevel);"
 
 
                 sqlite_cmd.Parameters.AddWithValue("@UserId", user.UserId)
@@ -879,9 +982,9 @@ Public Class TemplateDatabase
                 End If
 
                 sqlite_cmd.CommandText = "INSERT OR REPLACE INTO jobs
-                    (jobId, templateId, submitterId, approverId, approved)
+                    (jobId, templateId, submitterId, approverId, approved, submitDate)
                     VALUES
-                    (@jobId, @templateId, @submitterId, @approverId, @approved);"
+                    (@jobId, @templateId, @submitterId, @approverId, @approved, DATETIME('now'));"
 
 
                 sqlite_cmd.Parameters.AddWithValue("@jobId", job.JobId)
@@ -927,12 +1030,41 @@ Public Class TemplateDatabase
     ''' Fills database with dxf files located in project root/templates
     ''' The default files are stored in ExampleDxfFiles
     ''' </summary>
-    Public Shared Sub FillDebugDatabase()
-        Dim db As New TemplateDatabase()
-        For Each filename As String In ExampleDxfFiles
-            Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", filename))
-            db.AddTemplate(New LampTemplate(LampDxfDocument.FromFile(fp)))
+    Public Shared Sub FillDebugDatabase(Optional fileName As String = "templateDB.sqlite")
+#If Not DEBUG Then
+        Throw New Exception("do not use debug db in Release Mode")
+#End If
+
+        Dim db As New TemplateDatabase(fileName)
+
+        Dim ExampleSpfFiles() As String = {"1.spf", "2.spf", "3.spf", "4.spf", "5.spf", "6.spf", "7.spf", "8.spf", "9.spf"}
+
+        ' add new templates 
+        For Each spfName As String In ExampleSpfFiles
+            Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", "spf", spfName))
+            Dim template = LampTemplate.FromFile(fp)
+            db.AddTemplate(template)
         Next
+
+        ' add useres
+        Dim max As New LampUser("maxywartonyjonesy@gmail.com", "waxy", "memes", OwO.GetNewGuid(), UserPermission.Admin)
+        db.AddUser(max)
+
+        Dim shovel = New LampUser("qshoveyl@gmail.com", "shourov", "shovel101", OwO.GetNewGuid(), UserPermission.Admin)
+        db.AddUser(shovel)
+
+        Dim jack = New LampUser("jackywathyy123@gmail.com", "moji", "snack time", OwO.GetNewGuid(), UserPermission.Admin)
+        db.AddUser(jack)
+
+
+        Dim templates = db.GetAllTemplate
+
+        ' add jobs
+        Dim job As New LampJob(templates(0), max)
+        db.AddJob(job)
+
+        job = New LampJob(templates(1), shovel)
+        db.AddJob(job)
     End Sub
 
     ''' <summary>
@@ -968,6 +1100,9 @@ Public Class TemplateDatabase
             AddTemplate(dummy)
         Loop
     End Sub
+
+
+
 
 
 End Class

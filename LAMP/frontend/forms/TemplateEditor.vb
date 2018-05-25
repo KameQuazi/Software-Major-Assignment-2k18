@@ -301,4 +301,8 @@ Public Class TemplateEditor
         UpdateTemplateFromAll()
         MessageBox.Show("Saved to memory (to multitemplateviewer) ")
     End Sub
+
+    Private Sub NewGuidButton_Click(sender As Object, e As EventArgs) Handles NewGuidButton.Click
+        Template.GUID = GetNewGuid()
+    End Sub
 End Class

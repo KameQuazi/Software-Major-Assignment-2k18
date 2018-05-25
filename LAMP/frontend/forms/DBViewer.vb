@@ -39,7 +39,7 @@ Public Class DBViewer
 
     Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles DBGrid.UserDeletingRow        For Each item As DataGridViewRow In DBGrid.SelectedRows
             Try
-                DB.removeEntry(item.Cells("GUID").Value.ToString)
+                DB.RemoveTemplate(item.Cells("GUID").Value.ToString)
             Catch
 
             End Try

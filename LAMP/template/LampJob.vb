@@ -17,9 +17,15 @@
 
     Public Property ApproverId As String
         Get
+            If Approver Is Nothing Then
+                Return Nothing
+            End If
             Return Approver.UserId
         End Get
         Set(value As String)
+            If Approver Is Nothing Then
+                Throw New ArgumentNullException(NameOf(Approver) + " cannot be nothing")
+            End If
             Approver.UserId = value
         End Set
     End Property
