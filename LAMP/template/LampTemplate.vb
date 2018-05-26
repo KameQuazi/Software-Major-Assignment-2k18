@@ -288,7 +288,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("approver_id")>
-    Public Property ApproverId As String = System.Guid.Empty.ToString
+    Public Property ApproverId As String = Nothing
 
     Private Sub PreviewImages_CollectionChanged(sender As Object, args As NotifyCollectionChangedEventArgs)
         NotifyPropertyChanged(NameOf(PreviewImages))

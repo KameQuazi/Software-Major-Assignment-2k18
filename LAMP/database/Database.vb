@@ -99,12 +99,15 @@ Public Class TemplateDatabase
                                   complete Int DEFAULT FALSE);"
                 sqlite_cmd.ExecuteNonQuery()
 
+
+
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists dxf (
                                   GUID Text PRIMARY KEY not null,
-                                  DXF Text Not NULL
+                                  DXF Text Not NULL,
                                   
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );"
+                sqlite_cmd.ExecuteNonQuery()
 
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists images (
                                   GUID Text PRIMARY KEY Not NULL, 
@@ -238,9 +241,13 @@ Public Class TemplateDatabase
             Using sqlite_cmd = GetCommand()
 
                 sqlite_cmd.CommandText = "Select DXF from dxf WHERE guid=@guid"
+                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
                 Dim dxfString = DirectCast(sqlite_cmd.ExecuteScalar(), String)
-
-                Return LampDxfDocument.FromString(dxfString)
+                If dxfString IsNot Nothing Then
+                    Return LampDxfDocument.FromString(dxfString)
+                Else
+                    Return Nothing
+                End If
             End Using
         Finally
             ' ensure connection is always closed
@@ -249,6 +256,10 @@ Public Class TemplateDatabase
             End If
         End Try
     End Function
+
+    Public Sub AddDxf(template As LampTemplate)
+        AddDxf(template.GUID, template.BaseDrawing)
+    End Sub
 
     ''' <summary>
     ''' Adds dxf to the db
@@ -259,7 +270,7 @@ Public Class TemplateDatabase
             Using sqlite_cmd = GetCommand()
 
                 ' Add in templateData
-                sqlite_cmd.CommandText = "INSERT OR REPLACE DXF
+                sqlite_cmd.CommandText = "INSERT OR REPLACE into DXF
                     (guid, DXF)
                     VALUES
                     (@guid, @DXF)"
@@ -295,9 +306,6 @@ Public Class TemplateDatabase
                 sqlite_cmd.Parameters.AddWithValue("@guid", guid)
                 Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
 
-                RemoveImages(guid, False)
-                RemoveTags(guid)
-
                 If rowsRemoved > 0 Then
                     Return True
                 Else
@@ -325,28 +333,24 @@ Public Class TemplateDatabase
 
         Try
             Using sqlite_cmd = GetCommand()
+                Dim dxf As LampDxfDocument = SelectDxf(guid)
 
-                sqlite_cmd.CommandText = "Select DXF from dxf WHERE guid=@guid"
-                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
 
-                's Dim dxf As LampDxfDocument = SelectDxf(guid)
-                Dim dxfString As String = DirectCast(sqlite_cmd.ExecuteScalar(), String)
-                ' this reads the dxf table and returns a dxf string if found, else nothing
+                If dxf IsNot Nothing Then
 
-                If dxfString IsNot Nothing Then
                     sqlite_cmd.CommandText = "Select 
                                     name, shortDescription, longDescription, material, 
                                     length, height, materialthickness, 
                                     creatorId, approverId, submitDate, complete 
 
                                     FROM template WHERE guid = @guid"
+                    sqlite_cmd.Parameters.AddWithValue("@guid", guid)
                     Using reader = sqlite_cmd.ExecuteReader()
                         ' read only 1 row off the database
                         If reader.Read() Then
-                            Dim document = LampDxfDocument.FromString(dxfString)
+                            Dim LampTemp = New LampTemplate(dxf)
+                            LampTemp.GUID = guid
 
-                            Dim LampTemp = New LampTemplate(document)
-                            LampTemp.GUID = reader.GetString(reader.GetOrdinal("guid"))
                             LampTemp.Name = reader.GetString(reader.GetOrdinal("name"))
                             LampTemp.ShortDescription = reader.GetString(reader.GetOrdinal("ShortDescription"))
                             LampTemp.LongDescription = reader.GetString(reader.GetOrdinal("LongDescription"))
@@ -360,6 +364,7 @@ Public Class TemplateDatabase
                             LampTemp.IsComplete = reader.GetBoolean(reader.GetOrdinal("complete"))
 
                             ' get all the preview 
+                            LampTemp.PreviewImages.Clear()
                             For Each image In SelectImages(guid)
                                 LampTemp.PreviewImages.Add(image)
                             Next
@@ -442,28 +447,15 @@ Public Class TemplateDatabase
         Try
             Using sqlite_cmd = GetCommand()
 
-                sqlite_cmd.CommandText = "Select * FROM template"
+                sqlite_cmd.CommandText = "Select guid FROM template"
 
                 Using sqlite_reader = sqlite_cmd.ExecuteReader()
                     Dim LampTempList As New List(Of LampTemplate)
-                    Dim LampTemp As LampTemplate
+                  
 
                     While sqlite_reader.Read()
                         ' read the data off this sqlite_reader
-                        LampTemp = ReadTemplateTable(sqlite_reader)
-
-
-                        ' Set images
-                        LampTemp.PreviewImages.Clear()
-                        For Each image In SelectImages(LampTemp.GUID)
-                            LampTemp.PreviewImages.Add(image)
-                        Next
-
-                        ' set tags
-                        LampTemp.Tags.Clear()
-                        For Each tag In SelectTags(LampTemp.GUID)
-                            LampTemp.Tags.Add(tag)
-                        Next
+                        Dim LampTemp = SelectTemplate(sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid")))
 
                         LampTempList.Add(LampTemp)
                     End While
@@ -489,13 +481,15 @@ Public Class TemplateDatabase
         Dim closeDatabaseAfter = OpenDatabase()
 
         Try
+            ' a transaction makes sure all the inserts are successful 
+            ' we dont want a template with name etc, but no dxf 
             Using sqlite_cmd = GetCommand()
 
                 ' Add in templateData
                 sqlite_cmd.CommandText = "INSERT OR REPLACE INTO template
                     (guid, name, shortDescription, longDescription, material,
                     length, Height, materialthickness, 
-                    creatorID, submitdate, complete)
+                    creatorID, approverId, submitdate, complete)
                     VALUES
                     (@guid, @name, @shortDescription, @longDescription, @material, 
                     @length, @height, @materialthickness, 
@@ -519,12 +513,7 @@ Public Class TemplateDatabase
                 sqlite_cmd.ExecuteNonQuery()
 
 
-                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO DXF
-                    (Guid, DXF)
-                    VALUES
-                    (@Guid, @dxf); "
-                sqlite_cmd.Parameters.AddWithValue("@DXF", template.BaseDrawing.ToDxfString)
-                sqlite_cmd.ExecuteNonQuery()
+                AddDxf(template.GUID, template.BaseDrawing)
 
                 ' check that there is at least 1 image
                 If template.PreviewImages.HasNotNothing() Then
@@ -535,6 +524,7 @@ Public Class TemplateDatabase
                     AddTags(template.GUID, template.Tags)
                 End If
             End Using
+
         Finally
             ' ensure connection is always closed
             If closeDatabaseAfter Then
@@ -554,14 +544,16 @@ Public Class TemplateDatabase
         Dim closeDatabaseAfter = OpenDatabase()
 
         Try
-
             Using sqlite_cmd = GetCommand()
+                ' gotta remove these first before the guid in the templates table is gone
+                RemoveDxf(guid)
+                RemoveImages(guid)
+                RemoveTags(guid)
+
                 sqlite_cmd.CommandText = "DELETE from template WHERE GUID = @guid"
                 sqlite_cmd.Parameters.AddWithValue("@guid", guid)
                 Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
 
-                RemoveImages(guid, False)
-                RemoveTags(guid)
 
                 If rowsRemoved > 0 Then
                     Return True
@@ -569,6 +561,7 @@ Public Class TemplateDatabase
                     Return False
                 End If
             End Using
+
         Finally
             ' ensure connection is closed
             If closeDatabaseAfter Then
@@ -679,7 +672,7 @@ Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="guid"></param>
     ''' <returns>True=Removed image, False=None removed</returns>
-    Public Function RemoveImages(guid As String, Optional openDb As Boolean = True) As Boolean
+    Public Function RemoveImages(guid As String) As Boolean
         Dim closeDatabaseAfter = OpenDatabase()
 
         Try
