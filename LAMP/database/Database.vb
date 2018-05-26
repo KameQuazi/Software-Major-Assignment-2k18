@@ -84,6 +84,17 @@ Public Class TemplateDatabase
         Dim closeDatabaseAfter = OpenDatabase()
         Try
             Using sqlite_cmd = GetCommand()
+                sqlite_cmd.CommandText = "CREATE TABLE if not exists users (
+                                  UserId Text PRIMARY KEY Not Null,
+                                  PermissionLevel Integer Not Null,
+                                  email Text Not Null UNIQUE,
+                                  Username text Not NULL UNIQUE,
+                                  Password Text Not Null,
+                                  Name Text Not Null
+                                  );
+                        "
+                sqlite_cmd.ExecuteNonQuery()
+
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists template (
                                   GUID Text PRIMARY KEY Not NULL,
                                   Name Text DEFAULT '' Not NULL,
@@ -93,10 +104,15 @@ Public Class TemplateDatabase
                                   length real Not NULL DEFAULT -1,
                                   Height real Not NULL DEFAULT -1,
                                   materialThickness real Not NULL DEFAULT -1,
-                                  creatorID Text Not NULL DEFAULT '0000-0000-0000-0000',
-                                  approverID Text DEFAULT NULL,
+                                  creatorID Text,
+                                  approverID Text,
                                   submitDate Text,
-                                  complete Int DEFAULT FALSE);"
+                                  complete Int DEFAULT FALSE,
+                                    
+                                  FOREIGN KEY(creatorID) REFERENCES users(UserId),
+                                  FOREIGN KEY(approverID) REFERENCES users(UserId)
+                                  );"
+
                 sqlite_cmd.ExecuteNonQuery()
 
 
@@ -128,15 +144,7 @@ Public Class TemplateDatabase
                         "
                 sqlite_cmd.ExecuteNonQuery()
 
-                sqlite_cmd.CommandText = "CREATE TABLE if not exists users (
-                                  UserId Text PRIMARY KEY Not Null,
-                                  email Text Not Null UNIQUE,
-                                  Username text Not NULL UNIQUE,
-                                  Password Text Not Null,
-                                  PermissionLevel Integer Not Null
-                                  );
-                        "
-                sqlite_cmd.ExecuteNonQuery()
+
 
 
                 sqlite_cmd.CommandText = "CREATE TABLE if not exists jobs (
@@ -171,7 +179,7 @@ Public Class TemplateDatabase
         Dim closeDatabaseAfter = OpenDatabase()
         Try
             Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "DROP TABLE If exists template"
+                sqlite_cmd.CommandText = "DROP TABLE If exists users"
                 sqlite_cmd.ExecuteNonQuery()
                 sqlite_cmd.CommandText = "DROP TABLE If exists dxf"
                 sqlite_cmd.ExecuteNonQuery()
@@ -179,9 +187,9 @@ Public Class TemplateDatabase
                 sqlite_cmd.ExecuteNonQuery()
                 sqlite_cmd.CommandText = "DROP TABLE If exists tags"
                 sqlite_cmd.ExecuteNonQuery()
-                sqlite_cmd.CommandText = "DROP TABLE If exists users"
-                sqlite_cmd.ExecuteNonQuery()
                 sqlite_cmd.CommandText = "DROP TABLE If exists jobs"
+                sqlite_cmd.ExecuteNonQuery()
+                sqlite_cmd.CommandText = "DROP TABLE If exists template"
                 sqlite_cmd.ExecuteNonQuery()
             End Using
         Finally
@@ -191,42 +199,6 @@ Public Class TemplateDatabase
         End Try
     End Sub
 
-    ''' <summary>
-    ''' Reads 1 row off the sqliteReader, returning a lampTemplate with its variables set
-    ''' This is so you dont have to duplicate code over SelectTemplate, SelectAllTemplate etc
-    ''' Does not call reader.Read(), the reader must have data in it
-    ''' </summary>
-    <Obsolete("do not use anymore", False)>
-    Private Function ReadTemplateTable(reader As SQLiteDataReader) As LampTemplate
-        If reader.HasRows <> True Then
-            Throw New DataException(NameOf(reader))
-        End If
-        Console.WriteLine("depecated")
-
-        Dim LampTemp = New LampTemplate()
-        LampTemp.GUID = reader.GetString(reader.GetOrdinal("guid"))
-        LampTemp.Name = reader.GetString(reader.GetOrdinal("name"))
-        LampTemp.ShortDescription = reader.GetString(reader.GetOrdinal("ShortDescription"))
-        LampTemp.LongDescription = reader.GetString(reader.GetOrdinal("LongDescription"))
-        LampTemp.Material = reader.GetString(reader.GetOrdinal("material"))
-        LampTemp.Height = reader.GetDouble(reader.GetOrdinal("height"))
-        LampTemp.Length = reader.GetDouble(reader.GetOrdinal("length"))
-        LampTemp.MaterialThickness = reader.GetDouble(reader.GetOrdinal("MaterialThickness"))
-        LampTemp.SubmitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
-
-        LampTemp.ApproverId = reader.GetString(reader.GetOrdinal("ApproverId"))
-        LampTemp.CreatorId = reader.GetString(reader.GetOrdinal("CreatorId"))
-        LampTemp.IsComplete = reader.GetBoolean(reader.GetOrdinal("complete"))
-
-        Return LampTemp
-    End Function
-
-    Private Function ReadImageTable(reader As SQLiteDataReader, Optional start As LampTemplate = Nothing) As LampTemplate
-        If start Is Nothing Then
-            start = New LampTemplate()
-        End If
-        Throw New NotImplementedException()
-    End Function
 
     ''' <summary>
     ''' Gets a dxf
@@ -358,8 +330,19 @@ Public Class TemplateDatabase
                             LampTemp.Height = reader.GetDouble(reader.GetOrdinal("height"))
                             LampTemp.Length = reader.GetDouble(reader.GetOrdinal("length"))
                             LampTemp.MaterialThickness = reader.GetDouble(reader.GetOrdinal("MaterialThickness"))
-                            LampTemp.CreatorId = reader.GetString(reader.GetOrdinal("CreatorId"))
-                            LampTemp.ApproverId = reader.GetString(reader.GetOrdinal("ApproverId"))
+
+                            If reader.IsDBNull(reader.GetOrdinal("CreatorId")) Then
+                                LampTemp.CreatorProfile = Nothing
+                            Else
+                                LampTemp.CreatorProfile = SelectUser(reader.GetString(reader.GetOrdinal("CreatorId"))).ToProfile
+                            End If
+
+                            If reader.IsDBNull(reader.GetOrdinal("ApproverId")) Then
+                                LampTemp.ApproverProfile = Nothing
+                            Else
+                                LampTemp.CreatorProfile = SelectUser(reader.GetString(reader.GetOrdinal("ApproverId"))).ToProfile
+                            End If
+
                             LampTemp.SubmitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
                             LampTemp.IsComplete = reader.GetBoolean(reader.GetOrdinal("complete"))
 
@@ -451,7 +434,7 @@ Public Class TemplateDatabase
 
                 Using sqlite_reader = sqlite_cmd.ExecuteReader()
                     Dim LampTempList As New List(Of LampTemplate)
-                  
+
 
                     While sqlite_reader.Read()
                         ' read the data off this sqlite_reader
@@ -473,11 +456,38 @@ Public Class TemplateDatabase
     End Function
 
     ''' <summary>
+    ''' Sets or unsets the approver of a template
+    ''' if a template has an approver of nothing, it is counted as not approved
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <param name="approver"></param>
+    ''' <returns>True if found, false if not updated (no template)</returns>
+    Public Function SetApprover(guid As String, approver As String) As Boolean
+        Dim closeDatabaseAfter = OpenDatabase()
+
+        Try
+            ' a transaction makes sure all the inserts are successful 
+            ' we dont want a template with name etc, but no dxf 
+            Using sqlite_cmd = Connection.CreateCommand()
+                sqlite_cmd.CommandText = "UPDATE template SET approverId = @approverId"
+                sqlite_cmd.Parameters.AddWithValue("@approverId", approver)
+
+                Return Convert.ToBoolean(sqlite_cmd.ExecuteNonQuery())
+            End Using
+        Finally
+            If closeDatabaseAfter Then
+                CloseDatabase()
+            End If
+        End Try
+
+    End Function
+
+    ''' <summary>
     ''' Adds a template to the database
     ''' will error if the guid is already in the database
     ''' </summary>
     ''' <param name="template"></param>
-    Public Sub AddTemplate(template As LampTemplate)
+    Public Sub AddTemplate(template As LampTemplate, Optional creatorId As String = Nothing, Optional approverId As String = Nothing)
         Dim closeDatabaseAfter = OpenDatabase()
 
         Try
@@ -506,8 +516,8 @@ Public Class TemplateDatabase
                 sqlite_cmd.Parameters.AddWithValue("@height", template.Height)
                 sqlite_cmd.Parameters.AddWithValue("@materialthickness", template.MaterialThickness)
 
-                sqlite_cmd.Parameters.AddWithValue("@creatorId", template.CreatorId)
-                sqlite_cmd.Parameters.AddWithValue("@approverId", template.ApproverId)
+                sqlite_cmd.Parameters.AddWithValue("@creatorId", creatorId)
+                sqlite_cmd.Parameters.AddWithValue("@approverId", approverId)
                 sqlite_cmd.Parameters.AddWithValue("@complete", template.IsComplete)
 
                 sqlite_cmd.ExecuteNonQuery()
@@ -532,6 +542,8 @@ Public Class TemplateDatabase
             End If
         End Try
     End Sub
+
+
 
 
     ''' <summary>
@@ -808,7 +820,9 @@ Public Class TemplateDatabase
                         Dim username = sqlite_reader.GetString(sqlite_reader.GetOrdinal("username"))
                         Dim password = sqlite_reader.GetString(sqlite_reader.GetOrdinal("password"))
                         Dim permissionLevel = sqlite_reader.GetInt32(sqlite_reader.GetOrdinal("permissionLevel"))
-                        user = New LampUser(email, password, username, userId, permissionLevel)
+                        Dim name = sqlite_reader.GetString(sqlite_reader.GetOrdinal("name"))
+
+                        user = New LampUser(userId, DirectCast(permissionLevel, UserPermission), email, password, username, name)
 
                     Else
                         user = Nothing
@@ -830,25 +844,17 @@ Public Class TemplateDatabase
 
         Try
             Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "Select username, permissionLevel from Users 
+                sqlite_cmd.CommandText = "Select userId from Users 
                                           WHERE username=@username AND password=@password"
                 sqlite_cmd.Parameters.AddWithValue("@username", username)
                 sqlite_cmd.Parameters.AddWithValue("@password", password)
 
-                Using sqlite_reader = sqlite_cmd.ExecuteReader()
-                    Dim user As LampUser
-                    If sqlite_reader.Read() Then
-                        Dim email = sqlite_reader.GetString(sqlite_reader.GetOrdinal("email"))
-                        Dim userId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("userId"))
-                        Dim permissionLevel = sqlite_reader.GetInt32(sqlite_reader.GetOrdinal("permissionLevel"))
-                        user = New LampUser(email, password, username, userId, permissionLevel)
-
-                    Else
-                        user = Nothing
-                    End If
-
-                    Return user
-                End Using
+                Dim userId = sqlite_cmd.ExecuteScalar()
+                If userId IsNot Nothing Then
+                    Return SelectUser(DirectCast(userId, String))
+                Else
+                    Return Nothing
+                End If
             End Using
 
         Finally
@@ -869,16 +875,18 @@ Public Class TemplateDatabase
         Try
             Using sqlite_cmd = GetCommand()
                 sqlite_cmd.CommandText = "INSERT OR REPLACE INTO users
-                    (UserId, email, username, password, permissionLevel)
+                    (UserId,permissionLevel, email, username, password, name)
                     VALUES
-                    (@UserId, @email, @username, @password, @permissionLevel);"
+                    (@UserId, @permissionLevel, @email, @username, @password, @name);"
 
 
                 sqlite_cmd.Parameters.AddWithValue("@UserId", user.UserId)
+                sqlite_cmd.Parameters.AddWithValue("@permissionLevel", user.PermissionLevel)
                 sqlite_cmd.Parameters.AddWithValue("@email", user.Email)
                 sqlite_cmd.Parameters.AddWithValue("@username", user.Username)
                 sqlite_cmd.Parameters.AddWithValue("@password", user.Password)
-                sqlite_cmd.Parameters.AddWithValue("@permissionLevel", user.PermissionLevel)
+                sqlite_cmd.Parameters.AddWithValue("@name", user.Name)
+
 
                 sqlite_cmd.ExecuteNonQuery()
 
@@ -1040,13 +1048,13 @@ Public Class TemplateDatabase
         Next
 
         ' add useres
-        Dim max As New LampUser("maxywartonyjonesy@gmail.com", "waxy", "memes", OwO.GetNewGuid(), UserPermission.Admin)
+        Dim max As New LampUser(OwO.GetNewGuid(), UserPermission.Admin, "maxywartonyjonesy@gmail.com", "waxy", "memes", "steve by birth!")
         db.AddUser(max)
 
-        Dim shovel = New LampUser("qshoveyl@gmail.com", "shourov", "shovel101", OwO.GetNewGuid(), UserPermission.Admin)
+        Dim shovel = New LampUser(OwO.GetNewGuid(), UserPermission.Admin, "qshoveyl@gmail.com", "shourov", "shovel101", "Knot Jack")
         db.AddUser(shovel)
 
-        Dim jack = New LampUser("jackywathyy123@gmail.com", "moji", "snack time", OwO.GetNewGuid(), UserPermission.Admin)
+        Dim jack = New LampUser(OwO.GetNewGuid(), UserPermission.Admin, "jackywathyy123@gmail.com", "moji", "snack time", "shovel tool")
         db.AddUser(jack)
 
 

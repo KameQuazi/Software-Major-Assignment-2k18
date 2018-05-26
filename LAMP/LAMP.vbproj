@@ -217,6 +217,7 @@
     <Compile Include="template\JobReceiver.vb" />
     <Compile Include="template\JobSubmitter.vb" />
     <Compile Include="template\LampJob.vb" />
+    <Compile Include="template\LampProfile.vb" />
     <Compile Include="template\TemplateParts\DynamicText.vb" />
     <Compile Include="template\LampTemplate.vb" />
     <Compile Include="template\LampDxfDocument.vb" />

@@ -14,13 +14,16 @@ Imports Newtonsoft.Json.Linq
 Public NotInheritable Class LampTemplate
     Implements INotifyPropertyChanged
 
+    Public Const MaxImages As Integer = 3
+
+#Region "INotifyPropertyChanged"
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
     Private Sub NotifyPropertyChanged(<CallerMemberName()> Optional ByVal propertyName As String = Nothing)
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
+#End Region
 
-    Public Const MaxImages As Integer = 3
 
 #Region "Instance Variables"
     Private _guid As String
@@ -263,32 +266,18 @@ Public NotInheritable Class LampTemplate
     Public Property IsComplete As Boolean
 
     ''' <summary>
-    ''' full name of creator
+    ''' Name, email of creator if exists
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("creator_name")>
-    Public Property CreatorName As String = ""
+    <JsonProperty("creator_profile")>
+    Public Property CreatorProfile As LampProfile = Nothing
 
     ''' <summary>
-    ''' guid of creator
+    ''' name, email of approver if exists
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("creator_id")>
-    Public Property CreatorId As String = System.Guid.Empty.ToString
-
-    ''' <summary>
-    ''' full name of approver
-    ''' </summary>
-    ''' <returns></returns>
-    <JsonProperty("approver_name")>
-    Public Property ApproverName As String = ""
-
-    ''' <summary>
-    ''' guid of approver
-    ''' </summary>
-    ''' <returns></returns>
-    <JsonProperty("approver_id")>
-    Public Property ApproverId As String = Nothing
+    <JsonProperty("approver_profile")>
+    Public Property ApproverProfile As String = Nothing
 
     Private Sub PreviewImages_CollectionChanged(sender As Object, args As NotifyCollectionChangedEventArgs)
         NotifyPropertyChanged(NameOf(PreviewImages))
@@ -535,6 +524,10 @@ End Class
 
 
 Public Module OwO
+
+    Public Property CurrentUser As LampUser
+
+    Public Property DefaultCommunication As New LampCommunication(SubmitType.Local)
 
     Public Sub Main()
         InitalizeLibraries()

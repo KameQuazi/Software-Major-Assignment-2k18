@@ -202,7 +202,7 @@ Public Class LampDatabaseTests
     <TestMethod()>
     Public Sub TestUsers()
         Dim db As New TemplateDatabase
-        Dim user As New LampUser("email@gmail.com", "jackywathy", "abcd1234", NewGuid, UserPermission.Admin)
+        Dim user As New LampUser(NewGuid, UserPermission.Admin, "email@gmail.com", "jackywathy", "abcd1234", "testuser")
         db.AddUser(user)
         db.SelectUser(user.UserId)
     End Sub
