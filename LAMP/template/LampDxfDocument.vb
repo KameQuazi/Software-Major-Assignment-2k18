@@ -596,8 +596,8 @@ Public Class LampDxfHelper
     End Function
 
     Public Shared Function CartesianToGdi(center As PointF, width As Double, height As Double, cartesianX As Double, cartesianY As Double, Optional pixelsPerX As Double = 1, Optional pixelsPerY As Double = 1) As PointF
-        Dim ret As New PointF(-center.X + width.ToSingle / 2 * pixelsPerX.ToSingle,
-                              center.Y + height.ToSingle / 2 * pixelsPerY.ToSingle)
+        Dim ret As New PointF((-center.X + width.ToSingle / 2) * pixelsPerX.ToSingle,
+                              (center.Y + height.ToSingle / 2) * pixelsPerY.ToSingle)
         ' transformation to apply to cartesian equation to convert to gdi
         ' if an item is left of the center point in the cartesian diagram,
         ' it needs to be left of the center point in the screen
