@@ -195,7 +195,7 @@ Partial Class DesignerForm
         'TrackBar1
         '
         Me.TrackBar1.Location = New System.Drawing.Point(627, 395)
-        Me.TrackBar1.Maximum = 20
+        Me.TrackBar1.Maximum = 30
         Me.TrackBar1.Minimum = 1
         Me.TrackBar1.Name = "TrackBar1"
         Me.TrackBar1.Size = New System.Drawing.Size(201, 45)

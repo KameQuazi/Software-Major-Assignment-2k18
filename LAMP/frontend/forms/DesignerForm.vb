@@ -109,5 +109,23 @@ Public Class DesignerForm
         DesignerScreen1.ZoomX = zoom
         DesignerScreen1.ZoomY = zoom
     End Sub
+
+    Private Sub DesignerScreen1_MouseWheel(sender As Object, e As MouseEventArgs) Handles DesignerScreen1.MouseWheel
+        Dim zoomDiff = e.Delta / 120 / 4
+        If zoomDiff > 0 Then
+            Dim newZoom = Math.Min(DesignerScreen1.ZoomX + zoomDiff, 3)
+            TrackBar1.Value = Convert.ToInt32(newZoom * 10)
+            ZoomLevelBox.Text = newZoom.ToSingle
+            DesignerScreen1.ZoomX = newZoom
+            DesignerScreen1.ZoomY = newZoom
+        ElseIf zoomDiff < 0 Then
+            Dim newZoom = Math.Max(DesignerScreen1.ZoomX + zoomDiff, 0.1)
+            TrackBar1.Value = Convert.ToInt32(newZoom * 10)
+            ZoomLevelBox.Text = newZoom.ToSingle
+            DesignerScreen1.ZoomX = newZoom
+            DesignerScreen1.ZoomY = newZoom
+        End If
+    End Sub
 End Class
+
 
