@@ -311,7 +311,7 @@ Public Class LampDxfDocument
     ''' <param name="focalPoint">where the center of the view is</param>
     ''' <param name="renderWidth">the width of the scene to render</param>
     ''' <param name="renderHeight">the height of the scene to render</param>
-    Public Sub WriteToGraphics(g As Graphics, focalPoint As PointF, renderWidth As Integer, renderHeight As Integer)
+    Public Sub WriteToGraphics(g As Graphics, focalPoint As PointF, renderWidth As Double, renderHeight As Double, Optional zoomX As Double = 1, Optional zoomY As Double = 0)
         ' the bounds where entities are rendered
 #Disable Warning BC42016 ' Implicit conversion
         Dim bounds As New RectangleF(focalPoint.X - renderWidth / 2, focalPoint.Y + renderHeight / 2, renderWidth, renderHeight)
@@ -389,18 +389,14 @@ Public Class LampDxfDocument
 
         For Each text As Text In DxfFile.Texts
             If InsideBounds(bounds, text) Then
-                g.DrawString(text.Value, New Font(New FontFamily(text.Style.FontFamilyName), 30), New SolidBrush(text.Color.ToColor()), New PointF(0, 0))
-                Using path = New GraphicsPath
-                    Dim style = text.Style
+                Dim upperleft = text.Position
+                ' text.Position is from bottom left of the text
+                upperleft.Y += text.Height
 
-                    path.AddString(text.Value, New FontFamily(style.FontFamilyName), DirectCast(FontStyle.Regular, Integer), text.Height, New PointF(0, 0), StringFormat.GenericDefault)
-                    Dim matrix As New Matrix
-                    matrix.Shear(0, 0)
+                Dim gdiUpperleft = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperleft)
 
-                    g.MultiplyTransform(matrix)
-                    g.FillPath(New SolidBrush(text.Color.ToColor), path)
-                    g.ResetTransform()
-                End Using
+                g.DrawString(text.Value, New Font(New FontFamily(text.Style.FontFamilyName), text.Height), New SolidBrush(text.Color.ToColor()), gdiUpperleft)
+
             End If
         Next
     End Sub
@@ -572,11 +568,11 @@ Public Class LampDxfHelper
         Return True
     End Function
 
-    Public Shared Function CartesianToGdi(center As PointF, width As Integer, height As Integer, cartesianPoint As Vector3) As PointF
+    Public Shared Function CartesianToGdi(center As PointF, width As Double, height As Double, cartesianPoint As Vector3) As PointF
         Return CartesianToGdi(center, width, height, cartesianPoint.X, cartesianPoint.Y)
     End Function
 
-    Public Shared Function CartesianToGdi(center As PointF, width As Integer, height As Integer, cartesianX As Double, cartesianY As Double) As PointF
+    Public Shared Function CartesianToGdi(center As PointF, width As Double, height As Double, cartesianX As Double, cartesianY As Double) As PointF
 #Disable Warning BC42016 ' Implicit conversion
         Dim ret As New PointF(-center.X + width / 2, center.Y + height / 2)
         ret.X += cartesianX
@@ -587,7 +583,7 @@ Public Class LampDxfHelper
 
 
 
-    Public Shared Function GdiToCartesian(center As PointF, width As Integer, height As Integer, location As PointF) As PointF
+    Public Shared Function GdiToCartesian(center As PointF, width As Double, height As Double, location As PointF) As PointF
         Throw New Exception("TODO")
     End Function
 

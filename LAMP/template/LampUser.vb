@@ -39,7 +39,7 @@ Public Class LampUser
     End Function
 
     Public Function ToProfile() As LampProfile
-        Return New LampProfile(Username)
+        Return New LampProfile(Username, Name, UserId)
     End Function
 
 End Class

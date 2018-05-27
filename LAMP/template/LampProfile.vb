@@ -8,7 +8,13 @@ Public Class LampProfile
     <JsonProperty("name")>
     Public Property Name As String
 
-    Public Sub New(username As String)
+    <JsonProperty("userId")>
+    Public Property UserId As String
+
+    Public Sub New(username As String, name As String, userid As String)
         Me.Username = username
+        Me.Name = name
+        Me.UserId = userid
+
     End Sub
 End Class
