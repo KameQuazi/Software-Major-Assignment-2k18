@@ -2,7 +2,6 @@
 Imports System.Collections.Specialized
 Imports System.ComponentModel
 Imports System.IO
-Imports System.Reflection
 Imports System.Runtime.CompilerServices
 Imports LAMP
 Imports netDxf
@@ -545,6 +544,11 @@ Public Module OwO
 
     Public Function GetNewGuid() As String
         Return Guid.NewGuid().ToString()
+    End Function
+
+    <System.Runtime.CompilerServices.Extension()>
+    Public Function ToSingle(this As Double) As Single
+        Return Convert.ToSingle(this)
     End Function
 
 

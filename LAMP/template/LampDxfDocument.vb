@@ -133,6 +133,12 @@ Public Class LampDxfDocument
     ''' <param name="height"></param>
     ''' <returns></returns>
     Public Function RasterizeImage(center As PointF, width As Integer, height As Integer) As System.Drawing.Image
+        If width <= 0 Then
+            Throw New ArgumentOutOfRangeException(NameOf(width))
+        End If
+        If height <= 0 Then
+            Throw New ArgumentOutOfRangeException(NameOf(height))
+        End If
         Dim bmp As New Bitmap(width, height)
 
         Using g = Graphics.FromImage(bmp)
@@ -148,6 +154,7 @@ Public Class LampDxfDocument
     ''' <returns></returns>
     Public Function ToImage() As System.Drawing.Image
 #Disable Warning BC42016 ' Implicit conversion
+
         Return RasterizeImage(New PointF((BottomLeft.X + TopRight.X) / 2, (BottomLeft.Y + TopRight.Y) / 2),
                        Width, Height)
 #Enable Warning BC42016 ' Implicit conversion
@@ -309,19 +316,37 @@ Public Class LampDxfDocument
     ''' </summary>
     ''' <param name="g"></param>
     ''' <param name="focalPoint">where the center of the view is</param>
-    ''' <param name="renderWidth">the width of the scene to render</param>
-    ''' <param name="renderHeight">the height of the scene to render</param>
-    Public Sub WriteToGraphics(g As Graphics, focalPoint As PointF, renderWidth As Double, renderHeight As Double, Optional zoomX As Double = 1, Optional zoomY As Double = 0)
+    ''' <param name="renderWidth">number of pixels to render</param>
+    ''' <param name="renderHeight">number of pixels to render</param>
+    ''' <param name="pixelsPerUnitX">number of cartesian units per pixel</param>
+    ''' <param name="pixelsPerUnitY">Number of cartesian units in dxf per pixel y. recommended to be equal to pixelsPerX</param>
+    Public Sub WriteToGraphics(g As Graphics, focalPoint As PointF, renderWidth As Double, renderHeight As Double, Optional pixelsPerUnitX As Double = 1, Optional pixelsPerUnitY As Double = 1)
         ' the bounds where entities are rendered
-#Disable Warning BC42016 ' Implicit conversion
-        Dim bounds As New RectangleF(focalPoint.X - renderWidth / 2, focalPoint.Y + renderHeight / 2, renderWidth, renderHeight)
-#Enable Warning BC42016 ' Implicit conversion
+        ' draw x at 0, 0
+        If pixelsPerUnitY <= 0 Then
+            Throw New ArgumentOutOfRangeException(NameOf(pixelsPerUnitY))
+        End If
+        If pixelsPerUnitX <= 0 Then
+            Throw New ArgumentOutOfRangeException(NameOf(pixelsPerUnitX))
+        End If
+
+        Dim cartesianZero As PointF = CartesianToGdi(focalPoint, renderWidth, renderHeight, New Vector3(0, 0, 0), 1, 1)
+        g.DrawLine(New Pen(Color.Purple), cartesianZero.X - 50, cartesianZero.Y, cartesianZero.X + 50, cartesianZero.Y)
+        g.DrawLine(New Pen(Color.Purple), cartesianZero.X, cartesianZero.Y - 50, cartesianZero.X, cartesianZero.Y + 50)
+
+
+        Dim bounds As New RectangleF(focalPoint.X - renderWidth.ToSingle * pixelsPerUnitX.ToSingle / 2,
+                                     focalPoint.Y + renderHeight.ToSingle * pixelsPerUnitY.ToSingle / 2,
+                                     renderWidth.ToSingle,
+                                     renderHeight.ToSingle)
+
+
 
         For Each line As Line In _DxfFile.Lines
             If InsideBounds(bounds, line) Then
-                Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, line.StartPoint.X, line.StartPoint.Y)
+                Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, line.StartPoint.X, line.StartPoint.Y, pixelsPerUnitX, pixelsPerUnitY)
 
-                Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, line.EndPoint.X, line.EndPoint.Y)
+                Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, line.EndPoint.X, line.EndPoint.Y, pixelsPerUnitX, pixelsPerUnitY)
 
                 g.DrawLine(New Pen(line.Color.ToColor()), start, [end])
             End If
@@ -337,7 +362,7 @@ Public Class LampDxfDocument
                 upperLeft.X -= arc.Radius
                 upperLeft.Y += arc.Radius
 
-                Dim GdiUpperleft = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperLeft)
+                Dim GdiUpperleft = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperLeft, pixelsPerUnitX, pixelsPerUnitY)
                 ' arc startangle is anti-clockwise from the positive x axis, then further anticlockwise till endangle
                 ' however, gdi draws clockwise from positive x axis, then clockwise theta degrees sweepangle
                 ' therefore, the arc's endpoint is actually the arc originates
@@ -349,7 +374,7 @@ Public Class LampDxfDocument
 
 
                 ' Width, height = 2x radius
-                Dim arcBound As New RectangleF(GdiUpperleft, New SizeF(Convert.ToSingle(arc.Radius * 2), Convert.ToSingle(arc.Radius * 2)))
+                Dim arcBound As New RectangleF(GdiUpperleft, New SizeF(Convert.ToSingle(arc.Radius * 2 / pixelsPerUnitX), Convert.ToSingle(arc.Radius * 2 / pixelsPerUnitY)))
 
                 g.DrawArc(New Pen(arc.Color.ToColor()), arcBound, Convert.ToSingle(gdiStartAngle), Convert.ToSingle(angleRotated))
 
@@ -363,8 +388,8 @@ Public Class LampDxfDocument
                 upperleft.Y += circle.Radius
                 upperleft.X -= circle.Radius
 
-                Dim gdiCenter = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperleft)
-                Dim circleBound As New RectangleF(gdiCenter, New SizeF(Convert.ToSingle(circle.Radius * 2), Convert.ToSingle(circle.Radius * 2)))
+                Dim gdiCenter = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperleft, pixelsPerUnitX, pixelsPerUnitY)
+                Dim circleBound As New RectangleF(gdiCenter, New SizeF(Convert.ToSingle(circle.Radius * 2 / pixelsPerUnitX), Convert.ToSingle(circle.Radius * 2 / pixelsPerUnitY)))
 
                 g.DrawEllipse(New Pen(circle.Color.ToColor()), circleBound)
             End If
@@ -375,9 +400,9 @@ Public Class LampDxfDocument
                 Dim previousPoint As PolylineVertex = Nothing
                 For Each vertex In polyline.Vertexes
                     If previousPoint IsNot Nothing Then
-                        Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, previousPoint.Position.X, previousPoint.Position.Y)
+                        Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, previousPoint.Position.X, previousPoint.Position.Y, pixelsPerUnitX, pixelsPerUnitY)
 
-                        Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, vertex.Position.X, vertex.Position.Y)
+                        Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, vertex.Position.X, vertex.Position.Y, pixelsPerUnitX, pixelsPerUnitY)
 
                         g.DrawLine(New Pen(polyline.Color.ToColor()), start, [end])
                     End If
@@ -393,9 +418,9 @@ Public Class LampDxfDocument
                 ' text.Position is from bottom left of the text
                 upperleft.Y += text.Height
 
-                Dim gdiUpperleft = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperleft)
+                Dim gdiUpperleft = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperleft, pixelsPerUnitX, pixelsPerUnitY)
 
-                g.DrawString(text.Value, New Font(New FontFamily(text.Style.FontFamilyName), text.Height), New SolidBrush(text.Color.ToColor()), gdiUpperleft)
+                g.DrawString(text.Value, New Font(New FontFamily(text.Style.FontFamilyName), (text.Height / pixelsPerUnitY).ToSingle), New SolidBrush(text.Color.ToColor()), gdiUpperleft)
 
             End If
         Next
@@ -538,9 +563,7 @@ Public Class LampDxfHelper
     End Function
 
     Public Shared Function ConvertToPointF(point As Vector3) As Drawing.PointF
-#Disable Warning BC42016 ' Implicit conversion
-        Return New PointF(point.X, point.Y)
-#Enable Warning BC42016 ' Implicit conversion
+        Return New PointF(point.X.ToSingle, point.Y.ToSingle)
     End Function
 
     Public Shared Function InsideBounds(rect As RectangleF, text As Text) As Boolean
@@ -568,16 +591,28 @@ Public Class LampDxfHelper
         Return True
     End Function
 
-    Public Shared Function CartesianToGdi(center As PointF, width As Double, height As Double, cartesianPoint As Vector3) As PointF
-        Return CartesianToGdi(center, width, height, cartesianPoint.X, cartesianPoint.Y)
+    Public Shared Function CartesianToGdi(center As PointF, width As Double, height As Double, cartesianPoint As Vector3, Optional pixelsPerX As Double = 1, Optional pixelsPerY As Double = 1) As PointF
+        Return CartesianToGdi(center, width, height, cartesianPoint.X, cartesianPoint.Y, pixelsPerX, pixelsPerY)
     End Function
 
-    Public Shared Function CartesianToGdi(center As PointF, width As Double, height As Double, cartesianX As Double, cartesianY As Double) As PointF
-#Disable Warning BC42016 ' Implicit conversion
-        Dim ret As New PointF(-center.X + width / 2, center.Y + height / 2)
-        ret.X += cartesianX
-        ret.Y -= cartesianY
-#Enable Warning BC42016 ' Implicit conversion
+    Public Shared Function CartesianToGdi(center As PointF, width As Double, height As Double, cartesianX As Double, cartesianY As Double, Optional pixelsPerX As Double = 1, Optional pixelsPerY As Double = 1) As PointF
+        Dim ret As New PointF(-center.X + width.ToSingle / 2 * pixelsPerX.ToSingle,
+                              center.Y + height.ToSingle / 2 * pixelsPerY.ToSingle)
+        ' transformation to apply to cartesian equation to convert to gdi
+        ' if an item is left of the center point in the cartesian diagram,
+        ' it needs to be left of the center point in the screen
+        ' ret stores the x,y transformation that needs to be applied to the point for it to be relative to the top left point of the bounds given
+        ' centered around (center), with width and height
+
+        ' however, we also need to take into account the pixelsPerX factor. this effectively changes the width/height of the bounds given
+        ' but the point is still in 
+
+        ' basically, we get the distance from top left to the point on cartesian (incl. pixel adjustment), then clamp the values to the renderWidth
+
+        ret.X += cartesianX.ToSingle
+        ret.X /= pixelsPerX.ToSingle
+        ret.Y -= cartesianY.ToSingle
+        ret.Y /= pixelsPerY.ToSingle
         Return ret
     End Function
 

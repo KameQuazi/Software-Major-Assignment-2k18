@@ -28,12 +28,13 @@
             If template.PreviewImages.Count > 0 Then
                 DisplayBox.Image = template.PreviewImages(0)
             End If
+            'DisplayBox.Image = template.BaseDrawing.ToImage
 
             lblWidth.Text = "Width: " & dxf.Width
-            lblMaterial.Text = "Material: " & template.Material & " thiccness: " & template.MaterialThickness
-            lblCutTime.Text = "Time to Cut: ?? Min"
-        Else
-            lblName.Text = "Name: *None*"
+                lblMaterial.Text = "Material: " & template.Material & " thiccness: " & template.MaterialThickness
+                lblCutTime.Text = "Time to Cut: ?? Min"
+            Else
+                lblName.Text = "Name: *None*"
             lblCreator.Text = "Creator: *None*"
             lblWidth.Text = "Width: *None*"
             lblMaterial.Text = "Material: *None*"

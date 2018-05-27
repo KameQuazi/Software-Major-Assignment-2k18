@@ -7,6 +7,7 @@ Public Class DxfViewerControl
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
     Private _center As New PointF
+
     <Description("Where the center of the view is"), Category("Data")>
     Public Property Center As PointF
         Get
@@ -36,9 +37,33 @@ Public Class DxfViewerControl
                 _source = value
                 If _source IsNot Nothing Then
                     AddHandler value.PropertyChanged, AddressOf SourceChanged
-                    UpdateView()
                 End If
             End If
+            UpdateView()
+        End Set
+    End Property
+
+    Private _zoomX As Double = 1
+    <Description("X zoom factor"), Category("Data")>
+    Public Property ZoomX As Double
+        Get
+            Return _zoomX
+        End Get
+        Set(value As Double)
+            _zoomX = value
+            UpdateView()
+        End Set
+    End Property
+
+    Private _zoomY As Double = 1
+    <Description("Y zoom factor"), Category("Data")>
+    Public Property ZoomY As Double
+        Get
+            Return _zoomY
+        End Get
+        Set(value As Double)
+            _zoomY = value
+            UpdateView()
         End Set
     End Property
 
@@ -64,7 +89,7 @@ Public Class DxfViewerControl
             Dim g = e.Graphics
             g.FillRectangle(BackgroundColorBrush, 0, 0, Width, Height)
             ' Source.ToImage(Center, Width, Height).Save("out.png")
-            Source.WriteToGraphics(g, Center, Width, Height)
+            Source.WriteToGraphics(g, Center, Width, Height, 1 / ZoomX, 1 / ZoomY)
 
         End If
     End Sub

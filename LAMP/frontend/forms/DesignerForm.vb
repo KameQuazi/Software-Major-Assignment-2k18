@@ -103,6 +103,11 @@ Public Class DesignerForm
         End If
     End Sub
 
-
+    Private Sub TrackBar1_Scroll(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
+        Dim zoom = TrackBar1.Value / 10
+        ZoomLevelBox.Text = zoom.ToString
+        DesignerScreen1.ZoomX = zoom
+        DesignerScreen1.ZoomY = zoom
+    End Sub
 End Class
 
