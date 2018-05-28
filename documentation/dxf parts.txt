@@ -1,0 +1,27 @@
+dxf parts
+- arcs
+- circles
+- ellipses
+solids
+traces
+faces3d
+inserts
+- lines
+- points
+polyfaceMeshes
+lwPolyLines
+- texts
+- mtexts
+hatches
+splines
+- images
+- mLines
+- rays
+xlines
+viewports
+meshes
+leaders
+tolerances
+underlays
+wipeouts
+attributeDefinitions

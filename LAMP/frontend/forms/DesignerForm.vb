@@ -3,8 +3,7 @@ Imports Newtonsoft.Json
 Imports LAMP.LampDxfHelper
 
 Public Class DesignerForm
-    Private dxf As LampDxfDocument
-    Private template As LampTemplate
+    Public Property Drawing As LampDxfDocument
     Private database As TemplateDatabase
 
     Private Sub OpenFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
@@ -13,17 +12,17 @@ Public Class DesignerForm
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles OpenFileBtn.Click
         If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
-            dxf = LampDxfDocument.FromFile(OpenFileDialog1.FileName)
+            Drawing = LampDxfDocument.FromFile(OpenFileDialog1.FileName)
             SaveFileBtn.Enabled = True
 
             FilenameTbox.Text = OpenFileDialog1.FileName
-            DesignerScreen1.Source = dxf
+            DesignerScreen1.Source = Drawing
         End If
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles SaveFileBtn.Click
         If SaveFileDialog1.ShowDialog() = DialogResult.OK Then
-            dxf.Save(SaveFileDialog1.FileName)
+            Drawing.Save(SaveFileDialog1.FileName)
         End If
     End Sub
 
@@ -54,7 +53,7 @@ Public Class DesignerForm
 
         ' Add any initialization after the InitializeComponent() call.
         DesignerScreen1.Source = dxf
-        Me.dxf = dxf
+        Me.Drawing = dxf
 
 
     End Sub
@@ -64,7 +63,7 @@ Public Class DesignerForm
         Try
             Dim z = TextBox1.Text.Split(" "c)
             Dim y = TextBox2.Text.Split(" "c)
-            dxf.AddLine(Double.Parse(z(0)), Double.Parse(z(1)), Double.Parse(y(0)), Double.Parse(y(1)))
+            Drawing.AddLine(Double.Parse(z(0)), Double.Parse(z(1)), Double.Parse(y(0)), Double.Parse(y(1)))
             DesignerScreen1.Refresh()
         Catch ex As FormatException
             MessageBox.Show("The format is incorrect!")
@@ -99,7 +98,8 @@ Public Class DesignerForm
 
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
         If SaveFileDialog2.ShowDialog = DialogResult.OK Then
-            template.BaseDrawing.Save(SaveFileDialog2.FileName)
+            Dim x As New LampTemplate(Drawing)
+            x.Save(SaveFileDialog2.FileName)
         End If
     End Sub
 
@@ -124,6 +124,20 @@ Public Class DesignerForm
             ZoomLevelBox.Text = newZoom.ToSingle
             DesignerScreen1.ZoomX = newZoom
             DesignerScreen1.ZoomY = newZoom
+        End If
+    End Sub
+
+    Private Sub DuplicateButton_Click(sender As Object, e As EventArgs) Handles DuplicateButton.Click
+        Dim input As New LampInputBox("enter location (x y) to insert", "enter a point [x y] without brackets")
+        If input.ShowDialog = DialogResult.OK Then
+            Try
+                Dim output = input.Value.Split(" "c)
+                Dim x = Double.Parse(output(0))
+                Dim y = Double.Parse(output(1))
+                Drawing.InsertInto(Drawing, New LampDxfInsertLocation(New netDxf.Vector3(x, y, 0)))
+            Catch ex As Exception
+                MessageBox.Show("invalid input: reason {" + ex.ToString + "}")
+            End Try
         End If
     End Sub
 End Class

@@ -38,11 +38,12 @@ Partial Class DesignerForm
         Me.leftButton = New System.Windows.Forms.Button()
         Me.upButton = New System.Windows.Forms.Button()
         Me.FilenameTbox = New System.Windows.Forms.RichTextBox()
-        Me.DesignerScreen1 = New LAMP.DxfViewerControl()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.SaveFileDialog2 = New System.Windows.Forms.SaveFileDialog()
         Me.TrackBar1 = New System.Windows.Forms.TrackBar()
         Me.ZoomLevelBox = New System.Windows.Forms.TextBox()
+        Me.DesignerScreen1 = New LAMP.DxfViewerControl()
+        Me.DuplicateButton = New System.Windows.Forms.Button()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -170,19 +171,6 @@ Partial Class DesignerForm
         Me.FilenameTbox.TabIndex = 16
         Me.FilenameTbox.Text = ""
         '
-        'DesignerScreen1
-        '
-        Me.DesignerScreen1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DesignerScreen1.Center = CType(resources.GetObject("DesignerScreen1.Center"), System.Drawing.PointF)
-        Me.DesignerScreen1.Location = New System.Drawing.Point(212, 54)
-        Me.DesignerScreen1.Margin = New System.Windows.Forms.Padding(4)
-        Me.DesignerScreen1.Name = "DesignerScreen1"
-        Me.DesignerScreen1.Size = New System.Drawing.Size(376, 407)
-        Me.DesignerScreen1.Source = Nothing
-        Me.DesignerScreen1.TabIndex = 17
-        Me.DesignerScreen1.ZoomX = 1.0R
-        Me.DesignerScreen1.ZoomY = 1.0R
-        '
         'Button1
         '
         Me.Button1.Location = New System.Drawing.Point(44, 103)
@@ -211,11 +199,34 @@ Partial Class DesignerForm
         Me.ZoomLevelBox.TabIndex = 20
         Me.ZoomLevelBox.Text = "1"
         '
+        'DesignerScreen1
+        '
+        Me.DesignerScreen1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DesignerScreen1.Center = CType(resources.GetObject("DesignerScreen1.Center"), System.Drawing.PointF)
+        Me.DesignerScreen1.Location = New System.Drawing.Point(212, 54)
+        Me.DesignerScreen1.Margin = New System.Windows.Forms.Padding(4)
+        Me.DesignerScreen1.Name = "DesignerScreen1"
+        Me.DesignerScreen1.Size = New System.Drawing.Size(376, 407)
+        Me.DesignerScreen1.Source = Nothing
+        Me.DesignerScreen1.TabIndex = 17
+        Me.DesignerScreen1.ZoomX = 1.0R
+        Me.DesignerScreen1.ZoomY = 1.0R
+        '
+        'DuplicateButton
+        '
+        Me.DuplicateButton.Location = New System.Drawing.Point(63, 381)
+        Me.DuplicateButton.Name = "DuplicateButton"
+        Me.DuplicateButton.Size = New System.Drawing.Size(75, 23)
+        Me.DuplicateButton.TabIndex = 21
+        Me.DuplicateButton.Text = "duplicate"
+        Me.DuplicateButton.UseVisualStyleBackColor = True
+        '
         'DesignerForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(864, 471)
+        Me.Controls.Add(Me.DuplicateButton)
         Me.Controls.Add(Me.ZoomLevelBox)
         Me.Controls.Add(Me.TrackBar1)
         Me.Controls.Add(Me.Button1)
@@ -261,4 +272,5 @@ Partial Class DesignerForm
     Friend WithEvents SaveFileDialog2 As SaveFileDialog
     Friend WithEvents TrackBar1 As TrackBar
     Friend WithEvents ZoomLevelBox As TextBox
+    Friend WithEvents DuplicateButton As Button
 End Class

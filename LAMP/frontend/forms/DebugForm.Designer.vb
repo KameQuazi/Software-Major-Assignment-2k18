@@ -33,7 +33,6 @@ Partial Class DebugForm
         Me.Button9 = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Button10 = New System.Windows.Forms.Button()
-        Me.DynamicFormCreation1 = New LAMP.DynamicFormCreation()
         Me.SuspendLayout()
         '
         'Button1
@@ -133,20 +132,10 @@ Partial Class DebugForm
         Me.Button10.Text = "ddynamictext"
         Me.Button10.UseVisualStyleBackColor = True
         '
-        'DynamicFormCreation1
-        '
-        Me.DynamicFormCreation1.AutoScroll = True
-        Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DynamicFormCreation1.Location = New System.Drawing.Point(486, 52)
-        Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
-        Me.DynamicFormCreation1.Size = New System.Drawing.Size(684, 480)
-        Me.DynamicFormCreation1.TabIndex = 13
-        '
         'DebugForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(1343, 587)
-        Me.Controls.Add(Me.DynamicFormCreation1)
         Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button9)
@@ -176,5 +165,4 @@ Partial Class DebugForm
     Friend WithEvents Button9 As Button
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Button10 As Button
-    Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
 End Class

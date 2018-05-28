@@ -160,19 +160,7 @@ Public Class LampDxfDocument
 #Enable Warning BC42016 ' Implicit conversion
     End Function
 
-    ''' <summary>
-    ''' Inserts a lampdocument into this document at the insertionpoint given
-    ''' TODO!
-    ''' </summary>
-    ''' <param name="otherDrawing"></param>
-    ''' <param name="point"></param>
-    Public Sub InsertInto(otherDrawing As LampDxfDocument, point As LampDxfInsertLocation)
-        Dim offset = point.InsertPoint
-        For Each line As Line In _DxfFile.Lines
-            Dim start = line.StartPoint
 
-        Next
-    End Sub
 
     ''' <summary>
     ''' Saves the file
@@ -292,6 +280,48 @@ Public Class LampDxfDocument
         _DxfFile.AddEntity(New Text(text, New Vector3(x, y, 0), height))
     End Sub
 
+    Public Function AddText(text As Text) As Text
+        DxfFile.AddEntity(text)
+        Return text
+    End Function
+
+    Public Function AddMText(mtext As MText) As MText
+        DxfFile.AddEntity(mtext)
+        Return mtext
+    End Function
+
+    Public Function AddImage(image As Image) As Image
+        DxfFile.AddEntity(image)
+        Return image
+    End Function
+
+    Public Function AddMLine(mline As MLine) As MLine
+        DxfFile.AddEntity(mline)
+        Return mline
+    End Function
+
+    Public Function AddRay(ray As Ray) As Ray
+        DxfFile.AddEntity(ray)
+        Return ray
+    End Function
+
+
+
+    Public Function AddArc(arc As Arc) As Arc
+        _DxfFile.AddEntity(arc)
+        Return arc
+    End Function
+
+    Public Function AddEllipse(ellipse As Ellipse) As Ellipse
+        _DxfFile.AddEntity(ellipse)
+        Return ellipse
+    End Function
+
+    Public Function AddPoint(point As Point) As Point
+        _DxfFile.AddEntity(point)
+        Return point
+    End Function
+
     ''' <summary>
     ''' adds any entity to the drawing. 
     ''' </summary>
@@ -308,7 +338,90 @@ Public Class LampDxfDocument
         Return String.Format("CustomDxfDrawing: {0}", _DxfFile)
     End Function
 
+    ''' <summary>
+    ''' Inserts a lampdocument into this document at the insertionpoint given
+    ''' TODO!
+    ''' </summary>
+    ''' <param name="otherDrawing"></param>
+    ''' <param name="insertLocation"></param>
+    Public Sub InsertInto(otherDrawing As LampDxfDocument, insertLocation As LampDxfInsertLocation)
+        Dim offset = insertLocation.InsertPoint
 
+        For Each arc As Arc In DxfFile.Arcs
+            Dim newArc As Arc = arc.Clone()
+            newArc.Center = Transform(newArc.Center, offset)
+            otherDrawing.AddArc(newArc)
+        Next
+
+        For Each circle As Circle In DxfFile.Circles
+            Dim newCircle As Circle = circle.Clone()
+            newCircle.Center = Transform(newCircle.Center, offset)
+            otherDrawing.AddCircle(newCircle)
+        Next
+
+        For Each ellipse As Ellipse In DxfFile.Ellipses
+            Dim newEllipse As Ellipse = ellipse.Clone()
+            newEllipse.Center = Transform(newEllipse.Center, offset)
+            otherDrawing.AddEllipse(newEllipse)
+        Next
+
+        For Each line As Line In DxfFile.Lines
+            Dim newLine As Line = line.Clone()
+            newLine.StartPoint = Transform(newLine.StartPoint, offset)
+            newLine.EndPoint = Transform(newLine.EndPoint, offset)
+            otherDrawing.AddLine(newLine)
+        Next
+
+        For Each line As Line In DxfFile.Lines
+            Dim newLine As Line = line.Clone()
+            newLine.StartPoint = Transform(newLine.StartPoint, offset)
+            newLine.EndPoint = Transform(newLine.EndPoint, offset)
+        Next
+
+        For Each point As Point In DxfFile.Points
+            Dim newPoint As Point = point.Clone()
+            newPoint.Position = Transform(newPoint.Position, offset)
+            otherDrawing.AddPoint(newPoint)
+        Next
+
+        For Each polyLine As Polyline In DxfFile.Polylines
+            Dim newPolyLine As Polyline = polyLine.Clone()
+            For Each point In newPolyLine.Vertexes
+                point.Position = Transform(point.Position, offset)
+            Next
+            otherDrawing.AddPolyline(newPolyLine)
+        Next
+
+        For Each text As Text In DxfFile.Texts
+            Dim newText As Text = text.Clone()
+            newText.Position = Transform(newText.Position, offset)
+            otherDrawing.AddText(newText)
+        Next
+
+        For Each mtext As MText In DxfFile.MTexts
+            Dim newmtext As Text = mtext.Clone()
+            newmtext.Position = Transform(newmtext.Position, offset)
+            otherDrawing.AddText(newmtext)
+        Next
+
+        For Each image As Image In DxfFile.Images
+            Dim newimage As Text = image.Clone()
+            newimage.Position = Transform(newimage.Position, offset)
+            otherDrawing.AddText(newimage)
+        Next
+
+        For Each mLine As MLine In DxfFile.MLines
+            Dim newmLine As Text = mLine.Clone()
+            newmLine.Position = Transform(newmLine.Position, offset)
+            otherDrawing.AddText(newmLine)
+        Next
+
+        For Each ray As Ray In DxfFile.Rays
+            Dim newRay As Ray = ray.Clone()
+            newRay.Origin = Transform(newRay.Origin, offset)
+            otherDrawing.AddRay(newRay)
+        Next
+    End Sub
 
     ''' <summary>
     ''' Draws the contents onto a graphics object
@@ -340,19 +453,7 @@ Public Class LampDxfDocument
                                      renderWidth.ToSingle,
                                      renderHeight.ToSingle)
 
-
-
-        For Each line As Line In _DxfFile.Lines
-            If InsideBounds(bounds, line) Then
-                Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, line.StartPoint.X, line.StartPoint.Y, pixelsPerUnitX, pixelsPerUnitY)
-
-                Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, line.EndPoint.X, line.EndPoint.Y, pixelsPerUnitX, pixelsPerUnitY)
-
-                g.DrawLine(New Pen(line.Color.ToColor()), start, [end])
-            End If
-        Next
-
-        For Each arc As Arc In _DxfFile.Arcs
+        For Each arc As Arc In DxfFile.Arcs
             If InsideBounds(bounds, arc) Then
                 ' draw arc takes in the upper left corner, width/height of the ellipse (equal=radius since it is always circular)
                 ' start angle and total angle subtended
@@ -381,7 +482,7 @@ Public Class LampDxfDocument
             End If
         Next
 
-        For Each circle As Circle In _DxfFile.Circles
+        For Each circle As Circle In DxfFile.Circles
             If InsideBounds(bounds, circle) Then
                 ' get upper left point (in cartesian point)
                 Dim upperleft = circle.Center
@@ -393,6 +494,24 @@ Public Class LampDxfDocument
 
                 g.DrawEllipse(New Pen(circle.Color.ToColor()), circleBound)
             End If
+        Next
+
+        For Each ellipse As Ellipse In DxfFile.Ellipses
+
+        Next
+
+        For Each line As Line In DxfFile.Lines
+            If InsideBounds(bounds, line) Then
+                Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, line.StartPoint.X, line.StartPoint.Y, pixelsPerUnitX, pixelsPerUnitY)
+
+                Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, line.EndPoint.X, line.EndPoint.Y, pixelsPerUnitX, pixelsPerUnitY)
+
+                g.DrawLine(New Pen(line.Color.ToColor()), start, [end])
+            End If
+        Next
+
+        For Each point As Point In DxfFile.Points
+
         Next
 
         For Each polyline As Polyline In DxfFile.Polylines
@@ -424,6 +543,32 @@ Public Class LampDxfDocument
 
             End If
         Next
+
+        For Each mtext As MText In DxfFile.MTexts
+
+        Next
+
+        For Each image As Image In DxfFile.Images
+
+        Next
+
+        For Each mLine As MLine In DxfFile.MLines
+
+        Next
+
+        For Each ray As Ray In DxfFile.Rays
+
+        Next
+
+
+
+
+
+
+
+
+
+
     End Sub
 
     ''' <summary>
@@ -622,11 +767,34 @@ Public Class LampDxfHelper
         Throw New Exception("TODO")
     End Function
 
-    Public Shared Function Transform(point As PointF, x As Double, y As Double) As PointF
+    Public Shared Function Transform(point As PointF, x As Single, y As Single) As PointF
 #Disable Warning BC42016 ' Implicit conversion  
         point.X += x
         point.Y += y
 #Enable Warning BC42016 ' Implicit conversion
         Return point
+    End Function
+
+    ''' <summary>
+    ''' Transforms a point by x and y amount
+    ''' </summary>
+    ''' <param name="point"></param>
+    ''' <param name="x"></param>
+    ''' <param name="y"></param>
+    ''' <returns></returns>
+    Public Shared Function Transform(point As Vector3, x As Double, y As Double) As Vector3
+        point.X += x
+        point.Y += y
+        Return point
+    End Function
+
+    ''' <summary>
+    ''' Transforms a vector by offset amount
+    ''' </summary>
+    ''' <param name="point"></param>
+    ''' <param name="offset"></param>
+    ''' <returns></returns>
+    Public Shared Function Transform(point As Vector3, offset As Vector3) As Vector3
+        Return Transform(point, offset.X, offset.Y)
     End Function
 End Class

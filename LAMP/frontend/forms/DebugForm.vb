@@ -72,7 +72,6 @@ Public Class DebugForm
     End Sub
 
     Private Sub Test2()
-        DynamicFormCreation1.Source.Add(New DynamicTemplateInput("whats this?", "a working form apparently", Nothing))
 
         Dim x As New Bitmap(500, 500)
         Using g = Graphics.FromImage(x)
@@ -110,7 +109,7 @@ Public Class DebugForm
         frm.ShowDialog()
     End Sub
 
-    Private Sub DynamicFormCreation1_Load(sender As Object, e As EventArgs) Handles DynamicFormCreation1.Load
+    Private Sub DynamicFormCreation1_Load(sender As Object, e As EventArgs)
 
     End Sub
 End Class
