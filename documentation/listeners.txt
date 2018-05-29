@@ -1,0 +1,6 @@
+receiver
+-startListener *starts the server*
+-recieve *called by startListener to submit a template*
+
+submitter
+-new(address)

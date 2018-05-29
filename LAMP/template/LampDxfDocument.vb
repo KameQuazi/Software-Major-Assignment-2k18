@@ -19,10 +19,18 @@ Public Class LampDxfDocument
 
     Public ReadOnly Property DefaultFont As New FontFamily("Arial")
 
+    Private _drawing As DxfDocument
     ''' <summary>
     ''' DxfDocument from .netdxf library
     ''' </summary>
-    Public ReadOnly Property DxfFile As DxfDocument
+    Public Property Drawing As DxfDocument
+        Get
+            Return _drawing
+        End Get
+        Private Set(value As DxfDocument)
+            _drawing = value
+        End Set
+    End Property
 
     ''' <summary>
     ''' The width of all parts of dxfDocument
@@ -66,8 +74,7 @@ Public Class LampDxfDocument
     ''' Constructor for LampDxfDocument
     ''' </summary>
     Sub New()
-        _DxfFile = New DxfDocument()
-        RecalculateBounds()
+        Me.New(New DxfDocument())
     End Sub
 
     ''' <summary>
@@ -76,7 +83,7 @@ Public Class LampDxfDocument
     ''' </summary>
     ''' <param name="dxfFile"></param>
     Sub New(dxfFile As DxfDocument)
-        Me.DxfFile = dxfFile
+        Me.Drawing = dxfFile
         RecalculateBounds()
     End Sub
 
@@ -99,7 +106,7 @@ Public Class LampDxfDocument
     Public Function ToDxfString() As String
         Dim out As String
         Using stream As New MemoryStream()
-            DxfFile.Save(stream, isBinary:=False)
+            Drawing.Save(stream, isBinary:=False)
             Using reader As New StreamReader(stream)
                 out = reader.ReadToEnd()
             End Using
@@ -168,79 +175,8 @@ Public Class LampDxfDocument
     ''' <param name="filepath"></param>
     Public Sub Save(filepath As String)
         Using fs = New FileStream(filepath, FileMode.Create)
-            _DxfFile.Save(fs)
+            _drawing.Save(fs)
         End Using
-    End Sub
-
-    ''' <summary>
-    ''' Adds a line between two coordinates. Shorthand for AddLine(New line(...))
-    ''' </summary>
-    ''' <param name="x1">x value of first</param>
-    ''' <param name="y1">y value of first</param>
-    ''' <param name="x2">x value of second</param>
-    ''' <param name="y2">y value of second</param>
-    Public Sub AddLine(x1 As Double, y1 As Double, x2 As Double, y2 As Double)
-        AddLine(New Line(ConvertPoint3(x1, y1), ConvertPoint3(x2, y2)))
-    End Sub
-
-    ''' <summary>
-    ''' Adds a line between two coordinates. Shorthand for AddLine(New line(...))
-    ''' </summary>
-    ''' <param name="start">startpoint </param>
-    ''' <param name="end">endpoint </param>
-    Public Sub AddLine(start As Vector3, [end] As Vector3)
-        AddLine(New Line(start, [end]))
-    End Sub
-
-    ''' <summary>
-    ''' Adds a line to the dxfDrawing
-    ''' </summary>
-    ''' <param name="line">Line object to add</param>
-    Public Sub AddLine(line As Line)
-        _DxfFile.AddEntity(line)
-    End Sub
-
-    ''' <summary>
-    ''' Adds an already created circle into the dxf document
-    ''' </summary>
-   	''' <param name="circle">Circle object to add</param>
-    Public Sub AddCircle(circle As Circle)
-        _DxfFile.AddEntity(circle)
-    End Sub
-
-    ''' <summary>
-    ''' Adds a circle to the drawing. Shorthand for AddCircle(New Circle(...))
-    ''' </summary>
-    ''' <param name="centerX">Point3 1</param>
-    ''' <param name="centerY">Point3 2</param>
-    ''' <param name="radius">radius of circle</param>
-    Public Sub AddCircle(centerX As Double, centerY As Double, radius As Double)
-        _DxfFile.AddEntity(New Circle(ConvertPoint3(centerX, centerY), radius))
-    End Sub
-
-    ''' <summary>
-    ''' Adds a circle to drawing. Shorthand for AddCircle(New Circle(...))
-    ''' </summary>
-    ''' <param name="centre"></param>
-    ''' <param name="radius"></param>
-    Public Sub AddCircle(centre As Vector3, radius As Double)
-        _DxfFile.AddEntity(New Circle(ConvertPoint3(centre.X, centre.Y), radius))
-    End Sub
-
-    ''' <summary>
-    ''' Adds a polyline to drawing. Shorthand for AddPolyLine(points)
-    ''' </summary>
-    ''' <param name="Points"></param>
-    Public Sub AddPolyline(ParamArray Points() As Vector3)
-        AddPolyline(Points)
-    End Sub
-
-    ''' <summary>
-    ''' Adds a polyline to drawing. Shorthand for AddPolyLine(points)
-    ''' </summary>
-    ''' <param name="Point3s"></param>
-    Public Sub AddPolyline(Point3s As IEnumerable(Of Vector3))
-        _DxfFile.AddEntity(New Polyline(Point3s))
     End Sub
 
     ''' <summary>
@@ -251,9 +187,101 @@ Public Class LampDxfDocument
     ''' <param name="radius"></param>
     ''' <param name="startAngle"></param>
     ''' <param name="endAngle"></param>
-    Public Sub AddArc(centerX As Integer, centerY As Integer, radius As Double, startAngle As Double, endAngle As Double)
-        _DxfFile.AddEntity(New Arc(ConvertPoint3(centerX, centerY), radius, startAngle, endAngle))
-    End Sub
+    Public Function AddArc(centerX As Integer, centerY As Integer, radius As Double, startAngle As Double, endAngle As Double) As Arc
+        Return AddArc(New Arc(ConvertPoint3(centerX, centerY), radius, startAngle, endAngle))
+    End Function
+
+    ''' <summary>
+    ''' adds an arc to the drawing
+    ''' </summary>
+    ''' <param name="arc"></param>
+    ''' <returns></returns>
+    Public Function AddArc(arc As Arc) As Arc
+        AddEntity(arc)
+        Return arc
+    End Function
+
+    ''' <summary>
+    ''' Adds a line between two coordinates. Shorthand for AddLine(New line(...))
+    ''' </summary>
+    ''' <param name="x1">x value of first</param>
+    ''' <param name="y1">y value of first</param>
+    ''' <param name="x2">x value of second</param>
+    ''' <param name="y2">y value of second</param>
+    Public Function AddLine(x1 As Double, y1 As Double, x2 As Double, y2 As Double) As Line
+        Return AddLine(New Line(ConvertPoint3(x1, y1), ConvertPoint3(x2, y2)))
+    End Function
+
+    ''' <summary>
+    ''' Adds a line between two coordinates. Shorthand for AddLine(New line(...))
+    ''' </summary>
+    ''' <param name="start">startpoint </param>
+    ''' <param name="end">endpoint </param>
+    Public Function AddLine(start As Vector3, [end] As Vector3) As Line
+        Return AddLine(New Line(start, [end]))
+    End Function
+
+    ''' <summary>
+    ''' Adds a line to the dxfDrawing
+    ''' </summary>
+    ''' <param name="line">Line object to add</param>
+    Public Function AddLine(line As Line) As Line
+        AddEntity(line)
+        Return line
+    End Function
+
+    ''' <summary>
+    ''' Adds an already created circle into the dxf document
+    ''' </summary>
+   	''' <param name="circle">Circle object to add</param>
+    Public Function AddCircle(circle As Circle) As Circle
+        AddEntity(circle)
+        Return circle
+    End Function
+
+    ''' <summary>
+    ''' Adds a circle to the drawing. Shorthand for AddCircle(New Circle(...))
+    ''' </summary>
+    ''' <param name="centerX">Point3 1</param>
+    ''' <param name="centerY">Point3 2</param>
+    ''' <param name="radius">radius of circle</param>
+    Public Function AddCircle(centerX As Double, centerY As Double, radius As Double) As Circle
+        Return AddCircle(ConvertPoint3(centerX, centerY), radius)
+    End Function
+
+    ''' <summary>
+    ''' Adds a circle to drawing. Shorthand for AddCircle(New Circle(...))
+    ''' </summary>
+    ''' <param name="centre"></param>
+    ''' <param name="radius"></param>
+    Public Function AddCircle(centre As Vector3, radius As Double) As Circle
+        Return AddCircle(New Circle(centre, radius))
+    End Function
+
+    ''' <summary>
+    ''' Adds a polyline to drawing. Shorthand for AddPolyLine(points)
+    ''' </summary>
+    ''' <param name="Points"></param>
+    Public Function AddPolyline(ParamArray Points() As Vector3) As Polyline
+        Return AddPolyline(Points)
+    End Function
+
+    ''' <summary>
+    ''' Adds a polyline to drawing. Shorthand for AddPolyLine(points)
+    ''' </summary>
+    ''' <param name="Point3s"></param>
+    Public Function AddPolyline(Point3s As IEnumerable(Of Vector3)) As Polyline
+        Return AddPolyLine(New Polyline(Point3s))
+    End Function
+
+    Public Function AddPolyLine(polyline As Polyline) As Polyline
+        AddEntity(polyline)
+        Return polyline
+    End Function
+
+
+
+
 
     ''' <summary>
     ''' Adds a multi line text to the drawing
@@ -265,9 +293,14 @@ Public Class LampDxfDocument
     ''' <param name="text"></param>
     ''' <param name="textHeight"></param>
     ''' <param name="width"></param>
-    Public Sub AddMultiText(x As Integer, y As Integer, text As String, textHeight As Double, width As Double, Optional tstyle As TextStyle = Nothing)
-        _DxfFile.AddEntity(New MText(text, ConvertPoint3(x, y), textHeight, width))
-    End Sub
+    Public Function AddMText(x As Integer, y As Integer, text As String, textHeight As Double, width As Double, Optional tstyle As TextStyle = Nothing) As MText
+        Return AddMText(New MText(text, ConvertPoint3(x, y), textHeight, width))
+    End Function
+
+    Public Function AddMText(mtext As MText) As MText
+        Drawing.AddEntity(mtext)
+        Return mtext
+    End Function
 
     ''' <summary>
     ''' Adds single line text to drawing
@@ -276,49 +309,43 @@ Public Class LampDxfDocument
     ''' <param name="y"></param>
     ''' <param name="text"></param>
     ''' <param name="height"></param>
-    Public Sub AddText(x As Integer, y As Integer, text As String, height As Integer)
-        _DxfFile.AddEntity(New Text(text, New Vector3(x, y, 0), height))
-    End Sub
+    Public Function AddText(x As Integer, y As Integer, text As On, height As Integer) As Text
+        Return AddText(New Text(text, New Vector3(x, y, 0), height))
+    End Function
 
     Public Function AddText(text As Text) As Text
-        DxfFile.AddEntity(text)
+        Drawing.AddEntity(text)
         Return text
     End Function
 
-    Public Function AddMText(mtext As MText) As MText
-        DxfFile.AddEntity(mtext)
-        Return mtext
-    End Function
+
+
 
     Public Function AddImage(image As Image) As Image
-        DxfFile.AddEntity(image)
+        Drawing.AddEntity(image)
         Return image
     End Function
 
     Public Function AddMLine(mline As MLine) As MLine
-        DxfFile.AddEntity(mline)
+        Drawing.AddEntity(mline)
         Return mline
     End Function
 
     Public Function AddRay(ray As Ray) As Ray
-        DxfFile.AddEntity(ray)
+        Drawing.AddEntity(ray)
         Return ray
     End Function
 
 
 
-    Public Function AddArc(arc As Arc) As Arc
-        _DxfFile.AddEntity(arc)
-        Return arc
-    End Function
 
     Public Function AddEllipse(ellipse As Ellipse) As Ellipse
-        _DxfFile.AddEntity(ellipse)
+        _drawing.AddEntity(ellipse)
         Return ellipse
     End Function
 
     Public Function AddPoint(point As Point) As Point
-        _DxfFile.AddEntity(point)
+        _drawing.AddEntity(point)
         Return point
     End Function
 
@@ -328,14 +355,15 @@ Public Class LampDxfDocument
     ''' <param name="ent"></param>
     ''' <param name="recalculate"></param>
     Public Sub AddEntity(ent As EntityObject, Optional recalculate As Boolean = True)
-        _DxfFile.AddEntity(ent)
+        _drawing.AddEntity(ent)
         If recalculate = True Then
             RecalculateBounds()
         End If
+        NotifyPropertyChanged(NameOf(Drawing))
     End Sub
 
     Public Overrides Function ToString() As String
-        Return String.Format("CustomDxfDrawing: {0}", _DxfFile)
+        Return String.Format("CustomDxfDrawing: {0}", _drawing)
     End Function
 
     ''' <summary>
@@ -347,80 +375,81 @@ Public Class LampDxfDocument
     Public Sub InsertInto(otherDrawing As LampDxfDocument, insertLocation As LampDxfInsertLocation)
         Dim offset = insertLocation.InsertPoint
 
-        For Each arc As Arc In DxfFile.Arcs
+        For Each arc As Arc In Drawing.Arcs.ToArray()
             Dim newArc As Arc = arc.Clone()
             newArc.Center = Transform(newArc.Center, offset)
             otherDrawing.AddArc(newArc)
         Next
 
-        For Each circle As Circle In DxfFile.Circles
+        For Each circle As Circle In Drawing.Circles.ToArray()
             Dim newCircle As Circle = circle.Clone()
             newCircle.Center = Transform(newCircle.Center, offset)
             otherDrawing.AddCircle(newCircle)
         Next
 
-        For Each ellipse As Ellipse In DxfFile.Ellipses
+        For Each ellipse As Ellipse In Drawing.Ellipses.ToArray()
             Dim newEllipse As Ellipse = ellipse.Clone()
             newEllipse.Center = Transform(newEllipse.Center, offset)
             otherDrawing.AddEllipse(newEllipse)
         Next
 
-        For Each line As Line In DxfFile.Lines
+        For Each line As Line In Drawing.Lines.ToArray()
             Dim newLine As Line = line.Clone()
             newLine.StartPoint = Transform(newLine.StartPoint, offset)
             newLine.EndPoint = Transform(newLine.EndPoint, offset)
             otherDrawing.AddLine(newLine)
         Next
 
-        For Each line As Line In DxfFile.Lines
+        For Each line As Line In Drawing.Lines.ToArray()
             Dim newLine As Line = line.Clone()
             newLine.StartPoint = Transform(newLine.StartPoint, offset)
             newLine.EndPoint = Transform(newLine.EndPoint, offset)
         Next
 
-        For Each point As Point In DxfFile.Points
+        For Each point As Point In Drawing.Points.ToArray()
             Dim newPoint As Point = point.Clone()
             newPoint.Position = Transform(newPoint.Position, offset)
             otherDrawing.AddPoint(newPoint)
         Next
 
-        For Each polyLine As Polyline In DxfFile.Polylines
+        For Each polyLine As Polyline In Drawing.Polylines.ToArray()
             Dim newPolyLine As Polyline = polyLine.Clone()
             For Each point In newPolyLine.Vertexes
                 point.Position = Transform(point.Position, offset)
             Next
-            otherDrawing.AddPolyline(newPolyLine)
+            otherDrawing.AddPolyLine(newPolyLine)
         Next
 
-        For Each text As Text In DxfFile.Texts
+        For Each text As Text In Drawing.Texts.ToArray()
             Dim newText As Text = text.Clone()
             newText.Position = Transform(newText.Position, offset)
             otherDrawing.AddText(newText)
         Next
 
-        For Each mtext As MText In DxfFile.MTexts
+        For Each mtext As MText In Drawing.MTexts
             Dim newmtext As Text = mtext.Clone()
             newmtext.Position = Transform(newmtext.Position, offset)
             otherDrawing.AddText(newmtext)
         Next
 
-        For Each image As Image In DxfFile.Images
+        For Each image As Image In Drawing.Images
             Dim newimage As Text = image.Clone()
             newimage.Position = Transform(newimage.Position, offset)
             otherDrawing.AddText(newimage)
         Next
 
-        For Each mLine As MLine In DxfFile.MLines
+        For Each mLine As MLine In Drawing.MLines
             Dim newmLine As Text = mLine.Clone()
             newmLine.Position = Transform(newmLine.Position, offset)
             otherDrawing.AddText(newmLine)
         Next
 
-        For Each ray As Ray In DxfFile.Rays
+        For Each ray As Ray In Drawing.Rays
             Dim newRay As Ray = ray.Clone()
             newRay.Origin = Transform(newRay.Origin, offset)
             otherDrawing.AddRay(newRay)
         Next
+        NotifyPropertyChanged(NameOf(Drawing))
     End Sub
 
     ''' <summary>
@@ -453,7 +482,7 @@ Public Class LampDxfDocument
                                      renderWidth.ToSingle,
                                      renderHeight.ToSingle)
 
-        For Each arc As Arc In DxfFile.Arcs
+        For Each arc As Arc In Drawing.Arcs
             If InsideBounds(bounds, arc) Then
                 ' draw arc takes in the upper left corner, width/height of the ellipse (equal=radius since it is always circular)
                 ' start angle and total angle subtended
@@ -482,7 +511,7 @@ Public Class LampDxfDocument
             End If
         Next
 
-        For Each circle As Circle In DxfFile.Circles
+        For Each circle As Circle In Drawing.Circles
             If InsideBounds(bounds, circle) Then
                 ' get upper left point (in cartesian point)
                 Dim upperleft = circle.Center
@@ -496,11 +525,11 @@ Public Class LampDxfDocument
             End If
         Next
 
-        For Each ellipse As Ellipse In DxfFile.Ellipses
+        For Each ellipse As Ellipse In Drawing.Ellipses
 
         Next
 
-        For Each line As Line In DxfFile.Lines
+        For Each line As Line In Drawing.Lines
             If InsideBounds(bounds, line) Then
                 Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, line.StartPoint.X, line.StartPoint.Y, pixelsPerUnitX, pixelsPerUnitY)
 
@@ -510,11 +539,11 @@ Public Class LampDxfDocument
             End If
         Next
 
-        For Each point As Point In DxfFile.Points
+        For Each point As Point In Drawing.Points
 
         Next
 
-        For Each polyline As Polyline In DxfFile.Polylines
+        For Each polyline As Polyline In Drawing.Polylines
             If InsideBounds(bounds, polyline) Then
                 Dim previousPoint As PolylineVertex = Nothing
                 For Each vertex In polyline.Vertexes
@@ -531,7 +560,7 @@ Public Class LampDxfDocument
             End If
         Next
 
-        For Each text As Text In DxfFile.Texts
+        For Each text As Text In Drawing.Texts
             If InsideBounds(bounds, text) Then
                 Dim upperleft = text.Position
                 ' text.Position is from bottom left of the text
@@ -544,19 +573,19 @@ Public Class LampDxfDocument
             End If
         Next
 
-        For Each mtext As MText In DxfFile.MTexts
+        For Each mtext As MText In Drawing.MTexts
 
         Next
 
-        For Each image As Image In DxfFile.Images
+        For Each image As Image In Drawing.Images
 
         Next
 
-        For Each mLine As MLine In DxfFile.MLines
+        For Each mLine As MLine In Drawing.MLines
 
         Next
 
-        For Each ray As Ray In DxfFile.Rays
+        For Each ray As Ray In Drawing.Rays
 
         Next
 
@@ -595,7 +624,7 @@ Public Class LampDxfDocument
     ''' Calculates the width, height bottomleft and right of the document
     ''' </summary>
     Private Sub RecalculateBounds()
-        For Each line As Line In _DxfFile.Lines
+        For Each line As Line In _drawing.Lines
             If IsBottomOrLeft(line.StartPoint) Then
                 BottomLeft = line.StartPoint
             End If
@@ -664,7 +693,7 @@ Public Class LampDxfDocument
         End If
         Dim bytes = Convert.FromBase64String(base64)
         Using ms = New MemoryStream(bytes)
-            Return Drawing.Image.FromStream(ms)
+            Return System.Drawing.Image.FromStream(ms)
         End Using
     End Function
 End Class

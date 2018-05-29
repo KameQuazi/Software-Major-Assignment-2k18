@@ -253,7 +253,7 @@ Partial Class TemplateEditor
         Me.DxfViewerControl1.Location = New System.Drawing.Point(566, 197)
         Me.DxfViewerControl1.Name = "DxfViewerControl1"
         Me.DxfViewerControl1.Size = New System.Drawing.Size(342, 311)
-        Me.DxfViewerControl1.Source = Nothing
+        Me.DxfViewerControl1.Drawing = Nothing
         Me.DxfViewerControl1.TabIndex = 12
         '
         'GuidBox

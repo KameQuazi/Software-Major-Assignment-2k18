@@ -3,7 +3,16 @@ Imports Newtonsoft.Json
 Imports LAMP.LampDxfHelper
 
 Public Class DesignerForm
+    Private _drawing As LampDxfDocument
     Public Property Drawing As LampDxfDocument
+        Get
+            Return DesignerScreen1.Drawing
+        End Get
+        Set(value As LampDxfDocument)
+            DesignerScreen1.Drawing = value
+        End Set
+    End Property
+
     Private database As TemplateDatabase
 
     Private Sub OpenFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
@@ -16,7 +25,7 @@ Public Class DesignerForm
             SaveFileBtn.Enabled = True
 
             FilenameTbox.Text = OpenFileDialog1.FileName
-            DesignerScreen1.Source = Drawing
+            DesignerScreen1.Drawing = Drawing
         End If
     End Sub
 
@@ -52,8 +61,7 @@ Public Class DesignerForm
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        DesignerScreen1.Source = dxf
-        Me.Drawing = dxf
+        DesignerScreen1.Drawing = dxf
 
 
     End Sub
@@ -135,6 +143,7 @@ Public Class DesignerForm
                 Dim x = Double.Parse(output(0))
                 Dim y = Double.Parse(output(1))
                 Drawing.InsertInto(Drawing, New LampDxfInsertLocation(New netDxf.Vector3(x, y, 0)))
+                DesignerScreen1.UpdateView()
             Catch ex As Exception
                 MessageBox.Show("invalid input: reason {" + ex.ToString + "}")
             End Try

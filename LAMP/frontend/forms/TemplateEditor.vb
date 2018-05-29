@@ -167,11 +167,11 @@ Public Class TemplateEditor
 
 
     Private Sub UpdateDxfFromTemplate()
-        DxfViewerControl1.Source = Template.BaseDrawing
+        DxfViewerControl1.Drawing = Template.BaseDrawing
     End Sub
 
     Private Sub UpdateTemplateFromDxf()
-        Template.BaseDrawing = DxfViewerControl1.Source
+        Template.BaseDrawing = DxfViewerControl1.Drawing
     End Sub
 
     ''' <summary>
@@ -293,7 +293,7 @@ Public Class TemplateEditor
     End Sub
 
     Private Sub DxfViewerControl1_Click(sender As Object, e As EventArgs) Handles DxfViewerControl1.Click
-        Dim viewer As New DesignerForm(DxfViewerControl1.Source)
+        Dim viewer As New DesignerForm(DxfViewerControl1.Drawing)
         viewer.ShowDialog()
     End Sub
 

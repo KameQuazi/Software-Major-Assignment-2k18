@@ -28,16 +28,17 @@ Public Class DxfViewerControl
     Private _source As LampDxfDocument
 
     <Description("The dxf document that is rendered onto this control"), Category("Data")>
-    Public Property Source As LampDxfDocument
+    Public Property Drawing As LampDxfDocument
         Get
             Return _source
         End Get
         Set(value As LampDxfDocument)
             If value <> _source Then
-                _source = value
                 If _source IsNot Nothing Then
+                    RemoveHandler _source.PropertyChanged, AddressOf SourceChanged
                     AddHandler value.PropertyChanged, AddressOf SourceChanged
                 End If
+                _source = value
             End If
             UpdateView()
         End Set
@@ -72,7 +73,7 @@ Public Class DxfViewerControl
         InitializeComponent()
 
         If Me.DesignMode Then
-            Me.Source = New LampDxfDocument()
+            Me.Drawing = New LampDxfDocument()
         End If
 
         ' Add any initialization after the InitializeComponent() call.
@@ -85,11 +86,11 @@ Public Class DxfViewerControl
 
 
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
-        If Source IsNot Nothing Then
+        If Drawing IsNot Nothing Then
             Dim g = e.Graphics
             g.FillRectangle(BackgroundColorBrush, 0, 0, Width, Height)
             ' Source.ToImage(Center, Width, Height).Save("out.png")
-            Source.WriteToGraphics(g, Center, Width, Height, 1 / ZoomX, 1 / ZoomY)
+            Drawing.WriteToGraphics(g, Center, Width, Height, 1 / ZoomX, 1 / ZoomY)
 
         End If
     End Sub

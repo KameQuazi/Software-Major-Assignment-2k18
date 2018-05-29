@@ -207,7 +207,7 @@ Partial Class DesignerForm
         Me.DesignerScreen1.Margin = New System.Windows.Forms.Padding(4)
         Me.DesignerScreen1.Name = "DesignerScreen1"
         Me.DesignerScreen1.Size = New System.Drawing.Size(376, 407)
-        Me.DesignerScreen1.Source = Nothing
+        Me.DesignerScreen1.Drawing = Nothing
         Me.DesignerScreen1.TabIndex = 17
         Me.DesignerScreen1.ZoomX = 1.0R
         Me.DesignerScreen1.ZoomY = 1.0R
