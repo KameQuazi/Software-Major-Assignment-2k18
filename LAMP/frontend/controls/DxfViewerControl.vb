@@ -25,26 +25,30 @@ Public Class DxfViewerControl
         End If
     End Sub
 
-    Private _source As LampDxfDocument
+    Private _drawing As LampDxfDocument
 
     <Description("The dxf document that is rendered onto this control"), Category("Data")>
     Public Property Drawing As LampDxfDocument
         Get
-            Return _source
+            Return _drawing
         End Get
         Set(value As LampDxfDocument)
-            If value <> _source Then
-                If _source IsNot Nothing Then
-                    RemoveHandler _source.PropertyChanged, AddressOf SourceChanged
+            If value <> _drawing Then
+                If _drawing IsNot Nothing Then
+                    RemoveHandler _drawing.PropertyChanged, AddressOf SourceChanged
                     AddHandler value.PropertyChanged, AddressOf SourceChanged
                 End If
-                _source = value
+                _drawing = value
             End If
             UpdateView()
         End Set
     End Property
 
     Private _zoomX As Double = 1
+    ''' <summary>
+    ''' The zoom level. 2x zoomx = 2x zoom in the x direction and so on
+    ''' </summary>
+    ''' <returns></returns>
     <Description("X zoom factor"), Category("Data")>
     Public Property ZoomX As Double
         Get

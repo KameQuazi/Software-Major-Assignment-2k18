@@ -298,7 +298,7 @@ Public Class LampDxfDocument
     End Function
 
     Public Function AddMText(mtext As MText) As MText
-        Drawing.AddEntity(mtext)
+        AddEntity(mtext)
         Return mtext
     End Function
 
@@ -309,43 +309,38 @@ Public Class LampDxfDocument
     ''' <param name="y"></param>
     ''' <param name="text"></param>
     ''' <param name="height"></param>
-    Public Function AddText(x As Integer, y As Integer, text As On, height As Integer) As Text
+    Public Function AddText(x As Integer, y As Integer, text As String, height As Integer) As Text
         Return AddText(New Text(text, New Vector3(x, y, 0), height))
     End Function
 
     Public Function AddText(text As Text) As Text
-        Drawing.AddEntity(text)
+        AddEntity(text)
         Return text
     End Function
 
-
-
-
     Public Function AddImage(image As Image) As Image
-        Drawing.AddEntity(image)
+        AddEntity(image)
         Return image
     End Function
 
     Public Function AddMLine(mline As MLine) As MLine
-        Drawing.AddEntity(mline)
+        AddEntity(mline)
         Return mline
     End Function
 
     Public Function AddRay(ray As Ray) As Ray
-        Drawing.AddEntity(ray)
+        AddEntity(ray)
         Return ray
     End Function
 
 
-
-
     Public Function AddEllipse(ellipse As Ellipse) As Ellipse
-        _drawing.AddEntity(ellipse)
+        AddEntity(ellipse)
         Return ellipse
     End Function
 
     Public Function AddPoint(point As Point) As Point
-        _drawing.AddEntity(point)
+        AddEntity(point)
         Return point
     End Function
 

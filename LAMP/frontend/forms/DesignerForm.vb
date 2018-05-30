@@ -4,6 +4,7 @@ Imports LAMP.LampDxfHelper
 
 Public Class DesignerForm
     Private _drawing As LampDxfDocument
+
     Public Property Drawing As LampDxfDocument
         Get
             Return DesignerScreen1.Drawing
@@ -123,13 +124,13 @@ Public Class DesignerForm
         If zoomDiff > 0 Then
             Dim newZoom = Math.Min(DesignerScreen1.ZoomX + zoomDiff, 3)
             TrackBar1.Value = Convert.ToInt32(newZoom * 10)
-            ZoomLevelBox.Text = newZoom.ToSingle
+            ZoomLevelBox.Text = newZoom.ToString
             DesignerScreen1.ZoomX = newZoom
             DesignerScreen1.ZoomY = newZoom
         ElseIf zoomDiff < 0 Then
             Dim newZoom = Math.Max(DesignerScreen1.ZoomX + zoomDiff, 0.1)
             TrackBar1.Value = Convert.ToInt32(newZoom * 10)
-            ZoomLevelBox.Text = newZoom.ToSingle
+            ZoomLevelBox.Text = newZoom.ToString
             DesignerScreen1.ZoomX = newZoom
             DesignerScreen1.ZoomY = newZoom
         End If
@@ -143,7 +144,6 @@ Public Class DesignerForm
                 Dim x = Double.Parse(output(0))
                 Dim y = Double.Parse(output(1))
                 Drawing.InsertInto(Drawing, New LampDxfInsertLocation(New netDxf.Vector3(x, y, 0)))
-                DesignerScreen1.UpdateView()
             Catch ex As Exception
                 MessageBox.Show("invalid input: reason {" + ex.ToString + "}")
             End Try
