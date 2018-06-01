@@ -350,7 +350,7 @@ Public Class LampDxfDocument
     ''' <param name="ent"></param>
     ''' <param name="recalculate"></param>
     Public Sub AddEntity(ent As EntityObject, Optional recalculate As Boolean = True)
-        _drawing.AddEntity(ent)
+        Drawing.AddEntity(ent)
         If recalculate = True Then
             RecalculateBounds()
         End If
