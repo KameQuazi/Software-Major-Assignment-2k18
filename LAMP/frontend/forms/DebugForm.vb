@@ -45,26 +45,13 @@ Public Class DebugForm
     End Sub
 
     Private Sub Test()
-        MultiTemplateViewer1.SetTemplateToPosition(5, 0, New LampTemplate())
+        TableLayoutPanel1.Controls.Add(New FileDisplay() With {.Text = "hello!"})
+        TableLayoutPanel1.Padding = New Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0)
     End Sub
 
     Private Sub Test2()
-
-        Dim x As New Bitmap(500, 500)
-        Using g = Graphics.FromImage(x)
-            g.DrawArc(New Pen(Color.AliceBlue), New RectangleF(0, 0, 500, 500), 45, 120)
-        End Using
-        x.Save("out.png")
-
-        Dim y As New DxfDocument
-        Dim txt = New Entities.Text("hello", New Vector3(0, 0, 0), 10, Tables.TextStyle.Default)
-        txt.ObliqueAngle = 10
-        Dim t2 = New Entities.MText("hello", New Vector2(0, 0), 10, 10, Tables.TextStyle.Default)
-        t2.Rotation = 10
-        y.AddEntity(t2)
-        y.AddEntity(txt)
-        y.Save("helow.dxf")
-
+        TableLayoutPanel1.RowCount += 1
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.AutoSize))
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
@@ -89,8 +76,15 @@ Public Class DebugForm
     Private Sub DynamicFormCreation1_Load(sender As Object, e As EventArgs)
 
     End Sub
+<<<<<<<
 
     Private Sub MultiTemplateViewer1_Load(sender As Object, e As EventArgs) Handles MultiTemplateViewer1.Load
 
     End Sub
+=======
+
+    Private Sub TableLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles TableLayoutPanel1.Paint
+
+    End Sub
+>>>>>>>
 End Class

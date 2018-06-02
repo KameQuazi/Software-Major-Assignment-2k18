@@ -447,6 +447,7 @@ Public Class LampDxfDocument
         NotifyPropertyChanged(NameOf(Drawing))
     End Sub
 
+
     ''' <summary>
     ''' Draws the contents onto a graphics object
     ''' Only draws lines right now

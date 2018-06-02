@@ -37,5 +37,7 @@ Public Class DynamicTextCreationForm
         Source = LampTemplate.Empty
     End Sub
 
+    Private Sub DynamicTextCreationForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+    End Sub
 End Class
