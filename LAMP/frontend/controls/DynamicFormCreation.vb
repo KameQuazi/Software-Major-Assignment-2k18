@@ -42,7 +42,7 @@ Public Class DynamicFormCreation
 
         ' Add any initialization after the InitializeComponent() call.
         AddHandler Source.CollectionChanged, Sub(sender As Object, args As NotifyCollectionChangedEventArgs) UpdatePanels()
-
+        Me.Padding = New Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0)
     End Sub
 
     Private Sub DynamicFormCreation_Load(sender As Object, e As EventArgs) Handles MyBase.Load

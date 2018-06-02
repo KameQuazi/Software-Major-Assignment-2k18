@@ -45,49 +45,13 @@ Public Class DebugForm
     End Sub
 
     Private Sub Test()
-        Dim MultiTemplateViewer As New MultiTemplateViewer()
-        Me.Controls.Add(MultiTemplateViewer)
-
-        MultiTemplateViewer.LoadExample()
-        Dim db As New TemplateDatabase
-
-        Dim lamp As New LampTemplate
-
-        lamp.Tags.Add("wood")
-        lamp.Tags.Add("test")
-
-        MultiTemplateViewer.SetTemplateToPosition(0, 0, lamp)
-
-        db.AddTemplate(lamp)
-
-        Dim out = db.SelectTemplate(lamp.GUID)
-
-        MultiTemplateViewer.SetTemplateToPosition(1, 0, out)
-
-        Dim testTags As New List(Of String)
-        testTags.Add("wood")
-        Dim withTags = db.SelectTemplateWithTags(testTags)
-
-        MultiTemplateViewer.SetTemplateToPosition(2, 0, withTags(0))
+        TableLayoutPanel1.Controls.Add(New FileDisplay() With {.Text = "hello!"})
+        TableLayoutPanel1.Padding = New Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0)
     End Sub
 
     Private Sub Test2()
-
-        Dim x As New Bitmap(500, 500)
-        Using g = Graphics.FromImage(x)
-            g.DrawArc(New Pen(Color.AliceBlue), New RectangleF(0, 0, 500, 500), 45, 120)
-        End Using
-        x.Save("out.png")
-
-        Dim y As New DxfDocument
-        Dim txt = New Entities.Text("hello", New Vector3(0, 0, 0), 10, Tables.TextStyle.Default)
-        txt.ObliqueAngle = 10
-        Dim t2 = New Entities.MText("hello", New Vector2(0, 0), 10, 10, Tables.TextStyle.Default)
-        t2.Rotation = 10
-        y.AddEntity(t2)
-        y.AddEntity(txt)
-        y.Save("helow.dxf")
-
+        TableLayoutPanel1.RowCount += 1
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.AutoSize))
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
@@ -110,6 +74,10 @@ Public Class DebugForm
     End Sub
 
     Private Sub DynamicFormCreation1_Load(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub TableLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles TableLayoutPanel1.Paint
 
     End Sub
 End Class
