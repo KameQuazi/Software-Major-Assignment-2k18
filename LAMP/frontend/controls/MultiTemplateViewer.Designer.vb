@@ -28,7 +28,7 @@ Partial Class MultiTemplateViewer
         'GridPanel
         '
         Me.GridPanel.AutoScroll = True
-        Me.GridPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
+        Me.GridPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetPartial
         Me.GridPanel.ColumnCount = 4
         Me.GridPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.GridPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
@@ -37,9 +37,8 @@ Partial Class MultiTemplateViewer
         Me.GridPanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GridPanel.Location = New System.Drawing.Point(0, 0)
         Me.GridPanel.Name = "GridPanel"
-        Me.GridPanel.RowCount = 2
-        Me.GridPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.GridPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.GridPanel.RowCount = 1
+        Me.GridPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.GridPanel.Size = New System.Drawing.Size(800, 600)
         Me.GridPanel.TabIndex = 0
         '
@@ -48,6 +47,7 @@ Partial Class MultiTemplateViewer
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.GridPanel)
+        Me.DoubleBuffered = True
         Me.Name = "MultiTemplateViewer"
         Me.Size = New System.Drawing.Size(800, 600)
         Me.ResumeLayout(False)

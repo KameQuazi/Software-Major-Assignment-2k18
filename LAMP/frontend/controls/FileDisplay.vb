@@ -21,20 +21,20 @@
     ''' </summary>
     ''' <param name="template"></param>
     Private Sub DisplayTemplate(template As LampTemplate)
-        If template IsNot Nothing And template IsNot LampTemplate.Empty Then
+        If template IsNot Nothing Then
             Dim dxf = template.BaseDrawing
             lblName.Text = "Name: " & template.Name
             lblCreator.Text = "Creator: Waxy by steve"
-            If template.PreviewImages.Count > 0 Then
+            If template.PreviewImages(0) IsNot Nothing Then
                 DisplayBox.Image = template.PreviewImages(0)
             End If
             'DisplayBox.Image = template.BaseDrawing.ToImage
 
             lblWidth.Text = "Width: " & dxf.Width
-                lblMaterial.Text = "Material: " & template.Material & " thiccness: " & template.MaterialThickness
-                lblCutTime.Text = "Time to Cut: ?? Min"
-            Else
-                lblName.Text = "Name: *None*"
+            lblMaterial.Text = "Material: " & template.Material & " thiccness: " & template.MaterialThickness
+            lblCutTime.Text = "Time to Cut: ?? Min"
+        Else
+            lblName.Text = "Name: *None*"
             lblCreator.Text = "Creator: *None*"
             lblWidth.Text = "Width: *None*"
             lblMaterial.Text = "Material: *None*"
@@ -48,7 +48,7 @@
     End Sub
 
     Private Sub DisplayBox_Click(sender As Object, e As EventArgs) Handles DisplayBox.Click
-        If Me.Enabled Then
+        If Me.Enabled And Template IsNot Nothing Then
             ' Oepn up the single template Viewer
             Dim singleViewer As New TemplateEditor()
             singleViewer.Template = Me.Template

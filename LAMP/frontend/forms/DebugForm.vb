@@ -45,13 +45,20 @@ Public Class DebugForm
     End Sub
 
     Private Sub Test()
-        TableLayoutPanel1.Controls.Add(New FileDisplay() With {.Text = "hello!"})
-        TableLayoutPanel1.Padding = New Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0)
+        'TableLayoutPanel1.Controls.Add(New FileDisplay() With {.Text = "hello!"})
+        'TableLayoutPanel1.Padding = New Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0)
+        MultiTemplateViewer1.Templates.Clear()
     End Sub
 
     Private Sub Test2()
-        TableLayoutPanel1.RowCount += 1
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.AutoSize))
+        'TableLayoutPanel1.RowCount += 1
+        'TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.AutoSize))
+        Dim temps = New TemplateDatabase().GetAllTemplate
+
+        For Each temp In temps
+            MultiTemplateViewer1.Templates.Add(temp)
+        Next
+
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
@@ -76,15 +83,5 @@ Public Class DebugForm
     Private Sub DynamicFormCreation1_Load(sender As Object, e As EventArgs)
 
     End Sub
-<<<<<<<
 
-    Private Sub MultiTemplateViewer1_Load(sender As Object, e As EventArgs) Handles MultiTemplateViewer1.Load
-
-    End Sub
-=======
-
-    Private Sub TableLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles TableLayoutPanel1.Paint
-
-    End Sub
->>>>>>>
 End Class

@@ -102,10 +102,8 @@ Partial Class TemplateSelect
         '
         'MultiTemplateViewer1
         '
-        Me.MultiTemplateViewer1.ColumnCount = 4
         Me.MultiTemplateViewer1.Location = New System.Drawing.Point(80, 143)
         Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
-        Me.MultiTemplateViewer1.RowCount = 2
         Me.MultiTemplateViewer1.Size = New System.Drawing.Size(873, 561)
         Me.MultiTemplateViewer1.TabIndex = 19
         '

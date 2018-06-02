@@ -114,23 +114,13 @@ Public NotInheritable Class LampTemplate
         End Set
     End Property
 
-    Private _tags As ObservableCollection(Of String)
     ''' <summary>
     ''' A list of tags. 
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("tags")>
     Public Property Tags As ObservableCollection(Of String)
-        Get
-            Return _tags
-        End Get
-        Private Set(value As ObservableCollection(Of String))
-            _tags = value
-            AddHandler _tags.CollectionChanged, AddressOf HandleTag_CollectionChanged
 
-            NotifyPropertyChanged()
-        End Set
-    End Property
 
     Private Sub HandleTag_CollectionChanged(sender As Object, args As NotifyCollectionChangedEventArgs)
         NotifyPropertyChanged(NameOf(Tags))
@@ -282,8 +272,7 @@ Public NotInheritable Class LampTemplate
         NotifyPropertyChanged(NameOf(PreviewImages))
     End Sub
 
-    Private _previewImages As ObservableCollection(Of Image)
-
+    Private _previewImage As ObservableCollection(Of Image)
     ''' <summary>
     ''' List of 3 images
     ''' </summary>
@@ -292,17 +281,14 @@ Public NotInheritable Class LampTemplate
     <JsonConverter(GetType(ImageListJsonConverter))>
     Public Property PreviewImages As ObservableCollection(Of Image)
         Get
-            Return _previewImages
+            Return _previewImage
         End Get
         Private Set(value As ObservableCollection(Of Image))
-            If value.Count < LampTemplate.MaxImages Then
-                Throw New ArgumentOutOfRangeException(NameOf(value), value, String.Format("Collection must have at least {0} elements", MaxImages))
-            End If
-
-            _previewImages = value
-            AddHandler _previewImages.CollectionChanged, AddressOf PreviewImages_CollectionChanged
+            _previewImage = value
+            AddHandler PreviewImages.CollectionChanged, AddressOf PreviewImages_CollectionChanged
         End Set
     End Property
+
 
 
 
@@ -381,29 +367,34 @@ Public NotInheritable Class LampTemplate
     ''' <param name="dxf"></param>
     ''' <param name="guid"></param>
     Private Sub _new(dxf As LampDxfDocument, guid As String)
-        Me.GUID = guid
-        Me.BaseDrawing = dxf
-        Me.Tags = New ObservableCollection(Of String)
 
-        Dim collection = New ObservableCollection(Of Image)
-        collection.ClearAsArray()
-        Me.PreviewImages = collection
+
 
     End Sub
     ''' <summary>
     ''' Create a new LampTemplate with default Everything
     ''' </summary>
     Public Sub New()
-        _new(New LampDxfDocument(), System.Guid.NewGuid.ToString)
-
+        Me.New(New LampDxfDocument(), System.Guid.NewGuid.ToString)
     End Sub
 
     Public Sub New(dxf As LampDxfDocument)
-        _new(dxf, System.Guid.NewGuid.ToString)
+        Me.New(dxf, System.Guid.NewGuid.ToString)
     End Sub
 
-    Public Sub New(dxf As LampDxfDocument, guid As String)
-        _new(dxf, guid)
+    Sub New(dxf As LampDxfDocument, guid As String)
+        Me.GUID = guid
+        Me.BaseDrawing = dxf
+        Me.Tags = New ObservableCollection(Of String)
+
+        Dim collection = New ObservableCollection(Of Image)
+        collection.ClearAsArray()
+
+        PreviewImages = collection
+
+
+        Tags = New ObservableCollection(Of String)
+        AddHandler Tags.CollectionChanged, AddressOf HandleTag_CollectionChanged
     End Sub
 
 

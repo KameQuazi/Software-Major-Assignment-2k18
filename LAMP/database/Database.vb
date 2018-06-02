@@ -347,10 +347,13 @@ Public Class TemplateDatabase
                             LampTemp.IsComplete = reader.GetBoolean(reader.GetOrdinal("complete"))
 
                             ' get all the preview 
-                            LampTemp.PreviewImages.Clear()
-                            For Each image In SelectImages(guid)
-                                LampTemp.PreviewImages.Add(image)
-                            Next
+                            Dim images = SelectImages(guid)
+                            If images IsNot Nothing Then
+
+                                For i = 0 To LampTemplate.MaxImages - 1
+                                    LampTemp.PreviewImages(i) = images(i)
+                                Next
+                            End If
 
                             ' get all the tags from the db as well
                             For Each tag In SelectTags(guid)
@@ -614,9 +617,12 @@ Public Class TemplateDatabase
                                 images.Add(Nothing)
                             End If
                         Next
+                        Return images
+                    Else
+                        Return Nothing
                     End If
 
-                    Return images
+
                 End Using
             End Using
 
@@ -1068,39 +1074,6 @@ Public Class TemplateDatabase
         db.AddJob(job)
     End Sub
 
-    ''' <summary>
-    ''' Gets an example template from /templates/{name}
-    ''' Name is without the .dxf extension
-    ''' preview Image must be .png
-    ''' </summary>
-    ''' <param name="name"></param>
-    ''' <returns></returns>
-    Public Shared Function GetExampleTemplate(name As String) As LampTemplate
-        Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", name + ".dxf"))
-        Dim previewFp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", name + ".png"))
-        Dim template = New LampTemplate(LampDxfDocument.FromFile(fp))
-        If File.Exists(previewFp) Then
-            Using stream = File.OpenRead(previewFp)
-                template.PreviewImages(0) = (Image.FromStream(stream))
-            End Using
-        End If
-        template.Name = name
-        Return template
-    End Function
-
-    ''' <summary>
-    ''' Fills database with 50 empty templates
-    ''' </summary>
-    Public Sub FillDebug()
-        Dim iter As Integer
-        iter = 1
-        Do Until iter = 50
-            iter += 1
-            Dim dxf As New LampDxfDocument()
-            Dim dummy As New LampTemplate(dxf)
-            AddTemplate(dummy)
-        Loop
-    End Sub
 
 
 
