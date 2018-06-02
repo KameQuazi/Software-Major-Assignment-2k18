@@ -45,30 +45,7 @@ Public Class DebugForm
     End Sub
 
     Private Sub Test()
-        Dim MultiTemplateViewer As New MultiTemplateViewer()
-        Me.Controls.Add(MultiTemplateViewer)
-
-        MultiTemplateViewer.LoadExample()
-        Dim db As New TemplateDatabase
-
-        Dim lamp As New LampTemplate
-
-        lamp.Tags.Add("wood")
-        lamp.Tags.Add("test")
-
-        MultiTemplateViewer.SetTemplateToPosition(0, 0, lamp)
-
-        db.AddTemplate(lamp)
-
-        Dim out = db.SelectTemplate(lamp.GUID)
-
-        MultiTemplateViewer.SetTemplateToPosition(1, 0, out)
-
-        Dim testTags As New List(Of String)
-        testTags.Add("wood")
-        Dim withTags = db.SelectTemplateWithTags(testTags)
-
-        MultiTemplateViewer.SetTemplateToPosition(2, 0, withTags(0))
+        MultiTemplateViewer1.SetTemplateToPosition(5, 0, New LampTemplate())
     End Sub
 
     Private Sub Test2()
@@ -110,6 +87,10 @@ Public Class DebugForm
     End Sub
 
     Private Sub DynamicFormCreation1_Load(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub MultiTemplateViewer1_Load(sender As Object, e As EventArgs) Handles MultiTemplateViewer1.Load
 
     End Sub
 End Class

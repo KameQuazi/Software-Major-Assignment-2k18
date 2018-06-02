@@ -33,6 +33,7 @@ Partial Class DebugForm
         Me.Button9 = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Button10 = New System.Windows.Forms.Button()
+        Me.MultiTemplateViewer1 = New LAMP.MultiTemplateViewer()
         Me.SuspendLayout()
         '
         'Button1
@@ -132,10 +133,20 @@ Partial Class DebugForm
         Me.Button10.Text = "ddynamictext"
         Me.Button10.UseVisualStyleBackColor = True
         '
+        'MultiTemplateViewer1
+        '
+        Me.MultiTemplateViewer1.ColumnCount = 4
+        Me.MultiTemplateViewer1.Location = New System.Drawing.Point(515, -5)
+        Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
+        Me.MultiTemplateViewer1.RowCount = 2
+        Me.MultiTemplateViewer1.Size = New System.Drawing.Size(800, 600)
+        Me.MultiTemplateViewer1.TabIndex = 13
+        '
         'DebugForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(1343, 587)
+        Me.Controls.Add(Me.MultiTemplateViewer1)
         Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button9)
@@ -165,4 +176,5 @@ Partial Class DebugForm
     Friend WithEvents Button9 As Button
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Button10 As Button
+    Friend WithEvents MultiTemplateViewer1 As MultiTemplateViewer
 End Class

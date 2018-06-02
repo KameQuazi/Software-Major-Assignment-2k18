@@ -1,9 +1,18 @@
 ﻿Public Class MultiTemplateViewer
     Private Property TemplateViewers As New Dictionary(Of Point, FileDisplay)
 
-    Private NewColumnStyle As Func(Of ColumnStyle) = Function() New ColumnStyle(SizeType.AutoSize)
 
-    Private NewRowStyle As Func(Of RowStyle) = Function() New RowStyle(SizeType.AutoSize)
+    Private ReadOnly Property NewColumnStyle As ColumnStyle
+        Get
+            Return New ColumnStyle(SizeType.Percent, (1 / ColumnCount).ToSingle)
+        End Get
+    End Property
+
+    Private ReadOnly Property NewRowStyle As RowStyle
+        Get
+            Return New RowStyle(SizeType.Percent, (1 / RowCount).ToSingle)
+        End Get
+    End Property
 
     Private _columnCount As Integer = 4
 
@@ -14,7 +23,6 @@
         Set(value As Integer)
             _columnCount = value
             UpdateGridColumns()
-            AddViewersIfNeeded()
         End Set
     End Property
 
@@ -27,7 +35,6 @@
         Set(value As Integer)
             _rowCount = value
             UpdateGridRows()
-            AddViewersIfNeeded()
         End Set
     End Property
 
@@ -49,44 +56,7 @@
         Next
     End Sub
 
-    Private Sub AddViewersIfNeeded()
-        Dim viewersRequired As Integer = RowCount * ColumnCount
-        Dim totalViewers As Integer = TemplateViewers.Count
 
-        ' set flag to update the grid if necessary
-        Dim mustUpdateGrid As Boolean = False
-
-        Dim toRemove As New List(Of Point)
-        ' trim the columns
-        For Each key As Point In TemplateViewers.Keys
-            ' greater or equal here, as column is 1 indexed, while X is 0 indexed
-            If key.X >= ColumnCount OrElse key.Y >= RowCount Then
-                toRemove.Add(key)
-            End If
-        Next
-        For Each point In toRemove
-            TemplateViewers.Remove(point)
-        Next
-
-        ' check if there are any gaps in the Grid
-        For row = 0 To RowCount - 1
-            For col = 0 To ColumnCount - 1
-                Dim pos As New Point(col, row)
-                If Not TemplateViewers.ContainsKey(pos) Then
-                    mustUpdateGrid = True
-                    ' add a new viewer into that spot
-                    Dim viewer As New FileDisplay
-
-                    TemplateViewers(pos) = viewer
-                End If
-            Next
-        Next
-
-
-        If mustUpdateGrid Then
-            ForceUpdateViewer()
-        End If
-    End Sub
 
 
 
@@ -95,7 +65,8 @@
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        AddViewersIfNeeded()
+
+
     End Sub
 
 
@@ -125,16 +96,34 @@
         Return filedisplay.Template
     End Function
 
+    Public Function RemoveViewerAsFD(column As Integer, row As Integer) As FileDisplay
+        Dim pos = New Point(column, row)
+        If Not TemplateViewers.ContainsKey(pos) Then
+            Throw New ArgumentOutOfRangeException(String.Format("Position specified has no element"))
+        End If
+        Dim fileDisplay = GetControlFromPosition(column, row)
+        TemplateViewers.Remove(pos)
+        GridPanel.Controls.Remove(fileDisplay)
+        Return fileDisplay
+    End Function
+
+    Public Function RemoveTemplate(column As Integer, row As Integer) As LampTemplate
+        Return RemoveViewerAsFD(column, row).Template
+    End Function
+
+
     Public Sub SetViewerToPosition(column As Integer, row As Integer, display As FileDisplay)
         ' >= used as columncount is 1 index, column is 0 indexed
-        If column >= ColumnCount Then
-            Throw New ArgumentOutOfRangeException(NameOf(column))
-        End If
-        If row >= RowCount Then
-            Throw New ArgumentOutOfRangeException(NameOf(row))
-        End If
+        While column > GridPanel.ColumnStyles.Count
+            GridPanel.ColumnStyles.Add(NewColumnStyle)
+        End While
+
+        While row > GridPanel.RowStyles.Count
+            GridPanel.RowStyles.Add(NewRowStyle)
+        End While
         Dim location = New Point(column, row)
         TemplateViewers(location) = display
+
 
         ' remove filedisplay if necessary
         Dim originalControl = GridPanel.GetControlFromPosition(column, row)
@@ -150,20 +139,6 @@
         SetViewerToPosition(column, row, New FileDisplay() With {.Template = template})
     End Sub
 
-    Public Sub LoadExample()
-        SetTemplateToPosition(0, 0, TemplateDatabase.GetExampleTemplate("one"))
-        SetTemplateToPosition(1, 0, TemplateDatabase.GetExampleTemplate("two"))
-        SetTemplateToPosition(2, 0, TemplateDatabase.GetExampleTemplate("three"))
-        SetTemplateToPosition(3, 0, TemplateDatabase.GetExampleTemplate("four"))
 
 
-        SetTemplateToPosition(0, 1, TemplateDatabase.GetExampleTemplate("five"))
-        SetTemplateToPosition(1, 1, TemplateDatabase.GetExampleTemplate("six"))
-        SetTemplateToPosition(2, 1, TemplateDatabase.GetExampleTemplate("seven"))
-        SetTemplateToPosition(3, 1, TemplateDatabase.GetExampleTemplate("eight"))
-    End Sub
-
-    Private Sub GridPanel_Paint(sender As Object, e As PaintEventArgs) Handles GridPanel.Paint
-
-    End Sub
 End Class
