@@ -35,6 +35,7 @@ Partial Class DebugForm
         Me.Button10 = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.MultiTemplateViewer1 = New LAMP.MultiTemplateViewer()
+        Me.Button11 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Button1
@@ -156,10 +157,20 @@ Partial Class DebugForm
         Me.MultiTemplateViewer1.Size = New System.Drawing.Size(800, 600)
         Me.MultiTemplateViewer1.TabIndex = 14
         '
+        'Button11
+        '
+        Me.Button11.Location = New System.Drawing.Point(263, 240)
+        Me.Button11.Name = "Button11"
+        Me.Button11.Size = New System.Drawing.Size(75, 23)
+        Me.Button11.TabIndex = 15
+        Me.Button11.Text = "Service Start"
+        Me.Button11.UseVisualStyleBackColor = True
+        '
         'DebugForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(1342, 811)
+        Me.Controls.Add(Me.Button11)
         Me.Controls.Add(Me.MultiTemplateViewer1)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.Button10)
@@ -193,4 +204,5 @@ Partial Class DebugForm
     Friend WithEvents Button10 As Button
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents MultiTemplateViewer1 As MultiTemplateViewer
+    Friend WithEvents Button11 As Button
 End Class

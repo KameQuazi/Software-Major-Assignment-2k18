@@ -30,18 +30,17 @@ Public Class LampUser
     ''' <param name="password"></param>
     ''' <returns></returns>
     Public Shared Function LoginUser(username As String, password As String, Optional loginLocation As LampCommunication = Nothing) As LampUser
-        If loginLocation Is Nothing Then
-            loginLocation = OwO.DefaultCommunication
-        End If
 
-        Dim sender As New LampSender(loginLocation)
-        Return sender.Authenticate(username, password)
+        Return CurrentSender.Authenticate(username, password)
     End Function
 
     Public Function ToProfile() As LampProfile
         Return New LampProfile(Username, Name, UserId)
     End Function
 
+    Public Overrides Function ToString() As String
+        Return String.Format("{LampUser username={0}, userId={1}", Username, UserId)
+    End Function
 End Class
 
 Public Enum UserPermission

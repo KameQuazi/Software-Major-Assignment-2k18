@@ -1,4 +1,9 @@
-﻿Public Class LampSender
+﻿Imports LAMP
+''' <summary>
+''' Run on the vclient machine
+''' does not have full access to the db, only through a LampReciever
+''' </summary>
+Public Class LampSender
     Public Property Protocol As LampCommunication
     Public Property Address As String
 
@@ -6,11 +11,12 @@
     ''' Only used if the protocol is Local. Internal receiver 
     ''' </summary>
     ''' <returns></returns>
-    Private Property LocalReceiver As LampReciever
+    Private Property LocalReciever As LampReciever
+
 
     Sub New(protocol As LampCommunication)
         If protocol.Type = SubmitType.Local Then
-            LocalReceiver = New LampReciever(New LampCommunication(SubmitType.Local))
+            LocalReciever = New LampReciever(New LampCommunication(SubmitType.Local))
         Else
             Throw New NotImplementedException("server not implemented")
         End If
@@ -24,7 +30,7 @@
     ''' </summary>
     Public Sub SubmitTemplate(template As LampTemplate, user As LampUser)
         If Protocol.Type = SubmitType.Local Then
-            LocalReceiver.ReceiveTemplate(template, user)
+            LocalReciever.QueueJob(template, user)
         End If
     End Sub
 
@@ -40,15 +46,21 @@
 
     Public Function Authenticate(username As String, password As String) As LampUser
         If Protocol.Type = SubmitType.Local Then
-            Return LocalReceiver.Authenticate(username, password)
+            Return LocalReciever.Authenticate(username, password)
         End If
 
         Throw New NotImplementedException()
     End Function
+
+    Public Function RequestTemplates(currentUser As LampUser, tags As IEnumerable(Of String)) As List(Of LampTemplate)
+        Throw New NotImplementedException()
+    End Function
+
+
+
+    Public Shared Local As New LampSender(LampCommunication.Local)
+
 End Class
 
-Public Enum SubmitType
-    Local
-    Server
-End Enum
+
 

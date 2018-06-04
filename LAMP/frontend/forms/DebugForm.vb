@@ -88,4 +88,8 @@ Public Class DebugForm
 
     End Sub
 
+    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
+        Dim x As New LampReciever(New LampCommunication(SubmitType.Server, "http://localhost:8000/WCF/"))
+        x.StartListener()
+    End Sub
 End Class
