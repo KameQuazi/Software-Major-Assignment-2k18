@@ -31,12 +31,16 @@ Public Class LampReciever
     Public Function Authenticate(username As String, password As String) As LampUser
         Return Database.SelectUser(username, password)
     End Function
+
+    Private Shared ReadOnly Local As New LampReciever(New LampCommunication(SubmitType.Local))
+
 End Class
 
 
 Public Class LampCommunication
     Public Type As SubmitType
     Public Address As String
+
     Sub New(type As SubmitType, Optional address As String = Nothing)
         If type = SubmitType.Server And address Is Nothing Then
             Throw New ArgumentNullException(NameOf(address))

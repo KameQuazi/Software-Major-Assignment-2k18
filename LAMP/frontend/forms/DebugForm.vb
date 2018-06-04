@@ -55,9 +55,13 @@ Public Class DebugForm
         'TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.AutoSize))
         Dim temps = New TemplateDatabase().GetAllTemplate
 
+        MultiTemplateViewer1.Suspend()
+
         For Each temp In temps
             MultiTemplateViewer1.Templates.Add(temp)
         Next
+
+        MultiTemplateViewer1.EndSuspend()
 
     End Sub
 

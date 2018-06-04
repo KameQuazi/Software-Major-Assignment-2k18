@@ -68,6 +68,16 @@ Public Class MultiTemplateViewer
     End Sub
 
 
+    ' enable double buffering
+    Protected Overrides ReadOnly Property CreateParams As CreateParams
+        Get
+
+            Dim baseParams = MyBase.CreateParams
+            baseParams.ExStyle = baseParams.ExStyle Or &H2000000 ' magic number that enables double buffering
+            Return baseParams
+        End Get
+    End Property
+
 
 
 End Class

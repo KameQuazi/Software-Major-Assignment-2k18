@@ -2,24 +2,8 @@
 Imports System.Collections.Specialized
 
 Public Class TemplateSelect
-    Public ReadOnly Property Templates As ObservableCollection(Of LampTemplate)
-    ' templates will be laid out in a 2x4 grid
-    ' 1 3 5 7
-    ' 2 4 6 8
 
-    Private _columnOffset As Integer
-    Public Property ColumnOffset As Integer
-        Get
-            Return _columnOffset
-        End Get
-        Set(value As Integer)
-            _columnOffset = value
-            RefreshTemplates
-        End Set
-    End Property
-
-    Public ReadOnly Property Rows As Integer = 2
-    Public ReadOnly Property Columns As Integer = 4
+    Private 
 
     Private Sub MultiTemplateViewer1_Load(sender As Object, e As EventArgs) Handles MultiTemplateViewer1.Load
 
