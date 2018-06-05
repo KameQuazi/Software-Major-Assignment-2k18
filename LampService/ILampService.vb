@@ -2,7 +2,7 @@
 Imports LampCommon
 
 ' NOTE: You can use the "Rename" command on the context menu to change the interface name "ILampService" in both code and config file together.
-<ServiceContract([Namespace]:="LampEndpoint")>
+<ServiceContract>
 Public Interface ILampService
 
     ''' <summary>
@@ -12,8 +12,8 @@ Public Interface ILampService
     ''' <param name="template"></param>
     ''' <param name="user"></param>
     ''' <returns></returns>
-    <OperationContract()>
-    Function QueueJob(template As LampTemplate, user As LampUser) As LampStatus
+    ' <OperationContract()>
+    'Function QueueJob(template As LampTemplate, user As LampUser) As LampStatus
 
     ''' <summary>
     ''' returns a user / reason
@@ -23,11 +23,13 @@ Public Interface ILampService
     ''' <returns></returns>
     <OperationContract()>
     Function Authenticate(username As String, password As String) As LampUserReturnWrapper
+    'Sub AddTemplate(template As LampTemplate, user As LampUser)
 
 
+    <OperationContract>
+    Function Return1() As Integer
 
-
-
-
+    <OperationContract()>
+    Function Add(ByVal n1 As Double, ByVal n2 As Double) As Double
 End Interface
 

@@ -83,6 +83,9 @@ Public Class LampDxfDocument
     ''' </summary>
     ''' <param name="dxfFile"></param>
     Sub New(dxfFile As DxfDocument)
+        If dxfFile Is Nothing Then
+            Throw New ArgumentNullException(NameOf(dxfFile))
+        End If
         Me.Drawing = dxfFile
         RecalculateBounds()
     End Sub
@@ -713,6 +716,7 @@ Public Class DxfJsonConverter
             Throw New JsonSerializationException()
         Else
             Dim value As String = DirectCast(reader.Value, String)
+            File.WriteAllText("out.txt", value)
             out = LampDxfDocument.FromString(value)
         End If
 

@@ -6,8 +6,10 @@ Imports System.Runtime.CompilerServices
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 Imports System.Drawing
+Imports System.Runtime.Serialization
 
 <JsonObject(MemberSerialization.OptIn)>
+<DataContract()>
 Public NotInheritable Class LampTemplate
     Implements INotifyPropertyChanged
 
@@ -29,6 +31,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("guid")>
+    <DataMember()>
     Public Property GUID As String
         Get
             Return _guid
@@ -45,6 +48,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("Name")>
+    <DataMember()>
     Public Property Name As String
         Get
             Return _name
@@ -61,6 +65,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("ShortDescription")>
+    <DataMember()>
     Public Property ShortDescription As String
         Get
             Return _shortDescription
@@ -77,6 +82,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("LongDescription")>
+    <DataMember()>
     Public Property LongDescription As String
         Get
             Return _longDescription
@@ -99,6 +105,7 @@ Public NotInheritable Class LampTemplate
     ''' Is serialized last in the file 
     ''' </summary>
     <JsonProperty("template", Order:=1000)>
+    <DataMember()>
     Public Property BaseDrawing As LampDxfDocument
         Get
             Return _baseDrawing
@@ -117,6 +124,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("tags")>
+    <DataMember()>
     Public Property Tags As ObservableCollection(Of String)
 
 
@@ -130,6 +138,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("material")>
+    <DataMember()>
     Public Property Material As String
         Get
             Return _material
@@ -146,6 +155,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("height")>
+    <DataMember()>
     Public Property Height As Double
         Get
             Return _height
@@ -162,6 +172,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("length")>
+    <DataMember()>
     Public Property Length As Double
         Get
             Return _length
@@ -178,6 +189,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("material_thickness")>
+    <DataMember()>
     Public Property MaterialThickness As Double
         Get
             Return _materialThickness
@@ -194,6 +206,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("submit_date")>
+    <DataMember()>
     Public Property SubmitDate As Date?
         Get
             Return _submitDate
@@ -210,6 +223,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("dynamic_text_list")>
+    <DataMember()>
     Public Property DynamicTextList As ObservableCollection(Of DynamicTemplateInput)
         Get
             Return _dynamicTextList
@@ -231,6 +245,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("insertion_locations")>
+    <DataMember()>
     Public Property InsertionLocations As ObservableCollection(Of LampDxfInsertLocation)
         Get
             Return _insertionLocations
@@ -250,6 +265,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("is_complete")>
+    <DataMember()>
     Public Property IsComplete As Boolean
 
     ''' <summary>
@@ -257,6 +273,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("creator_profile")>
+    <DataMember()>
     Public Property CreatorProfile As LampProfile = Nothing
 
     ''' <summary>
@@ -264,6 +281,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("approver_profile")>
+    <DataMember()>
     Public Property ApproverProfile As String = Nothing
 
     Private Sub PreviewImages_CollectionChanged(sender As Object, args As NotifyCollectionChangedEventArgs)
@@ -276,6 +294,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("preview_images")>
+    <DataMember()>
     <JsonConverter(GetType(ImageListJsonConverter))>
     Public Property PreviewImages As ObservableCollection(Of Image)
         Get
@@ -362,7 +381,7 @@ Public NotInheritable Class LampTemplate
         End If
 
         Using fileStream As New StreamWriter(path)
-            fileStream.Write(Serialize(Formatting))
+            fileStream.Write(Serialize(formatting))
         End Using
     End Sub
 

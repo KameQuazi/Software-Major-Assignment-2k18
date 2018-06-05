@@ -1046,7 +1046,7 @@ Public Class TemplateDatabase
 
         Dim db As New TemplateDatabase(fileName)
 
-        Dim ExampleSpfFiles() As String = {"1.spf", "2.spf", "3.spf", "4.spf", "5.spf", "6.spf", "7.spf", "8.spf", "9.spf"}
+        Dim ExampleSpfFiles() As String = {"1.spf", "2.spf", "4.spf", "5.spf", "7.spf", "8.spf", "9.spf"}
 
         ' add new templates 
         For Each spfName As String In ExampleSpfFiles

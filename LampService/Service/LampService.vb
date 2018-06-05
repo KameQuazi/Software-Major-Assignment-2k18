@@ -1,5 +1,6 @@
 ﻿Imports System.ServiceModel.Description
 Imports LampCommon
+Imports LampService
 ''' <summary>
 ''' The receiver class has all privildegeds to the database 
 ''' </summary>
@@ -15,7 +16,7 @@ Public Class LampService
     End Sub
 
 #Region "ImplementILampService"
-    Public Function QueueJob(template As LampTemplate, User As LampUser) As LampStatus Implements ILampService.QueueJob
+    Public Function QueueJob(template As LampTemplate, User As LampUser) As LampStatus
         ' check if user got permissions
 
         ' TODO Also extract stuff
@@ -43,6 +44,9 @@ Public Class LampService
     End Sub
 #End Region
 
+    Sub New()
+
+    End Sub
 
 
     ''' <summary>
@@ -69,6 +73,18 @@ Public Class LampService
 
 
     End Sub
+
+    Private Sub ILampService_AddTemplate(template As LampTemplate, user As LampUser)
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Function Return1() As Integer Implements ILampService.Return1
+        Return 1
+    End Function
+
+    Public Function Add(n1 As Double, n2 As Double) As Double Implements ILampService.Add
+        Return n1 + n2
+    End Function
 
     Private Shared ReadOnly Local As New LampService(New LampCommunication(SubmitType.Local))
 

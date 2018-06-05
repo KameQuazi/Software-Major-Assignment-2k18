@@ -12,7 +12,7 @@ Public Class LampSender
     ''' Only used if the protocol is Local. Internal receiver 
     ''' </summary>
     ''' <returns></returns>
-    Private Property Reciever As ILampService
+    Private Property Reciever As LampService
 
 
     Sub New(protocol As LampCommunication)
