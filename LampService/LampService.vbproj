@@ -96,10 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="database\Database.vb" />
-    <Compile Include="Service\ILampService.vb" />
-    <Compile Include="LampCommunication.vb" />
     <Compile Include="Service\LampService.vb" />
-    <Compile Include="Client\LampSender.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
