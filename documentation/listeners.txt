@@ -4,3 +4,5 @@ receiver
 
 submitter
 -new(address)
+
+https://social.msdn.microsoft.com/Forums/vstudio/en-US/13175080-0e2d-4711-a20c-092ec160d7ae/change-the-url-of-wcf-service?forum=wcf

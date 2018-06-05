@@ -1,6 +1,8 @@
 ﻿Imports System.Runtime.Serialization
+
+
 ''' <summary>
-''' A user. contains username / password, so be careful
+''' A user. contains username / password, so be careful when passing it around
 ''' </summary>
 <DataContract>
 Public Class LampUser
@@ -52,21 +54,23 @@ End Enum
 
 ''' <summary>
 ''' A wrapper around a user object to also allow an status message
-''' to be sent
+''' password is also deleted to not leak anything 
 ''' </summary>
 <DataContract>
 Public Class LampUserReturnWrapper
     <DataMember>
-    Public user As LampUser
+    Public Property user As LampUser
 
     <DataMember>
-    Public status As LampStatus
+    Public Property status As LampStatus
 
     Sub New(user As LampUser, status As LampStatus)
         Me.user = user
         Me.status = status
+        Me.user.Password = Nothing
     End Sub
 End Class
+
 
 
 ''' <summary>

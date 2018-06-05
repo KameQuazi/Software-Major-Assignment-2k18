@@ -12,8 +12,11 @@ Public Interface ILampService
     ''' <param name="template"></param>
     ''' <param name="user"></param>
     ''' <returns></returns>
-    ' <OperationContract()>
+    '<OperationContract()>
     'Function QueueJob(template As LampTemplate, user As LampUser) As LampStatus
+
+    <OperationContract>
+    Function GetTemplate() As LampTemplate
 
     ''' <summary>
     ''' returns a user / reason

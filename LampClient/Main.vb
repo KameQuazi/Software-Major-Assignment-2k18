@@ -4,7 +4,7 @@ Imports LampService
 Public Module OwO
     Public Property CurrentUser As LampUser
 
-    Public Property CurrentSender As LampSender = LampSender.Local
+    Public Property CurrentSender As ILampService = New LocalService
 
     Public Sub Main()
         InitalizeLibraries()
@@ -13,6 +13,7 @@ Public Module OwO
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
         Application.Run(New DesignerForm())
+
     End Sub
 
     Sub InitalizeLibraries()

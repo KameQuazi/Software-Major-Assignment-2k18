@@ -32,8 +32,9 @@ Public Class LampService
         Try
             user = Database.SelectUser(username, password)
 
-        Catch
+        Catch ex As Exception
             reason = LampStatus.InternalServerError
+            Console.WriteLine(ex)
         End Try
         Return New LampUserReturnWrapper(user, reason)
     End Function
@@ -45,7 +46,7 @@ Public Class LampService
 #End Region
 
     Sub New()
-
+        Database = New TemplateDatabase(Configuration.ConfigurationManager.AppSettings("databasePath"))
     End Sub
 
 
@@ -84,6 +85,10 @@ Public Class LampService
 
     Public Function Add(n1 As Double, n2 As Double) As Double Implements ILampService.Add
         Return n1 + n2
+    End Function
+
+    Public Function GetTemplate() As LampTemplate Implements ILampService.GetTemplate
+        Throw New NotImplementedException()
     End Function
 
     Private Shared ReadOnly Local As New LampService(New LampCommunication(SubmitType.Local))

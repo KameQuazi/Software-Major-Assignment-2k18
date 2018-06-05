@@ -105,7 +105,6 @@ Public NotInheritable Class LampTemplate
     ''' Is serialized last in the file 
     ''' </summary>
     <JsonProperty("template", Order:=1000)>
-    <DataMember()>
     Public Property BaseDrawing As LampDxfDocument
         Get
             Return _baseDrawing
@@ -223,7 +222,6 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("dynamic_text_list")>
-    <DataMember()>
     Public Property DynamicTextList As ObservableCollection(Of DynamicTemplateInput)
         Get
             Return _dynamicTextList
@@ -245,7 +243,6 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("insertion_locations")>
-    <DataMember()>
     Public Property InsertionLocations As ObservableCollection(Of LampDxfInsertLocation)
         Get
             Return _insertionLocations
@@ -273,7 +270,6 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("creator_profile")>
-    <DataMember()>
     Public Property CreatorProfile As LampProfile = Nothing
 
     ''' <summary>
@@ -281,8 +277,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("approver_profile")>
-    <DataMember()>
-    Public Property ApproverProfile As String = Nothing
+    Public Property ApproverProfile As LampProfile = Nothing
 
     Private Sub PreviewImages_CollectionChanged(sender As Object, args As NotifyCollectionChangedEventArgs)
         NotifyPropertyChanged(NameOf(PreviewImages))
@@ -294,7 +289,6 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("preview_images")>
-    <DataMember()>
     <JsonConverter(GetType(ImageListJsonConverter))>
     Public Property PreviewImages As ObservableCollection(Of Image)
         Get
