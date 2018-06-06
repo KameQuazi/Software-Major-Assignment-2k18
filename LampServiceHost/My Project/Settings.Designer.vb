@@ -53,15 +53,6 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("http://localhost:8733/Design_Time_Addresses/LampService/")>  _
-        Public ReadOnly Property hostUrl() As String
-            Get
-                Return CType(Me("hostUrl"),String)
-            End Get
-        End Property
     End Class
 End Namespace
 

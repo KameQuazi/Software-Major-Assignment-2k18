@@ -1,6 +1,7 @@
-﻿Imports System.ServiceModel.Description
+﻿Imports System.ServiceModel.Configuration
 Imports LampCommon
 Imports LampService
+
 ''' <summary>
 ''' The receiver class has all privildegeds to the database 
 ''' runs on the server side
@@ -14,31 +15,12 @@ Public Class LampService
         Database = New TemplateDatabase(Configuration.ConfigurationManager.AppSettings("databasePath"))
     End Sub
 
-
-    ''' <summary>
-    ''' Starts the ip listener
-    ''' </summary>
-    Public Sub StartListener(address As String)
-
-        Dim uri = New Uri(address)
-
-        Dim serviceHost = New ServiceHost(GetType(LampService))
-
-        serviceHost.AddServiceEndpoint(GetType(ILampService), New WSHttpBinding(), "LampService")
-
-        Dim smb = New ServiceMetadataBehavior()
-        smb.HttpGetEnabled = True
-        serviceHost.Description.Behaviors.Add(smb)
-
-        serviceHost.Open()
-
-        Console.WriteLine(String.Format("The service is ready at {0}", address))
-        Console.WriteLine("Press <ENTER> to terminate service.")
-        Console.WriteLine()
-        serviceHost.Close()
-
-
+    Sub New(databasePath As String)
+        Database = New TemplateDatabase(databasePath)
     End Sub
+
+
+
 
 #Region "ImplementILampService"
     Public Function Authenticate(credentials As LampCredentials) As LampUserWrapper Implements ILampService.Authenticate
@@ -113,12 +95,3 @@ Public Class LampService
 
 End Class
 
-
-
-
-Module OwO
-    Sub Main()
-        Dim x As New LampService
-        x.StartListener("http://localhost:8000/WCF/")
-    End Sub
-End Module

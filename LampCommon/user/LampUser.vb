@@ -68,7 +68,9 @@ Public Class LampUserWrapper
     Sub New(user As LampUser, status As LampStatus)
         Me.user = user
         Me.status = status
-        Me.user.Password = Nothing
+        If user IsNot Nothing Then
+            Me.user.Password = Nothing
+        End If
     End Sub
 End Class
 
