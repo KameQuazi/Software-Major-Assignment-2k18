@@ -27,7 +27,7 @@ Public Class FileDisplay
             Dim dxf = template.BaseDrawing
             lblName.Text = "Name: " & template.Name
             lblCreator.Text = "Creator: Waxy by steve"
-            If template.PreviewImages(0) IsNot Nothing Then
+            If template.PreviewImages IsNot Nothing Then
                 DisplayBox.Image = template.PreviewImages(0)
             End If
             'DisplayBox.Image = template.BaseDrawing.ToImage

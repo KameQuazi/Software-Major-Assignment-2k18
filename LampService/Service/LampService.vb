@@ -82,6 +82,11 @@ Public Class LampService
         Throw New NotImplementedException()
     End Function
 
+    Public Function GetAllTemplate(credentials As LampCredentials) As List(Of LampTemplate) Implements ILampService.GetAllTemplate
+        ' TODO add hasview template
+        Return Database.GetAllTemplate()
+    End Function
+
 #Region "HasPermissions"
     Public Function HasQueueJobPerms(user As LampUser)
         Return user.PermissionLevel >= UserPermission.Standard
@@ -90,6 +95,11 @@ Public Class LampService
     Public Function HasAddTemplatePerms(user As LampUser)
         Return user.PermissionLevel >= UserPermission.Elevated
     End Function
+
+    Public Function HasViewTemplatePerms(user As LampUser)
+        Return user.PermissionLevel >= UserPermission.Guest
+    End Function
+
 #End Region
 
 

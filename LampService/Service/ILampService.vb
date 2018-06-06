@@ -31,7 +31,8 @@ Public Interface ILampService
     <OperationContract>
     Function GetTemplate(credentials As LampCredentials) As LampTemplateWrapper
 
-
+    <OperationContract>
+    Function GetAllTemplate(credentials As LampCredentials) As List(Of LampTemplate)
 
 
 End Interface

@@ -54,7 +54,8 @@ Public Class DebugForm
     Private Sub Test2()
         'TableLayoutPanel1.RowCount += 1
         'TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.AutoSize))
-        Dim temps = New TemplateDatabase().GetAllTemplate
+        ' Dim temps = New TemplateDatabase().GetAllTemplate.
+        Dim temps = CurrentSender.GetAllTemplate(CurrentUser.ToCredentials)
 
         MultiTemplateViewer1.Suspend()
 
@@ -90,8 +91,6 @@ Public Class DebugForm
     End Sub
 
     Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
-        Dim x As New LampService.LampService()
-
-        x.StartListener("http://localhost:8000/WCF/")
+        Dim x As New LampService.LampHost
     End Sub
 End Class

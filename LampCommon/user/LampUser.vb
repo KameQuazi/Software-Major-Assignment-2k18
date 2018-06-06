@@ -1,5 +1,5 @@
 ﻿Imports System.Runtime.Serialization
-
+Imports LampCommon
 
 ''' <summary>
 ''' A user. contains username / password, so be careful when passing it around
@@ -42,7 +42,9 @@ Public Class LampUser
         Return String.Format("LampUser username={0}, userId={1}", Username, UserId)
     End Function
 
-
+    Public Function ToCredentials() As LampCredentials
+        Return New LampCredentials(Me.Username, Me.Password)
+    End Function
 End Class
 
 Public Enum UserPermission
