@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LampUnitTests", "LampUnitTests\LampUnitTests.vbproj", "{D55A17B9-A1BA-4629-AB8C-FF4E517E6097}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -16,8 +16,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LampClient", "LampClient\La
 		{2AAF3BB9-CA07-4F22-96E4-566C299AE69A} = {2AAF3BB9-CA07-4F22-96E4-566C299AE69A}
 		{F78807FF-C75E-4B88-8055-C498C9CF813F} = {F78807FF-C75E-4B88-8055-C498C9CF813F}
 	EndProjectSection
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LampService1", "LampService1\LampService1.vbproj", "{0710267C-949C-4B6A-8C82-BDD9531994F5}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LampService", "LampService\LampService.vbproj", "{2AAF3BB9-CA07-4F22-96E4-566C299AE69A}"
 EndProject
@@ -39,10 +37,6 @@ Global
 		{3CBBC25D-39E3-4637-86DA-7EEB2B52E79A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CBBC25D-39E3-4637-86DA-7EEB2B52E79A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CBBC25D-39E3-4637-86DA-7EEB2B52E79A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0710267C-949C-4B6A-8C82-BDD9531994F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0710267C-949C-4B6A-8C82-BDD9531994F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0710267C-949C-4B6A-8C82-BDD9531994F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0710267C-949C-4B6A-8C82-BDD9531994F5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2AAF3BB9-CA07-4F22-96E4-566C299AE69A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2AAF3BB9-CA07-4F22-96E4-566C299AE69A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AAF3BB9-CA07-4F22-96E4-566C299AE69A}.Release|Any CPU.ActiveCfg = Release|Any CPU

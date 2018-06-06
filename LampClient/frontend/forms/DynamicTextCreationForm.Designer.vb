@@ -22,8 +22,8 @@ Partial Class DynamicTextCreationForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
-        Me.ToolBar1 = New LampClient.ToolBar()
+        Me.DynamicFormCreation1 = New Global.LampClient.DynamicFormCreation()
+        Me.ToolBar1 = New Global.LampClient.ToolBar()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '

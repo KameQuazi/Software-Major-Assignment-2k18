@@ -57,7 +57,7 @@ End Enum
 ''' password is also deleted to not leak anything 
 ''' </summary>
 <DataContract>
-Public Class LampUserReturnWrapper
+Public Class LampUserWrapper
     <DataMember>
     Public Property user As LampUser
 
@@ -83,4 +83,6 @@ Public Enum LampStatus
     DoesNotExist = 2
     InvalidUsernameOrPassword = 4
     InternalServerError = 8
+    GuidConflict = 16
+
 End Enum

@@ -12,11 +12,11 @@ Public Class LocalService
         Throw New NotImplementedException()
     End Function
 
-    Public Function Authenticate(username As String, password As String) As LampUserReturnWrapper Implements ILampService.Authenticate
+    Public Function Authenticate(username As String, password As String) As LampUserWrapper Implements ILampService.Authenticate
         Throw New NotImplementedException()
     End Function
 
-    Public Function AuthenticateAsync(username As String, password As String) As Task(Of LampUserReturnWrapper) Implements ILampService.AuthenticateAsync
+    Public Function AuthenticateAsync(username As String, password As String) As Task(Of LampUserWrapper) Implements ILampService.AuthenticateAsync
         Throw New NotImplementedException()
     End Function
 

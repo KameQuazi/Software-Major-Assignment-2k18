@@ -227,7 +227,7 @@ Public Class TemplateEditor
     End Sub
 
     Private Sub AddToDb_Click(sender As Object, e As EventArgs) Handles AddToDb.Click
-        CurrentSender.AddTemplate(Template, CurrentUser)
+        'CurrentSender.AddTemplate(Template, CurrentUser)
     End Sub
 
     Private Sub ExportDxf_Click(sender As Object, e As EventArgs) Handles ExportDxf.Click

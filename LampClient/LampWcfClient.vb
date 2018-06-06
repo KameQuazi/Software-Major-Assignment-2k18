@@ -4,7 +4,7 @@
 ''' Run on the vclient machine
 ''' does not have full access to the db, only through a LampReciever
 ''' </summary>
-Public Class LampSender
+Public Class LampWcfClient
     Public Property Protocol As LampCommunication
     Public Property Address As String
 
@@ -60,7 +60,7 @@ Public Class LampSender
 
 
 
-    Public Shared Local As New LampSender(LampCommunication.Local)
+    Public Shared Local As New LampWcfClient(LampCommunication.Local)
 
     ''' <summary>
     ''' Takes a username + password 
@@ -68,7 +68,7 @@ Public Class LampSender
     ''' <param name="username"></param>
     ''' <param name="password"></param>
     ''' <returns></returns>
-    Public Shared Function LoginUser(username As String, password As String, sender As LampSender) As LampUser
+    Public Shared Function LoginUser(username As String, password As String, sender As LampWcfClient) As LampUser
 
         Return sender.Authenticate(username, password)
     End Function

@@ -1,10 +1,10 @@
 ﻿Imports LampCommon
-Imports LampService
+Imports LampClient.LampServiceReference
 
 Public Module OwO
     Public Property CurrentUser As LampUser
 
-    Public Property CurrentSender As ILampService = New LocalService
+    Public Property CurrentSender As ILampService = New LampServiceClient
 
     Public Sub Main()
         InitalizeLibraries()

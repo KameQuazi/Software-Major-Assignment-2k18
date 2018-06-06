@@ -145,6 +145,20 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LampClient\LampClient.vbproj">
+      <Project>{3cbbc25d-39e3-4637-86da-7eeb2b52e79a}</Project>
+      <Name>LampClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LampCommon\LampCommon.vbproj">
+      <Project>{f78807ff-c75e-4b88-8055-c498c9cf813f}</Project>
+      <Name>LampCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LampService\LampService.vbproj">
+      <Project>{2aaf3bb9-ca07-4f22-96e4-566c299ae69a}</Project>
+      <Name>LampService</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

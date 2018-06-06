@@ -10,7 +10,16 @@ Imports System.Runtime.CompilerServices
 Imports System.Drawing.Drawing2D
 Imports LampCommon.LampDxfHelper
 Imports System.Drawing
+Imports System.Runtime.Serialization
 
+<DataContract>
+Public Class LampDxfDocumentWrapper
+    <DataMember>
+    Public Status As LampStatus
+
+
+    Public Property Drawing As LampDxfDocument
+End Class
 
 <JsonConverter(GetType(DxfJsonConverter))>
 Public Class LampDxfDocument
@@ -19,10 +28,23 @@ Public Class LampDxfDocument
 
     Public ReadOnly Property DefaultFont As New FontFamily("Arial")
 
+    <DataMember>
+    Public Property SerializedDrawing As String
+        Get
+            Return ToDxfString()
+        End Get
+        Set(value As String)
+            Drawing = FromStringToDxfDocument(value)
+        End Set
+    End Property
+
+
+
     Private _drawing As DxfDocument
     ''' <summary>
     ''' DxfDocument from .netdxf library
     ''' </summary>
+    <IgnoreDataMember>
     Public Property Drawing As DxfDocument
         Get
             Return _drawing
@@ -53,6 +75,13 @@ Public Class LampDxfDocument
     End Property
 
     ''' <summary>
+    ''' Brush used to draw the background
+    ''' </summary>
+    ''' <returns></returns>
+    <IgnoreDataMember>
+    Public Property BackgroundBrush As New SolidBrush(Color.LightSlateGray)
+
+    ''' <summary>
     ''' Bottom Left point 
     ''' </summary>
     ''' <returns></returns>
@@ -63,12 +92,6 @@ Public Class LampDxfDocument
     ''' </summary>
     ''' <returns></returns>
     Public Property TopRight As New Vector3
-
-    ''' <summary>
-    ''' Brush used to draw the background
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property BackgroundBrush As New SolidBrush(Color.LightSlateGray)
 
     ''' <summary>
     ''' Constructor for LampDxfDocument
@@ -90,15 +113,22 @@ Public Class LampDxfDocument
         RecalculateBounds()
     End Sub
 
+    Public Sub New(info As SerializationInfo, context As StreamingContext)
+        ' Reset the property value using the GetValue method.
+        Me.New(DxfDocument.Load(info.GetValue(NameOf(Drawing), GetType(String))))
+    End Sub
+
     ''' <summary>
     ''' Creates a new LampDxfDocument from a dxf string
     ''' </summary>
     ''' <param name="dxf"></param>
-    Public Shared Function FromString(dxf As String) As LampDxfDocument
-        Dim out As LampDxfDocument
+    Public Shared Function FromStringToLamp(dxf As String) As LampDxfDocument
+        Return New LampDxfDocument(FromStringToDxfDocument(dxf))
+    End Function
+
+    Public Shared Function FromStringToDxfDocument(dxf As String)
         Using stream As New MemoryStream(Encoding.UTF8.GetBytes(dxf))
-            out = New LampDxfDocument(DxfDocument.Load(stream))
-            Return out
+            Return DxfDocument.Load(stream)
         End Using
     End Function
 
@@ -695,6 +725,9 @@ Public Class LampDxfDocument
             Return System.Drawing.Image.FromStream(ms)
         End Using
     End Function
+
+
+
 End Class
 
 Public Class DxfJsonConverter
@@ -717,7 +750,7 @@ Public Class DxfJsonConverter
         Else
             Dim value As String = DirectCast(reader.Value, String)
             File.WriteAllText("out.txt", value)
-            out = LampDxfDocument.FromString(value)
+            out = LampDxfDocument.FromStringToLamp(value)
         End If
 
         Return out

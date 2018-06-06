@@ -42,7 +42,7 @@ Partial Class DesignerForm
         Me.SaveFileDialog2 = New System.Windows.Forms.SaveFileDialog()
         Me.TrackBar1 = New System.Windows.Forms.TrackBar()
         Me.ZoomLevelBox = New System.Windows.Forms.TextBox()
-        Me.DesignerScreen1 = New LampClient.DxfViewerControl()
+        Me.DesignerScreen1 = New Global.LampClient.DxfViewerControl()
         Me.DuplicateButton = New System.Windows.Forms.Button()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()

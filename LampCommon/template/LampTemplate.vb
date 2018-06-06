@@ -42,7 +42,7 @@ Public NotInheritable Class LampTemplate
         End Set
     End Property
 
-    Private _name As String
+    Private _name As String = ""
     ''' <summary>
     ''' a unique identifer for each different template
     ''' </summary>
@@ -59,7 +59,7 @@ Public NotInheritable Class LampTemplate
         End Set
     End Property
 
-    Private _shortDescription As String
+    Private _shortDescription As String = ""
     ''' <summary>
     ''' a unique identifer for each different template
     ''' </summary>
@@ -76,7 +76,7 @@ Public NotInheritable Class LampTemplate
         End Set
     End Property
 
-    Private _longDescription As String
+    Private _longDescription As String = ""
     ''' <summary>
     ''' a unique identifer for each different template
     ''' </summary>
@@ -105,6 +105,7 @@ Public NotInheritable Class LampTemplate
     ''' Is serialized last in the file 
     ''' </summary>
     <JsonProperty("template", Order:=1000)>
+    <DataMember>
     Public Property BaseDrawing As LampDxfDocument
         Get
             Return _baseDrawing
@@ -519,5 +520,13 @@ Public Class ImageListJsonConverter
         Return out
     End Function
 
+End Class
 
+<DataContract>
+Public Class LampTemplateWrapper
+    <DataMember>
+    Public Property Template As LampTemplate
+
+    <DataMember>
+    Public Property Status As LampStatus
 End Class

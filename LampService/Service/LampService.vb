@@ -25,7 +25,7 @@ Public Class LampService
         Return 0
     End Function
 
-    Public Function Authenticate(username As String, password As String) As LampUserReturnWrapper Implements ILampService.Authenticate
+    Public Function Authenticate(username As String, password As String) As LampUserWrapper Implements ILampService.Authenticate
         Dim user As LampUser = Nothing
         Dim reason As LampStatus = LampStatus.OK
 
@@ -36,7 +36,7 @@ Public Class LampService
             reason = LampStatus.InternalServerError
             Console.WriteLine(ex)
         End Try
-        Return New LampUserReturnWrapper(user, reason)
+        Return New LampUserWrapper(user, reason)
     End Function
 
 
@@ -79,16 +79,8 @@ Public Class LampService
         Throw New NotImplementedException()
     End Sub
 
-    Public Function Return1() As Integer Implements ILampService.Return1
-        Return 1
-    End Function
-
-    Public Function Add(n1 As Double, n2 As Double) As Double Implements ILampService.Add
-        Return n1 + n2
-    End Function
-
-    Public Function GetTemplate() As LampTemplate Implements ILampService.GetTemplate
-        Throw New NotImplementedException()
+    Public Function GetTemplate() As LampTemplateWrapper Implements ILampService.GetTemplate
+        Return New LampTemplateWrapper() With {.Template = New LampTemplate(), .Status = LampStatus.OK}
     End Function
 
     Private Shared ReadOnly Local As New LampService(New LampCommunication(SubmitType.Local))

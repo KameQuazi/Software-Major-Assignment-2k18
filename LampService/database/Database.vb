@@ -218,7 +218,7 @@ Public Class TemplateDatabase
                 sqlite_cmd.Parameters.AddWithValue("@guid", guid)
                 Dim dxfString = DirectCast(sqlite_cmd.ExecuteScalar(), String)
                 If dxfString IsNot Nothing Then
-                    Return LampDxfDocument.FromString(dxfString)
+                    Return LampDxfDocument.FromStringToLamp(dxfString)
                 Else
                     Return Nothing
                 End If

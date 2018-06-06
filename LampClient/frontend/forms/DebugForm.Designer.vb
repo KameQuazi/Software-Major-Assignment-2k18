@@ -34,7 +34,7 @@ Partial Class DebugForm
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Button10 = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
+        Me.MultiTemplateViewer1 = New Global.LampClient.MultiTemplateViewer()
         Me.Button11 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '

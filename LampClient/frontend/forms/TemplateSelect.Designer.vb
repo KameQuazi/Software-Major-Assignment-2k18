@@ -28,8 +28,8 @@ Partial Class TemplateSelect
         Me.Label2 = New System.Windows.Forms.Label()
         Me.cmbSort = New System.Windows.Forms.ComboBox()
         Me.lblSort = New System.Windows.Forms.Label()
-        Me.ToolBar1 = New LampClient.ToolBar()
-        Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
+        Me.ToolBar1 = New Global.LampClient.ToolBar()
+        Me.MultiTemplateViewer1 = New Global.LampClient.MultiTemplateViewer()
         Me.SuspendLayout()
         '
         'btnNext

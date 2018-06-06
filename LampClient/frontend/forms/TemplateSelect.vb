@@ -13,7 +13,7 @@ Public Class TemplateSelect
     End Sub
 
     Private Sub TemplateSelect_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        CurrentSender.RequestTemplates(CurrentUser, tags)
+        'CurrentSender.RequestTemplates(CurrentUser, tags)
     End Sub
 
     Sub New()

@@ -1,10 +1,9 @@
 ﻿Imports System.Text
-Imports LAMP
 Imports Microsoft.VisualStudio.TestTools.UnitTesting.Assert
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports System.Drawing
 Imports System.IO
-Imports LAMP.LampDxfHelper
+Imports LampCommon.LampDxfHelper
 Imports netDxf.Entities
 
 

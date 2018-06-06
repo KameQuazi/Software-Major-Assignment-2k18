@@ -19,10 +19,10 @@ Namespace LampServiceReference
     Public Interface ILampService
         
         <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/Authenticate", ReplyAction:="http://tempuri.org/ILampService/AuthenticateResponse")>  _
-        Function Authenticate(ByVal username As String, ByVal password As String) As LampCommon.LampUserReturnWrapper
+        Function Authenticate(ByVal username As String, ByVal password As String) As LampCommon.LampUserWrapper
         
         <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/Authenticate", ReplyAction:="http://tempuri.org/ILampService/AuthenticateResponse")>  _
-        Function AuthenticateAsync(ByVal username As String, ByVal password As String) As System.Threading.Tasks.Task(Of LampCommon.LampUserReturnWrapper)
+        Function AuthenticateAsync(ByVal username As String, ByVal password As String) As System.Threading.Tasks.Task(Of LampCommon.LampUserWrapper)
         
         <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/Return1", ReplyAction:="http://tempuri.org/ILampService/Return1Response")>  _
         Function Return1() As Integer
@@ -68,11 +68,11 @@ Namespace LampServiceReference
             MyBase.New(binding, remoteAddress)
         End Sub
         
-        Public Function Authenticate(ByVal username As String, ByVal password As String) As LampCommon.LampUserReturnWrapper Implements LampServiceReference.ILampService.Authenticate
+        Public Function Authenticate(ByVal username As String, ByVal password As String) As LampCommon.LampUserWrapper Implements LampServiceReference.ILampService.Authenticate
             Return MyBase.Channel.Authenticate(username, password)
         End Function
         
-        Public Function AuthenticateAsync(ByVal username As String, ByVal password As String) As System.Threading.Tasks.Task(Of LampCommon.LampUserReturnWrapper) Implements LampServiceReference.ILampService.AuthenticateAsync
+        Public Function AuthenticateAsync(ByVal username As String, ByVal password As String) As System.Threading.Tasks.Task(Of LampCommon.LampUserWrapper) Implements LampServiceReference.ILampService.AuthenticateAsync
             Return MyBase.Channel.AuthenticateAsync(username, password)
         End Function
         

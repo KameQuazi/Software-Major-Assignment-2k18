@@ -47,7 +47,7 @@ Partial Class TemplateEditor
         Me.Label3 = New System.Windows.Forms.Label()
         Me.LongDescription = New System.Windows.Forms.RichTextBox()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
+        Me.DxfViewerControl1 = New Global.LampClient.DxfViewerControl()
         Me.GuidBox = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.NewGuidButton = New System.Windows.Forms.Button()

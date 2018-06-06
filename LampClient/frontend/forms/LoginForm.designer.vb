@@ -33,7 +33,7 @@ Partial Class frmStart
         Me.lblPass = New System.Windows.Forms.Label()
         Me.lblUser = New System.Windows.Forms.Label()
         Me.WelcomePanel = New System.Windows.Forms.Panel()
-        Me.ToolBar1 = New LampClient.ToolBar()
+        Me.ToolBar1 = New Global.LampClient.ToolBar()
         Me.btnAccCreate = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.btnLogin = New System.Windows.Forms.Button()
