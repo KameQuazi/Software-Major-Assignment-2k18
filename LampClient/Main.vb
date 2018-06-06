@@ -4,7 +4,7 @@ Imports LampService
 Public Module OwO
     Public Property CurrentUser As LampUser
 
-    Public Property CurrentSender As ILampService = New LampServiceClient
+    Public Property CurrentSender As ILampService = LampClient.LampWcfClient.Local
 
     Public Sub Main()
         InitalizeLibraries()

@@ -32,7 +32,9 @@ Public Class LampService
 
         serviceHost.Open()
 
-        System.Threading.Thread.Sleep(-1)
+        Console.WriteLine(String.Format("The service is ready at {0}", address))
+        Console.WriteLine("Press <ENTER> to terminate service.")
+        Console.WriteLine()
         serviceHost.Close()
 
 

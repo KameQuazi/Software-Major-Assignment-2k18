@@ -2,46 +2,24 @@
 Imports LampService
 
 ''' <summary>
-''' Run on the vclient machine
+''' Run on the client machine
 ''' does not have full access to the db, only through a LampReciever
+''' Bascially, an ILampService with a few helper functions
 ''' </summary>
 Public Class LampWcfClient
     Implements ILampService
-    ''' <summary>
-    ''' Only used if the protocol is Local. Internal receiver 
-    ''' </summary>
-    ''' <returns></returns>
+
     Private Property Service As ILampService
 
-
-    Sub New(service As ILampService)
-        Me.Service = service
-    End Sub
-
-    ''' <summary>
-    ''' Send template to a web or ip address, or to internal db.
-    ''' </summary>
-    Public Sub SubmitTemplate(template As LampTemplate, user As LampUser)
-        'Service.SubmitTempalte(template, user)
-    End Sub
-
-    ''' <summary>
-    ''' Sends a job
-    ''' </summary>
-    ''' <param name="job"></param>
-    ''' <param name="user"></param>
-    Public Sub SubmitJob(job As LampJob, user As LampJob)
-        Throw New NotImplementedException()
-        ' TODO
-    End Sub
+    Public Shared ReadOnly Local As New LampWcfClient(New LampService.LampService)
 
     Public Function Authenticate(username As String, password As String) As LampUserWrapper
         Return Authenticate(New LampCredentials(username, password))
     End Function
 
-    Public Function RequestTemplates(currentUser As LampUser, tags As IEnumerable(Of String)) As List(Of LampTemplate)
-        Throw New NotImplementedException()
-    End Function
+    Sub New(service As ILampService)
+        Me.Service = service
+    End Sub
 
 
 #Region "ILampService"
@@ -61,16 +39,19 @@ Public Class LampWcfClient
         Return Service.GetTemplate(credentials)
     End Function
 #End Region
-
-    Public Shared Local As New LampWcfClient(New LampService.LampService)
-
-
 End Class
 
-Partial Public Class LampServiceClient
+''' <summary>
+''' A remote WCF fetcher
+''' will fetch data from the endpoint given
+''' </summary>
+Public Class LampRemoteWcfClient
     Inherits ServiceModel.ClientBase(Of ILampService)
     Implements ILampService
 
+
+
+#Region "ClientBase"
     Public Sub New()
         MyBase.New
     End Sub
@@ -90,7 +71,9 @@ Partial Public Class LampServiceClient
     Public Sub New(ByVal binding As System.ServiceModel.Channels.Binding, ByVal remoteAddress As System.ServiceModel.EndpointAddress)
         MyBase.New(binding, remoteAddress)
     End Sub
+#End Region
 
+#Region "ILampService"
     Public Function Authenticate(credentials As LampCredentials) As LampUserWrapper Implements ILampService.Authenticate
         Return MyBase.Channel.Authenticate(credentials)
     End Function
@@ -106,6 +89,7 @@ Partial Public Class LampServiceClient
     Public Function GetTemplate(credentials As LampCredentials) As LampTemplateWrapper Implements ILampService.GetTemplate
         Return MyBase.Channel.GetTemplate(credentials)
     End Function
+#End Region
 End Class
 
 

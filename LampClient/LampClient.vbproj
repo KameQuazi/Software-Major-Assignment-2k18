@@ -198,7 +198,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LampWcfClient.vb" />
-    <Compile Include="LocalService.vb" />
     <Compile Include="Main.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
