@@ -3,8 +3,7 @@ Imports System.Text
 Imports System.Collections.ObjectModel
 Imports System.Data.SQLite
 Imports System.Drawing
-Imports LampService.DatabaseHelper
-Imports LampCommon
+Imports LampCommon.DatabaseHelper
 
 
 Public Class TemplateDatabase

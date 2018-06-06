@@ -197,6 +197,7 @@
     <Compile Include="frontend\forms\TemplateSelect.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="LampWcfClient.vb" />
     <Compile Include="LocalService.vb" />
     <Compile Include="Main.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -213,11 +214,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Service References\LampServiceReference\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -294,40 +290,16 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Service References\LampServiceReference\LampCommon.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\LampServiceReference\service.wsdl" />
-    <None Include="Service References\LampServiceReference\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\LampServiceReference\service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LampCommon\LampCommon.vbproj">
       <Project>{f78807ff-c75e-4b88-8055-c498c9cf813f}</Project>
       <Name>LampCommon</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\LampServiceReference\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\LampServiceReference\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\LampServiceReference\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\LampServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
+    <ProjectReference Include="..\LampService\LampService.vbproj">
+      <Project>{2aaf3bb9-ca07-4f22-96e4-566c299ae69a}</Project>
+      <Name>LampService</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -343,8 +315,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(SolutionDir)packages\System.Data.SQLite.Core.1.0.108.0\build\net451\x86\SQLite.Interop.dll" "$(OutputDir)\x86\SQLite.Interop.dll" /y /f
-xcopy "$(SolutionDir)packages\System.Data.SQLite.Core.1.0.108.0\build\net451\x64\SQLite.Interop.dll" "$(OutputDir)\x64\SQLite.Interop.dll" /y /f
+    <PostBuildEvent>xcopy "$(SolutionDir)packages\System.Data.SQLite.Core.1.0.108.0\build\net451" "$(OutDir)" /y /f
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

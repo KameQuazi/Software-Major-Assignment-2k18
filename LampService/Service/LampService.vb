@@ -3,47 +3,12 @@ Imports LampCommon
 Imports LampService
 ''' <summary>
 ''' The receiver class has all privildegeds to the database 
+''' runs on the server side
 ''' </summary>
 Public Class LampService
     Implements ILampService
-    Public Property Protocol As LampCommunication
 
     Public Property Database As TemplateDatabase
-
-    Public Sub New(protocol As LampCommunication)
-        Me.Protocol = protocol
-        Me.Database = New TemplateDatabase()
-    End Sub
-
-#Region "ImplementILampService"
-    Public Function QueueJob(template As LampTemplate, User As LampUser) As LampStatus
-        ' check if user got permissions
-
-        ' TODO Also extract stuff
-        Dim job As New LampJob(template, User)
-        Database.AddJob(job)
-        Return 0
-    End Function
-
-    Public Function Authenticate(username As String, password As String) As LampUserWrapper Implements ILampService.Authenticate
-        Dim user As LampUser = Nothing
-        Dim reason As LampStatus = LampStatus.OK
-
-        Try
-            user = Database.SelectUser(username, password)
-
-        Catch ex As Exception
-            reason = LampStatus.InternalServerError
-            Console.WriteLine(ex)
-        End Try
-        Return New LampUserWrapper(user, reason)
-    End Function
-
-
-    Public Sub AddTemplate(template As LampTemplate, user As LampUser)
-        Throw New NotImplementedException()
-    End Sub
-#End Region
 
     Sub New()
         Database = New TemplateDatabase(Configuration.ConfigurationManager.AppSettings("databasePath"))
@@ -53,11 +18,9 @@ Public Class LampService
     ''' <summary>
     ''' Starts the ip listener
     ''' </summary>
-    Public Sub StartListener()
-        If Protocol.Type <> SubmitType.Server Then
-            Throw New Exception("must be in server mode to start listener")
-        End If
-        Dim uri = New Uri(Protocol.Address)
+    Public Sub StartListener(address As String)
+
+        Dim uri = New Uri(address)
 
         Dim serviceHost = New ServiceHost(GetType(LampService))
 
@@ -75,15 +38,85 @@ Public Class LampService
 
     End Sub
 
-    Private Sub ILampService_AddTemplate(template As LampTemplate, user As LampUser)
+#Region "ImplementILampService"
+    Public Function Authenticate(credentials As LampCredentials) As LampUserWrapper Implements ILampService.Authenticate
+        Dim user As LampUser = Nothing
+        Dim reason As LampStatus = LampStatus.OK
+
+        Try
+            user = Database.SelectUser(credentials.Username, credentials.Password)
+
+        Catch ex As Exception
+            reason = LampStatus.InternalServerError
+            Console.WriteLine(ex)
+        End Try
+        Return New LampUserWrapper(user, reason)
+    End Function
+
+
+    Public Function AddTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampService.AddTemplate
+        Dim user = Authenticate(credentials).user
+        Dim response As LampStatus = LampStatus.OK
+
+        If user IsNot Nothing Then
+            If HasAddTemplatePerms(user) Then
+                Database.AddTemplate(template)
+            Else
+                response = response And LampStatus.NoAccess
+            End If
+        Else
+            response = response And LampStatus.InvalidUsernameOrPassword
+        End If
+        Return response
+    End Function
+
+
+
+    Public Function QueueJob(template As LampTemplate, User As LampUser) As LampStatus
+        ' check if user got permissions
+
+        ' TODO Also extract stuff
+        Dim job As New LampJob(template, User)
+        Database.AddJob(job)
+        Return 0
+    End Function
+
+
+    Public Sub AddTemplate(template As LampTemplate, user As LampUser)
         Throw New NotImplementedException()
     End Sub
+#End Region
 
-    Public Function GetTemplate() As LampTemplateWrapper Implements ILampService.GetTemplate
+
+
+    Public Function GetTemplate(credentials As LampCredentials) As LampTemplateWrapper Implements ILampService.GetTemplate
         Return New LampTemplateWrapper() With {.Template = New LampTemplate(), .Status = LampStatus.OK}
     End Function
 
-    Private Shared ReadOnly Local As New LampService(New LampCommunication(SubmitType.Local))
+    Private Function ILampService_QueueJob(job As LampJob, credentials As LampCredentials) As LampStatus Implements ILampService.QueueJob
+        Database.AddJob(job)
+        Throw New NotImplementedException()
+    End Function
+
+#Region "HasPermissions"
+    Public Function HasQueueJobPerms(user As LampUser)
+        Return user.PermissionLevel >= UserPermission.Standard
+    End Function
+
+    Public Function HasAddTemplatePerms(user As LampUser)
+        Return user.PermissionLevel >= UserPermission.Elevated
+    End Function
+#End Region
+
 
 End Class
 
+
+
+
+Module OwO
+    Sub Main()
+        Dim x As New LampService
+        x.StartListener("http://localhost:8000/WCF/")
+    End Sub
+End Module

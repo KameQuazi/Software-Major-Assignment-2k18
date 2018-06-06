@@ -5,9 +5,9 @@ Imports System.Drawing
 Imports System.IO
 Imports LampCommon.LampDxfHelper
 Imports netDxf.Entities
-
-
 Imports netDxf
+Imports LampCommon
+
 
 <TestClass()> Public Class LampDxfTest
 

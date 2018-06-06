@@ -1,5 +1,6 @@
-﻿Imports LAMP
-Imports Microsoft.VisualStudio.TestTools.UnitTesting.Assert
+﻿Imports Microsoft.VisualStudio.TestTools.UnitTesting.Assert
+Imports LampService
+Imports LampCommon
 
 <TestClass()>
 Public Class LampDatabaseTests

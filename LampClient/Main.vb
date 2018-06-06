@@ -1,5 +1,5 @@
 ﻿Imports LampCommon
-Imports LampClient.LampServiceReference
+Imports LampService
 
 Public Module OwO
     Public Property CurrentUser As LampUser

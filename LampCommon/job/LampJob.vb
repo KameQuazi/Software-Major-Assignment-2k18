@@ -1,7 +1,13 @@
-﻿Public Class LampJob
+﻿Imports System.Runtime.Serialization
+
+<DataContract>
+Public Class LampJob
     Public Property JobId As String
+
     Public Property Template As LampTemplate
+
     Public Property Submitter As LampUser
+
     Public Property Approver As LampUser
 
     Public Property Approved As Boolean

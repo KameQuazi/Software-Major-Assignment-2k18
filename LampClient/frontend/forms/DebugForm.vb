@@ -90,7 +90,7 @@ Public Class DebugForm
     End Sub
 
     Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
-        Dim x As New LampService.LampService(New LampCommunication(SubmitType.Server, "http://localhost:8000/WCF/"))
-        x.StartListener()
+        Dim x As New LampService.LampService()
+        x.StartListener("http://localhost:8000/WCF/")
     End Sub
 End Class

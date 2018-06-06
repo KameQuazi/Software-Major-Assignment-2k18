@@ -46,9 +46,10 @@ Public Class LampUser
 End Class
 
 Public Enum UserPermission
-    Guest
-    Standard
-    Admin
+    Guest    ' for not logged in
+    Standard ' for students
+    Elevated ' for teachers
+    Admin    ' for us + ia staff 
 
 End Enum
 
