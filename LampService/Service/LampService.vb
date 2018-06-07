@@ -2,6 +2,8 @@
 Imports LampCommon
 Imports LampService
 
+
+
 ''' <summary>
 ''' The receiver class has all privildegeds to the database 
 ''' runs on the server side

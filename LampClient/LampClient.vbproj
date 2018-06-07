@@ -63,6 +63,9 @@
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|AnyCPU'">
+    <OutputPath>bin\test\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="netDxf, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\netDXF.2.0.2\lib\net45\netDxf.dll</HintPath>
@@ -215,11 +218,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Service References\ServiceReference1\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frontend\controls\DxfViewerControl.resx">
@@ -298,22 +296,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Service References\ServiceReference1\Arrays.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ServiceReference1\LampCommon.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ServiceReference1\netDxf.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ServiceReference1\service.wsdl" />
-    <None Include="Service References\ServiceReference1\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ServiceReference1\service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LampCommon\LampCommon.vbproj">
@@ -336,24 +318,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\ServiceReference1\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServiceReference1\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServiceReference1\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServiceReference1\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

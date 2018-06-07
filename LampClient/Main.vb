@@ -1,14 +1,24 @@
-﻿Imports LampCommon
+﻿Imports System.ServiceModel
+Imports LampCommon
 Imports LampService
 
 Public Module OwO
     Public Property CurrentUser As LampUser = New LampUser(GetNewGuid, UserPermission.Admin, "none@gmail.comg", "hewwwo", "password", "debugger")
 
-    Public Property CurrentSender As ServiceReference1.ILampService  'LampWcfClient.Local
+    Public Property CurrentSender As ILampService  'LampWcfClient.Local
+
+    Public Property ClientEndpoint As String = "http://localhost:8733/Design_Time_Addresses/LampService.svc"
 
     Public Sub Main()
         InitalizeLibraries()
-        CurrentSender = New LampClient.ServiceReference1.LampServiceClient()
+        ' CurrentSender = New LampClient.ServiceReference1.LampServiceClient()
+
+        Dim endpoint As New EndpointAddress(ClientEndpoint)
+        Dim binding = New BasicHttpBinding()
+        binding.MaxReceivedMessageSize = 2147483647
+        Dim factory = New ChannelFactory(Of ILampService)(binding, endpoint)
+        CurrentSender = factory.CreateChannel
+
 
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
