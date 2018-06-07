@@ -4,7 +4,7 @@ Imports LampService
 
 <ServiceContract(ConfigurationName:="ILampService")>
 Public Interface ILampClientService
-    Inherits ILampService
+    Inherits LampService.ILampService
 
     <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/Authenticate", ReplyAction:="http://tempuri.org/ILampService/AuthenticateResponse")>
     Function AuthenticateAsync(ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampUserWrapper)
@@ -28,15 +28,15 @@ End Interface
 Public Class LampLocalWcfClient
     Implements ILampClientService
 
-    Private Property Service As ILampClientService
+    Private Property Service As ILampService
 
-    Public Shared ReadOnly Local As New LampLocalWcfClient(New LampService.LampService)
+    Public Shared Local As LampLocalWcfClient
 
     Public Function Authenticate(username As String, password As String) As LampUserWrapper
         Return Authenticate(New LampCredentials(username, password))
     End Function
 
-    Sub New(service As ILampClientService)
+    Sub New(service As ILampService)
         Me.Service = service
     End Sub
 
@@ -79,7 +79,43 @@ Public Class LampLocalWcfClient
     End Function
 
 
-    Private Function ILampService_GetAllTemplate1(credentials As LampCredentials) As List(Of LampTemplate) Implements ILampService.GetAllTemplate
+    Private Function ILampService_GetAllTemplate1(credentials As LampCredentials) As List(Of LampTemplate) Implements LampService.ILampService.GetAllTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function DeleteTemplate(credentials As LampCredentials) As LampStatus Implements LampService.ILampService.DeleteTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function SelectDxf(credentials As LampCredentials) As LampDxfDocumentWrapper Implements LampService.ILampService.SelectDxf
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function AddUnapprovedTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements LampService.ILampService.AddUnapprovedTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function DeleteUnapprovedTemplate(guid As String, credentials As LampCredentials) As LampStatus Implements LampService.ILampService.DeleteUnapprovedTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function ApproveTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements LampService.ILampService.ApproveTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function RevokeTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements LampService.ILampService.RevokeTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function GetUser(credentials As LampCredentials) As LampUserWrapper Implements LampService.ILampService.GetUser
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function AddUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements LampService.ILampService.AddUser
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function EditUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements LampService.ILampService.EditUser
         Throw New NotImplementedException()
     End Function
 #End Region

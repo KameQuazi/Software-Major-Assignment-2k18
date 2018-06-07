@@ -288,6 +288,16 @@ Public NotInheritable Class LampTemplate
         NotifyPropertyChanged(NameOf(PreviewImages))
     End Sub
 
+    <DataMember>
+    Private Property _serializePreviewImages As IEnumerable(Of String)
+        Get
+            Return LampDxfDocument.ImageListToBase64(PreviewImages)
+        End Get
+        Set(value As IEnumerable(Of String))
+            PreviewImages = LampDxfDocument.Base64ListToImage(value).ToObservableList
+        End Set
+    End Property
+
     Private _previewImage As ObservableCollection(Of Image)
     ''' <summary>
     ''' List of 3 images

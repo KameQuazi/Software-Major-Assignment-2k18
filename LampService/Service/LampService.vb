@@ -100,6 +100,42 @@ Public Class LampService
         Return user.PermissionLevel >= UserPermission.Guest
     End Function
 
+    Public Function DeleteTemplate(credentials As LampCredentials) As LampStatus Implements ILampService.DeleteTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function SelectDxf(credentials As LampCredentials) As LampDxfDocumentWrapper Implements ILampService.SelectDxf
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function AddUnapprovedTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampService.AddUnapprovedTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function DeleteUnapprovedTemplate(guid As String, credentials As LampCredentials) As LampStatus Implements ILampService.DeleteUnapprovedTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function ApproveTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampService.ApproveTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function RevokeTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampService.RevokeTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function GetUser(credentials As LampCredentials) As LampUserWrapper Implements ILampService.GetUser
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function AddUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements ILampService.AddUser
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function EditUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements ILampService.EditUser
+        Throw New NotImplementedException()
+    End Function
+
 #End Region
 
 

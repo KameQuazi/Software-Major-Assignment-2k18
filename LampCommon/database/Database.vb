@@ -1135,6 +1135,8 @@ Public Class DatabaseHelper
         Return Image.FromStream(stream)
     End Function
 
+
+
     ''' <summary>
     ''' Creates an sqlite paramater
     ''' </summary>

@@ -726,6 +726,29 @@ Public Class LampDxfDocument
         End Using
     End Function
 
+    Public Shared Function ImageListToBase64(images As IEnumerable(Of Drawing.Image)) As List(Of String)
+        If images Is Nothing Then
+            Throw New ArgumentNullException(NameOf(images))
+        End If
+
+        Dim out As New List(Of String)
+        For Each im In images
+            out.Add(ImageToBase64(im))
+        Next
+        Return out
+    End Function
+
+    Public Shared Function Base64ListToImage(base64List As IEnumerable(Of String)) As List(Of Drawing.Image)
+        If base64List Is Nothing Then
+            Throw New ArgumentNullException(NameOf(base64List))
+        End If
+        Dim out As New List(Of Drawing.Image)
+        For Each base In base64List
+            out.Add(Base64ToImage(base))
+        Next
+        Return out
+    End Function
+
 
 
 End Class

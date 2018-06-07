@@ -55,8 +55,44 @@ Public Class LampRemoteWcfClient
         Return MyBase.Channel.GetAllTemplateAsync(credentials)
     End Function
 
-    Public Function GetAllTemplate(credentials As LampCredentials) As List(Of LampTemplate) Implements ILampService.GetAllTemplate
+    Public Function GetAllTemplate(credentials As LampCredentials) As List(Of LampTemplate) Implements LampService.ILampService.GetAllTemplate
         Return MyBase.Channel.GetAllTemplate(credentials)
+    End Function
+
+    Public Function DeleteTemplate(credentials As LampCredentials) As LampStatus Implements LampService.ILampService.DeleteTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function SelectDxf(credentials As LampCredentials) As LampDxfDocumentWrapper Implements LampService.ILampService.SelectDxf
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function AddUnapprovedTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements LampService.ILampService.AddUnapprovedTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function DeleteUnapprovedTemplate(guid As String, credentials As LampCredentials) As LampStatus Implements LampService.ILampService.DeleteUnapprovedTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function ApproveTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements LampService.ILampService.ApproveTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function RevokeTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements LampService.ILampService.RevokeTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function GetUser(credentials As LampCredentials) As LampUserWrapper Implements LampService.ILampService.GetUser
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function AddUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements LampService.ILampService.AddUser
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function EditUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements LampService.ILampService.EditUser
+        Throw New NotImplementedException()
     End Function
 #End Region
 End Class
