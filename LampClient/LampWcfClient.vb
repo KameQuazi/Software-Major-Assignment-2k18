@@ -28,7 +28,7 @@ End Interface
 Public Class LampLocalWcfClient
     Implements ILampClientService
 
-    Private Property Service As ILampService
+    Private Property Service As LampService.LampService
 
     Public Shared Local As LampLocalWcfClient
 
@@ -36,7 +36,7 @@ Public Class LampLocalWcfClient
         Return Authenticate(New LampCredentials(username, password))
     End Function
 
-    Sub New(service As ILampService)
+    Sub New(service As LampService.LampService)
         Me.Service = service
     End Sub
 

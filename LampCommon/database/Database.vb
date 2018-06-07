@@ -4,7 +4,7 @@ Imports System.Collections.ObjectModel
 Imports System.Data.SQLite
 Imports System.Drawing
 Imports LampCommon.DatabaseHelper
-
+Imports LampCommon
 
 Public Class TemplateDatabase
     ''' <summary>
@@ -171,6 +171,9 @@ Public Class TemplateDatabase
         End Try
     End Sub
 
+    Public Function GetAllTemplateAsync() As Task(Of List(Of LampTemplate))
+        Throw New NotImplementedException()
+    End Function
 
     ''' <summary>
     ''' Destroys all tables

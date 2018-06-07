@@ -1,4 +1,5 @@
 ﻿Imports System.ServiceModel.Configuration
+Imports System.Threading.Tasks
 Imports LampCommon
 Imports LampService
 
@@ -56,20 +57,16 @@ Public Class LampService
 
 
 
-    Public Function QueueJob(template As LampTemplate, User As LampUser) As LampStatus
+    Public Function QueueJob(job As LampJob, credentials As LampCredentials) As LampStatus
         ' check if user got permissions
 
         ' TODO Also extract stuff
-        Dim job As New LampJob(template, User)
         Database.AddJob(job)
         Return 0
     End Function
 
 
-    Public Sub AddTemplate(template As LampTemplate, user As LampUser)
-        Throw New NotImplementedException()
-    End Sub
-#End Region
+
 
 
 
@@ -87,17 +84,8 @@ Public Class LampService
         Return Database.GetAllTemplate()
     End Function
 
-#Region "HasPermissions"
-    Public Function HasQueueJobPerms(user As LampUser)
-        Return user.PermissionLevel >= UserPermission.Standard
-    End Function
-
-    Public Function HasAddTemplatePerms(user As LampUser)
-        Return user.PermissionLevel >= UserPermission.Elevated
-    End Function
-
-    Public Function HasViewTemplatePerms(user As LampUser)
-        Return user.PermissionLevel >= UserPermission.Guest
+    Public Function GetAllTemplateAsync(credentials As LampCredentials) As Task(Of List(Of LampTemplate))
+        Return Database.GetAllTemplateAsync()
     End Function
 
     Public Function DeleteTemplate(credentials As LampCredentials) As LampStatus Implements ILampService.DeleteTemplate
@@ -116,13 +104,31 @@ Public Class LampService
         Throw New NotImplementedException()
     End Function
 
+    Public Function AuthenticateAsync(credentials As LampCredentials) As Task(Of LampUserWrapper)
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function AddTemplateAsync(template As LampTemplate, credentials As LampCredentials) As Task(Of LampStatus)
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function QueueJobAsync(job As LampJob, credentials As LampCredentials) As Task(Of LampStatus)
+        Throw New NotImplementedException()
+    End Function
+
     Public Function ApproveTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampService.ApproveTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function GetTemplateAsync(credentials As LampCredentials) As Task(Of LampTemplateWrapper)
         Throw New NotImplementedException()
     End Function
 
     Public Function RevokeTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampService.RevokeTemplate
         Throw New NotImplementedException()
     End Function
+
+
 
     Public Function GetUser(credentials As LampCredentials) As LampUserWrapper Implements ILampService.GetUser
         Throw New NotImplementedException()
@@ -135,6 +141,23 @@ Public Class LampService
     Public Function EditUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements ILampService.EditUser
         Throw New NotImplementedException()
     End Function
+
+#End Region
+
+
+#Region "HasPermissions"
+    Public Function HasQueueJobPerms(user As LampUser)
+        Return user.PermissionLevel >= UserPermission.Standard
+    End Function
+
+    Public Function HasAddTemplatePerms(user As LampUser)
+        Return user.PermissionLevel >= UserPermission.Elevated
+    End Function
+
+    Public Function HasViewTemplatePerms(user As LampUser)
+        Return user.PermissionLevel >= UserPermission.Guest
+    End Function
+
 
 #End Region
 
