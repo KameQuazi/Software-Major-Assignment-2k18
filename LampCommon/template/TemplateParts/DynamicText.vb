@@ -6,12 +6,14 @@ Imports Newtonsoft.Json
 ''' <summary>
 ''' Stores where and how text that changes between each form <see cref="DynamicTemplateInput"/>
 ''' </summary>
+<DataContract>
 Public Class DynamicTemplateInput
     ''' <summary>
     ''' name of the dynamic input: e.g. year, name, date etc
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("paramterName")>
+    <DataMember>
     Public ReadOnly Property ParameterName As String
 
     ''' <summary>
@@ -19,6 +21,7 @@ Public Class DynamicTemplateInput
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("description")>
+    <DataMember>
     Public ReadOnly Property Description As String
 
     ''' <summary>
@@ -34,12 +37,15 @@ Public Class DynamicTemplateInput
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("value")>
+    <DataMember>
     Public Property Value As Object
 
     <JsonProperty("location")>
+    <DataMember>
     Public Property Location As Point
 
     <JsonProperty("font")>
+    <DataMember>
     Public Property Font As Font
 
     ''' <summary>
@@ -47,9 +53,10 @@ Public Class DynamicTemplateInput
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("inputType")>
+    <DataMember>
     Public Property InputType As InputType
 
-    Private defaultFont As Font = SystemFonts.DefaultFont
+    Private Shared defaultFont As Font = SystemFonts.DefaultFont
 
     ''' <summary>
     ''' 
@@ -96,6 +103,7 @@ Public Class DynamicTemplateInput
 
 End Class
 
+<DataContract>
 Public Enum InputType
     RichTextBox
     CheckBox

@@ -51,11 +51,13 @@ Public Class DebugForm
         MultiTemplateViewer1.Templates.Clear()
     End Sub
 
-    Private Sub Test2()
+    Private Async Sub Test2()
         'TableLayoutPanel1.RowCount += 1
         'TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.AutoSize))
         ' Dim temps = New TemplateDatabase().GetAllTemplate.
-        Dim temps = CurrentSender.GetAllTemplate(CurrentUser.ToCredentials)
+        Dim task = CurrentSender.GetAllTemplateAsync(CurrentUser.ToCredentials)
+        Dim temps = Await task
+
 
         MultiTemplateViewer1.Suspend()
 

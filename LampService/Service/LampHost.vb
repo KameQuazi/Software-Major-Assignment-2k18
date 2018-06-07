@@ -32,6 +32,7 @@ Public Class LampHost
 
         ' add services 
         Host = New ServiceHost(GetType(LampService))
+
         Host.Open()
         BaseAddress = Host.BaseAddresses(0).ToString
 

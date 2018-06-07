@@ -37,3 +37,8 @@ Public Interface ILampService
 
 End Interface
 
+
+Public Interface ILampServerService
+    Inherits ILampService
+
+End Interface

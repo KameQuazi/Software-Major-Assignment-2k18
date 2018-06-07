@@ -2,14 +2,12 @@
 Imports LampCommon
 Imports LampService
 
-
-
 ''' <summary>
 ''' The receiver class has all privildegeds to the database 
 ''' runs on the server side
 ''' </summary>
 Public Class LampService
-    Implements ILampService
+    Implements ILampServerService
 
     Public Property Database As TemplateDatabase
 
@@ -25,7 +23,7 @@ Public Class LampService
 
 
 #Region "ImplementILampService"
-    Public Function Authenticate(credentials As LampCredentials) As LampUserWrapper Implements ILampService.Authenticate
+    Public Function Authenticate(credentials As LampCredentials) As LampUserWrapper Implements ILampServerService.Authenticate
         Dim user As LampUser = Nothing
         Dim reason As LampStatus = LampStatus.OK
 
@@ -40,7 +38,7 @@ Public Class LampService
     End Function
 
 
-    Public Function AddTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampService.AddTemplate
+    Public Function AddTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampServerService.AddTemplate
         Dim user = Authenticate(credentials).user
         Dim response As LampStatus = LampStatus.OK
 
@@ -75,16 +73,16 @@ Public Class LampService
 
 
 
-    Public Function GetTemplate(credentials As LampCredentials) As LampTemplateWrapper Implements ILampService.GetTemplate
+    Public Function GetTemplate(credentials As LampCredentials) As LampTemplateWrapper Implements ILampServerService.GetTemplate
         Return New LampTemplateWrapper() With {.Template = New LampTemplate(), .Status = LampStatus.OK}
     End Function
 
-    Private Function ILampService_QueueJob(job As LampJob, credentials As LampCredentials) As LampStatus Implements ILampService.QueueJob
+    Private Function ILampService_QueueJob(job As LampJob, credentials As LampCredentials) As LampStatus Implements ILampServerService.QueueJob
         Database.AddJob(job)
         Throw New NotImplementedException()
     End Function
 
-    Public Function GetAllTemplate(credentials As LampCredentials) As List(Of LampTemplate) Implements ILampService.GetAllTemplate
+    Public Function GetAllTemplate(credentials As LampCredentials) As List(Of LampTemplate) Implements ILampServerService.GetAllTemplate
         ' TODO add hasview template
         Return Database.GetAllTemplate()
     End Function

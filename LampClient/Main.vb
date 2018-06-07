@@ -5,9 +5,9 @@ Imports LampService
 Public Module OwO
     Public Property CurrentUser As LampUser = New LampUser(GetNewGuid, UserPermission.Admin, "none@gmail.comg", "hewwwo", "password", "debugger")
 
-    Public Property CurrentSender As ILampService  'LampWcfClient.Local
+    Public Property CurrentSender As ILampClientService  'LampWcfClient.Local
 
-    Public Property ClientEndpoint As String = "http://localhost:8733/Design_Time_Addresses/LampService.svcsdf"
+    Public Property ClientEndpoint As String = "http://localhost:8733/Design_Time_Addresses/LampService.svc"
 
     Public Sub Main()
         InitalizeLibraries()
@@ -15,6 +15,7 @@ Public Module OwO
 
         Dim endpoint As New EndpointAddress(ClientEndpoint)
         Dim binding = New BasicHttpBinding()
+        binding.MaxReceivedMessageSize = 100000000 ' 100 mb max
         CurrentSender = New LampRemoteWcfClient(binding, endpoint)
 
 

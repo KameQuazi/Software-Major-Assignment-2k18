@@ -579,102 +579,102 @@ Public Interface ILampService
     
     <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/Authenticate", ReplyAction:="http://tempuri.org/ILampService/AuthenticateResponse")>  _
     Function Authenticate(ByVal credentials As LampCommon.LampCredentials) As LampCommon.LampUserWrapper
-    
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/Authenticate", ReplyAction:="http://tempuri.org/ILampService/AuthenticateResponse")>  _
+
+    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/Authenticate", ReplyAction:="http://tempuri.org/ILampService/AuthenticateResponse")>
     Function AuthenticateAsync(ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampUserWrapper)
-    
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/AddTemplate", ReplyAction:="http://tempuri.org/ILampService/AddTemplateResponse")>  _
+
+    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/AddTemplate", ReplyAction:="http://tempuri.org/ILampService/AddTemplateResponse")>
     Function AddTemplate(ByVal template As LampCommon.LampTemplate, ByVal credentials As LampCommon.LampCredentials) As LampCommon.LampStatus
-    
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/AddTemplate", ReplyAction:="http://tempuri.org/ILampService/AddTemplateResponse")>  _
+
+    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/AddTemplate", ReplyAction:="http://tempuri.org/ILampService/AddTemplateResponse")>
     Function AddTemplateAsync(ByVal template As LampCommon.LampTemplate, ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampStatus)
-    
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/QueueJob", ReplyAction:="http://tempuri.org/ILampService/QueueJobResponse")>  _
+
+    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/QueueJob", ReplyAction:="http://tempuri.org/ILampService/QueueJobResponse")>
     Function QueueJob(ByVal job As LampCommon.LampJob, ByVal credentials As LampCommon.LampCredentials) As LampCommon.LampStatus
-    
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/QueueJob", ReplyAction:="http://tempuri.org/ILampService/QueueJobResponse")>  _
+
+    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/QueueJob", ReplyAction:="http://tempuri.org/ILampService/QueueJobResponse")>
     Function QueueJobAsync(ByVal job As LampCommon.LampJob, ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampStatus)
-    
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/GetTemplate", ReplyAction:="http://tempuri.org/ILampService/GetTemplateResponse")>  _
+
+    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/GetTemplate", ReplyAction:="http://tempuri.org/ILampService/GetTemplateResponse")>
     Function GetTemplate(ByVal credentials As LampCommon.LampCredentials) As LampCommon.LampTemplateWrapper
-    
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/GetTemplate", ReplyAction:="http://tempuri.org/ILampService/GetTemplateResponse")>  _
+
+    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/GetTemplate", ReplyAction:="http://tempuri.org/ILampService/GetTemplateResponse")>
     Function GetTemplateAsync(ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampTemplateWrapper)
-    
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/GetAllTemplate", ReplyAction:="http://tempuri.org/ILampService/GetAllTemplateResponse")>  _
+
+    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/GetAllTemplate", ReplyAction:="http://tempuri.org/ILampService/GetAllTemplateResponse")>
     Function GetAllTemplate(ByVal credentials As LampCommon.LampCredentials) As LampCommon.LampTemplate()
-    
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/GetAllTemplate", ReplyAction:="http://tempuri.org/ILampService/GetAllTemplateResponse")>  _
+
+    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/GetAllTemplate", ReplyAction:="http://tempuri.org/ILampService/GetAllTemplateResponse")>
     Function GetAllTemplateAsync(ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampTemplate())
 End Interface
 
-<System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")>  _
+<System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")>
 Public Interface ILampServiceChannel
     Inherits ILampService, System.ServiceModel.IClientChannel
 End Interface
 
-<System.Diagnostics.DebuggerStepThroughAttribute(),  _
- System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")>  _
+<System.Diagnostics.DebuggerStepThroughAttribute(),
+ System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")>
 Partial Public Class LampServiceClient
     Inherits System.ServiceModel.ClientBase(Of ILampService)
     Implements ILampService
-    
+
     Public Sub New()
         MyBase.New
     End Sub
-    
+
     Public Sub New(ByVal endpointConfigurationName As String)
         MyBase.New(endpointConfigurationName)
     End Sub
-    
+
     Public Sub New(ByVal endpointConfigurationName As String, ByVal remoteAddress As String)
         MyBase.New(endpointConfigurationName, remoteAddress)
     End Sub
-    
+
     Public Sub New(ByVal endpointConfigurationName As String, ByVal remoteAddress As System.ServiceModel.EndpointAddress)
         MyBase.New(endpointConfigurationName, remoteAddress)
     End Sub
-    
+
     Public Sub New(ByVal binding As System.ServiceModel.Channels.Binding, ByVal remoteAddress As System.ServiceModel.EndpointAddress)
         MyBase.New(binding, remoteAddress)
     End Sub
-    
+
     Public Function Authenticate(ByVal credentials As LampCommon.LampCredentials) As LampCommon.LampUserWrapper Implements ILampService.Authenticate
         Return MyBase.Channel.Authenticate(credentials)
     End Function
-    
+
     Public Function AuthenticateAsync(ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampUserWrapper) Implements ILampService.AuthenticateAsync
         Return MyBase.Channel.AuthenticateAsync(credentials)
     End Function
-    
+
     Public Function AddTemplate(ByVal template As LampCommon.LampTemplate, ByVal credentials As LampCommon.LampCredentials) As LampCommon.LampStatus Implements ILampService.AddTemplate
         Return MyBase.Channel.AddTemplate(template, credentials)
     End Function
-    
+
     Public Function AddTemplateAsync(ByVal template As LampCommon.LampTemplate, ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampStatus) Implements ILampService.AddTemplateAsync
         Return MyBase.Channel.AddTemplateAsync(template, credentials)
     End Function
-    
+
     Public Function QueueJob(ByVal job As LampCommon.LampJob, ByVal credentials As LampCommon.LampCredentials) As LampCommon.LampStatus Implements ILampService.QueueJob
         Return MyBase.Channel.QueueJob(job, credentials)
     End Function
-    
+
     Public Function QueueJobAsync(ByVal job As LampCommon.LampJob, ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampStatus) Implements ILampService.QueueJobAsync
         Return MyBase.Channel.QueueJobAsync(job, credentials)
     End Function
-    
+
     Public Function GetTemplate(ByVal credentials As LampCommon.LampCredentials) As LampCommon.LampTemplateWrapper Implements ILampService.GetTemplate
         Return MyBase.Channel.GetTemplate(credentials)
     End Function
-    
+
     Public Function GetTemplateAsync(ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampTemplateWrapper) Implements ILampService.GetTemplateAsync
         Return MyBase.Channel.GetTemplateAsync(credentials)
     End Function
-    
+
     Public Function GetAllTemplate(ByVal credentials As LampCommon.LampCredentials) As LampCommon.LampTemplate() Implements ILampService.GetAllTemplate
         Return MyBase.Channel.GetAllTemplate(credentials)
     End Function
-    
+
     Public Function GetAllTemplateAsync(ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampTemplate()) Implements ILampService.GetAllTemplateAsync
         Return MyBase.Channel.GetAllTemplateAsync(credentials)
     End Function
