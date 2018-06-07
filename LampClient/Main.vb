@@ -7,7 +7,7 @@ Public Module OwO
 
     Public Property CurrentSender As ILampService  'LampWcfClient.Local
 
-    Public Property ClientEndpoint As String = "http://localhost:8733/Design_Time_Addresses/LampService.svc"
+    Public Property ClientEndpoint As String = "http://localhost:8733/Design_Time_Addresses/LampService.svcsdf"
 
     Public Sub Main()
         InitalizeLibraries()
@@ -15,9 +15,7 @@ Public Module OwO
 
         Dim endpoint As New EndpointAddress(ClientEndpoint)
         Dim binding = New BasicHttpBinding()
-        binding.MaxReceivedMessageSize = 2147483647
-        Dim factory = New ChannelFactory(Of ILampService)(binding, endpoint)
-        CurrentSender = factory.CreateChannel
+        CurrentSender = New LampRemoteWcfClient(binding, endpoint)
 
 
         Application.EnableVisualStyles()
