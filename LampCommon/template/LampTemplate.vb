@@ -24,9 +24,9 @@ Public Class LampTemplateMetadata
         ret.Name = Name
         ret.ShortDescription = ShortDescription
         ret.LongDescription = LongDescription
-        ret.Material = ret.Material
-        ret.Length = ret.Length
-        ret.Height = ret.Height
+        ret.Material = Material
+        ret.Length = Length
+        ret.Height = Height
         ret.MaterialThickness = MaterialThickness
         ret.IsComplete = IsComplete
         Return ret

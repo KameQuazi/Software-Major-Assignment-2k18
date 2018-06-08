@@ -156,23 +156,7 @@ Public Class LampDatabaseTests
 
     End Sub
 
-    <TestMethod()>
-    Public Async Function TestDatabaseInsertion() As Task
-        Dim database As New TemplateDatabase(databasePath)
-        database.RemoveTables()
-        database.CreateTables()
 
-        Using conn = database.Connection.OpenConnection, sqlite_cmd = conn.GetCommand()
-            Dim tasks As New List(Of Task(Of Boolean))
-            For i = 1 To 10
-                tasks.Add(database.SetTemplateAsync(New LampTemplate))
-            Next
-            Await Task.WhenAll(tasks)
-
-
-
-        End Using
-    End Function
 
     <TestMethod()>
     Public Sub TestTemplateFileSave()
@@ -207,6 +191,42 @@ Public Class LampDatabaseTests
 
 
         Next
+    End Function
+
+
+    <TestMethod()>
+    Public Async Function TestTemplates() As Task
+        Dim database As New TemplateDatabase(databasePath)
+        database.RemoveTables()
+        database.CreateTables()
+
+        Using conn = database.Connection.OpenConnection, sqlite_cmd = conn.GetCommand()
+            Dim tasks As New List(Of Task(Of Boolean))
+            For i = 1 To 10
+                tasks.Add(database.SetTemplateAsync(New LampTemplate))
+            Next
+            Await Task.WhenAll(tasks)
+
+        End Using
+
+        Dim test As New LampTemplate()
+        test.GUID = "0123-4567-8901-2345"
+        test.Height = 199
+        test.Length = 30004.4
+        test.Material = "Thicc wood"
+        test.MaterialThickness = 800000
+        Dim result = Await database.SetTemplateAsync(test)
+        AreEqual(True, result)
+
+        Dim template = Await database.SelectTemplateAsync(test.GUID)
+
+
+        AreEqual(test.GUID, template.GUID)
+        AreEqual(test.Height, template.Height)
+        AreEqual(test.Length, template.Length)
+        AreEqual(test.Material, template.Material)
+        AreEqual(test.MaterialThickness, template.MaterialThickness)
+
     End Function
 
     <TestMethod()>
