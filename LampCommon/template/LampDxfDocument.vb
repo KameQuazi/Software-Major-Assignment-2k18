@@ -122,11 +122,11 @@ Public Class LampDxfDocument
     ''' Creates a new LampDxfDocument from a dxf string
     ''' </summary>
     ''' <param name="dxf"></param>
-    Public Shared Function FromStringToLamp(dxf As String) As LampDxfDocument
+    Public Shared Function FromString(dxf As String) As LampDxfDocument
         Return New LampDxfDocument(FromStringToDxfDocument(dxf))
     End Function
 
-    Public Shared Function FromStringToDxfDocument(dxf As String)
+    Public Shared Function FromStringToDxfDocument(dxf As String) As DxfDocument
         Using stream As New MemoryStream(Encoding.UTF8.GetBytes(dxf))
             Return DxfDocument.Load(stream)
         End Using
@@ -773,7 +773,7 @@ Public Class DxfJsonConverter
         Else
             Dim value As String = DirectCast(reader.Value, String)
             File.WriteAllText("out.txt", value)
-            out = LampDxfDocument.FromStringToLamp(value)
+            out = LampDxfDocument.FromString(value)
         End If
 
         Return out
