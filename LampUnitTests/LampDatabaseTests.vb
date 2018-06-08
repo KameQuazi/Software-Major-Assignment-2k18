@@ -30,7 +30,7 @@ Public Class LampDatabaseTests
         End Sub
     End Structure
 
-    Private Function GetColumnInformation(reader As SQLite.SQLiteDataReader) As ColumnDescriptor
+    Private Function GetTemplateTableMetadata(reader As SQLite.SQLiteDataReader) As ColumnDescriptor
         reader.Read()
         Dim cid = reader.GetInt32(0)
         Dim name = reader.GetString(1)
@@ -53,7 +53,7 @@ Public Class LampDatabaseTests
         End If
 
         Dim database As New TemplateDatabase(databasePath)
-        database.DeleteTables()
+        database.RemoveTables()
         database.CreateTables()
     End Sub
 
@@ -62,151 +62,161 @@ Public Class LampDatabaseTests
     ' Execute Pragma table_info(template)
     ' to get all the column info 
     <TestMethod()>
-    Public Sub TestDatabaseCreation()
+    Public Sub TestDatabaseSchema()
         Dim database As New TemplateDatabase(databasePath)
-        database.OpenDatabase()
-        Try
-            Using command = database.GetCommand()
-                command.CommandText = String.Format("Pragma table_info(template)", TemplateTableName)
+
+        Using conn = database.Connection.OpenConnection(), command = conn.GetCommand
 
 
-                Using data = command.ExecuteReader()
+            command.CommandText = "Pragma table_info(template)"
+            Using data = command.ExecuteReader()
 
-                    Dim guid = GetColumnInformation(data)
-                    AreEqual(0, guid.cid)
-                    AreEqual("guid", guid.name.ToLower())
-                    AreEqual("text", guid.type.ToLower())
-                    AreEqual(True, guid.notnull)
-                    AreEqual(Nothing, guid.default)
-                    AreEqual(True, guid.pk)
+                Dim guid = GetTemplateTableMetadata(data)
+                AreEqual(0, guid.cid)
+                AreEqual("guid", guid.name.ToLower())
+                AreEqual("text", guid.type.ToLower())
+                AreEqual(True, guid.notnull)
+                AreEqual(Nothing, guid.default)
+                AreEqual(True, guid.pk)
 
-                    Dim dxf = GetColumnInformation(data)
-                    AreEqual(1, dxf.cid)
-                    AreEqual("dxf", dxf.name.ToLower())
-                    AreEqual("text", dxf.type.ToLower())
-                    AreEqual(True, dxf.notnull)
-                    AreEqual(Nothing, dxf.default)
-                    AreEqual(False, dxf.pk)
+                Dim name = GetTemplateTableMetadata(data)
+                AreEqual(1, name.cid)
+                AreEqual("name", name.name.ToLower())
+                AreEqual("text", name.type.ToLower())
+                AreEqual(True, name.notnull)
+                AreEqual("''", name.default)
+                AreEqual(False, name.pk)
 
-                    Dim name = GetColumnInformation(data)
-                    AreEqual(2, name.cid)
-                    AreEqual("name", name.name.ToLower())
-                    AreEqual("text", name.type.ToLower())
-                    AreEqual(True, name.notnull)
-                    AreEqual("''", name.default)
-                    AreEqual(False, name.pk)
+                Dim shortDescription = GetTemplateTableMetadata(data)
+                AreEqual(2, shortDescription.cid)
+                AreEqual("shortdescription", shortDescription.name.ToLower())
+                AreEqual("text", shortDescription.type.ToLower())
+                AreEqual(True, shortDescription.notnull)
+                AreEqual("''", shortDescription.default)
+                AreEqual(False, shortDescription.pk)
 
-                    Dim shortDescription = GetColumnInformation(data)
-                    AreEqual(3, shortDescription.cid)
-                    AreEqual("shortdescription", shortDescription.name.ToLower())
-                    AreEqual("text", shortDescription.type.ToLower())
-                    AreEqual(True, shortDescription.notnull)
-                    AreEqual("''", shortDescription.default)
-                    AreEqual(False, shortDescription.pk)
+                Dim longDescription = GetTemplateTableMetadata(data)
+                AreEqual(3, longDescription.cid)
+                AreEqual("longdescription", longDescription.name.ToLower())
+                AreEqual("text", longDescription.type.ToLower())
+                AreEqual(True, longDescription.notnull)
+                AreEqual("''", longDescription.default)
+                AreEqual(False, longDescription.pk)
 
-                    Dim longDescription = GetColumnInformation(data)
-                    AreEqual(4, longDescription.cid)
-                    AreEqual("longdescription", longDescription.name.ToLower())
-                    AreEqual("text", longDescription.type.ToLower())
-                    AreEqual(True, longDescription.notnull)
-                    AreEqual("''", longDescription.default)
-                    AreEqual(False, longDescription.pk)
+                Dim mat = GetTemplateTableMetadata(data)
+                AreEqual(4, mat.cid)
+                AreEqual("material", mat.name.ToLower())
+                AreEqual("text", mat.type.ToLower())
+                AreEqual(True, mat.notnull)
+                AreEqual("'none'", mat.default)
+                AreEqual(False, mat.pk)
 
-                    Dim mat = GetColumnInformation(data)
-                    AreEqual(5, mat.cid)
-                    AreEqual("material", mat.name.ToLower())
-                    AreEqual("text", mat.type.ToLower())
-                    AreEqual(True, mat.notnull)
-                    AreEqual("'none'", mat.default)
-                    AreEqual(False, mat.pk)
+                Dim length = GetTemplateTableMetadata(data)
+                AreEqual(5, length.cid)
+                AreEqual("length", length.name.ToLower())
+                AreEqual("real", length.type.ToLower())
+                AreEqual(True, length.notnull)
+                AreEqual(-1, length.default, 0.01)
+                AreEqual(False, length.pk)
 
-                    Dim length = GetColumnInformation(data)
-                    AreEqual(6, length.cid)
-                    AreEqual("length", length.name.ToLower())
-                    AreEqual("real", length.type.ToLower())
-                    AreEqual(True, length.notnull)
-                    AreEqual(-1, length.default, 0.01)
-                    AreEqual(False, length.pk)
-
-                    Dim height = GetColumnInformation(data)
-                    AreEqual(7, height.cid)
-                    AreEqual("height", height.name.ToLower())
-                    AreEqual("real", height.type.ToLower())
-                    AreEqual(True, height.notnull)
-                    AreEqual(-1, height.default, 0.01)
-                    AreEqual(False, height.pk)
+                Dim height = GetTemplateTableMetadata(data)
+                AreEqual(6, height.cid)
+                AreEqual("height", height.name.ToLower())
+                AreEqual("real", height.type.ToLower())
+                AreEqual(True, height.notnull)
+                AreEqual(-1, height.default, 0.01)
+                AreEqual(False, height.pk)
 
 
-                    Dim materialThickness = GetColumnInformation(data)
-                    AreEqual(8, materialThickness.cid)
-                    AreEqual("materialthickness", materialThickness.name.ToLower())
-                    AreEqual("real", materialThickness.type.ToLower())
-                    AreEqual(True, materialThickness.notnull)
-                    AreEqual(-1, materialThickness.default, 0.01)
-                    AreEqual(False, materialThickness.pk)
+                Dim materialThickness = GetTemplateTableMetadata(data)
+                AreEqual(7, materialThickness.cid)
+                AreEqual("materialthickness", materialThickness.name.ToLower())
+                AreEqual("real", materialThickness.type.ToLower())
+                AreEqual(True, materialThickness.notnull)
+                AreEqual(-1, materialThickness.default, 0.01)
+                AreEqual(False, materialThickness.pk)
 
-                    Dim creatorName = GetColumnInformation(data)
-                    AreEqual(9, creatorName.cid)
-                    AreEqual("creatorname", creatorName.name.ToLower())
-                    AreEqual("text", creatorName.type.ToLower())
-                    AreEqual(True, creatorName.notnull)
-                    AreEqual("''", creatorName.default)
-                    AreEqual(False, creatorName.pk)
+                Dim creatorId = GetTemplateTableMetadata(data)
+                AreEqual(8, creatorId.cid)
+                AreEqual("creatorid", creatorId.name.ToLower())
+                AreEqual("text", creatorId.type.ToLower())
+                AreEqual(False, creatorId.notnull)
+                AreEqual(Nothing, creatorId.default)
+                AreEqual(False, creatorId.pk)
 
-                    Dim creatorId = GetColumnInformation(data)
-                    AreEqual(10, creatorId.cid)
-                    AreEqual("creatorid", creatorId.name.ToLower())
-                    AreEqual("text", creatorId.type.ToLower())
-                    AreEqual(True, creatorId.notnull)
-                    AreEqual("'0000-0000-0000-0000'", creatorId.default)
-                    AreEqual(False, creatorId.pk)
-                End Using
+                Dim approverId = GetTemplateTableMetadata(data)
+                AreEqual(9, approverId.cid)
+                AreEqual("approverid", approverId.name.ToLower())
+                AreEqual("text", approverId.type.ToLower())
+                AreEqual(False, approverId.notnull)
+                AreEqual(Nothing, approverId.default)
+                AreEqual(False, approverId.pk)
             End Using
+        End Using
 
-        Finally
-            database.CloseDatabase()
-            TestConnectionClosed()
-        End Try
     End Sub
 
     <TestMethod()>
-    Public Sub TestTemplate()
+    Public Async Function TestDatabaseInsertion() As Task
+        Dim database As New TemplateDatabase(databasePath)
+        database.RemoveTables()
+        database.CreateTables()
+
+        Using conn = database.Connection.OpenConnection, sqlite_cmd = conn.GetCommand()
+            Dim tasks As New List(Of Task(Of Boolean))
+            For i = 1 To 10
+                tasks.Add(database.SetTemplateAsync(New LampTemplate))
+            Next
+            Await Task.WhenAll(tasks)
+
+
+
+        End Using
+    End Function
+
+    <TestMethod()>
+    Public Sub TestTemplateFileSave()
         Dim temp As New LampTemplate()
         temp.Save("test.spf")
-        temp = LampTemplate.FromFile("test.spf")
-
+        Dim fromFile = LampTemplate.FromFile("test.spf")
+        AreEqual(temp.GUID, fromFile.GUID)
     End Sub
 
-    <TestMethod()>
-    Public Sub TestConnectionClosed()
 
-        For i = 0 To RepeatConnectionTestTimes - 1
+    <TestMethod()>
+    Public Async Function TestConnectionClosed() As Task
+
+        For i = 1 To RepeatConnectionTestTimes
             With Nothing ' test database creation / deletion
                 Dim db As New TemplateDatabase
-                db.OpenDatabase()
-                db.CreateTables()
-                db.DeleteTables()
-                db.CloseDatabase()
+                Using db.Connection.OpenConnection
+                    db.CreateTables()
+                    db.RemoveTables()
+                End Using
             End With
 
             With Nothing ' test select and adding template
                 Dim db As New TemplateDatabase
-                Dim temp As New LampTemplate
-                db.AddTemplate(temp)
-                db.SelectTemplate(temp.GUID)
+                Using db.Connection.OpenConnection
+                    Dim temp As New LampTemplate
+                    db.SetTemplate(temp)
+                    AreEqual(temp.GUID, db.SelectTemplate(temp.GUID).GUID)
+                    AreEqual(temp.GUID, (Await db.SelectTemplateAsync(temp.GUID)).GUID)
+                End Using
             End With
 
 
         Next
-    End Sub
+    End Function
 
     <TestMethod()>
     Public Sub TestUsers()
         Dim db As New TemplateDatabase
         Dim user As New LampUser(NewGuid, UserPermission.Admin, "email@gmail.com", "jackywathy", "abcd1234", "testuser")
-        db.AddUser(user)
+        db.SetUser(user)
         db.SelectUser(user.UserId)
     End Sub
+
 
     Private RepeatConnectionTestTimes = 3
 

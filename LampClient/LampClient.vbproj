@@ -98,106 +98,106 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frontend\controls\DxfViewerControl.Designer.vb">
+    <Compile Include="controls\DxfViewerControl.Designer.vb">
       <DependentUpon>DxfViewerControl.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\controls\DxfViewerControl.vb">
+    <Compile Include="controls\DxfViewerControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="frontend\controls\DynamicFormCreation.Designer.vb">
+    <Compile Include="controls\DynamicFormCreation.Designer.vb">
       <DependentUpon>DynamicFormCreation.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\controls\DynamicFormCreation.vb">
+    <Compile Include="controls\DynamicFormCreation.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="frontend\controls\fileDisplay.designer.vb">
+    <Compile Include="controls\fileDisplay.designer.vb">
       <DependentUpon>FileDisplay.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\controls\FileDisplay.vb">
+    <Compile Include="controls\FileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="frontend\controls\MultiTemplateViewer.Designer.vb">
+    <Compile Include="controls\MultiTemplateViewer.Designer.vb">
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\controls\MultiTemplateViewer.vb">
+    <Compile Include="controls\MultiTemplateViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="frontend\controls\SingleDynamicTExt.Designer.vb">
+    <Compile Include="controls\SingleDynamicTExt.Designer.vb">
       <DependentUpon>SingleDynamicText.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\controls\SingleDynamicText.vb">
+    <Compile Include="controls\SingleDynamicText.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="frontend\controls\ToolBar.Designer.vb">
+    <Compile Include="controls\ToolBar.Designer.vb">
       <DependentUpon>ToolBar.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\controls\ToolBar.vb">
+    <Compile Include="controls\ToolBar.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="frontend\forms\AboutBox1.designer.vb">
+    <Compile Include="forms\AboutBox1.designer.vb">
       <DependentUpon>AboutBox1.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\AboutBox1.vb">
+    <Compile Include="forms\AboutBox1.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\forms\DBViewer.Designer.vb">
+    <Compile Include="forms\DBViewer.Designer.vb">
       <DependentUpon>DBViewer.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\DBViewer.vb">
+    <Compile Include="forms\DBViewer.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\forms\DebugForm.Designer.vb">
+    <Compile Include="forms\DebugForm.Designer.vb">
       <DependentUpon>DebugForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\DebugForm.vb">
+    <Compile Include="forms\DebugForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\forms\DesignerForm.Designer.vb">
+    <Compile Include="forms\DesignerForm.Designer.vb">
       <DependentUpon>DesignerForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\DesignerForm.vb">
+    <Compile Include="forms\DesignerForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\forms\DynamicTextCreationForm.Designer.vb">
+    <Compile Include="forms\DynamicTextCreationForm.Designer.vb">
       <DependentUpon>DynamicTextCreationForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\DynamicTextCreationForm.vb">
+    <Compile Include="forms\DynamicTextCreationForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\forms\LampInputBox.Designer.vb">
+    <Compile Include="forms\LampInputBox.Designer.vb">
       <DependentUpon>LampInputBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\LampInputBox.vb">
+    <Compile Include="forms\LampInputBox.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\forms\LoginForm.designer.vb">
+    <Compile Include="forms\LoginForm.designer.vb">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\LoginForm.vb">
+    <Compile Include="forms\LoginForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\forms\Logout.Designer.vb">
+    <Compile Include="forms\Logout.Designer.vb">
       <DependentUpon>Logout.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\Logout.vb">
+    <Compile Include="forms\Logout.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\forms\Options.Designer.vb">
+    <Compile Include="forms\Options.Designer.vb">
       <DependentUpon>Options.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\Options.vb">
+    <Compile Include="forms\Options.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\forms\TemplateEditor.Designer.vb">
+    <Compile Include="forms\TemplateEditor.Designer.vb">
       <DependentUpon>TemplateEditor.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\TemplateEditor.vb">
+    <Compile Include="forms\TemplateEditor.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frontend\forms\TemplateSelect.Designer.vb">
+    <Compile Include="forms\TemplateSelect.Designer.vb">
       <DependentUpon>TemplateSelect.vb</DependentUpon>
     </Compile>
-    <Compile Include="frontend\forms\TemplateSelect.vb">
+    <Compile Include="forms\TemplateSelect.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LampRemoteWcfClient.vb" />
@@ -220,55 +220,55 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frontend\controls\DxfViewerControl.resx">
+    <EmbeddedResource Include="controls\DxfViewerControl.resx">
       <DependentUpon>DxfViewerControl.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\controls\DynamicFormCreation.resx">
+    <EmbeddedResource Include="controls\DynamicFormCreation.resx">
       <DependentUpon>DynamicFormCreation.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\controls\fileDisplay.resx">
+    <EmbeddedResource Include="controls\fileDisplay.resx">
       <DependentUpon>FileDisplay.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\controls\MultiTemplateViewer.resx">
+    <EmbeddedResource Include="controls\MultiTemplateViewer.resx">
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\controls\SingleDynamicTExt.resx">
+    <EmbeddedResource Include="controls\SingleDynamicTExt.resx">
       <DependentUpon>SingleDynamicText.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\controls\ToolBar.resx">
+    <EmbeddedResource Include="controls\ToolBar.resx">
       <DependentUpon>ToolBar.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\AboutBox1.resx">
+    <EmbeddedResource Include="forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\DBViewer.resx">
+    <EmbeddedResource Include="forms\DBViewer.resx">
       <DependentUpon>DBViewer.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\DebugForm.resx">
+    <EmbeddedResource Include="forms\DebugForm.resx">
       <DependentUpon>DebugForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\DesignerForm.resx">
+    <EmbeddedResource Include="forms\DesignerForm.resx">
       <DependentUpon>DesignerForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\DynamicTextCreationForm.resx">
+    <EmbeddedResource Include="forms\DynamicTextCreationForm.resx">
       <DependentUpon>DynamicTextCreationForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\LampInputBox.resx">
+    <EmbeddedResource Include="forms\LampInputBox.resx">
       <DependentUpon>LampInputBox.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\LoginForm.resx">
+    <EmbeddedResource Include="forms\LoginForm.resx">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\Logout.resx">
+    <EmbeddedResource Include="forms\Logout.resx">
       <DependentUpon>Logout.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\Options.resx">
+    <EmbeddedResource Include="forms\Options.resx">
       <DependentUpon>Options.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\TemplateEditor.resx">
+    <EmbeddedResource Include="forms\TemplateEditor.resx">
       <DependentUpon>TemplateEditor.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frontend\forms\TemplateSelect.resx">
+    <EmbeddedResource Include="forms\TemplateSelect.resx">
       <DependentUpon>TemplateSelect.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

@@ -45,7 +45,7 @@ Public Class LampService
 
         If user IsNot Nothing Then
             If HasAddTemplatePerms(user) Then
-                Database.AddTemplate(template)
+                Database.SetTemplate(template)
             Else
                 response = response And LampStatus.NoAccess
             End If
@@ -61,7 +61,7 @@ Public Class LampService
         ' check if user got permissions
 
         ' TODO Also extract stuff
-        Database.AddJob(job)
+        Database.SetJob(job)
         Return 0
     End Function
 
@@ -75,7 +75,7 @@ Public Class LampService
     End Function
 
     Private Function ILampService_QueueJob(job As LampJob, credentials As LampCredentials) As LampStatus Implements ILampServerService.QueueJob
-        Database.AddJob(job)
+        Database.SetJob(job)
         Throw New NotImplementedException()
     End Function
 

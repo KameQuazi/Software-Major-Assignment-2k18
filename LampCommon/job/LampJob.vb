@@ -12,6 +12,8 @@ Public Class LampJob
 
     Public Property Approved As Boolean
 
+    Public Property SubmitDate As Date?
+
     Public Property SubmitId As String
         Get
             Return Submitter.UserId
@@ -37,7 +39,7 @@ Public Class LampJob
     End Property
 
 
-    Sub New(template As LampTemplate, submitter As LampUser, Optional approver As LampUser = Nothing, Optional approved As Boolean = False)
+    Sub New(template As LampTemplate, submitter As LampUser, Optional approver As LampUser = Nothing, Optional approved As Boolean = False, Optional submitDate As Date? = Nothing)
 
         If template Is Nothing Then
             Throw New ArgumentNullException(NameOf(template))
@@ -47,7 +49,7 @@ Public Class LampJob
         Me.Submitter = submitter
         Me.Approver = approver
         Me.Approved = approved
-
+        Me.SubmitDate = submitDate
     End Sub
 
 End Class

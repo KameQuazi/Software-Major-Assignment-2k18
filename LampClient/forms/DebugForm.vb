@@ -31,7 +31,7 @@ Public Class DebugForm
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         Dim x = New TemplateDatabase()
-        x.DeleteTables()
+        x.RemoveTables()
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
@@ -55,8 +55,7 @@ Public Class DebugForm
         'TableLayoutPanel1.RowCount += 1
         'TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.AutoSize))
         ' Dim temps = New TemplateDatabase().GetAllTemplate.
-        Dim task = CurrentSender.GetAllTemplateAsync(CurrentUser.ToCredentials)
-        Dim temps = Await task
+        Dim temps = Await CurrentSender.GetAllTemplateAsync(CurrentUser.ToCredentials)
 
 
         MultiTemplateViewer1.Suspend()

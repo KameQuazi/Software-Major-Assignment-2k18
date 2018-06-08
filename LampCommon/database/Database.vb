@@ -7,7 +7,11 @@ Imports LampCommon.DatabaseHelper
 Imports LampCommon
 Imports System.Threading
 
-Public Class TemplateDatabase
+''' <summary>
+''' Template database
+''' Split into multiple parts
+''' </summary>
+Partial Public Class TemplateDatabase
     ''' <summary>
     ''' Path to database file
     ''' </summary>
@@ -19,6 +23,14 @@ Public Class TemplateDatabase
     ''' </summary>
     Public Property Connection As SqliteConnectionWrapper
 
+    ''' <summary>
+    ''' Transaction object. Since only  1 transaction per connection, it must be locked with
+    ''' Using trans = Transaction.LockTransaction() 
+    '''     ...
+    ''' End Using
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Transaction As SqliteTransactionWrapper
 
     ''' <summary>
     ''' Constructor for Database
@@ -34,10 +46,6 @@ Public Class TemplateDatabase
         ' recreate the database if not found
         CreateTables()
     End Sub
-
-
-
-
 
     ''' <summary>
     ''' Creates all the tables required, if tables not exist
@@ -124,11 +132,10 @@ Public Class TemplateDatabase
 
     End Sub
 
-
     ''' <summary>
     ''' Destroys all tables
     ''' </summary>
-    Public Sub DeleteTables()
+    Public Sub RemoveTables()
         ' If the databse is open already, dont close it
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             command.CommandText = "DROP TABLE If exists users"
@@ -145,8 +152,11 @@ Public Class TemplateDatabase
             command.ExecuteNonQuery()
         End Using
     End Sub
+End Class
 
 
+' Manipulate templates in the db
+Partial Public Class TemplateDatabase
     ''' <summary>
     ''' Gets a dxf. Returns nothing if not found
     ''' </summary>
@@ -165,41 +175,38 @@ Public Class TemplateDatabase
         Return dxf
     End Function
 
-
     ''' <summary>
     ''' Gets a dxf
     ''' </summary>
     ''' <param name="guid"></param>
     ''' <returns></returns>
     Public Async Function SelectDxfAsync(guid As String) As Task(Of LampDxfDocument)
-        ' If the databse is open already, dont close it
+        Dim dxf As LampDxfDocument = Nothing
         Using conn = Connection.OpenConnection, command = Connection.GetCommand
             command.CommandText = "Select DXF from dxf WHERE guid=@guid"
             command.Parameters.AddWithValue("@guid", guid)
             Dim dxfString = DirectCast(Await command.ExecuteScalarAsync(), String)
             If dxfString IsNot Nothing Then
-                Return LampDxfDocument.FromString(dxfString)
-            Else
-                Return Nothing
+                dxf = LampDxfDocument.FromString(dxfString)
             End If
         End Using
+        Return dxf
     End Function
-
 
     ''' <summary>
     ''' Adds a dxf to the db. Uses the guid in a template
+    ''' internal use only
     ''' </summary>
     ''' <param name="template"></param>
     ''' <returns></returns>
-    Public Function AddDxf(template As LampTemplate)
-        Return AddDxf(template.GUID, template.BaseDrawing)
+    Private Function SetDxf(template As LampTemplate) As Boolean
+        Return SetDxf(template.GUID, template.BaseDrawing)
     End Function
 
-
     ''' <summary>
-    ''' Adds dxf to the db
+    ''' Adds dxf to the db - internal
     ''' </summary>
-    Public Function AddDxf(guid As String, dxf As LampDxfDocument) As Boolean
+    Private Function SetDxf(guid As String, dxf As LampDxfDocument) As Boolean
         Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand()
             ' Add in templateData
             sqlite_cmd.CommandText = "INSERT OR REPLACE into DXF
@@ -216,22 +223,21 @@ Public Class TemplateDatabase
     End Function
 
     ''' <summary>
-    ''' adds a dxf async
+    ''' adds a dxf async - internal
     ''' </summary>
     ''' <param name="template"></param>
     ''' <returns></returns>
-    Public Async Function AddDxfAsync(template As LampTemplate) As Task(Of Boolean)
-        Return Await AddDxfAsyc(template.GUID, template.BaseDrawing)
+    Private Async Function SetDxfAsync(template As LampTemplate) As Task(Of Boolean)
+        Return Await SetDxfAsync(template.GUID, template.BaseDrawing)
     End Function
 
-
     ''' <summary>
-    ''' adds a dxf async
+    ''' adds a dxf async - internal
     ''' </summary>
     ''' <param name="guid"></param>
     ''' <param name="dxf"></param>
     ''' <returns></returns>
-    Public Async Function AddDxfAsyc(guid As String, dxf As LampDxfDocument) As Task(Of Boolean)
+    Private Async Function SetDxfAsync(guid As String, dxf As LampDxfDocument) As Task(Of Boolean)
         Using conn = Connection.OpenConnection, command = Connection.GetCommand()
             ' Add in templateData
             command.CommandText = "INSERT OR REPLACE into DXF
@@ -246,14 +252,13 @@ Public Class TemplateDatabase
         End Using
     End Function
 
-
     ''' <summary>
     ''' Removes from database based on guid
     ''' Also removes images by default, rmImages can be set to false to not
     ''' </summary>
     ''' <param name="guid">string guid</param>
     ''' <returns>True=Removed, False=None found</returns>
-    Public Function RemoveDxf(guid As String) As Boolean
+    Private Function RemoveDxf(guid As String) As Boolean
         Using conn = Connection.OpenConnection, command = Connection.GetCommand()
             command.CommandText = "DELETE from dxf WHERE GUID = @guid"
             command.Parameters.AddWithValue("@guid", guid)
@@ -262,14 +267,13 @@ Public Class TemplateDatabase
         End Using
     End Function
 
-
     ''' <summary>
     ''' Removes from database based on guid
     ''' Also removes images by default, rmImages can be set to false to not
     ''' </summary>
     ''' <param name="guid">string guid</param>
     ''' <returns>True=Removed, False=None found</returns>
-    Public Async Function RemoveDxfAsync(guid As String) As Task(Of Boolean)
+    Private Async Function RemoveDxfAsync(guid As String) As Task(Of Boolean)
         Using conn = Connection.OpenConnection, command = Connection.GetCommand()
             command.CommandText = "DELETE from dxf WHERE GUID = @guid"
             command.Parameters.AddWithValue("@guid", guid)
@@ -278,6 +282,465 @@ Public Class TemplateDatabase
         End Using
     End Function
 
+    ''' <summary>
+    ''' gets a template's metadata
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
+    Public Function SelectTemplateMetadata(guid As String) As LampTemplateMetadata
+        Dim metadata As LampTemplateMetadata = Nothing
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "Select 
+                                    name, shortDescription, longDescription, material, 
+                                    length, height, materialthickness, 
+                                    creatorId, approverId, submitDate, complete 
+
+                                    FROM template WHERE guid = @guid"
+            command.Parameters.AddWithValue("@guid", guid)
+            Using reader = command.ExecuteReader()
+                ' read only 1 row off the database
+                If reader.Read() Then
+                    metadata = New LampTemplateMetadata()
+                    metadata.GUID = guid
+
+                    metadata.Name = reader.GetString(reader.GetOrdinal("name"))
+                    metadata.ShortDescription = reader.GetString(reader.GetOrdinal("ShortDescription"))
+                    metadata.LongDescription = reader.GetString(reader.GetOrdinal("LongDescription"))
+                    metadata.Material = reader.GetString(reader.GetOrdinal("material"))
+                    metadata.Length = reader.GetDouble(reader.GetOrdinal("length"))
+                    metadata.Height = reader.GetDouble(reader.GetOrdinal("height"))
+                    metadata.MaterialThickness = reader.GetDouble(reader.GetOrdinal("MaterialThickness"))
+
+                    If Not reader.IsDBNull(reader.GetOrdinal("CreatorId")) Then
+                        metadata.CreatorProfile = SelectUser(reader.GetString(reader.GetOrdinal("CreatorId"))).ToProfile
+                    End If
+
+                    If Not reader.IsDBNull(reader.GetOrdinal("ApproverId")) Then
+                        metadata.CreatorProfile = SelectUser(reader.GetString(reader.GetOrdinal("ApproverId"))).ToProfile
+                    End If
+
+                    metadata.SubmitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
+                    metadata.IsComplete = reader.GetBoolean(reader.GetOrdinal("complete"))
+
+                End If
+            End Using
+        End Using
+        Return metadata
+    End Function
+
+    ''' <summary>
+    ''' gets a template's metadata
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
+    Public Async Function SelectTemplateMetadataAsync(guid As String) As Task(Of LampTemplateMetadata)
+        Dim metadata As LampTemplateMetadata = Nothing
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "Select 
+                                    name, shortDescription, longDescription, material, 
+                                    length, height, materialthickness, 
+                                    creatorId, approverId, submitDate, complete 
+
+                                    FROM template WHERE guid = @guid"
+            command.Parameters.AddWithValue("@guid", guid)
+            Using reader = Await command.ExecuteReaderAsync()
+                ' read only 1 row off the database
+                If Await reader.ReadAsync() Then
+                    metadata = New LampTemplateMetadata()
+                    metadata.GUID = guid
+
+                    metadata.Name = reader.GetString(reader.GetOrdinal("name"))
+                    metadata.ShortDescription = reader.GetString(reader.GetOrdinal("ShortDescription"))
+                    metadata.LongDescription = reader.GetString(reader.GetOrdinal("LongDescription"))
+                    metadata.Material = reader.GetString(reader.GetOrdinal("material"))
+                    metadata.Length = reader.GetDouble(reader.GetOrdinal("length"))
+                    metadata.Height = reader.GetDouble(reader.GetOrdinal("height"))
+                    metadata.MaterialThickness = reader.GetDouble(reader.GetOrdinal("MaterialThickness"))
+
+                    If Not reader.IsDBNull(reader.GetOrdinal("CreatorId")) Then
+                        metadata.CreatorProfile = (Await SelectUserAsync(reader.GetString(reader.GetOrdinal("CreatorId")))).ToProfile
+                    End If
+
+                    If Not reader.IsDBNull(reader.GetOrdinal("ApproverId")) Then
+                        metadata.CreatorProfile = (Await SelectUserAsync(reader.GetString(reader.GetOrdinal("ApproverId")))).ToProfile
+                    End If
+
+                    metadata.SubmitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
+                    metadata.IsComplete = reader.GetBoolean(reader.GetOrdinal("complete"))
+
+                End If
+            End Using
+        End Using
+        Return metadata
+    End Function
+
+    ''' <summary>
+    ''' Adds template data
+    ''' </summary>
+    ''' <param name="template"></param>
+    ''' <param name="creatorId"></param>
+    ''' <param name="approverId"></param>
+    ''' <returns></returns>
+    Private Function SetTemplateData(template As LampTemplateMetadata, creatorId As String, approverId As String) As Boolean
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "INSERT OR REPLACE INTO template
+                    (guid, name, shortDescription, longDescription, material,
+                    length, Height, materialthickness, 
+                    creatorID, approverId, submitdate, complete)
+                    VALUES
+                    (@guid, @name, @shortDescription, @longDescription, @material, 
+                    @length, @height, @materialthickness, 
+                    @creatorId, @approverId, DATETIME('now'), @complete);"
+
+            command.Parameters.AddWithValue("@guid", template.GUID)
+
+            command.Parameters.AddWithValue("@name", template.Name)
+            command.Parameters.AddWithValue("@shortDescription", template.ShortDescription)
+            command.Parameters.AddWithValue("@longDescription", template.LongDescription)
+            command.Parameters.AddWithValue("@material", template.Material)
+
+            command.Parameters.AddWithValue("@length", template.Length)
+            command.Parameters.AddWithValue("@height", template.Height)
+            command.Parameters.AddWithValue("@materialthickness", template.MaterialThickness)
+
+            command.Parameters.AddWithValue("@creatorId", creatorId)
+            command.Parameters.AddWithValue("@approverId", approverId)
+            command.Parameters.AddWithValue("@complete", template.IsComplete)
+
+            Return Convert.ToBoolean(command.ExecuteNonQuery())
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' adds template data
+    ''' </summary>
+    ''' <param name="template"></param>
+    ''' <param name="creatorId"></param>
+    ''' <param name="approverId"></param>
+    ''' <returns></returns>
+    Private Async Function SetTemplateDataAsync(template As LampTemplateMetadata, creatorId As String, approverId As String) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "INSERT OR REPLACE INTO template
+                    (guid, name, shortDescription, longDescription, material,
+                    length, Height, materialthickness, 
+                    creatorID, approverId, submitdate, complete)
+                    VALUES
+                    (@guid, @name, @shortDescription, @longDescription, @material, 
+                    @length, @height, @materialthickness, 
+                    @creatorId, @approverId, DATETIME('now'), @complete);"
+
+            command.Parameters.AddWithValue("@guid", template.GUID)
+
+            command.Parameters.AddWithValue("@name", template.Name)
+            command.Parameters.AddWithValue("@shortDescription", template.ShortDescription)
+            command.Parameters.AddWithValue("@longDescription", template.LongDescription)
+            command.Parameters.AddWithValue("@material", template.Material)
+
+            command.Parameters.AddWithValue("@length", template.Length)
+            command.Parameters.AddWithValue("@height", template.Height)
+            command.Parameters.AddWithValue("@materialthickness", template.MaterialThickness)
+
+            command.Parameters.AddWithValue("@creatorId", creatorId)
+            command.Parameters.AddWithValue("@approverId", approverId)
+            command.Parameters.AddWithValue("@complete", template.IsComplete)
+
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Retrieves the images from the database
+    ''' given guid of the template, returns the images associated with it, or nothing if none was found
+    ''' returns a list of <see cref="LampTemplate.MaxImages"/> size.
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
+    Public Function SelectImages(guid As String) As List(Of Image)
+        Dim images As New List(Of Image)
+
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "Select image1, image2, image3 FROM images WHERE guid = @guid"
+            command.Parameters.AddWithValue("@guid", guid)
+
+            Using sqlite_reader = command.ExecuteReader()
+                If sqlite_reader.Read() Then
+                    For i = 1 To LampTemplate.MaxImages
+                        Dim columnNumber = sqlite_reader.GetOrdinal(String.Format("image{0}", i))
+
+                        If Not sqlite_reader.IsDBNull(columnNumber) Then
+                            Dim readImage As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(columnNumber), Byte()))
+                            images.Add(readImage)
+                        Else
+                            images.Add(Nothing)
+                        End If
+                    Next
+                Else
+                    For i = 1 To LampTemplate.MaxImages
+                        images.Add(Nothing)
+                    Next
+                End If
+            End Using
+        End Using
+        Return images
+    End Function
+
+    ''' <summary>
+    ''' Retrieves the images from the database
+    ''' given guid of the template, returns the images associated with it, or nothing if none was found
+    ''' returns a list of <see cref="LampTemplate.MaxImages"/> size.
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
+    Public Async Function SelectImagesAsync(guid As String) As Task(Of List(Of Image))
+        Dim images As New List(Of Image)
+
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "Select image1, image2, image3 FROM images WHERE guid = @guid"
+            command.Parameters.AddWithValue("@guid", guid)
+
+            Using reader = Await command.ExecuteReaderAsync()
+                If Await reader.ReadAsync() Then
+                    For i = 1 To LampTemplate.MaxImages
+                        Dim columnNumber = reader.GetOrdinal(String.Format("image{0}", i))
+
+                        If Not reader.IsDBNull(columnNumber) Then
+                            Dim readImage As Image = BinaryToImage(DirectCast(reader.GetValue(columnNumber), Byte()))
+                            images.Add(readImage)
+                        Else
+                            images.Add(Nothing)
+                        End If
+                    Next
+                Else
+                    For i = 1 To LampTemplate.MaxImages
+                        images.Add(Nothing)
+                    Next
+                End If
+            End Using
+        End Using
+        Return images
+    End Function
+
+    ''' <summary>
+    ''' Stores up to 3 preview images in the database
+    ''' images are stored as binary blobs (byte arrays or byte() in vb.net)
+    ''' this function takes a list(of Image), converts them into binary and chucks them in the database
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <param name="images"></param>
+    Private Function SetImages(Guid As String, images As IEnumerable(Of Image)) As Boolean
+        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand()
+            sqlite_cmd.CommandText = "INSERT OR REPLACE INTO images
+                    (Guid, image1, image2, image3)
+                    VALUES
+                    (@guid, @image1, @image2, @image3);"
+
+            sqlite_cmd.Parameters.AddWithValue("@guid", Guid)
+
+            If images.Count > LampTemplate.MaxImages Then
+                Throw New ArgumentOutOfRangeException(NameOf(images), images, String.Format("images array must have {0} or less elements", LampTemplate.MaxImages))
+            End If
+
+            Dim insertedAtLeastOne As Boolean = False
+
+            For i = 0 To images.Count - 1
+                Dim columnName = String.Format("@image{0}", i + 1)
+                sqlite_cmd.Parameters.AddWithValue(columnName, ImageToBinary(images(i)))
+
+                If images(i) IsNot Nothing Then
+                    insertedAtLeastOne = True
+                End If
+            Next
+
+            If insertedAtLeastOne = False Then
+                Throw New ArgumentOutOfRangeException(NameOf(images), images, "Images must have at least 1 not-null element")
+            End If
+
+            Return Convert.ToBoolean(sqlite_cmd.ExecuteNonQuery())
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Stores up to 3 preview images in the database
+    ''' images are stored as binary blobs (byte arrays or byte() in vb.net)
+    ''' this function takes a list(of Image), converts them into binary and chucks them in the database
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <param name="images"></param>
+    Private Async Function SetImagesAsync(guid As String, images As IEnumerable(Of Image)) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand()
+            sqlite_cmd.CommandText = "INSERT OR REPLACE INTO images
+                    (Guid, image1, image2, image3)
+                    VALUES
+                    (@guid, @image1, @image2, @image3);"
+
+            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+
+            If images.Count > LampTemplate.MaxImages Then
+                Throw New ArgumentOutOfRangeException(NameOf(images), images, String.Format("images array must have {0} or less elements", LampTemplate.MaxImages))
+            End If
+
+            Dim insertedAtLeastOne As Boolean = False
+
+            For i = 0 To images.Count - 1
+                Dim columnName = String.Format("@image{0}", i + 1)
+                sqlite_cmd.Parameters.AddWithValue(columnName, ImageToBinary(images(i)))
+
+                If images(i) IsNot Nothing Then
+                    insertedAtLeastOne = True
+                End If
+            Next
+
+            If insertedAtLeastOne = False Then
+                Throw New ArgumentOutOfRangeException(NameOf(images), images, "Images must have at least 1 not-null element")
+            End If
+
+            Return Convert.ToBoolean(Await sqlite_cmd.ExecuteNonQueryAsync())
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Removes images associated with the guid
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns>True=Removed image, False=None removed</returns>
+    Private Function RemoveImages(guid As String) As Boolean
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "DELETE from images WHERE GUID = @guid"
+            command.Parameters.AddWithValue("@guid", guid)
+            Return command.ExecuteNonQuery()
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Removes images associated with the guid
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns>True=Removed image, False=None removed</returns>
+    Private Async Function RemoveImagesAsync(guid As String) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "DELETE from images WHERE GUID = @guid"
+            command.Parameters.AddWithValue("@guid", guid)
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Gets all tags that belong to a template's guid
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
+    Public Function SelectTags(guid As String) As List(Of String)
+        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand()
+            sqlite_cmd.CommandText = "SELECT tagName FROM tags
+                                      WHERE guid=@guid;"
+
+            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+
+            Dim tags As New List(Of String)
+            Dim reader = sqlite_cmd.ExecuteReader()
+
+            While reader.Read()
+                tags.Add(reader.GetString(reader.GetOrdinal("tagName")))
+            End While
+
+            Return tags
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Gets all tags that belong to a template's guid
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
+    Public Async Function SelectTagsAsync(guid As String) As Task(Of List(Of String))
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "SELECT tagName FROM tags
+                                      WHERE guid=@guid;"
+
+            command.Parameters.AddWithValue("@guid", guid)
+
+            Dim tags As New List(Of String)
+            Dim reader = Await command.ExecuteReaderAsync()
+
+            While Await reader.ReadAsync()
+                tags.Add(reader.GetString(reader.GetOrdinal("tagName")))
+            End While
+
+            Return tags
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' adds tags
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <param name="tags"></param>
+    Private Function SetTags(guid As String, tags As IEnumerable(Of String)) As Integer
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "INSERT OR REPLACE INTO tags
+                    (Guid, tagName)
+                    VALUES
+                    (@guid, @tagName);"
+
+            Dim insertedRows = 0
+            command.Parameters.AddWithValue("@guid", guid)
+            For Each tag In tags
+                command.Parameters.AddWithValue("@tagName", tag)
+
+                insertedRows += command.ExecuteNonQuery()
+            Next
+            Return insertedRows
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' adds tags
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <param name="tags"></param>
+    Private Async Function SetTagsAsync(guid As String, tags As IEnumerable(Of String)) As Task(Of Integer)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "INSERT OR REPLACE INTO tags
+                    (Guid, tagName)
+                    VALUES
+                    (@guid, @tagName);"
+
+            Dim insertedRows As Integer = 0
+            command.Parameters.AddWithValue("@guid", guid)
+            For Each tag In tags
+                command.Parameters.AddWithValue("@tagName", tag)
+
+                insertedRows += Await command.ExecuteNonQueryAsync()
+            Next
+            Return insertedRows
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Removes all tags associated with the guid
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
+    Private Function RemoveTags(guid As String) As Integer
+        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand()
+            sqlite_cmd.CommandText = "DELETE from tags WHERE guid = @guid"
+            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+            Return sqlite_cmd.ExecuteNonQuery()
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Removes all tags associated with the guid
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
+    Private Async Function RemoveTagsAsync(guid As String) As Task(Of Integer)
+        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand()
+            sqlite_cmd.CommandText = "DELETE from tags WHERE guid = @guid"
+            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+            Return Await sqlite_cmd.ExecuteNonQueryAsync()
+        End Using
+    End Function
 
     ''' <summary>
     ''' Finds a template in the database, given its corresponding guid
@@ -285,72 +748,510 @@ Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="guid"></param>
     ''' <returns></returns>
-    Function SelectTemplate(guid As String) As LampTemplate
+    Public Function SelectTemplate(guid As String) As LampTemplate
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
-            Dim dxf As LampDxfDocument = SelectDxf(guid)
+            Dim template As LampTemplate = SelectTemplateMetadata(guid).ToLampTemplate
 
-            If dxf IsNot Nothing Then
+            If template IsNot Nothing Then
+                ' dxf
+                Dim dxf As LampDxfDocument = SelectDxf(guid)
+                If dxf IsNot Nothing Then
+                    template.BaseDrawing = dxf
+                End If
 
-                command.CommandText = "Select 
-                                    name, shortDescription, longDescription, material, 
-                                    length, height, materialthickness, 
-                                    creatorId, approverId, submitDate, complete 
+                ' images
+                Dim images = SelectImages(guid)
+                If images IsNot Nothing Then
+                    For i = 0 To LampTemplate.MaxImages - 1
+                        template.PreviewImages(i) = images(i)
+                    Next
+                End If
 
-                                    FROM template WHERE guid = @guid"
-                command.Parameters.AddWithValue("@guid", guid)
-                Using reader = command.ExecuteReader()
-                    ' read only 1 row off the database
-                    If reader.Read() Then
-                        Dim LampTemp = New LampTemplate(dxf)
-                        LampTemp.GUID = guid
+                ' get all the tags from the db as well
+                For Each tag In SelectTags(guid)
+                    template.Tags.Add(tag)
+                Next
+            End If
+            Return template
+        End Using
+    End Function
 
-                        LampTemp.Name = reader.GetString(reader.GetOrdinal("name"))
-                        LampTemp.ShortDescription = reader.GetString(reader.GetOrdinal("ShortDescription"))
-                        LampTemp.LongDescription = reader.GetString(reader.GetOrdinal("LongDescription"))
-                        LampTemp.Material = reader.GetString(reader.GetOrdinal("material"))
-                        LampTemp.Height = reader.GetDouble(reader.GetOrdinal("height"))
-                        LampTemp.Length = reader.GetDouble(reader.GetOrdinal("length"))
-                        LampTemp.MaterialThickness = reader.GetDouble(reader.GetOrdinal("MaterialThickness"))
+    ''' <summary>
+    ''' Finds a template in the database, given its corresponding guid
+    ''' If no template is found, returns nothing
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
+    Public Async Function SelectTemplateAsync(guid As String) As Task(Of LampTemplate)
+        Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
+            Dim template = (Await SelectTemplateMetadataAsync(guid)).ToLampTemplate
 
-                        If reader.IsDBNull(reader.GetOrdinal("CreatorId")) Then
-                            LampTemp.CreatorProfile = Nothing
-                        Else
-                            LampTemp.CreatorProfile = SelectUser(reader.GetString(reader.GetOrdinal("CreatorId"))).ToProfile
-                        End If
+            If template IsNot Nothing Then
+                Dim dxfTask = SelectDxfAsync(guid)
+                Dim imageTask = SelectImagesAsync(guid)
+                Dim tagTask = SelectTagsAsync(guid)
 
-                        If reader.IsDBNull(reader.GetOrdinal("ApproverId")) Then
-                            LampTemp.ApproverProfile = Nothing
-                        Else
-                            LampTemp.CreatorProfile = SelectUser(reader.GetString(reader.GetOrdinal("ApproverId"))).ToProfile
-                        End If
+                Await Task.WhenAll(dxfTask, imageTask, tagTask)
 
-                        LampTemp.SubmitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
-                        LampTemp.IsComplete = reader.GetBoolean(reader.GetOrdinal("complete"))
+                If dxfTask.Result IsNot Nothing Then
+                    template.BaseDrawing = dxfTask.Result
+                End If
 
-                        ' get all the preview 
-                        Dim images = SelectImages(guid)
-                        If images IsNot Nothing Then
+                If imageTask.Result IsNot Nothing Then
+                    For i = 0 To LampTemplate.MaxImages - 1
+                        template.PreviewImages(i) = imageTask.Result(i)
+                    Next
+                End If
 
-                            For i = 0 To LampTemplate.MaxImages - 1
-                                LampTemp.PreviewImages(i) = images(i)
-                            Next
-                        End If
+                For Each tag In tagTask.Result
+                    template.Tags.Add(tag)
+                Next
+            End If
+            Return template
+        End Using
 
-                        ' get all the tags from the db as well
-                        For Each tag In SelectTags(guid)
-                            LampTemp.Tags.Add(tag)
-                        Next
+    End Function
 
-                        Return LampTemp
+    ''' <summary>
+    ''' Adds a template to the database
+    ''' </summary>
+    ''' <param name="template"></param>
+    Public Function SetTemplate(template As LampTemplate, Optional creatorId As String = Nothing, Optional approverId As String = Nothing) As Boolean
+        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand()
+            ' todo use transaction to make sure it updates everything
+
+            If SetTemplateData(template, creatorId, approverId) Then
+                If SetDxf(template.GUID, template.BaseDrawing) Then
+
+                    ' check that there is at least 1 image
+                    If template.PreviewImages.HasNotNothing() Then
+                        SetImages(template.GUID, template.PreviewImages)
                     End If
-                End Using
+
+                    If template.Tags.Count > 0 Then
+                        SetTags(template.GUID, template.Tags)
+                    End If
+
+                    Return True
+                End If
+
+                Throw New Exception("warning - database inconsisint as template data was inserted, but not dxf data.")
+            End If
+
+            ' failed to insert main data, probably
+            Return False
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Adds a template to the database
+    ''' </summary>
+    ''' <param name="template"></param>
+    Public Async Function SetTemplateAsync(template As LampTemplate, Optional creatorId As String = Nothing, Optional approverId As String = Nothing) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand()
+            ' todo use transaction to make sure it updates everything
+
+            If Await SetTemplateDataAsync(template, creatorId, approverId) Then
+                If Await SetDxfAsync(template.GUID, template.BaseDrawing) Then
+
+                    ' check that there is at least 1 image
+                    If template.PreviewImages.HasNotNothing() Then
+                        Await SetImagesAsync(template.GUID, template.PreviewImages)
+                    End If
+
+                    If template.Tags.Count > 0 Then
+                        Await SetTagsAsync(template.GUID, template.Tags)
+                    End If
+
+                    Return True
+                End If
+
+                Throw New Exception("warning - database inconsisint as template data was inserted, but not dxf data.")
+            End If
+
+            ' failed to insert main data, probably
+            Return False
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Removes from database based on guid
+    ''' Also removes images by default, rmImages can be set to false to not
+    ''' </summary>
+    ''' <param name="guid">string guid</param>
+    ''' <returns>True=Removed, False=None found</returns>
+    Public Function RemoveTemplate(guid As String) As Boolean
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            ' gotta remove these first before the guid in the templates table is gone
+            RemoveDxf(guid)
+            RemoveImages(guid)
+            RemoveTags(guid)
+
+            command.CommandText = "DELETE from template WHERE GUID = @guid"
+            command.Parameters.AddWithValue("@guid", guid)
+
+            Return Convert.ToBoolean(command.ExecuteNonQuery())
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Removes from database based on guid
+    ''' Also removes images by default, rmImages can be set to false to not
+    ''' </summary>
+    ''' <param name="guid">string guid</param>
+    ''' <returns>True=Removed, False=None found</returns>
+    Public Async Function RemoveTemplateAsync(guid As String) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            ' gotta remove these first before the guid in the templates table is gone
+            RemoveDxf(guid)
+            RemoveImages(guid)
+            RemoveTags(guid)
+
+            command.CommandText = "DELETE from template WHERE GUID = @guid"
+            command.Parameters.AddWithValue("@guid", guid)
+
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+        End Using
+    End Function
+End Class
+
+
+' implementation of users
+Partial Public Class TemplateDatabase
+    ''' <summary>
+    ''' gets a user, which has all the info on users
+    ''' </summary>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
+    Public Function SelectUser(userId As String) As LampUser
+        Dim user As LampUser = Nothing
+
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "Select email, username, password, permissionLevel, name from Users 
+                                          WHERE userId = @guid"
+            command.Parameters.AddWithValue("@guid", userId)
+
+            Using reader = command.ExecuteReader()
+                If reader.Read() Then
+                    Dim email = reader.GetString(reader.GetOrdinal("email"))
+                    Dim username = reader.GetString(reader.GetOrdinal("username"))
+                    Dim password = reader.GetString(reader.GetOrdinal("password"))
+                    Dim permissionLevel = reader.GetInt32(reader.GetOrdinal("permissionLevel"))
+                    Dim name = reader.GetString(reader.GetOrdinal("name"))
+
+                    user = New LampUser(userId, permissionLevel, email, password, username, name)
+                End If
+            End Using
+        End Using
+        Return user
+    End Function
+
+    ''' <summary>
+    ''' gets a user, which has all the info on users
+    ''' </summary>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
+    Public Async Function SelectUserAsync(userId As String) As Task(Of LampUser)
+        Dim user As LampUser = Nothing
+
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "Select email, username, password, permissionLevel, name from Users 
+                                          WHERE userId = @guid"
+            command.Parameters.AddWithValue("@guid", userId)
+
+            Using reader = Await command.ExecuteReaderAsync()
+                If Await reader.ReadAsync() Then
+                    Dim email = reader.GetString(reader.GetOrdinal("email"))
+                    Dim username = reader.GetString(reader.GetOrdinal("username"))
+                    Dim password = reader.GetString(reader.GetOrdinal("password"))
+                    Dim permissionLevel = reader.GetInt32(reader.GetOrdinal("permissionLevel"))
+                    Dim name = reader.GetString(reader.GetOrdinal("name"))
+
+                    user = New LampUser(userId, permissionLevel, email, password, username, name)
+                End If
+            End Using
+        End Using
+        Return user
+    End Function
+
+    ''' <summary>
+    ''' Gets the user object from a username/password pair
+    ''' </summary>
+    ''' <param name="username"></param>
+    ''' <param name="password"></param>
+    ''' <returns></returns>
+    Public Function SelectUser(username As String, password As String) As LampUser
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "Select userId from Users 
+                                          WHERE username=@username AND password=@password"
+            command.Parameters.AddWithValue("@username", username)
+            command.Parameters.AddWithValue("@password", password)
+
+            Dim userId = command.ExecuteScalar()
+            If userId IsNot Nothing Then
+                Return SelectUser(DirectCast(userId, String))
+            Else
+                Return Nothing
             End If
         End Using
     End Function
 
+    ''' <summary>
+    ''' Gets the user object from a username/password pair
+    ''' </summary>
+    ''' <param name="username"></param>
+    ''' <param name="password"></param>
+    ''' <returns></returns>
+    Public Async Function SelectUserAsync(username As String, password As String) As Task(Of LampUser)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "Select userId from Users 
+                                          WHERE username=@username AND password=@password"
+            command.Parameters.AddWithValue("@username", username)
+            command.Parameters.AddWithValue("@password", password)
+
+            Dim userId = Await command.ExecuteScalarAsync()
+            If userId IsNot Nothing Then
+                Return SelectUser(DirectCast(userId, String))
+            Else
+                Return Nothing
+            End If
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Adds a user to the database
+    ''' </summary>
+    ''' <param name="user"></param>
+    Public Function SetUser(user As LampUser) As Boolean
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "INSERT OR REPLACE INTO users
+                    (UserId,permissionLevel, email, username, password, name)
+                    VALUES
+                    (@UserId, @permissionLevel, @email, @username, @password, @name);"
+
+            command.Parameters.AddWithValue("@UserId", user.UserId)
+            command.Parameters.AddWithValue("@permissionLevel", user.PermissionLevel)
+            command.Parameters.AddWithValue("@email", user.Email)
+            command.Parameters.AddWithValue("@username", user.Username)
+            command.Parameters.AddWithValue("@password", user.Password)
+            command.Parameters.AddWithValue("@name", user.Name)
 
 
+            Return Convert.ToBoolean(command.ExecuteNonQuery())
+        End Using
+    End Function
 
+    ''' <summary>
+    ''' Adds a user to the database
+    ''' </summary>
+    ''' <param name="user"></param>
+    Public Async Function SetUserAsync(user As LampUser) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "INSERT OR REPLACE INTO users
+                    (UserId,permissionLevel, email, username, password, name)
+                    VALUES
+                    (@UserId, @permissionLevel, @email, @username, @password, @name);"
+
+            command.Parameters.AddWithValue("@UserId", user.UserId)
+            command.Parameters.AddWithValue("@permissionLevel", user.PermissionLevel)
+            command.Parameters.AddWithValue("@email", user.Email)
+            command.Parameters.AddWithValue("@username", user.Username)
+            command.Parameters.AddWithValue("@password", user.Password)
+            command.Parameters.AddWithValue("@name", user.Name)
+
+
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' removes a user from db
+    ''' </summary>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
+    Public Function RemoveUser(userId As String) As Boolean
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "DELETE from users WHERE userId = @userid"
+            command.Parameters.AddWithValue("@userid", userId)
+            Return Convert.ToBoolean(command.ExecuteNonQuery())
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' removes a user from db
+    ''' </summary>
+    ''' <param name="userId"></param>
+    ''' <returns></returns>
+    Public Async Function RemoveUserAsync(userId As String) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "DELETE from users WHERE userId = @userid"
+            command.Parameters.AddWithValue("@userid", userId)
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function SelectJob(jobId As String) As LampJob
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "Select templateId, submitterId, approverId, approved, submitDate from Users 
+                                          WHERE jobId = @jobId"
+            command.Parameters.AddWithValue("@jobId", jobId)
+
+            Using reader = command.ExecuteReader()
+                Dim job As LampJob = Nothing
+                If reader.Read() Then
+                    Dim templateId = reader.GetString(reader.GetOrdinal("templateId"))
+                    Dim template = SelectTemplate(templateId)
+
+                    Dim submitterId = reader.GetString(reader.GetOrdinal("submitterId"))
+                    Dim approverId = reader.GetString(reader.GetOrdinal("approverId"))
+
+                    Dim submitter As LampUser = Nothing
+                    If submitterId IsNot Nothing Then
+                        submitter = SelectUser(submitterId)
+                    End If
+
+                    Dim approver As LampUser = Nothing
+                    If approverId IsNot Nothing Then
+                        approver = SelectUser(approverId)
+                    End If
+
+
+                    Dim approved = reader.GetString(reader.GetOrdinal("approved"))
+                    Dim submitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
+
+                    job = New LampJob(template, submitter, approver, approved, submitDate)
+                End If
+
+                Return job
+            End Using
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' </summary>
+    ''' <returns></returns>
+    Public Async Function SelectJobAsync(jobId As String) As Task(Of LampJob)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "Select templateId, submitterId, approverId, approved, submitDate from Users 
+                                          WHERE jobId = @jobId"
+            command.Parameters.AddWithValue("@jobId", jobId)
+
+            Using reader = Await command.ExecuteReaderAsync()
+                Dim job As LampJob = Nothing
+                If Await reader.ReadAsync() Then
+                    Dim templateId = reader.GetString(reader.GetOrdinal("templateId"))
+                    Dim template = SelectTemplate(templateId)
+
+                    Dim submitterId = reader.GetString(reader.GetOrdinal("submitterId"))
+                    Dim approverId = reader.GetString(reader.GetOrdinal("approverId"))
+
+                    Dim submitter As LampUser = Nothing
+                    If submitterId IsNot Nothing Then
+                        submitter = Await SelectUserAsync(submitterId)
+                    End If
+
+                    Dim approver As LampUser = Nothing
+                    If approverId IsNot Nothing Then
+                        approver = Await SelectUserAsync(approverId)
+                    End If
+
+
+                    Dim approved = reader.GetString(reader.GetOrdinal("approved"))
+                    Dim submitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
+
+                    job = New LampJob(template, submitter, approver, approved, submitDate)
+                End If
+
+                Return job
+            End Using
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Adds a job to the database
+    ''' </summary>
+    Public Function SetJob(job As LampJob) As Boolean
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            ' check if the template is already in the database
+            ' todo use equality to check if the two templates are equal
+            If SelectTemplate(job.Template.GUID) IsNot Nothing Then
+                SetTemplate(job.Template)
+            End If
+
+            command.CommandText = "INSERT OR REPLACE INTO jobs
+                    (jobId, templateId, submitterId, approverId, approved, submitDate)
+                    VALUES
+                    (@jobId, @templateId, @submitterId, @approverId, @approved, DATETIME('now'));"
+
+
+            command.Parameters.AddWithValue("@jobId", job.JobId)
+            command.Parameters.AddWithValue("@templateId", job.Template.GUID)
+            command.Parameters.AddWithValue("@submitterId", job.SubmitId)
+            command.Parameters.AddWithValue("@approverId", job.ApproverId)
+            command.Parameters.AddWithValue("@approved", job.Approved)
+
+            Return Convert.ToBoolean(command.ExecuteNonQuery())
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Adds a job to the database
+    ''' </summary>
+    Public Async Function SetJobAsync(job As LampJob) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            ' check if the template is already in the database
+            ' todo use equality to check if the two templates are equal
+            If SelectTemplate(job.Template.GUID) IsNot Nothing Then
+                Await SetTemplateAsync(job.Template)
+            End If
+
+            command.CommandText = "INSERT OR REPLACE INTO jobs
+                    (jobId, templateId, submitterId, approverId, approved, submitDate)
+                    VALUES
+                    (@jobId, @templateId, @submitterId, @approverId, @approved, DATETIME('now'));"
+
+
+            command.Parameters.AddWithValue("@jobId", job.JobId)
+            command.Parameters.AddWithValue("@templateId", job.Template.GUID)
+            command.Parameters.AddWithValue("@submitterId", job.SubmitId)
+            command.Parameters.AddWithValue("@approverId", job.ApproverId)
+            command.Parameters.AddWithValue("@approved", job.Approved)
+
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Removes a job from the db
+    ''' </summary>
+    ''' <param name="jobId"></param>
+    ''' <returns></returns>
+    Public Function RemoveJob(jobId As String) As Boolean
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "DELETE from jobs WHERE jobId = @jobId"
+            command.Parameters.AddWithValue("@jobId", jobId)
+            Return command.ExecuteNonQuery()
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Removes a job from the db
+    ''' </summary>
+    ''' <param name="jobId"></param>
+    ''' <returns></returns>
+    Public Async Function RemoveJobAsync(jobId As String) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "DELETE from jobs WHERE jobId = @jobId"
+            command.Parameters.AddWithValue("@jobId", jobId)
+            Return Await command.ExecuteNonQueryAsync()
+        End Using
+    End Function
+End Class
+
+Public Class TemplateDatabase
     ''' <summary>
     ''' Finds a template in the database, given its corresponding guid
     ''' If no template is found, returns nothing
@@ -359,7 +1260,7 @@ Public Class TemplateDatabase
     Public Function SelectTemplateWithTags(tags As List(Of String), Optional limit As Integer = 10, Optional offset As Integer = 0) As List(Of LampTemplate)
         ' If the databse is open already, dont close it
 
-        Using conn = Connection.OpenDatabase(), command = Connection.GetCommand()
+        Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingTemplates As New List(Of LampTemplate)
 
             Dim tagParameters As New StringBuilder()
@@ -393,624 +1294,6 @@ Public Class TemplateDatabase
     End Function
 
     ''' <summary>
-    ''' Gets all templates in the database
-    ''' </summary>
-    ''' <returns></returns>
-    Public Function GetAllTemplate() As List(Of LampTemplate)
-        Dim LampTempList As New List(Of LampTemplate)
-        Using Connection.OpenConnection()
-            Using sqlite_cmd = Connection.GetCommand()
-                sqlite_cmd.CommandText = "Select guid FROM template"
-
-                Using sqlite_reader = sqlite_cmd.ExecuteReader()
-                    While sqlite_reader.Read()
-                        ' read the data off this sqlite_reader
-                        Dim LampTemp = SelectTemplate(sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid")))
-
-                        LampTempList.Add(LampTemp)
-                    End While
-                End Using
-            End Using
-        End Using
-        Return LampTempList
-    End Function
-
-    Public Async Function GetAllTemplateAsync() As Task(Of List(Of LampTemplate))
-        Dim LampTempList As New List(Of LampTemplate)
-        Using Connection.OpenConnection()
-            Using sqlite_cmd = Connection.GetCommand()
-                sqlite_cmd.CommandText = "Select guid FROM template"
-
-                Using sqlite_reader = Await sqlite_cmd.ExecuteReaderAsync()
-                    While sqlite_reader.Read()
-                        ' read the data off this sqlite_reader
-                        Dim LampTemp = Await SelectTemplateAsync(sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid")))
-
-                        LampTempList.Add(LampTemp)
-                    End While
-                End Using
-            End Using
-        End Using
-        Return LampTempList
-    End Function
-
-
-    ''' <summary>
-    ''' Sets or unsets the approver of a template
-    ''' if a template has an approver of nothing, it is counted as not approved
-    ''' </summary>
-    ''' <param name="guid"></param>
-    ''' <param name="approver"></param>
-    ''' <returns>True if found, false if not updated (no template)</returns>
-    Public Function SetApprover(guid As String, approver As String) As Boolean
-        Dim closeDatabaseAfter = OpenDatabase()
-
-        Try
-            ' a transaction makes sure all the inserts are successful 
-            ' we dont want a template with name etc, but no dxf 
-            Using sqlite_cmd = Connection.CreateCommand()
-                sqlite_cmd.CommandText = "UPDATE template SET approverId = @approverId"
-                sqlite_cmd.Parameters.AddWithValue("@approverId", approver)
-
-                Return Convert.ToBoolean(sqlite_cmd.ExecuteNonQuery())
-            End Using
-        Finally
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-
-    End Function
-
-    ''' <summary>
-    ''' Adds a template to the database
-    ''' will error if the guid is already in the database
-    ''' </summary>
-    ''' <param name="template"></param>
-    Public Sub AddTemplate(template As LampTemplate, Optional creatorId As String = Nothing, Optional approverId As String = Nothing)
-        Dim closeDatabaseAfter = OpenDatabase()
-
-        Try
-            ' a transaction makes sure all the inserts are successful 
-            ' we dont want a template with name etc, but no dxf 
-            Using sqlite_cmd = GetCommand()
-
-                ' Add in templateData
-                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO template
-                    (guid, name, shortDescription, longDescription, material,
-                    length, Height, materialthickness, 
-                    creatorID, approverId, submitdate, complete)
-                    VALUES
-                    (@guid, @name, @shortDescription, @longDescription, @material, 
-                    @length, @height, @materialthickness, 
-                    @creatorId, @approverId, DATETIME('now'), @complete);"
-
-                sqlite_cmd.Parameters.AddWithValue("@guid", template.GUID)
-
-                sqlite_cmd.Parameters.AddWithValue("@name", template.Name)
-                sqlite_cmd.Parameters.AddWithValue("@shortDescription", template.ShortDescription)
-                sqlite_cmd.Parameters.AddWithValue("@longDescription", template.LongDescription)
-                sqlite_cmd.Parameters.AddWithValue("@material", template.Material)
-
-                sqlite_cmd.Parameters.AddWithValue("@length", template.Length)
-                sqlite_cmd.Parameters.AddWithValue("@height", template.Height)
-                sqlite_cmd.Parameters.AddWithValue("@materialthickness", template.MaterialThickness)
-
-                sqlite_cmd.Parameters.AddWithValue("@creatorId", creatorId)
-                sqlite_cmd.Parameters.AddWithValue("@approverId", approverId)
-                sqlite_cmd.Parameters.AddWithValue("@complete", template.IsComplete)
-
-                sqlite_cmd.ExecuteNonQuery()
-
-
-                AddDxf(template.GUID, template.BaseDrawing)
-
-                ' check that there is at least 1 image
-                If template.PreviewImages.HasNotNothing() Then
-                    AddImages(template.GUID, template.PreviewImages)
-                End If
-
-                If template.Tags.Count > 0 Then
-                    AddTags(template.GUID, template.Tags)
-                End If
-            End Using
-
-        Finally
-            ' ensure connection is always closed
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Sub
-
-
-
-
-    ''' <summary>
-    ''' Removes from database based on guid
-    ''' Also removes images by default, rmImages can be set to false to not
-    ''' </summary>
-    ''' <param name="guid">string guid</param>
-    ''' <returns>True=Removed, False=None found</returns>
-    Public Function RemoveTemplate(guid As String) As Boolean
-        Dim closeDatabaseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-                ' gotta remove these first before the guid in the templates table is gone
-                RemoveDxf(guid)
-                RemoveImages(guid)
-                RemoveTags(guid)
-
-                sqlite_cmd.CommandText = "DELETE from template WHERE GUID = @guid"
-                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-                Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
-
-
-                If rowsRemoved > 0 Then
-                    Return True
-                Else
-                    Return False
-                End If
-            End Using
-
-        Finally
-            ' ensure connection is closed
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Function
-
-    ''' <summary>
-    ''' Retrieves the images from the database
-    ''' given guid of the template, returns the images associated with it, or nothing if none was found
-    ''' returns a list of <see cref="LampTemplate.MaxImages"/> size.
-    ''' </summary>
-    ''' <param name="guid"></param>
-    ''' <returns></returns>
-    Public Function SelectImages(guid As String) As List(Of Image)
-        Dim shouldCloseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "Select image1, image2, image3 FROM images WHERE guid = @guid"
-                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-
-                Using sqlite_reader = sqlite_cmd.ExecuteReader()
-                    Dim images As New List(Of Image)
-
-                    If sqlite_reader.Read() Then
-
-                        For i = 1 To LampTemplate.MaxImages
-
-                            Dim columnNumber = sqlite_reader.GetOrdinal(String.Format("image{0}", i))
-
-                            If Not sqlite_reader.IsDBNull(columnNumber) Then
-                                Dim readImage As Image = BinaryToImage(DirectCast(sqlite_reader.GetValue(columnNumber), Byte()))
-                                images.Add(readImage)
-                            Else
-
-                                images.Add(Nothing)
-                            End If
-                        Next
-                        Return images
-                    Else
-                        Return Nothing
-                    End If
-
-
-                End Using
-            End Using
-
-        Finally
-            If shouldCloseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Function
-
-
-
-    ''' <summary>
-    ''' Stores up to 3 preview images in the database
-    ''' images are stored as binary blobs (byte arrays or byte() in vb.net)
-    ''' this function takes a list(of Image), converts them into binary and chucks them in the database
-    ''' </summary>
-    ''' <param name="guid"></param>
-    ''' <param name="images"></param>
-    Public Sub AddImages(guid As String, images As IList(Of Image))
-        Dim closeDatabaseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO images
-                    (Guid, image1, image2, image3)
-                    VALUES
-                    (@guid, @image1, @image2, @image3);"
-
-                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-
-                If images.Count > LampTemplate.MaxImages Then
-                    Throw New ArgumentOutOfRangeException(NameOf(images), images, String.Format("images array must have {0} or less elements", LampTemplate.MaxImages))
-                End If
-
-                Dim insertedAtLeastOne As Boolean = False
-
-                For i = 0 To images.Count - 1
-                    Dim columnName = String.Format("@image{0}", i + 1)
-                    sqlite_cmd.Parameters.AddWithValue(columnName, ImageToBinary(images(i)))
-
-                    If images(i) IsNot Nothing Then
-                        insertedAtLeastOne = True
-                    End If
-                Next
-
-                If insertedAtLeastOne = False Then
-                    Throw New ArgumentOutOfRangeException(NameOf(images), images, "Images must have at least 1 not-null element")
-                End If
-
-                sqlite_cmd.ExecuteNonQuery()
-            End Using
-
-
-        Finally
-            ' ensure connection is always closed
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Sub
-
-    ''' <summary>
-    ''' Removes images associated with the guid
-    ''' </summary>
-    ''' <param name="guid"></param>
-    ''' <returns>True=Removed image, False=None removed</returns>
-    Public Function RemoveImages(guid As String) As Boolean
-        Dim closeDatabaseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "DELETE from images WHERE GUID = ?"
-                sqlite_cmd.Parameters.Add(guid)
-                Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
-
-                If rowsRemoved > 0 Then
-                    Return True
-                Else
-                    Return False
-                End If
-            End Using
-        Finally
-            ' ensure connection is closed
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Function
-
-
-
-
-    ''' <summary>
-    ''' Gets all tags that belong to a template's guid
-    ''' </summary>
-    ''' <param name="guid"></param>
-    ''' <returns></returns>
-    Public Function SelectTags(guid As String) As List(Of String)
-        Dim closeDatabaseAfter = OpenDatabase()
-        Try
-            Using sqlite_cmd = GetCommand()
-
-                sqlite_cmd.CommandText = "SELECT tagName FROM tags
-                                      WHERE guid=@guid;"
-
-
-                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-                Dim tags As New List(Of String)
-                Dim reader = sqlite_cmd.ExecuteReader()
-
-                While reader.Read()
-                    tags.Add(reader.GetString(reader.GetOrdinal("tagName")))
-                End While
-
-                Return tags
-            End Using
-
-        Finally
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-
-        End Try
-    End Function
-
-    ''' <summary>
-    ''' TODO !
-    ''' </summary>
-    ''' <param name="guid"></param>
-    ''' <param name="tags"></param>
-    Public Sub AddTags(guid As String, tags As IList(Of String))
-        Dim closeDatabaseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO tags
-                    (Guid, tagName)
-                    VALUES
-                    (@guid, @tagName);"
-
-
-                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-                For Each tag In tags
-                    sqlite_cmd.Parameters.AddWithValue("@tagName", tag)
-                    sqlite_cmd.ExecuteNonQuery()
-                Next
-
-            End Using
-
-
-        Finally
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Sub
-
-    ''' <summary>
-    ''' Removes all tags associated with the guid
-    ''' </summary>
-    ''' <param name="guid"></param>
-    ''' <returns></returns>
-    Public Function RemoveTags(guid As String) As Integer
-        Dim closeDatabaseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "DELETE from tags WHERE guid = @guid"
-                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-                Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
-
-
-                Return rowsRemoved
-            End Using
-        Finally
-            ' ensure connection is closed
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Function
-
-    ''' <summary>
-    ''' </summary>
-    ''' <param name="userId"></param>
-    ''' <returns></returns>
-    Public Function SelectUser(userId As String) As LampUser
-        Dim shouldCloseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "Select email, username, password, permissionLevel, name from Users 
-                                          WHERE userId = @guid"
-                sqlite_cmd.Parameters.AddWithValue("@guid", userId)
-
-                Using sqlite_reader = sqlite_cmd.ExecuteReader()
-                    Dim user As LampUser
-                    If sqlite_reader.Read() Then
-                        Dim email = sqlite_reader.GetString(sqlite_reader.GetOrdinal("email"))
-                        Dim username = sqlite_reader.GetString(sqlite_reader.GetOrdinal("username"))
-                        Dim password = sqlite_reader.GetString(sqlite_reader.GetOrdinal("password"))
-                        Dim permissionLevel = sqlite_reader.GetInt32(sqlite_reader.GetOrdinal("permissionLevel"))
-                        Dim name = sqlite_reader.GetString(sqlite_reader.GetOrdinal("name"))
-
-                        user = New LampUser(userId, DirectCast(permissionLevel, UserPermission), email, password, username, name)
-
-                    Else
-                        user = Nothing
-                    End If
-
-                    Return user
-                End Using
-            End Using
-
-        Finally
-            If shouldCloseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Function
-
-    Public Function SelectUser(username As String, password As String) As LampUser
-        Dim shouldCloseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "Select userId from Users 
-                                          WHERE username=@username AND password=@password"
-                sqlite_cmd.Parameters.AddWithValue("@username", username)
-                sqlite_cmd.Parameters.AddWithValue("@password", password)
-
-                Dim userId = sqlite_cmd.ExecuteScalar()
-                If userId IsNot Nothing Then
-                    Return SelectUser(DirectCast(userId, String))
-                Else
-                    Return Nothing
-                End If
-            End Using
-
-        Finally
-            If shouldCloseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Function
-
-
-    ''' <summary>
-    ''' Adds a user to the database
-    ''' </summary>
-    ''' <param name="user"></param>
-    Public Sub AddUser(user As LampUser)
-        Dim closeDatabaseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO users
-                    (UserId,permissionLevel, email, username, password, name)
-                    VALUES
-                    (@UserId, @permissionLevel, @email, @username, @password, @name);"
-
-
-                sqlite_cmd.Parameters.AddWithValue("@UserId", user.UserId)
-                sqlite_cmd.Parameters.AddWithValue("@permissionLevel", user.PermissionLevel)
-                sqlite_cmd.Parameters.AddWithValue("@email", user.Email)
-                sqlite_cmd.Parameters.AddWithValue("@username", user.Username)
-                sqlite_cmd.Parameters.AddWithValue("@password", user.Password)
-                sqlite_cmd.Parameters.AddWithValue("@name", user.Name)
-
-
-                sqlite_cmd.ExecuteNonQuery()
-
-            End Using
-
-
-        Finally
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Sub
-
-    ''' <summary>
-    ''' removes a user from db
-    ''' </summary>
-    ''' <param name="userId"></param>
-    ''' <returns></returns>
-    Public Function RemoveUser(userId As String) As Integer
-        Dim closeDatabaseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "DELETE from users WHERE userId = @userid"
-                sqlite_cmd.Parameters.AddWithValue("@userid", userId)
-                Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
-
-                Return rowsRemoved
-            End Using
-        Finally
-            ' ensure connection is closed
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Function
-
-    ''' <summary>
-    ''' </summary>
-    ''' <returns></returns>
-    Public Function SelectJob(jobId As String) As LampJob
-        Dim shouldCloseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "Select templateId, submitterId, approverId, approved, submitDate from Users 
-                                          WHERE jobId = @jobId"
-                sqlite_cmd.Parameters.AddWithValue("@jobId", jobId)
-
-                Using sqlite_reader = sqlite_cmd.ExecuteReader()
-                    Dim job As LampJob
-
-                    If sqlite_reader.Read() Then
-                        Dim templateId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("templateId"))
-                        Dim template = SelectTemplate(templateId)
-
-                        Dim submitterId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("submitterId"))
-                        Dim submitter As LampUser = SelectUser(submitterId)
-
-
-                        Dim approverId = sqlite_reader.GetString(sqlite_reader.GetOrdinal("approverId"))
-                        Dim approved = sqlite_reader.GetString(sqlite_reader.GetOrdinal("approved"))
-                        Dim submitDate = sqlite_reader.GetDateTime(sqlite_reader.GetOrdinal("submitDate"))
-
-                        job = New LampJob(template, submitter)
-
-                    Else
-                        job = Nothing
-                    End If
-
-                    Return job
-                End Using
-            End Using
-
-        Finally
-            If shouldCloseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Function
-
-
-    ''' <summary>
-    ''' Adds a job to the database
-    ''' </summary>
-    Public Sub AddJob(job As LampJob)
-        Dim closeDatabaseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-                ' check if the template is already in the database      
-                If SelectTemplate(job.Template.GUID) IsNot Nothing Then
-                    AddTemplate(job.Template)
-                End If
-
-                sqlite_cmd.CommandText = "INSERT OR REPLACE INTO jobs
-                    (jobId, templateId, submitterId, approverId, approved, submitDate)
-                    VALUES
-                    (@jobId, @templateId, @submitterId, @approverId, @approved, DATETIME('now'));"
-
-
-                sqlite_cmd.Parameters.AddWithValue("@jobId", job.JobId)
-                sqlite_cmd.Parameters.AddWithValue("@templateId", job.Template.GUID)
-                sqlite_cmd.Parameters.AddWithValue("@submitterId", job.SubmitId)
-                sqlite_cmd.Parameters.AddWithValue("@approverId", job.ApproverId)
-                sqlite_cmd.Parameters.AddWithValue("@approved", job.Approved)
-
-                sqlite_cmd.ExecuteNonQuery()
-
-            End Using
-
-
-        Finally
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Sub
-
-
-    Public Function RemoveJob(jobId As String) As Integer
-        Dim closeDatabaseAfter = OpenDatabase()
-
-        Try
-            Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "DELETE from jobs WHERE jobId = @jobId"
-                sqlite_cmd.Parameters.AddWithValue("@jobId", jobId)
-                Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
-
-                Return rowsRemoved
-            End Using
-        Finally
-            ' ensure connection is closed
-            If closeDatabaseAfter Then
-                CloseDatabase()
-            End If
-        End Try
-    End Function
-
-
-    ''' <summary>
     ''' Fills database with dxf files located in project root/templates
     ''' The default files are stored in ExampleDxfFiles
     ''' </summary>
@@ -1027,32 +1310,107 @@ Public Class TemplateDatabase
         For Each spfName As String In ExampleSpfFiles
             Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", "spf", spfName))
             Dim template = LampTemplate.FromFile(fp)
-            db.AddTemplate(template)
+            db.SetTemplate(template)
         Next
 
         ' add useres
         Dim max As New LampUser(GetNewGuid(), UserPermission.Admin, "maxywartonyjonesy@gmail.com", "waxy", "memes", "steve by birth!")
-        db.AddUser(max)
+        db.SetUser(max)
 
         Dim shovel = New LampUser(GetNewGuid(), UserPermission.Admin, "qshoveyl@gmail.com", "shourov", "shovel101", "Knot Jack")
-        db.AddUser(shovel)
+        db.SetUser(shovel)
 
         Dim jack = New LampUser(GetNewGuid(), UserPermission.Admin, "jackywathyy123@gmail.com", "moji", "snack time", "shovel tool")
-        db.AddUser(jack)
+        db.SetUser(jack)
 
 
         Dim templates = db.GetAllTemplate
 
         ' add jobs
         Dim job As New LampJob(templates(0), max)
-        db.AddJob(job)
+        db.SetJob(job)
 
         job = New LampJob(templates(1), shovel)
-        db.AddJob(job)
+        db.SetJob(job)
     End Sub
 
 
+    ''' <summary>
+    ''' Gets all templates in the database
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function GetAllTemplate() As List(Of LampTemplate)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            Dim templateList As New List(Of LampTemplate)
+            command.CommandText = "Select guid FROM template"
 
+            Using reader = command.ExecuteReader()
+                While reader.Read()
+                    ' read the data off this sqlite_reader
+                    Dim template = SelectTemplate(reader.GetString(reader.GetOrdinal("guid")))
+
+                    templateList.Add(template)
+                End While
+            End Using
+
+            Return templateList
+        End Using
+
+    End Function
+
+    ''' <summary>
+    ''' Gets all templates asyncrohonously
+    ''' </summary>
+    ''' <returns></returns>
+    Public Async Function GetAllTemplateAsync() As Task(Of List(Of LampTemplate))
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            Dim templateList As New List(Of LampTemplate)
+            command.CommandText = "Select guid FROM template"
+
+            Using reader = Await command.ExecuteReaderAsync()
+                While Await reader.ReadAsync()
+                    ' read the data off this sqlite_reader
+                    Dim template = SelectTemplate(reader.GetString(reader.GetOrdinal("guid")))
+
+                    templateList.Add(template)
+                End While
+            End Using
+
+            Return templateList
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Sets or unsets the approver of a template
+    ''' if a template has an approver of nothing, it is counted as not approved
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <param name="approver"></param>
+    ''' <returns>True if found, false if not updated (no template)</returns>
+    Public Function SetApprover(guid As String, approver As String) As Boolean
+        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand()
+            sqlite_cmd.CommandText = "UPDATE template SET approverId = @approverId"
+            sqlite_cmd.Parameters.AddWithValue("@approverId", approver)
+
+            Return Convert.ToBoolean(sqlite_cmd.ExecuteNonQuery())
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Sets or unsets the approver of a template
+    ''' if a template has an approver of nothing, it is counted as not approved
+    ''' </summary>
+    ''' <param name="guid"></param>
+    ''' <param name="approver"></param>
+    ''' <returns>True if found, false if not updated (no template)</returns>
+    Public Async Function SetApproverAsync(guid As String, approver As String) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand()
+            sqlite_cmd.CommandText = "UPDATE template SET approverId = @approverId"
+            sqlite_cmd.Parameters.AddWithValue("@approverId", approver)
+
+            Return Convert.ToBoolean(Await sqlite_cmd.ExecuteNonQueryAsync())
+        End Using
+    End Function
 
 
 
@@ -1135,14 +1493,27 @@ Public Class SqliteConnectionWrapper
     Implements IDisposable
 
     ''' <summary>
+    ''' raw Connection to the database
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Connection As SQLiteConnection
+
+    ''' <summary>
     ''' how many items are using the db right now
     ''' dont tocuh without first locking connection
     ''' </summary>
-    ''' <returns></returns>
-    Private Property RefCount As Integer = 0
+    Private RefCount As Integer = 0
 
+    ''' <summary>
+    ''' Single transaction that connection has
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property Transaction As SQLiteTransaction
 
+    ''' <summary>
+    ''' whether or not the db is opened / closed
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property Opened As Boolean
         Get
             SyncLock Connection
@@ -1151,15 +1522,17 @@ Public Class SqliteConnectionWrapper
         End Get
     End Property
 
-    Public Sub DecrementRef()
+    ''' <summary>
+    ''' decreases ref count / closes connection if needed
+    ''' Do NOT call without at least 1 reference
+    ''' </summary>
+    Private Sub DecrementRef()
         SyncLock Connection
-
-            RefCount -= 1
-#If DEBUG Then
-            If RefCount < 0 Then
+            If RefCount <= 0 Then
                 Throw New Exception("refcount < 0?")
             End If
-#End If
+
+            RefCount -= 1
             If RefCount = 0 Then
                 Connection.Close()
             End If
@@ -1167,21 +1540,18 @@ Public Class SqliteConnectionWrapper
         End SyncLock
     End Sub
 
+    ''' <summary>
+    ''' Disposes.
+    ''' If refcount reaches 0, it will close the db
+    ''' </summary>
     Public Sub Dispose() Implements IDisposable.Dispose
         DecrementRef()
     End Sub
 
-
-
     ''' <summary>
-    ''' Connection to the database
-    '''
+    ''' Gets a reference to the sqliteconnection
     ''' </summary>
     ''' <returns></returns>
-    Public Property Connection As SQLiteConnection
-
-
-
     Public Function OpenConnection() As SqliteConnectionWrapper
         SyncLock Connection
             If RefCount = 0 Then
@@ -1192,20 +1562,108 @@ Public Class SqliteConnectionWrapper
         Return Me
     End Function
 
-
-
     Sub New(connection As SQLiteConnection)
         Me.Connection = connection
     End Sub
+
 
     Sub New(connectionString As String)
         Me.Connection = New SQLiteConnection(connectionString)
     End Sub
 
-    Public Function GetCommand() As SQLiteCommand
+    Public Function GetCommand(Optional transaction As SqliteTransactionWrapper = Nothing) As SQLiteCommand
         If Opened = False Then
             Throw New Exception("Connection Not opened, run openConnection()")
         End If
         Return Connection.CreateCommand
     End Function
 End Class
+
+Public Class SqliteTransactionWrapper
+    Implements IDisposable
+
+
+    ''' <summary>
+    ''' parent connection
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property Connection As SqliteConnectionWrapper
+
+    ''' <summary>
+    ''' how many items using this transaction
+    ''' when reaches zero, it should clear
+    ''' If recount = 0, it means transaction not being used by any objects
+    ''' when the lock is acquired, the transaction is being used by refCount number of commands 
+    ''' </summary>
+    Private RefCount As Integer = 0
+
+    ''' <summary>
+    ''' ensures the transaction is only used in 1 by 1 transaction at a time
+    ''' when the lock is acquired, the transaction is being used by refCount number of commands
+    ''' </summary>
+    Private lock As New SemaphoreSlim(1, 1)
+
+    ''' <summary>
+    ''' whether or not transaction was commited
+    ''' if wrapper is completely disposed w/out being commited, will automatically rollback
+    ''' MUST lock before changing
+    ''' </summary>
+    Private committed As Boolean = False
+
+    Public Property Transaction As SQLiteTransaction
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+        DecrementRef()
+    End Sub
+
+    Private Sub DecrementRef()
+        SyncLock lock
+            If RefCount <= 0 Then
+                Throw New Exception("refcount <= 0?")
+            End If
+
+            RefCount -= 1
+            If RefCount = 0 Then
+                If Not committed Then
+                    Transaction.Rollback()
+                End If
+                Transaction.Dispose() ' dispose the object
+                Transaction = Nothing
+            End If
+        End SyncLock
+    End Sub
+
+    Public Function LockTransaction() As SqliteTransactionWrapper
+        lock.Wait()
+        IncrementRef()
+        Return Me
+    End Function
+
+    Public Async Function LockTransactionAsync() As Task(Of SqliteTransactionWrapper)
+        Await lock.WaitAsync()
+        IncrementRef()
+        Return Me
+    End Function
+
+    Public Sub IncrementRef()
+        SyncLock lock
+            If RefCount = 0 Then
+                ' make a new transaction
+                Transaction = Connection.Connection.BeginTransaction()
+            End If
+            RefCount += 1
+        End SyncLock
+    End Sub
+
+    Public Sub Commit()
+        SyncLock lock
+            Transaction.Commit()
+            committed = True
+        End SyncLock
+    End Sub
+
+    Sub New(connect As SqliteConnectionWrapper)
+        Me.Connection = connect
+    End Sub
+End Class
+

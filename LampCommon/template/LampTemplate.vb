@@ -8,23 +8,30 @@ Imports Newtonsoft.Json.Linq
 Imports System.Drawing
 Imports System.Runtime.Serialization
 
-<JsonObject(MemberSerialization.OptIn)>
-<DataContract()>
-Public NotInheritable Class LampTemplate
+<DataContract>
+Public Class LampTemplateMetadata
     Implements INotifyPropertyChanged
 
-    Public Const MaxImages As Integer = 3
-
-#Region "INotifyPropertyChanged"
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
-    Private Sub NotifyPropertyChanged(<CallerMemberName()> Optional ByVal propertyName As String = Nothing)
+    Friend Sub NotifyPropertyChanged(<CallerMemberName()> Optional ByVal propertyName As String = Nothing)
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
-#End Region
 
+    Public Function ToLampTemplate() As LampTemplate
+        Dim ret As New LampTemplate()
+        ret.guid = GUID
+        ret.Name = Name
+        ret.ShortDescription = ShortDescription
+        ret.LongDescription = LongDescription
+        ret.Material = ret.Material
+        ret.Length = ret.Length
+        ret.Height = ret.Height
+        ret.MaterialThickness = MaterialThickness
+        ret.IsComplete = IsComplete
+        Return ret
+    End Function
 
-#Region "Instance Variables"
     Private _guid As String
     ''' <summary>
     ''' a unique identifer for each different template
@@ -77,6 +84,7 @@ Public NotInheritable Class LampTemplate
     End Property
 
     Private _longDescription As String = ""
+
     ''' <summary>
     ''' a unique identifer for each different template
     ''' </summary>
@@ -93,6 +101,142 @@ Public NotInheritable Class LampTemplate
         End Set
     End Property
 
+    Private _material As String = "Unspecified"
+    ''' <summary>
+    ''' material the trophy is made out of
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("material")>
+    <DataMember()>
+    Public Property Material As String
+        Get
+            Return _material
+        End Get
+        Set(value As String)
+            _material = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
+
+    Private _length As Double
+    ''' <summary>
+    ''' The length of all of the template
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("length")>
+    <DataMember()>
+    Public Property Length As Double
+        Get
+            Return _length
+        End Get
+        Set(value As Double)
+            _length = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
+
+    Private _height As Double
+    ''' <summary>
+    ''' The  height of all the template
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("height")>
+    <DataMember()>
+    Public Property Height As Double
+        Get
+            Return _height
+        End Get
+        Set(value As Double)
+            _height = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
+    Private _materialThickness As Double
+    ''' <summary>
+    ''' The thickness of the material used
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("material_thickness")>
+    <DataMember()>
+    Public Property MaterialThickness As Double
+        Get
+            Return _materialThickness
+        End Get
+        Set(value As Double)
+            _materialThickness = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
+
+    ''' <summary>
+    ''' Name, email of creator if exists
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("creator_profile")>
+    <DataMember>
+    Public Property CreatorProfile As LampProfile = Nothing
+
+
+    ''' <summary>
+    ''' name, email of approver if exists
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("approver_profile")>
+    <DataMember>
+    Public Property ApproverProfile As LampProfile = Nothing
+
+
+    Private _submitDate As Date?
+    ''' <summary>
+    ''' The date item was submitted
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("submit_date")>
+    <DataMember()>
+    Public Property SubmitDate As Date?
+        Get
+            Return _submitDate
+        End Get
+        Set(value As Date?)
+            _submitDate = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
+
+    Private _complete As Boolean
+    ''' <summary>
+    ''' The date item was submitted
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("is_complete")>
+    <DataMember()>
+    Public Property IsComplete As Boolean
+        Get
+            Return _complete
+        End Get
+        Set(value As Boolean)
+            _complete = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+End Class
+
+
+<JsonObject(MemberSerialization.OptIn)>
+<DataContract()>
+Public NotInheritable Class LampTemplate
+    Inherits LampTemplateMetadata
+
+    Public Const MaxImages As Integer = 3
+
+
+
+#Region "Instance Variables"
     ''' <summary>
     ''' The completed drawing, w/ all the templates laid out appropriately
     ''' Not serialized, as it can be generated using _template when deserialized
@@ -132,90 +276,7 @@ Public NotInheritable Class LampTemplate
         NotifyPropertyChanged(NameOf(Tags))
     End Sub
 
-    Private _material As String = "Unspecified"
-    ''' <summary>
-    ''' material the trophy is made out of
-    ''' </summary>
-    ''' <returns></returns>
-    <JsonProperty("material")>
-    <DataMember()>
-    Public Property Material As String
-        Get
-            Return _material
-        End Get
-        Set(value As String)
-            _material = value
-            NotifyPropertyChanged()
-        End Set
-    End Property
 
-    Private _height As Double
-    ''' <summary>
-    ''' The  height of all the template
-    ''' </summary>
-    ''' <returns></returns>
-    <JsonProperty("height")>
-    <DataMember()>
-    Public Property Height As Double
-        Get
-            Return _height
-        End Get
-        Set(value As Double)
-            _height = value
-            NotifyPropertyChanged()
-        End Set
-    End Property
-
-    Private _length As Double
-    ''' <summary>
-    ''' The length of all of the template
-    ''' </summary>
-    ''' <returns></returns>
-    <JsonProperty("length")>
-    <DataMember()>
-    Public Property Length As Double
-        Get
-            Return _length
-        End Get
-        Set(value As Double)
-            _length = value
-            NotifyPropertyChanged()
-        End Set
-    End Property
-
-    Private _materialThickness As Double
-    ''' <summary>
-    ''' The thickness of the material used
-    ''' </summary>
-    ''' <returns></returns>
-    <JsonProperty("material_thickness")>
-    <DataMember()>
-    Public Property MaterialThickness As Double
-        Get
-            Return _materialThickness
-        End Get
-        Set(value As Double)
-            _materialThickness = value
-            NotifyPropertyChanged()
-        End Set
-    End Property
-
-    Private _submitDate As Date?
-    ''' <summary>
-    ''' The date item was submitted
-    ''' </summary>
-    ''' <returns></returns>
-    <JsonProperty("submit_date")>
-    <DataMember()>
-    Public Property SubmitDate As Date?
-        Get
-            Return _submitDate
-        End Get
-        Set(value As Date?)
-            _submitDate = value
-            NotifyPropertyChanged()
-        End Set
-    End Property
 
     Private _dynamicTextList As New ObservableCollection(Of DynamicTemplateInput)
     ''' <summary>
@@ -260,29 +321,6 @@ Public NotInheritable Class LampTemplate
         End Set
     End Property
 
-    ''' <summary>
-    ''' where or not the file is in a complete state - if complete, should disable editing
-    ''' </summary>
-    ''' <returns></returns>
-    <JsonProperty("is_complete")>
-    <DataMember()>
-    Public Property IsComplete As Boolean
-
-    ''' <summary>
-    ''' Name, email of creator if exists
-    ''' </summary>
-    ''' <returns></returns>
-    <JsonProperty("creator_profile")>
-    <DataMember>
-    Public Property CreatorProfile As LampProfile = Nothing
-
-    ''' <summary>
-    ''' name, email of approver if exists
-    ''' </summary>
-    ''' <returns></returns>
-    <JsonProperty("approver_profile")>
-    <DataMember>
-    Public Property ApproverProfile As LampProfile = Nothing
 
     Private Sub PreviewImages_CollectionChanged(sender As Object, args As NotifyCollectionChangedEventArgs)
         NotifyPropertyChanged(NameOf(PreviewImages))
