@@ -152,6 +152,7 @@ Partial Public Class TemplateDatabase
             command.ExecuteNonQuery()
         End Using
     End Sub
+
 End Class
 
 
@@ -913,6 +914,7 @@ Partial Public Class TemplateDatabase
             Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
         End Using
     End Function
+
 End Class
 
 
@@ -1249,6 +1251,7 @@ Partial Public Class TemplateDatabase
             Return Await command.ExecuteNonQueryAsync()
         End Using
     End Function
+
 End Class
 
 Public Class TemplateDatabase
@@ -1334,7 +1337,6 @@ Public Class TemplateDatabase
         db.SetJob(job)
     End Sub
 
-
     ''' <summary>
     ''' Gets all templates in the database
     ''' </summary>
@@ -1411,8 +1413,6 @@ Public Class TemplateDatabase
             Return Convert.ToBoolean(Await sqlite_cmd.ExecuteNonQueryAsync())
         End Using
     End Function
-
-
 
 End Class
 
