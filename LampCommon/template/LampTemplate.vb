@@ -244,13 +244,26 @@ Public Class LampTemplateMetadata
             Return False
         End If
 
-        If Not data.GUID.Equals(GUID) Then
-            Return False
+        If data.GUID IsNot Nothing Then
+            If Not data.GUID.Equals(GUID) Then
+                Return False
+            End If
+        Else ' is nothing
+            If GUID IsNot Nothing Then
+                Return False
+            End If
         End If
 
-        If Not data.ShortDescription.Equals(ShortDescription) Then
-            Return False
+        If data.ShortDescription IsNot Nothing Then
+            If Not data.ShortDescription.Equals(ShortDescription) Then
+                Return False
+            End If
+        Else ' is nothing
+            If ShortDescription IsNot Nothing Then
+                Return False
+            End If
         End If
+
 
         If Not data.LongDescription.Equals(LongDescription) Then
             Return False
@@ -317,14 +330,7 @@ Public NotInheritable Class LampTemplate
     Public Const MaxImages As Integer = 3
 
 
-
 #Region "Instance Variables"
-    ''' <summary>
-    ''' The completed drawing, w/ all the templates laid out appropriately
-    ''' Not serialized, as it can be generated using _template when deserialized
-    ''' </summary>
-    Public Property CompletedDrawing As LampDxfDocument
-
     Private _baseDrawing As LampDxfDocument
     ''' <summary>
     ''' The actual template : contains just 1 of drawing
@@ -337,14 +343,27 @@ Public NotInheritable Class LampTemplate
             Return _baseDrawing
         End Get
         Set(value As LampDxfDocument)
+            If _baseDrawing IsNot Nothing Then
+                RemoveHandler _baseDrawing.PropertyChanged, AddressOf BaseDrawing_PropertyChanged
+            End If
             _baseDrawing = value
             If _baseDrawing IsNot Nothing Then
-                AddHandler _baseDrawing.PropertyChanged, (Sub(sender As Object, e As PropertyChangedEventArgs) NotifyPropertyChanged(NameOf(BaseDrawing)))
+                AddHandler _baseDrawing.PropertyChanged, AddressOf BaseDrawing_PropertyChanged
             End If
             NotifyPropertyChanged()
         End Set
     End Property
 
+    ''' <summary>
+    ''' handler for base drawing mutating
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub BaseDrawing_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
+        NotifyPropertyChanged(NameOf(BaseDrawing))
+    End Sub
+
+    Private _tags As ObservableCollection(Of String)
     ''' <summary>
     ''' A list of tags. 
     ''' </summary>
@@ -352,13 +371,29 @@ Public NotInheritable Class LampTemplate
     <JsonProperty("tags")>
     <DataMember>
     Public Property Tags As ObservableCollection(Of String)
+        Get
+            Return _tags
+        End Get
+        Private Set(value As ObservableCollection(Of String))
+            If _tags IsNot Nothing Then
+                RemoveHandler _tags.CollectionChanged, AddressOf Tags_CollectionChanged
+            End If
+            _tags = value
+            If _tags IsNot Nothing Then
+                AddHandler _tags.CollectionChanged, AddressOf Tags_CollectionChanged
+            End If
+            NotifyPropertyChanged()
+        End Set
+    End Property
 
-
-    Private Sub HandleTag_CollectionChanged(sender As Object, args As NotifyCollectionChangedEventArgs)
+    ''' <summary>
+    ''' Handler for tags changing
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="args"></param>
+    Private Sub Tags_CollectionChanged(sender As Object, args As NotifyCollectionChangedEventArgs)
         NotifyPropertyChanged(NameOf(Tags))
     End Sub
-
-
 
     Private _dynamicTextList As New ObservableCollection(Of DynamicTemplateInput)
     ''' <summary>
@@ -371,43 +406,32 @@ Public NotInheritable Class LampTemplate
         Get
             Return _dynamicTextList
         End Get
-        Set(value As ObservableCollection(Of DynamicTemplateInput))
-            _dynamicTextList = value
+        Private Set(value As ObservableCollection(Of DynamicTemplateInput))
             If _dynamicTextList IsNot Nothing Then
-                AddHandler _dynamicTextList.CollectionChanged, (Sub(sender As Object, e As NotifyCollectionChangedEventArgs) NotifyPropertyChanged("DynamicTextList"))
+                RemoveHandler _dynamicTextList.CollectionChanged, AddressOf DynamicTextList_PropertyChanged
+            End If
+            _dynamicTextList = value
+
+            If _dynamicTextList IsNot Nothing Then
+                AddHandler _dynamicTextList.CollectionChanged, AddressOf DynamicTextList_PropertyChanged
             End If
         End Set
     End Property
 
-
-    Private _insertionLocations As New ObservableCollection(Of LampDxfInsertLocation)
     ''' <summary>
-    ''' Where each individual trophy will be inserted (in cartesian form) on the competedDrawing
-    ''' Contains rotation data, dynamic text data, everything required to rebuild the
-    ''' completeddrawing
+    ''' Handler for dynamic text changes
     ''' </summary>
-    ''' <returns></returns>
-    <JsonProperty("insertion_locations")>
-    <DataMember>
-    Public Property InsertionLocations As ObservableCollection(Of LampDxfInsertLocation)
-        Get
-            Return _insertionLocations
-        End Get
-        Set(value As ObservableCollection(Of LampDxfInsertLocation))
-            _insertionLocations = value
-            If _insertionLocations IsNot Nothing Then
-                AddHandler _insertionLocations.CollectionChanged, (Sub(sender As Object, e As NotifyCollectionChangedEventArgs) NotifyPropertyChanged("InsertionLocations"))
-            End If
-
-            NotifyPropertyChanged()
-        End Set
-    End Property
-
-
-    Private Sub PreviewImages_CollectionChanged(sender As Object, args As NotifyCollectionChangedEventArgs)
-        NotifyPropertyChanged(NameOf(PreviewImages))
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub DynamicTextList_PropertyChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
+        NotifyPropertyChanged("DynamicTextList")
     End Sub
 
+    ''' <summary>
+    ''' Dummy member for WCF to serialize images
+    ''' DONT USE
+    ''' </summary>
+    ''' <returns></returns>
     <DataMember>
     Private Property _serializePreviewImages As IEnumerable(Of String)
         Get
@@ -430,14 +454,25 @@ Public NotInheritable Class LampTemplate
             Return _previewImage
         End Get
         Private Set(value As ObservableCollection(Of Image))
+            If _previewImage IsNot Nothing Then
+                RemoveHandler PreviewImages.CollectionChanged, AddressOf PreviewImages_CollectionChanged
+            End If
             _previewImage = value
-            AddHandler PreviewImages.CollectionChanged, AddressOf PreviewImages_CollectionChanged
+            If _previewImage IsNot Nothing Then
+                AddHandler PreviewImages.CollectionChanged, AddressOf PreviewImages_CollectionChanged
+            End If
+            NotifyPropertyChanged()
         End Set
     End Property
 
-
-
-
+    ''' <summary>
+    ''' Handler for previewImages change
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="args"></param>
+    Private Sub PreviewImages_CollectionChanged(sender As Object, args As NotifyCollectionChangedEventArgs)
+        NotifyPropertyChanged(NameOf(PreviewImages))
+    End Sub
 #End Region
 
     ''' <summary>
@@ -460,8 +495,6 @@ Public NotInheritable Class LampTemplate
         Return JsonConvert.DeserializeObject(Of LampTemplate)(json)
     End Function
 
-
-
     ''' <summary>
     ''' Gets whether or not it has text that is filled in by the user
     ''' during creation
@@ -483,12 +516,11 @@ Public NotInheritable Class LampTemplate
         End Get
     End Property
 
-
     ''' <summary>
     ''' Converts -> json format to be saved as a .spf
     ''' </summary>
     ''' <returns></returns>
-    Public Function Serialize(Optional formatting As Formatting = Formatting.None) As String
+    Public Function ToJson(Optional formatting As Formatting = Formatting.None) As String
         Return JsonConvert.SerializeObject(Me, formatting)
     End Function
 
@@ -510,83 +542,56 @@ Public NotInheritable Class LampTemplate
         End If
 
         Using fileStream As New StreamWriter(path)
-            fileStream.Write(Serialize(formatting))
+            fileStream.Write(ToJson(formatting))
         End Using
     End Sub
 
     ''' <summary>
-    ''' Helper constructor for LampTemplates
-    ''' </summary>
-    ''' <param name="dxf"></param>
-    ''' <param name="guid"></param>
-    Private Sub _new(dxf As LampDxfDocument, guid As String)
-
-
-
-    End Sub
-    ''' <summary>
     ''' Create a new LampTemplate with default Everything
     ''' </summary>
-    Public Sub New()
+    Sub New()
         Me.New(New LampDxfDocument(), System.Guid.NewGuid.ToString)
     End Sub
 
-    Public Sub New(guid As String)
+    ''' <summary>
+    ''' Creates a new <see cref="LampTemplate"></see> with default LampDxfDocument
+    ''' </summary>
+    ''' <param name="guid"></param>
+    Sub New(guid As String)
         Me.New(New LampDxfDocument, guid)
     End Sub
 
-    Public Sub New(dxf As LampDxfDocument)
+    ''' <summary>
+    '''  Creates a new <see cref="LampTemplate"></see> with default guid
+    ''' </summary>
+    ''' <param name="dxf"></param>
+    Sub New(dxf As LampDxfDocument)
         Me.New(dxf, System.Guid.NewGuid.ToString)
     End Sub
 
+    ''' <summary>
+    '''  Creates a new <see cref="LampTemplate"></see> 
+    ''' </summary>
+    ''' <param name="dxf"></param>
+    ''' <param name="guid"></param>
     Sub New(dxf As LampDxfDocument, guid As String)
         Me.GUID = guid
         Me.BaseDrawing = dxf
         Me.Tags = New ObservableCollection(Of String)
 
-        Dim collection = New ObservableCollection(Of Image)
-        collection.ClearAsArray()
-
-        PreviewImages = collection
-
-
-        Tags = New ObservableCollection(Of String)
-        AddHandler Tags.CollectionChanged, AddressOf HandleTag_CollectionChanged
+        PreviewImages = New ObservableCollection(Of Image)
+        PreviewImages.ClearAsArray()
     End Sub
 
-
-
-
-
-    ''' <summary>
-    ''' Refreshes the _completeDrawing based on the InsertionLocations
-    ''' Expensive, dont call too many times
-    ''' </summary>
-    Public Sub RefreshCompleteDrawing()
-        ' TODO!
-        CompletedDrawing = New LampDxfDocument()
-        For Each point As LampDxfInsertLocation In InsertionLocations
-            BaseDrawing.InsertInto(CompletedDrawing, point)
-        Next
-    End Sub
-
-    Public Sub AddInsertionPoint(point As LampDxfInsertLocation, Optional refresh As Boolean = True)
-        InsertionLocations.Add(point)
-
-        If refresh Then
-            RefreshCompleteDrawing()
-        End If
-    End Sub
-
-    Public Sub SortByMaterial(listOfTemplate As List(Of LampTemplate))
+    Public Shared Sub SortByMaterial(listOfTemplate As List(Of LampTemplate))
         listOfTemplate.Sort(AddressOf CompareMaterial)
     End Sub
 
-    Private Function CompareMaterial(x As LampTemplate, y As LampTemplate) As Integer
+    Private Shared Function CompareMaterial(x As LampTemplate, y As LampTemplate) As Integer
         Return x.Material.CompareTo(y.Material)
     End Function
 
-    Private Function CompareDate(x As LampTemplate, y As LampTemplate) As Integer
+    Private Shared Function CompareDate(x As LampTemplate, y As LampTemplate) As Integer
         Return x.Material.CompareTo(y.Material)
     End Function
 
@@ -599,59 +604,6 @@ Public NotInheritable Class LampTemplate
     End Function
 End Class
 
-
-Public Class ImageListJsonConverter
-    Inherits JsonConverter
-
-    Public Overrides Sub WriteJson(writer As JsonWriter, value As Object, serializer As JsonSerializer)
-        Dim ImageList = DirectCast(value, IList(Of Image))
-        Dim encodedImages As New List(Of String)
-
-        For Each image In ImageList
-            encodedImages.Add(LampDxfDocument.ImageToBase64(image))
-        Next
-        writer.WriteStartArray()
-        For Each item In encodedImages
-            writer.WriteValue(item)
-        Next
-        writer.WriteEndArray()
-    End Sub
-
-    Public Overrides Function CanConvert(objectType As Type) As Boolean
-        Return objectType = GetType(List(Of Image))
-    End Function
-
-    Public Overrides Function ReadJson(reader As JsonReader, objectType As Type, existingValue As Object, serializer As JsonSerializer) As Object
-        Dim out As New ObservableCollection(Of Image)
-
-        Dim token = JToken.Load(reader)
-        If token.Type = JTokenType.Array Then
-            For Each base64Image In token.ToArray()
-                If base64Image.Type = JTokenType.String Then
-                    out.Add(LampDxfDocument.Base64ToImage(base64Image.ToString))
-                ElseIf base64Image.Type = JTokenType.Null Then
-                    out.Add(Nothing)
-                Else
-                    Throw New JsonSerializationException()
-                End If
-            Next
-
-        Else
-            Throw New JsonSerializationException()
-        End If
-#If DEBUG Then
-        If out.Count > LampTemplate.MaxImages Then
-            Throw New JsonSerializationException("too many images!")
-        End If
-#Else
-        While out.Count > LampTemplate.MaxImages
-            out.RemoveAt(out.Count - 1)
-        End While
-#End If
-        Return out
-    End Function
-
-End Class
 
 <DataContract>
 Public Class LampTemplateWrapper

@@ -68,10 +68,7 @@ Public Class LampDatabaseTests
     ' to get all the column info 
     <TestMethod()>
     Public Sub TestDatabaseSchema()
-
         Using conn = database.Connection.OpenConnection(), command = conn.GetCommand
-
-
             command.CommandText = "Pragma table_info(template)"
             Using data = command.ExecuteReader()
 
@@ -290,6 +287,11 @@ Public Class LampDatabaseTests
         End Using
 
     End Function
+
+    <TestMethod>
+    Public Sub TestJobs()
+        ' TODO jobs
+    End Sub
 End Class
 
 Public Module owo

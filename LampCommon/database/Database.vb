@@ -1,11 +1,9 @@
 ﻿Imports System.IO
 Imports System.Text
-Imports System.Collections.ObjectModel
 Imports System.Data.SQLite
 Imports System.Drawing
 Imports LampCommon.DatabaseHelper
 Imports LampCommon
-Imports System.Threading
 
 ''' <summary>
 ''' Template database
@@ -851,7 +849,6 @@ Partial Public Class TemplateDatabase
     ''' <param name="template"></param>
     Public Function SetTemplate(template As LampTemplate, Optional creatorId As String = Nothing, Optional approverId As String = Nothing, Optional optTrans As SqliteTransactionWrapper = Nothing) As Boolean
         Using conn = Connection.OpenConnection, trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Transaction.LockTransaction) ' create auto transaction if needed
-            ' todo use transaction to make sure it updates everything
 
             If SetTemplateData(template, creatorId, approverId, trans) Then
                 If SetDxf(template.GUID, template.BaseDrawing, trans) Then
@@ -885,7 +882,6 @@ Partial Public Class TemplateDatabase
     ''' <param name="template"></param>
     Public Async Function SetTemplateAsync(template As LampTemplate, Optional creatorId As String = Nothing, Optional approverId As String = Nothing, Optional optTrans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
         Using conn = Connection.OpenConnection, trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync)
-            ' todo use transaction to make sure it updates everything
 
             If Await SetTemplateDataAsync(template, creatorId, approverId, trans) Then
                 If Await SetDxfAsync(template.GUID, template.BaseDrawing, trans) Then
@@ -1178,7 +1174,7 @@ Partial Public Class TemplateDatabase
                     Dim approved = reader.GetString(reader.GetOrdinal("approved"))
                     Dim submitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
 
-                    job = New LampJob(template, submitter, approver, approved, submitDate)
+                    job = New LampJob(template, submitter.ToProfile, approver.ToProfile, approved, submitDate)
                 End If
 
                 Return job
@@ -1218,7 +1214,7 @@ Partial Public Class TemplateDatabase
                     Dim approved = reader.GetString(reader.GetOrdinal("approved"))
                     Dim submitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
 
-                    job = New LampJob(template, submitter, approver, approved, submitDate)
+                    job = New LampJob(template, submitter.ToProfile, approver.ToProfile, approved, submitDate)
                 End If
 
                 Return job
@@ -1231,11 +1227,11 @@ Partial Public Class TemplateDatabase
     ''' </summary>
     Public Function SetJob(job As LampJob, Optional trans As SqliteTransactionWrapper = Nothing) As Boolean
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            ' check if the template is already in the database
-            ' todo use equality to check if the two templates are equal
             Dim fromDb = SelectTemplate(job.Template.GUID)
             If fromDb Is Nothing Then
                 SetTemplate(job.Template, optTrans:=trans)
+            ElseIf Not fromDb.Equals(job.Template) Then
+                Return False
             End If
 
             command.CommandText = "INSERT OR REPLACE INTO jobs
@@ -1259,11 +1255,11 @@ Partial Public Class TemplateDatabase
     ''' </summary>
     Public Async Function SetJobAsync(job As LampJob, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            ' check if the template is already in the database
-            ' todo use equality to check if the two templates are equal
             Dim fromDb = Await SelectTemplateAsync(job.Template.GUID)
             If fromDb Is Nothing Then
                 Await SetTemplateAsync(job.Template, optTrans:=trans)
+            ElseIf Not fromDb.Equals(job.Template) Then
+                Return False
             End If
 
             command.CommandText = "INSERT OR REPLACE INTO jobs
@@ -1386,10 +1382,10 @@ Public Class TemplateDatabase
         Dim templates = db.GetAllTemplate
 
         ' add jobs
-        Dim job As New LampJob(templates(0), max)
+        Dim job As New LampJob(templates(0), max.ToProfile)
         db.SetJob(job)
 
-        job = New LampJob(templates(1), shovel)
+        job = New LampJob(templates(1), shovel.ToProfile)
         db.SetJob(job)
     End Sub
 
@@ -1479,23 +1475,6 @@ End Class
 ''' but dont show up when you do TemplateDatabase.Blah
 ''' </summary>
 Public Class DatabaseHelper
-    ''' <summary>
-    ''' Converts list of tags into string (for database)
-    ''' </summary>
-    ''' <param name="template"></param>
-    ''' <returns></returns>
-    Public Shared Function SerializeTags(template As LampTemplate) As String
-        Return String.Join(",", template.Tags)
-    End Function
-
-    ''' <summary>
-    ''' Converts string into list of tags (for database)
-    ''' </summary>
-    ''' <param name="tags"></param>
-    ''' <returns></returns>
-    Public Shared Function DeserializeTags(tags As String) As List(Of String)
-        Return tags.Split(","c).ToList()
-    End Function
 
     ''' <summary>
     ''' Converts an image to its binary representation
@@ -1525,8 +1504,6 @@ Public Class DatabaseHelper
         Return Image.FromStream(stream)
     End Function
 
-
-
     ''' <summary>
     ''' Creates an sqlite paramater
     ''' </summary>
@@ -1539,216 +1516,3 @@ Public Class DatabaseHelper
         Return foo
     End Function
 End Class
-
-
-''' <summary>
-''' Ensures the the db is open when needed
-''' and closed when all are used
-''' </summary>
-Public Class SqliteConnectionWrapper
-    Implements IDisposable
-
-    ''' <summary>
-    ''' raw Connection to the database
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property Connection As SQLiteConnection
-
-    ''' <summary>
-    ''' how many items are using the db right now
-    ''' dont tocuh without first locking connection
-    ''' </summary>
-    Private RefCount As Integer = 0
-
-    ''' <summary>
-    ''' Single transaction that connection has
-    ''' </summary>
-    ''' <returns></returns>
-    Public ReadOnly Property Transaction As SQLiteTransaction
-
-    ''' <summary>
-    ''' whether or not the db is opened / closed
-    ''' </summary>
-    ''' <returns></returns>
-    Public ReadOnly Property Opened As Boolean
-        Get
-            SyncLock Connection
-                Return RefCount > 0
-            End SyncLock
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' decreases ref count / closes connection if needed
-    ''' Do NOT call without at least 1 reference
-    ''' </summary>
-    Private Sub DecrementRef()
-        SyncLock Connection
-            If RefCount <= 0 Then
-                Throw New Exception("refcount < 0?")
-            End If
-
-            RefCount -= 1
-            If RefCount = 0 Then
-                Connection.Close()
-            End If
-
-        End SyncLock
-    End Sub
-
-    ''' <summary>
-    ''' Disposes.
-    ''' If refcount reaches 0, it will close the db
-    ''' </summary>
-    Public Sub Dispose() Implements IDisposable.Dispose
-        DecrementRef()
-    End Sub
-
-    ''' <summary>
-    ''' Gets a reference to the sqliteconnection
-    ''' </summary>
-    ''' <returns></returns>
-    Public Function OpenConnection() As SqliteConnectionWrapper
-        SyncLock Connection
-            If RefCount = 0 Then
-                Connection.Open()
-            End If
-            RefCount += 1
-        End SyncLock
-        Return Me
-    End Function
-
-    Sub New(connection As SQLiteConnection)
-        Me.Connection = connection
-    End Sub
-
-
-    Sub New(connectionString As String)
-        Me.Connection = New SQLiteConnection(connectionString)
-    End Sub
-
-    Public Function GetCommand(Optional transaction As SqliteTransactionWrapper = Nothing) As SQLiteCommand
-        If Opened = False Then
-            Throw New Exception("Connection Not opened, run openConnection()")
-        End If
-        Dim command = Connection.CreateCommand
-        If transaction IsNot Nothing Then
-            command.Transaction = transaction.Transaction
-        End If
-        Return command
-    End Function
-End Class
-
-Public Class SqliteTransactionWrapper
-    Implements IDisposable
-
-
-    ''' <summary>
-    ''' parent connection
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property Connection As SqliteConnectionWrapper
-
-    ''' <summary>
-    ''' how many items using this transaction
-    ''' when reaches zero, it should clear
-    ''' If recount = 0, it means transaction not being used by any objects
-    ''' when the lock is acquired, the transaction is being used by refCount number of commands 
-    ''' </summary>
-    Private RefCount As Integer = 0
-
-    ''' <summary>
-    ''' ensures the transaction is only used in 1 by 1 transaction at a time
-    ''' when the lock is acquired, the transaction is being used by refCount number of commands
-    ''' </summary>
-    Private lock As New SemaphoreSlim(1, 1)
-
-    ''' <summary>
-    ''' whether or not transaction was commited
-    ''' if wrapper is completely disposed w/out being commited, will automatically rollback
-    ''' MUST lock before changing
-    ''' </summary>
-    Private committed As Boolean = False
-
-    Public Property Transaction As SQLiteTransaction
-
-    Public Sub Dispose() Implements IDisposable.Dispose
-        DecrementRef()
-    End Sub
-
-    Private Sub DecrementRef()
-        SyncLock lock
-            If RefCount <= 0 Then
-                Throw New Exception("refcount {transaction?} <= 0?")
-            End If
-
-            RefCount -= 1
-            If RefCount = 0 Then
-                ' reset the transaction object
-
-                If Not committed Then
-                    Transaction.Rollback()
-                End If
-                Transaction.Dispose() ' dispose the object
-                Transaction = Nothing
-                committed = False
-                lock.Release()
-            End If
-        End SyncLock
-    End Sub
-
-    Public Function LockTransaction() As SqliteTransactionWrapper
-        lock.Wait()
-        IncrementRef()
-        Return Me
-    End Function
-
-    Public Async Function LockTransactionAsync() As Task(Of SqliteTransactionWrapper)
-        Await lock.WaitAsync()
-        IncrementRef()
-        Return Me
-    End Function
-
-    Public Sub IncrementRef()
-        SyncLock lock
-            If RefCount = 0 Then
-                ' make a new transaction
-                Transaction = Connection.Connection.BeginTransaction()
-            End If
-            RefCount += 1
-        End SyncLock
-    End Sub
-
-    Public Sub Commit()
-        SyncLock lock
-            If Not committed Then
-                Transaction.Commit()
-                committed = True
-            Else
-                Throw New Exception("multiple commits not supported")
-            End If
-        End SyncLock
-    End Sub
-
-
-
-    Sub New(connect As SqliteConnectionWrapper)
-        Me.Connection = connect
-    End Sub
-
-    ''' <summary>
-    ''' Doesn't lock the transcation, just increase the refcount 
-    ''' checks if the transaction is already locked
-    ''' </summary>
-    ''' <returns></returns>
-    Public Function UseTransaction() As SqliteTransactionWrapper
-        SyncLock lock
-            If RefCount = 0 Then
-                Throw New Exception("transaction is not locked, therefore cannot be used")
-            End If
-            RefCount += 1
-        End SyncLock
-        Return Me
-    End Function
-End Class
-

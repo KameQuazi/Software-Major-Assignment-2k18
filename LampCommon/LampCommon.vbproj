@@ -96,6 +96,8 @@
   <ItemGroup>
     <Compile Include="CommonExtensions.vb" />
     <Compile Include="database\Database.vb" />
+    <Compile Include="database\SqliteConnectionWrapper.vb" />
+    <Compile Include="database\SqliteTransactionWrapper.vb" />
     <Compile Include="LampVersion.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -112,6 +114,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="template\ImageListJsonConverter.vb" />
     <Compile Include="template\LampDxfDocument.vb" />
     <Compile Include="job\LampJob.vb" />
     <Compile Include="user\LampCredentials.vb" />
