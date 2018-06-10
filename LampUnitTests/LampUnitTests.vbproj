@@ -108,6 +108,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BenchmarkingDatabase.vb" />
     <Compile Include="LampDxfTest.vb" />
     <Compile Include="LampTemplateTest.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

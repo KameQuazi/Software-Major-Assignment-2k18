@@ -200,7 +200,7 @@ Public Class LampDatabaseTests
     <TestMethod()>
     Public Async Function TestTemplates() As Task
 
-        Using conn = database.Connection.OpenConnection, sqlite_cmd = conn.GetCommand()
+        Using conn = database.Connection.OpenConnection
             Dim tasks As New List(Of Task(Of Boolean))
             For i = 1 To 10
                 tasks.Add(database.SetTemplateAsync(New LampTemplate))
@@ -246,12 +246,54 @@ Public Class LampDatabaseTests
         Await TestTemplates()
     End Function
 
-    Private RepeatConnectionTestTimes = 3
+    Private RepeatConnectionTestTimes As Integer = 5
 
+    Private BenchmarkRepeatTimes As Integer = 100
+
+    <TestMethod>
+    Public Sub BenchmarkSyncTemplateInsert()
+        For i = 1 To BenchmarkRepeatTimes
+            database.SetTemplate(New LampTemplate(NewGuid()))
+        Next
+    End Sub
+
+    <TestMethod>
+    Public Async Function BenchmarkAsyncTemplateInsert() As Task
+        Dim tasks As New List(Of Task(Of Boolean))
+        For i = 1 To BenchmarkRepeatTimes
+            tasks.Add(database.SetTemplateAsync(New LampTemplate(NewGuid())))
+        Next
+        Await Task.WhenAll(tasks)
+    End Function
+
+    <TestMethod>
+    Public Sub BenchmarkSyncTemplateInsertTransation()
+        Using conn = database.Connection.OpenConnection, trans = database.Transaction.LockTransaction()
+            For i = 1 To BenchmarkRepeatTimes
+                database.SetTemplate(New LampTemplate(NewGuid()), optTrans:=trans)
+            Next
+            trans.Commit()
+        End Using
+    End Sub
+
+    <TestMethod>
+    Public Async Function BenchmarkAsyncTemplateInsertTransation() As Task
+        Dim tasks As New List(Of Task(Of Boolean))
+        Using conn = database.Connection.OpenConnection, trans = database.Transaction.LockTransaction()
+
+            For i = 1 To BenchmarkRepeatTimes
+                tasks.Add(database.SetTemplateAsync(New LampTemplate(NewGuid()), optTrans:=trans))
+            Next
+
+            Await Task.WhenAll(tasks)
+            trans.Commit()
+        End Using
+
+    End Function
 End Class
 
 Public Module owo
-    Public Function NewGuid()
+    Public Function NewGuid() As String
         Return Guid.NewGuid.ToString()
     End Function
 End Module
