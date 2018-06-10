@@ -43,6 +43,7 @@ Partial Public Class TemplateDatabase
         End If
         Me.Path = filePath
         Connection = New SqliteConnectionWrapper(String.Format("Data Source={0};Version=3;", filePath))
+        Transaction = New SqliteTransactionWrapper(Connection)
         ' recreate the database if not found
         CreateTables()
     End Sub
@@ -52,7 +53,7 @@ Partial Public Class TemplateDatabase
     ''' Does not delete any data
     ''' </summary>
     Public Sub CreateTables()
-        Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
+        Using conn = Connection.OpenConnection(), trans = Transaction.LockTransaction, command = Connection.GetCommand(trans)
             command.CommandText = "CREATE TABLE if not exists users (
                                   UserId Text PRIMARY KEY Not Null,
                                   PermissionLevel Integer Not Null,
@@ -128,6 +129,7 @@ Partial Public Class TemplateDatabase
                                   FOREIGN KEY(approverId) REFERENCES users(UserId)
                                   );"
             command.ExecuteNonQuery()
+            trans.Commit()
         End Using
 
     End Sub
@@ -137,7 +139,7 @@ Partial Public Class TemplateDatabase
     ''' </summary>
     Public Sub RemoveTables()
         ' If the databse is open already, dont close it
-        Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
+        Using conn = Connection.OpenConnection(), trans = Transaction.LockTransaction, command = Connection.GetCommand(trans)
             command.CommandText = "DROP TABLE If exists users"
             command.ExecuteNonQuery()
             command.CommandText = "DROP TABLE If exists dxf"
@@ -150,6 +152,7 @@ Partial Public Class TemplateDatabase
             command.ExecuteNonQuery()
             command.CommandText = "DROP TABLE If exists template"
             command.ExecuteNonQuery()
+            trans.commit()
         End Using
     End Sub
 
@@ -301,8 +304,7 @@ Partial Public Class TemplateDatabase
             Using reader = command.ExecuteReader()
                 ' read only 1 row off the database
                 If reader.Read() Then
-                    metadata = New LampTemplateMetadata()
-                    metadata.GUID = guid
+                    metadata = New LampTemplateMetadata(guid)
 
                     metadata.Name = reader.GetString(reader.GetOrdinal("name"))
                     metadata.ShortDescription = reader.GetString(reader.GetOrdinal("ShortDescription"))
@@ -347,8 +349,7 @@ Partial Public Class TemplateDatabase
             Using reader = Await command.ExecuteReaderAsync()
                 ' read only 1 row off the database
                 If Await reader.ReadAsync() Then
-                    metadata = New LampTemplateMetadata()
-                    metadata.GUID = guid
+                    metadata = New LampTemplateMetadata(guid)
 
                     metadata.Name = reader.GetString(reader.GetOrdinal("name"))
                     metadata.ShortDescription = reader.GetString(reader.GetOrdinal("ShortDescription"))
@@ -1575,7 +1576,11 @@ Public Class SqliteConnectionWrapper
         If Opened = False Then
             Throw New Exception("Connection Not opened, run openConnection()")
         End If
-        Return Connection.CreateCommand
+        Dim command = Connection.CreateCommand
+        If transaction IsNot Nothing Then
+            command.Transaction = transaction.Transaction
+        End If
+        Return command
     End Function
 End Class
 
@@ -1624,11 +1629,15 @@ Public Class SqliteTransactionWrapper
 
             RefCount -= 1
             If RefCount = 0 Then
+                ' reset the transaction object
+
                 If Not committed Then
                     Transaction.Rollback()
                 End If
                 Transaction.Dispose() ' dispose the object
                 Transaction = Nothing
+                committed = False
+                lock.Release()
             End If
         End SyncLock
     End Sub
@@ -1657,10 +1666,16 @@ Public Class SqliteTransactionWrapper
 
     Public Sub Commit()
         SyncLock lock
-            Transaction.Commit()
-            committed = True
+            If Not committed Then
+                Transaction.Commit()
+                committed = True
+            Else
+                Throw New Exception("multiple commits not supported")
+            End If
         End SyncLock
     End Sub
+
+
 
     Sub New(connect As SqliteConnectionWrapper)
         Me.Connection = connect

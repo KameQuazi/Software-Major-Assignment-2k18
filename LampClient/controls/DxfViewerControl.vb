@@ -34,13 +34,11 @@ Public Class DxfViewerControl
             Return _drawing
         End Get
         Set(value As LampDxfDocument)
-            If value <> _drawing Then
-                If _drawing IsNot Nothing Then
-                    RemoveHandler _drawing.PropertyChanged, AddressOf SourceChanged
-                    AddHandler value.PropertyChanged, AddressOf SourceChanged
-                End If
-                _drawing = value
+            If _drawing IsNot Nothing Then
+                RemoveHandler _drawing.PropertyChanged, AddressOf SourceChanged
+                AddHandler value.PropertyChanged, AddressOf SourceChanged
             End If
+            _drawing = value
             UpdateView()
         End Set
     End Property

@@ -396,7 +396,6 @@ Public Class LampDxfDocument
 
     ''' <summary>
     ''' Inserts a lampdocument into this document at the insertionpoint given
-    ''' TODO!
     ''' </summary>
     ''' <param name="otherDrawing"></param>
     ''' <param name="insertLocation"></param>
@@ -628,26 +627,6 @@ Public Class LampDxfDocument
 
 
     End Sub
-
-    ''' <summary>
-    ''' Todo implement equality lampdxf
-    ''' </summary>
-    ''' <param name="first"></param>
-    ''' <param name="second"></param>
-    ''' <returns></returns>
-    Public Shared Operator =(ByVal first As LampDxfDocument, ByVal second As LampDxfDocument) As Boolean
-        Return False
-    End Operator
-
-    ''' <summary>
-    ''' Todo implement equality lampdxf
-    ''' </summary>
-    ''' <param name="first"></param>    
-    ''' <param name="second"></param>
-    ''' <returns></returns>
-    Public Shared Operator <>(ByVal first As LampDxfDocument, ByVal second As LampDxfDocument) As Boolean
-        Return True
-    End Operator
 
     ''' <summary>
     ''' Calculates the width, height bottomleft and right of the document

@@ -7,6 +7,7 @@ Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 Imports System.Drawing
 Imports System.Runtime.Serialization
+Imports LampCommon
 
 <DataContract>
 Public Class LampTemplateMetadata
@@ -20,7 +21,7 @@ Public Class LampTemplateMetadata
 
     Public Function ToLampTemplate() As LampTemplate
         Dim ret As New LampTemplate()
-        ret.guid = GUID
+        ret.GUID = GUID
         ret.Name = Name
         ret.ShortDescription = ShortDescription
         ret.LongDescription = LongDescription
@@ -31,6 +32,7 @@ Public Class LampTemplateMetadata
         ret.IsComplete = IsComplete
         Return ret
     End Function
+
 
     Private _guid As String
     ''' <summary>
@@ -224,6 +226,87 @@ Public Class LampTemplateMetadata
             NotifyPropertyChanged()
         End Set
     End Property
+
+    Public Sub New()
+        Me.New(GetNewGuid())
+    End Sub
+
+    Public Sub New(guid As String)
+        Me.GUID = guid
+    End Sub
+
+    Public Overrides Function Equals(obj As Object) As Boolean
+        If obj Is Nothing Then
+            Return False
+        End If
+        Dim data = TryCast(obj, LampTemplateMetadata)
+        If data Is Nothing Then
+            Return False
+        End If
+
+        If Not data.GUID.Equals(GUID) Then
+            Return False
+        End If
+
+        If Not data.ShortDescription.Equals(ShortDescription) Then
+            Return False
+        End If
+
+        If Not data.LongDescription.Equals(LongDescription) Then
+            Return False
+        End If
+
+        If Not data.Material.Equals(Material) Then
+            Return False
+        End If
+
+        If Not data.Length.Equals(Length) Then
+            Return False
+        End If
+
+        If Not data.Height.Equals(Height) Then
+            Return False
+        End If
+
+        If Not data.MaterialThickness.Equals(MaterialThickness) Then
+            Return False
+        End If
+
+        If data.CreatorProfile IsNot Nothing Then
+            If Not data.CreatorProfile.Equals(CreatorProfile) Then
+                Return False
+            End If
+        Else ' is nothing
+            If CreatorProfile IsNot Nothing Then
+                Return False
+            End If
+        End If
+
+
+        If data.ApproverProfile IsNot Nothing Then
+            If Not data.CreatorProfile.Equals(CreatorProfile) Then
+                Return False
+            End If
+        Else ' is nothing
+            If ApproverProfile IsNot Nothing Then
+                Return False
+            End If
+        End If
+
+        If Not data.SubmitDate.Equals(SubmitDate) Then
+            Return False
+        End If
+
+        If Not data.IsComplete.Equals(IsComplete) Then
+            Return False
+        End If
+
+        Return True
+    End Function
+
+    Public Overrides Function GetHashCode() As Integer
+        Return Me.GUID.GetHashCode()
+    End Function
 End Class
 
 
@@ -231,7 +314,6 @@ End Class
 <DataContract()>
 Public NotInheritable Class LampTemplate
     Inherits LampTemplateMetadata
-
     Public Const MaxImages As Integer = 3
 
 
@@ -397,7 +479,7 @@ Public NotInheritable Class LampTemplate
     ''' <returns></returns>
     Public Shared ReadOnly Property Empty As LampTemplate
         Get
-            Return New LampTemplate With {.GUID = New Guid().ToString()} 'Gets a New Default guid (0000-0000-0000...)
+            Return New LampTemplate(GetNewGuid()) 'Gets a New Default guid (0000-0000-0000...)
         End Get
     End Property
 
@@ -447,6 +529,10 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     Public Sub New()
         Me.New(New LampDxfDocument(), System.Guid.NewGuid.ToString)
+    End Sub
+
+    Public Sub New(guid As String)
+        Me.New(New LampDxfDocument, guid)
     End Sub
 
     Public Sub New(dxf As LampDxfDocument)
@@ -504,20 +590,13 @@ Public NotInheritable Class LampTemplate
         Return x.Material.CompareTo(y.Material)
     End Function
 
-    ' TODO - ACtually compare all the elements of the template
-    Public Shared Operator =(ByVal first As LampTemplate, ByVal second As LampTemplate) As Boolean
-        Return first.GUID = second.GUID
-    End Operator
-
-    Public Shared Operator <>(ByVal first As LampTemplate, ByVal second As LampTemplate) As Boolean
-        Return first.GUID <> second.GUID
-    End Operator
-
     Public Overrides Function ToString() As String
-        Return String.Format("LampTemplate Guid:{0}", Me.GUID.ToString())
+        Return String.Format("LampTemplate Guid:{0}", Me.GUID)
     End Function
 
-
+    Public Overrides Function GetHashCode() As Integer
+        Return MyBase.GetHashCode()
+    End Function
 End Class
 
 

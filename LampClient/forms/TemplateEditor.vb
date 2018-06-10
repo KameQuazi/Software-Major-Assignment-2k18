@@ -112,6 +112,7 @@ Public Class TemplateEditor
         Template.Name = NameBox.Text
         Template.ShortDescription = ShortDescription.Text
         Template.LongDescription = LongDescription.Text
+
         Template.GUID = GuidBox.Text
         ResumeViewerUpdate()
     End Sub

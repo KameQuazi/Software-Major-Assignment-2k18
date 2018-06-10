@@ -9,9 +9,10 @@ Imports netDxf
 Imports LampCommon
 
 
-<TestClass()> Public Class LampDxfTest
-
-    <TestMethod()> Public Sub CartesianToGdiTest()
+<TestClass()>
+Public Class LampDxfTest
+    <TestMethod()>
+    Public Sub CartesianToGdiTest()
         Dim zero = New PointF(0, 0)
         ' test P(0, 0) with zero center
         AreEqual(CartesianToGdi(zero, 200, 200, 0, 0), New PointF(100, 100))

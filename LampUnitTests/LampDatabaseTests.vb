@@ -1,11 +1,14 @@
 ﻿Imports Microsoft.VisualStudio.TestTools.UnitTesting.Assert
 Imports LampService
 Imports LampCommon
+Imports System.Data.SQLite
 
 <TestClass()>
 Public Class LampDatabaseTests
     Private TemplateTableName As String = "template"
     Private ReadOnly databasePath As String = "testTables.sqlite"
+
+    Private database As New TemplateDatabase(databasePath)
 
     <TestInitialize>
     Public Sub Initialize()
@@ -49,10 +52,12 @@ Public Class LampDatabaseTests
     <TestMethod()>
     Public Sub ResetDatabase()
         If IO.File.Exists(databasePath) Then
+            SQLiteConnection.ClearAllPools()
+            GC.Collect()
+            GC.WaitForPendingFinalizers()
             IO.File.Delete(databasePath)
         End If
 
-        Dim database As New TemplateDatabase(databasePath)
         database.RemoveTables()
         database.CreateTables()
     End Sub
@@ -63,7 +68,6 @@ Public Class LampDatabaseTests
     ' to get all the column info 
     <TestMethod()>
     Public Sub TestDatabaseSchema()
-        Dim database As New TemplateDatabase(databasePath)
 
         Using conn = database.Connection.OpenConnection(), command = conn.GetCommand
 
@@ -172,20 +176,19 @@ Public Class LampDatabaseTests
 
         For i = 1 To RepeatConnectionTestTimes
             With Nothing ' test database creation / deletion
-                Dim db As New TemplateDatabase
-                Using db.Connection.OpenConnection
-                    db.CreateTables()
-                    db.RemoveTables()
+                Using database.Connection.OpenConnection
+                    database.RemoveTables()
+                    database.CreateTables()
+
                 End Using
             End With
 
             With Nothing ' test select and adding template
-                Dim db As New TemplateDatabase
-                Using db.Connection.OpenConnection
+                Using database.Connection.OpenConnection
                     Dim temp As New LampTemplate
-                    db.SetTemplate(temp)
-                    AreEqual(temp.GUID, db.SelectTemplate(temp.GUID).GUID)
-                    AreEqual(temp.GUID, (Await db.SelectTemplateAsync(temp.GUID)).GUID)
+                    database.SetTemplate(temp)
+                    AreEqual(temp.GUID, database.SelectTemplate(temp.GUID).GUID)
+                    AreEqual(temp.GUID, (Await database.SelectTemplateAsync(temp.GUID)).GUID)
                 End Using
             End With
 
@@ -196,9 +199,6 @@ Public Class LampDatabaseTests
 
     <TestMethod()>
     Public Async Function TestTemplates() As Task
-        Dim database As New TemplateDatabase(databasePath)
-        database.RemoveTables()
-        database.CreateTables()
 
         Using conn = database.Connection.OpenConnection, sqlite_cmd = conn.GetCommand()
             Dim tasks As New List(Of Task(Of Boolean))
@@ -209,8 +209,7 @@ Public Class LampDatabaseTests
 
         End Using
 
-        Dim test As New LampTemplate()
-        test.GUID = "0123-4567-8901-2345"
+        Dim test As New LampTemplate("0123-4567-8901-2345")
         test.Height = 199
         test.Length = 30004.4
         test.Material = "Thicc wood"
@@ -231,12 +230,21 @@ Public Class LampDatabaseTests
 
     <TestMethod()>
     Public Sub TestUsers()
-        Dim db As New TemplateDatabase
         Dim user As New LampUser(NewGuid, UserPermission.Admin, "email@gmail.com", "jackywathy", "abcd1234", "testuser")
-        db.SetUser(user)
-        db.SelectUser(user.UserId)
+        database.SetUser(user)
+        database.SelectUser(user.UserId)
     End Sub
 
+    <TestMethod()>
+    Public Async Function TestOrder() As Task
+
+        TestDatabaseSchema()
+        Await TestConnectionClosed()
+        TestUsers()
+        TestUsers()
+        TestUsers()
+        Await TestTemplates()
+    End Function
 
     Private RepeatConnectionTestTimes = 3
 
