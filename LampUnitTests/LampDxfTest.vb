@@ -38,11 +38,11 @@ Public Class LampDxfTest
         dxf.AddLine(10, 10, 20, 0)
         dxf.AddLine(20, 0, 0, 0)
         Dim template As New LampTemplate(dxf)
-        template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(0, 0, 0)))
-        template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(30, 0, 0)))
-        template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(60, 0, 0)))
+        ' template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(0, 0, 0)))
+        ' template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(30, 0, 0)))
+        ' template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(60, 0, 0)))
         template.Save("template.spf")
-        template.CompletedDrawing.Save("finished drawing.dxf")
+        ' template.CompletedDrawing.Save("finished drawing.dxf")
     End Sub
 
     <TestMethod>

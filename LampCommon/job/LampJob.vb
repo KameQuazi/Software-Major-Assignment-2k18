@@ -12,7 +12,7 @@ Public Class LampJob
 
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
-    Friend Sub NotifyPropertyChanged(<CallerMemberName()> Optional ByVal propertyName As String = Nothing)
+    Protected Sub NotifyPropertyChanged(<CallerMemberName()> Optional ByVal propertyName As String = Nothing)
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
 
@@ -62,13 +62,33 @@ Public Class LampJob
         NotifyPropertyChanged(NameOf(Template))
     End Sub
 
+    Private _submitter As LampProfile
     ''' <summary>
     ''' The submitter of 
     ''' </summary>
     ''' <returns></returns>
     Public Property Submitter As LampProfile
+        Get
+            Return _submitter
+        End Get
+        Set(value As LampProfile)
+            If _submitter IsNot Nothing Then
+                RemoveHandler _submitter.PropertyChanged, AddressOf Submitter_PropertyChanged
+            End If
+            _submitter = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
+    Private Sub Submitter_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
+        NotifyPropertyChanged(NameOf(Submitter))
+    End Sub
 
     Public Property Approver As LampProfile
+
+    Private Sub Approver_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
+        NotifyPropertyChanged(NameOf(Approver))
+    End Sub
 
     Public Property Approved As Boolean
 
@@ -173,4 +193,10 @@ Public Class LampJob
         End If
     End Sub
 
+    Private Sub EnsureCompleteIsUpdated(sender As Object, e As PropertyChangedEventArgs)
+        Select Case e.PropertyName
+            Case NameOf(Template)
+                RefreshCompleteDrawing()
+        End Select
+    End Sub
 End Class
