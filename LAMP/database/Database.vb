@@ -157,18 +157,17 @@ Public Class TemplateDatabase
     ''' This is so you dont have to duplicate code over SelectTemplate, SelectAllTemplate etc
     ''' Does not call reader.Read(), the reader must have data in it
     ''' </summary>
-    Private Function ReadTemplateTable(reader As SQLiteDataReader, Optional start As LampTemplate = Nothing) As LampTemplate
+    Private Function ReadTemplateTable(reader As SQLiteDataReader, Optional LampTemp As LampTemplate = Nothing) As LampTemplate
         If reader.HasRows <> True Then
             Throw New DataException(NameOf(reader))
         End If
 
-        If start Is Nothing Then
-            start = New LampTemplate
+        If LampTemp Is Nothing Then
+            LampTemp = New LampTemplate
         End If
 
         Dim LampDXF = LampDxfDocument.FromString(reader.GetString(reader.GetOrdinal("dxf")))
 
-        Dim LampTemp = New LampTemplate(LampDXF)
         LampTemp.GUID = reader.GetString(reader.GetOrdinal("guid"))
         LampTemp.Name = reader.GetString(reader.GetOrdinal("name"))
         LampTemp.ShortDescription = reader.GetString(reader.GetOrdinal("ShortDescription"))
@@ -186,7 +185,7 @@ Public Class TemplateDatabase
         LampTemp.CreatorName = reader.GetString(reader.GetOrdinal("CreatorName"))
         LampTemp.IsComplete = reader.GetBoolean(reader.GetOrdinal("complete"))
 
-        Return start
+        Return LampTemp
     End Function
 
     Private Function ReadImageTable(reader As SQLiteDataReader, Optional start As LampTemplate = Nothing) As LampTemplate
@@ -203,16 +202,7 @@ Public Class TemplateDatabase
 
         Throw New NotImplementedException()
     End Function
-    
-     Sub removeEntry(guid As String)
-        Dim sqlite_conn = _connection
-        sqlite_conn.Open()
-        Dim sqlite_cmd = sqlite_conn.CreateCommand()
-        sqlite_cmd.CommandText = "DELETE from template WHERE GUID = ?"
-        sqlite_cmd.Parameters.Add(guid, DbType.String)
-        sqlite_cmd.ExecuteNonQuery()
-        sqlite_conn.Close()
-      End Sub
+
 
     ''' <summary>
     ''' Finds a template in the database, given its corresponding guid
@@ -223,7 +213,7 @@ Public Class TemplateDatabase
     Function SelectTemplate(guid As String) As LampTemplate
         ' If the databse is open already, dont close it
         Dim closeDatabaseAfter = OpenDatabase()
-   
+
 
         Try
             Using sqlite_cmd = GetCommand()
@@ -316,13 +306,23 @@ Public Class TemplateDatabase
     ''' Gets all templates in the database
     ''' </summary>
     ''' <returns></returns>
-    Public Function GetAllTemplate() As List(Of LampTemplate)
+    Public Function GetAllTemplate(Optional start As Integer = 0, Optional number As Integer = 1, Optional sort As String = "none") As List(Of LampTemplate)
         Dim closeDatabaseAfter = OpenDatabase()
 
         Try
             Using sqlite_cmd = GetCommand()
+                If sort = "none" Or {"GUID", "Name", "material", "length", "Height", "materialThickness", "creatorName", "submitDate", "complete"}.Contains(sort) = False Then
 
-                sqlite_cmd.CommandText = "Select * FROM template"
+                    sqlite_cmd.CommandText = "Select * FROM template LIMIT @start , @number"
+                Else
+                    sqlite_cmd.CommandText = String.Format("Select * FROM template ORDER BY {0} LIMIT @start , @number", sort)
+
+                    sqlite_cmd.Parameters.AddWithValue("@sort", sort)
+                    Debug.Write("HI")
+                End If
+
+                sqlite_cmd.Parameters.AddWithValue("@start", start)
+                sqlite_cmd.Parameters.AddWithValue("@number", number)
 
                 Using sqlite_reader = sqlite_cmd.ExecuteReader()
                     Dim LampTempList As New List(Of LampTemplate)
@@ -331,6 +331,7 @@ Public Class TemplateDatabase
                     While sqlite_reader.Read()
                         ' read the data off this sqlite_reader
                         LampTemp = ReadTemplateTable(sqlite_reader)
+
 
 
                         ' Set images
@@ -425,8 +426,8 @@ Public Class TemplateDatabase
         Try
 
             Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "DELETE from template WHERE GUID = ?"
-                sqlite_cmd.Parameters.Add(guid)
+                sqlite_cmd.CommandText = "DELETE from template WHERE GUID = @guid"
+                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
                 Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
 
                 If rmImage Then
@@ -624,8 +625,8 @@ Public Class TemplateDatabase
 
         Try
             Using sqlite_cmd = GetCommand()
-                sqlite_cmd.CommandText = "DELETE from images WHERE GUID = ?"
-                sqlite_cmd.Parameters.Add(guid)
+                sqlite_cmd.CommandText = "DELETE from images WHERE GUID = @guid"
+                sqlite_cmd.Parameters.AddWithValue("@guid", guid)
                 Dim rowsRemoved = sqlite_cmd.ExecuteNonQuery()
 
                 If rowsRemoved > 0 Then

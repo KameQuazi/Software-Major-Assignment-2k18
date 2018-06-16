@@ -1,5 +1,8 @@
-﻿Public Class TemplateSelect
-    Public Displays(7) As FileDisplay
+﻿Imports LAMP
+Public Class TemplateSelect
+    Dim listTemplate As New List(Of LampTemplate)
+    Dim sortTemplate As New List(Of LampTemplate)
+    Dim db As New TemplateDatabase()
     Private Sub pbLogo_Click(sender As Object, e As EventArgs)
         frmStart.Show()
         Me.Hide()
@@ -8,54 +11,44 @@
     End Sub
 
     Private Sub fileViewer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ToolBar1.lblCurScr.Text = "File Viewer"
-        Displays(0) = FileDisplay1
-        Displays(1) = FileDisplay2
-        Displays(2) = FileDisplay3
-        Displays(3) = FileDisplay4
-        Displays(4) = FileDisplay5
-        Displays(5) = FileDisplay6
-        Displays(6) = FileDisplay7
-        Displays(7) = FileDisplay8
-        LoadFiles()
+        TextBox1.CharacterCasing = CharacterCasing.Lower
+        ToolBar2.lblCurScr.Text = "File Viewer"
+        listTemplate = db.GetAllTemplate(0, 3, "Name")
 
-
-        Displays(0).Template = TemplateDatabase.GetExampleTemplate("one")
-        Displays(1).Template = TemplateDatabase.GetExampleTemplate("two")
-        Displays(2).Template = TemplateDatabase.GetExampleTemplate("three")
-        Displays(0).Enabled = False
     End Sub
 
     ''' <summary>
     ''' Load Files into the viewing screen
     ''' </summary>
-    Public Sub LoadFiles()
-        For i = 0 To 7
-            Displays(i).lblName.Text = "Name: Standard trophy"
-            Displays(i).lblCreator.Text = "Creator: Steve By Birth"
-            Displays(i).lblHeight.Text = "Height: 140mm"
-            Displays(i).lblWidth.Text = "Width: 70mm"
-            Displays(i).lblMaterial.Text = "Material: 3mm Acrylic"
-            Displays(i).lblCutTime.Text = "Time to Cut: 12 Min"
+
+    Private Sub cmbSort_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbSort.SelectedIndexChanged
+        For i = 0 To listTemplate.Count - 1
+
+            MultiTemplateViewer1.SetTemplateToPosition(i, 0, listTemplate(i))
+            Debug.Write(listTemplate(i).Name)
+
         Next
     End Sub
 
-    Private Sub FileDisplay4_Load(sender As Object, e As EventArgs) Handles FileDisplay4.Load
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
+        sortTemplate.Clear()
+        For Each template As LampTemplate In listTemplate
+            For Each tag As String In template.Tags
+                If tag.Contains(TextBox1.Text) And TextBox1.Text IsNot "" Then
+                    sortTemplate.Add(template)
+                    Exit For
+                End If
+            Next
+        Next
 
+
+        If sortTemplate.HasNotNothing Then
+            For i = 0 To sortTemplate.Count - 1
+                MultiTemplateViewer1.SetTemplateToPosition(i, 0, sortTemplate(i))
+            Next
+        End If
     End Sub
 
-    Private Sub FileDisplay1_Load(sender As Object, e As EventArgs) Handles FileDisplay1.Load
 
-    End Sub
 
-    Private Sub ToolBar1_Load(sender As Object, e As EventArgs) Handles ToolBar1.Load
-
-    End Sub
-
-    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
-    End Sub
-
-    Private Sub FileDisplay8_Load(sender As Object, e As EventArgs) Handles FileDisplay8.Load
-
-    End Sub
 End Class
