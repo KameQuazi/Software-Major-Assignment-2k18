@@ -1,26 +1,106 @@
 ﻿Imports System.ServiceModel
+Imports LampClient
 Imports LampCommon
 Imports LampService
 
+''' <summary>
+''' Client side service contract for lampservice
+''' offers 
+''' </summary>
 <ServiceContract(ConfigurationName:="ILampService")>
 Public Interface ILampClientService
     Inherits LampService.ILampService
 
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/Authenticate", ReplyAction:="http://tempuri.org/ILampService/AuthenticateResponse")>
+    <System.ServiceModel.OperationContractAttribute>
     Function AuthenticateAsync(ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampUserWrapper)
 
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/AddTemplate", ReplyAction:="http://tempuri.org/ILampService/AddTemplateResponse")>
+    <System.ServiceModel.OperationContractAttribute>
+    Function QueueJobAsync(ByVal template As LampCommon.LampTemplate, ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampStatus)
+
+    <System.ServiceModel.OperationContractAttribute>
+    Function GetTemplateAsync(ByVal template As LampCommon.LampTemplate, ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampStatus)
+
+    <System.ServiceModel.OperationContractAttribute>
     Function AddTemplateAsync(ByVal template As LampCommon.LampTemplate, ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampStatus)
 
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/QueueJob", ReplyAction:="http://tempuri.org/ILampService/QueueJobResponse")>
+    <OperationContract>
+    Function DeleteTemplateAsync(credentials As LampCredentials) As Task(Of LampStatus)
+
+    <System.ServiceModel.OperationContractAttribute>
+    Function GetAllTemplateAsync(ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of List(Of LampCommon.LampTemplate))
+
+    <OperationContract>
+    Function SelectDxfAsync(credentials As LampCredentials) As LampDxfDocumentWrapper
+
+    <OperationContract()>
+    Function AddUnapprovedTemplateAsync(template As LampTemplate, credentials As LampCredentials) As LampStatus
+
+    <OperationContract()>
+    Function DeleteUnapprovedTemplateAsync(guid As String, credentials As LampCredentials) As LampStatus
+
+    <OperationContract()>
+    Function ApproveTemplateAsync(template As LampTemplate, credentials As LampCredentials) As LampStatus
+
+    <OperationContract()>
+    Function RevokeTemplateAsync(template As LampTemplate, credentials As LampCredentials) As LampStatus
+
+    <OperationContract>
+    Function GetUserAsync(credentials As LampCredentials) As LampUserWrapper
+
+    <OperationContract>
+    Function AddUserAsync(credentials As LampCredentials, user As LampUser) As LampStatus
+
+    <System.ServiceModel.OperationContractAttribute>
     Function QueueJobAsync(ByVal job As LampCommon.LampJob, ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampStatus)
 
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/GetTemplate", ReplyAction:="http://tempuri.org/ILampService/GetTemplateResponse")>
+    <System.ServiceModel.OperationContractAttribute>
     Function GetTemplateAsync(ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of LampCommon.LampTemplateWrapper)
 
-    <System.ServiceModel.OperationContractAttribute(Action:="http://tempuri.org/ILampService/GetAllTemplate", ReplyAction:="http://tempuri.org/ILampService/GetAllTemplateResponse")>
-    Function GetAllTemplateAsync(ByVal credentials As LampCommon.LampCredentials) As System.Threading.Tasks.Task(Of List(Of LampCommon.LampTemplate))
+
+
 End Interface
+
+Public MustInherit Class LampWcfClient
+    Implements ILampClientService
+
+    Public MustOverride Function AddTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampService.AddTemplate
+
+    Public MustOverride Function AddTemplateAsync(template As LampTemplate, credentials As LampCredentials) As Task(Of LampStatus) Implements ILampClientService.AddTemplateAsync
+
+    Public MustOverride Function AddUnapprovedTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampService.AddUnapprovedTemplate
+
+    Public MustOverride Function AddUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements ILampService.AddUser
+
+    Public MustOverride Function ApproveTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampService.ApproveTemplate
+
+    Public MustOverride Function Authenticate(credentials As LampCredentials) As LampUserWrapper Implements ILampService.Authenticate
+
+    Public MustOverride Function AuthenticateAsync(credentials As LampCredentials) As Task(Of LampUserWrapper) Implements ILampClientService.AuthenticateAsync
+
+    Public MustOverride Function DeleteTemplate(credentials As LampCredentials) As LampStatus Implements ILampService.DeleteTemplate
+
+    Public MustOverride Function DeleteUnapprovedTemplate(guid As String, credentials As LampCredentials) As LampStatus Implements ILampService.DeleteUnapprovedTemplate
+
+    Public MustOverride Function EditUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements ILampService.EditUser
+
+    Public MustOverride Function GetAllTemplate(credentials As LampCredentials) As List(Of LampTemplate) Implements ILampService.GetAllTemplate
+
+    Public MustOverride Function GetAllTemplateAsync(credentials As LampCredentials) As Task(Of List(Of LampTemplate)) Implements ILampClientService.GetAllTemplateAsync
+
+    Public MustOverride Function GetTemplate(credentials As LampCredentials) As LampTemplateWrapper Implements ILampService.GetTemplate
+
+    Public MustOverride Function GetTemplateAsync(credentials As LampCredentials) As Task(Of LampTemplateWrapper) Implements ILampClientService.GetTemplateAsync
+
+    Public MustOverride Function GetUser(credentials As LampCredentials) As LampUserWrapper Implements ILampService.GetUser
+
+    Public MustOverride Function QueueJob(job As LampJob, credentials As LampCredentials) As LampStatus Implements ILampService.QueueJob
+
+    Public MustOverride Function QueueJobAsync(job As LampJob, credentials As LampCredentials) As Task(Of LampStatus) Implements ILampClientService.QueueJobAsync
+
+    Public MustOverride Function RevokeTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampService.RevokeTemplate
+
+    Public MustOverride Function SelectDxf(credentials As LampCredentials) As LampDxfDocumentWrapper Implements ILampService.SelectDxf
+End Class
 
 ''' <summary>
 ''' Run on the client machine, has an internal receiver

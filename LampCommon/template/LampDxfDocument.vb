@@ -17,9 +17,10 @@ Public Class LampDxfDocumentWrapper
     <DataMember>
     Public Status As LampStatus
 
-
+    <DataMember>
     Public Property Drawing As LampDxfDocument
 End Class
+
 
 <JsonConverter(GetType(DxfJsonConverter))>
 Public Class LampDxfDocument
@@ -111,11 +112,6 @@ Public Class LampDxfDocument
         End If
         Me.Drawing = dxfFile
         RecalculateBounds()
-    End Sub
-
-    Public Sub New(info As SerializationInfo, context As StreamingContext)
-        ' Reset the property value using the GetValue method.
-        Me.New(DxfDocument.Load(info.GetValue(NameOf(Drawing), GetType(String))))
     End Sub
 
     ''' <summary>

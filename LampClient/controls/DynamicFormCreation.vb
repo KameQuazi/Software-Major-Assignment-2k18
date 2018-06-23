@@ -5,7 +5,7 @@ Imports LampCommon
 Public Class DynamicFormCreation
     Private AllControls As New ObservableCollection(Of SingleDynamicText)
 
-    Public ReadOnly Property Source As New ObservableCollection(Of DynamicTemplateInput)
+    Public ReadOnly Property Source As New ObservableCollection(Of DynamicTextKey)
 
     Public ReadOnly ScrollBarOffset As Integer = 20
 

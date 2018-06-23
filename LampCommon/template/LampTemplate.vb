@@ -395,18 +395,18 @@ Public NotInheritable Class LampTemplate
         NotifyPropertyChanged(NameOf(Tags))
     End Sub
 
-    Private _dynamicTextList As New ObservableCollection(Of DynamicTemplateInput)
+    Private _dynamicTextList As New ObservableCollection(Of DynamicTextKey)
     ''' <summary>
     ''' Where the dynamic text will be stored:
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("dynamic_text_list")>
     <DataMember>
-    Public Property DynamicTextList As ObservableCollection(Of DynamicTemplateInput)
+    Public Property DynamicTextList As ObservableCollection(Of DynamicTextKey)
         Get
             Return _dynamicTextList
         End Get
-        Private Set(value As ObservableCollection(Of DynamicTemplateInput))
+        Private Set(value As ObservableCollection(Of DynamicTextKey))
             If _dynamicTextList IsNot Nothing Then
                 RemoveHandler _dynamicTextList.CollectionChanged, AddressOf DynamicTextList_PropertyChanged
             End If

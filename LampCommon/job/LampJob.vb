@@ -179,6 +179,7 @@ Public Class LampJob
     Public Sub RefreshCompleteDrawing()
         ' TODO!
         CompletedDrawing = New LampDxfDocument()
+
         For Each point As LampDxfInsertLocation In InsertionLocations
             CompletedDrawing.InsertInto(Template.BaseDrawing, point)
         Next
@@ -199,4 +200,11 @@ Public Class LampJob
                 RefreshCompleteDrawing()
         End Select
     End Sub
+End Class
+
+
+
+Public Class LampJobWrapper
+    Public Job As LampJob
+    Public Status As LampStatus
 End Class

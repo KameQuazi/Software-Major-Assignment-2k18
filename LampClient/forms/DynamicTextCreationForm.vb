@@ -21,7 +21,7 @@ Public Class DynamicTextCreationForm
             DynamicFormCreation1.Source.Add(item)
         Next
         If DynamicFormCreation1.Source.Count() = 0 Then
-            DynamicFormCreation1.Source.Add(New DynamicTemplateInput("No parameters found", "No parameters are in this template", Nothing, InputType.None))
+            DynamicFormCreation1.Source.Add(New DynamicTextKey("No parameters found", "No parameters are in this template", Nothing, InputType.None))
         End If
     End Sub
 

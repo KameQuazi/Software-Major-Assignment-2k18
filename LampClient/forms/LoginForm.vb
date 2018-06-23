@@ -1,6 +1,4 @@
 ﻿Public Class frmStart
-    Public lastform As String = "main"
-    Public curForm As String = "main"
     Private Sub btnQuit_Click(sender As Object, e As EventArgs)
         Me.Close()
     End Sub
@@ -22,10 +20,15 @@
     End Sub
 
     Private Sub frmStart_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
-        curForm = "main"
     End Sub
 
     Private Sub WelcomePanel_Paint(sender As Object, e As PaintEventArgs) Handles WelcomePanel.Paint
+
+    End Sub
+
+    Private Async Sub btnlogon_Click(sender As Object, e As EventArgs) Handles btnlogon.Click
+        ' TODO: add empty check, max password attempts etc
+        Dim user = Await CurrentSender.AuthenticateAsync(txtUser.Text, txtPass.Text)
 
     End Sub
 End Class

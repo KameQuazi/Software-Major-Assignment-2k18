@@ -222,6 +222,7 @@ Public Class LampDatabaseTests
         AreEqual(test.Length, template.Length)
         AreEqual(test.Material, template.Material)
         AreEqual(test.MaterialThickness, template.MaterialThickness)
+        template.Save("TestTemplates.spf")
 
     End Function
 

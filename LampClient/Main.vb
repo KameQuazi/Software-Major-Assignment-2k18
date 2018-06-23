@@ -5,7 +5,7 @@ Imports LampService
 Public Module OwO
     Public Property CurrentUser As LampUser = New LampUser(GetNewGuid, UserPermission.Admin, "none@gmail.comg", "hewwwo", "password", "debugger")
 
-    Public Property CurrentSender As ILampClientService  'LampWcfClient.Local
+    Public Property CurrentSender As ILampClientService
 
     Public Property ClientEndpoint As String = "http://localhost:8733/Design_Time_Addresses/LampService.svc"
 
@@ -24,6 +24,7 @@ Public Module OwO
         InitalizeLibraries()
         LampLocalWcfClient.Local = New LampLocalWcfClient(New LampService.LampService)
         SetServiceEndpoint(LampLocalWcfClient.Local)
+
 
 
 

@@ -1,13 +1,17 @@
-﻿Imports System.Drawing
+﻿Imports System.ComponentModel
+Imports System.Drawing
+Imports System.Runtime.CompilerServices
 Imports System.Runtime.Serialization
 Imports Newtonsoft.Json
 
 
 ''' <summary>
-''' Stores where and how text that changes between each form <see cref="DynamicTemplateInput"/>
+''' Stores where and how text that changes between each form <see cref="DynamicTextKey"/>
 ''' </summary>
+<JsonObject(MemberSerialization.OptIn)>
 <DataContract>
-Public Class DynamicTemplateInput
+Public Structure DynamicTextKey
+
     ''' <summary>
     ''' name of the dynamic input: e.g. year, name, date etc
     ''' </summary>
@@ -25,31 +29,31 @@ Public Class DynamicTemplateInput
     Public ReadOnly Property Description As String
 
     ''' <summary>
-    ''' The text to insert into the finished Template
-    ''' Value will be:
-    ''' String, for richtextbox
-    ''' boolean, for checkbox
-    ''' Nothing, for nothing
-    ''' Image, for PictureBox
-    ''' IList(Of text), for ListView
-    ''' String, for combobox
-    ''' NOTE - not all are actually implemented ;-;
+    ''' Where to insert the item
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("value")>
-    <DataMember>
-    Public Property Value As Object
-
     <JsonProperty("location")>
     <DataMember>
-    Public Property Location As Point
-
-    <JsonProperty("font")>
-    <DataMember>
-    Public Property Font As Font
+    Public ReadOnly Property Location As Point
 
     ''' <summary>
-    ''' The type of input. <see cref="Value"/> to see what data type each one will return
+    ''' The normal font to use
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("font")>
+    <DataMember>
+    Public ReadOnly Property Font As Font
+
+    ''' <summary>
+    ''' if the user can override font
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("can_override_font")>
+    <DataMember>
+    Public ReadOnly Property CanOverrideFont As Boolean
+
+    ''' <summary>
+    ''' The type of input. 
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("inputType")>
@@ -78,14 +82,14 @@ Public Class DynamicTemplateInput
     End Sub
 
     ''' <summary>
-    ''' Converts from json to <see cref="DynamicTemplateInput"/>
+    ''' Converts from json to <see cref="DynamicTextKey"/>
     ''' </summary>
     ''' <param name="json"></param>
     ''' <returns></returns>
-    Public Shared Function Deserialise(json As String) As IList(Of DynamicTemplateInput)
-        Dim dynList As IList(Of DynamicTemplateInput)
+    Public Shared Function Deserialise(json As String) As IList(Of DynamicTextKey)
+        Dim dynList As IList(Of DynamicTextKey)
 
-        dynList = JsonConvert.DeserializeObject(Of IEnumerable(Of DynamicTemplateInput))(json).ToList()
+        dynList = JsonConvert.DeserializeObject(Of IEnumerable(Of DynamicTextKey))(json).ToList()
         Return dynList
     End Function
 
@@ -94,14 +98,12 @@ Public Class DynamicTemplateInput
     ''' </summary>
     ''' <param name="textList"></param>
     ''' <returns></returns>
-    Public Shared Function Serialise(textList As IList(Of DynamicTemplateInput)) As String
+    Public Shared Function Serialise(textList As IList(Of DynamicTextKey)) As String
         Dim ret As String
         ret = JsonConvert.SerializeObject(textList, Formatting.Indented)
         Return ret
     End Function
-
-
-End Class
+End Structure
 
 <DataContract>
 Public Enum InputType
@@ -112,3 +114,4 @@ Public Enum InputType
     ' ListView
     None
 End Enum
+

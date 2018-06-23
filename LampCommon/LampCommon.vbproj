@@ -117,11 +117,12 @@
     <Compile Include="template\ImageListJsonConverter.vb" />
     <Compile Include="template\LampDxfDocument.vb" />
     <Compile Include="job\LampJob.vb" />
+    <Compile Include="template\TemplateParts\DynamicTextKey.vb" />
+    <Compile Include="template\TemplateParts\DynamicTextValue.vb" />
     <Compile Include="user\LampCredentials.vb" />
     <Compile Include="user\LampProfile.vb" />
     <Compile Include="template\LampTemplate.vb" />
     <Compile Include="user\LampUser.vb" />
-    <Compile Include="template\TemplateParts\DynamicText.vb" />
     <Compile Include="template\TemplateParts\LampDxfInsertLocation.vb" />
   </ItemGroup>
   <ItemGroup>

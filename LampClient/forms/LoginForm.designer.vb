@@ -33,7 +33,7 @@ Partial Class frmStart
         Me.lblPass = New System.Windows.Forms.Label()
         Me.lblUser = New System.Windows.Forms.Label()
         Me.WelcomePanel = New System.Windows.Forms.Panel()
-        Me.ToolBar1 = New Global.LampClient.ToolBar()
+        Me.ToolBar1 = New LampClient.ToolBar()
         Me.btnAccCreate = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.btnLogin = New System.Windows.Forms.Button()
@@ -157,6 +157,7 @@ Partial Class frmStart
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
         Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.ScreenName = "SCREEN NAME HERE"
         Me.ToolBar1.Size = New System.Drawing.Size(1000, 91)
         Me.ToolBar1.TabIndex = 13
         '
