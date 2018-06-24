@@ -1,7 +1,7 @@
 ﻿Imports System.ServiceModel.Configuration
 Imports System.Threading.Tasks
 Imports LampCommon
-Imports 
+Imports LampService.ServerService
 
 ''' <summary>
 ''' The receiver class has all privildegeds to the database 
@@ -24,26 +24,12 @@ Public Class LampService
 
 
 #Region "ImplementILampService"
-    Public Function Authenticate(credentials As LampCredentials) As LampUserWrapper Implements Authenticate
+    Public Function Authenticate(credentials As LampCredentials) As LampUserWrapper Implements ILampService.Authenticate
         Dim user As LampUser = Nothing
         Dim reason As LampStatus = LampStatus.OK
 
         Try
             user = Database.SelectUser(credentials.Username, credentials.Password)
-
-        Catch ex As Exception
-            reason = LampStatus.InternalServerError
-            Console.WriteLine(ex)
-        End Try
-        Return New LampUserWrapper(user, reason)
-    End Function
-
-    Public Async Function AuthenticateAsync(credentials As LampCredentials) As Task(Of LampUserWrapper)
-        Dim user As LampUser = Nothing
-        Dim reason As LampStatus = LampStatus.OK
-
-        Try
-            user = Await Database.SelectUserAsync(credentials.Username, credentials.Password)
 
         Catch ex As Exception
             reason = LampStatus.InternalServerError
@@ -81,32 +67,7 @@ Public Class LampService
         Return response
     End Function
 
-    Public Async Function GetTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampTemplateWrapper) Implements ILampService.GetTemplateAsync
-        Dim user = (Await AuthenticateAsync(credentials)).user
-        Dim response As New LampTemplateWrapper
-        response.Status = LampStatus.OK
 
-        If user IsNot Nothing Then
-            Dim template = Await Database.SelectTemplateAsync(guid)
-
-            If template IsNot Nothing Then
-
-                If HasGetTemplatePerms(user, template) Then
-                    response.Template = template
-                Else
-                    response.Status = LampStatus.NoAccess
-                End If
-            Else
-                ' template doesnt exist
-                response.Status = LampStatus.DoesNotExist
-            End If
-
-        Else
-            response.Status = LampStatus.InvalidUsernameOrPassword
-        End If
-
-        Return response
-    End Function
 
 
 
@@ -132,27 +93,7 @@ Public Class LampService
         Return response
     End Function
 
-    Public Async Function AddTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus) Implements ILampService.AddTemplateAsync
-        Dim user = (Await AuthenticateAsync(credentials)).user
-        Dim response As LampStatus = LampStatus.OK
 
-        If user IsNot Nothing Then
-            If Await Database.SelectTemplateMetadataAsync(template.GUID) Is Nothing Then
-                If HasAddTemplatePerms(user, template) Then
-                    Await Database.SetTemplateAsync(template, user.UserId, user.UserId)
-                Else
-                    response = LampStatus.NoAccess
-                End If
-            Else
-                response = LampStatus.GuidConflict
-            End If
-        Else
-
-            response = LampStatus.InvalidUsernameOrPassword
-        End If
-
-        Return response
-    End Function
 
 
 
@@ -180,29 +121,6 @@ Public Class LampService
         Return response
     End Function
 
-    Public Async Function EditTemplateAsync(credentials As LampCredentials, newTemplate As LampTemplate) As Task(Of LampStatus) Implements ILampService.EditTemplateAsync
-        Dim user = (Await AuthenticateAsync(credentials)).user
-        Dim response As LampStatus = LampStatus.OK
-
-        If user IsNot Nothing Then
-            Dim oldTemplate = Await Database.SelectTemplateAsync(newTemplate.GUID)
-            If oldTemplate IsNot Nothing Then
-                If HasEditTemplatePerms(user, oldTemplate, newTemplate) Then
-
-                    Await Database.SetTemplateAsync(newTemplate, user.UserId, user.UserId)
-                Else
-                    response = LampStatus.NoAccess
-                End If
-            Else
-                response = LampStatus.DoesNotExist
-            End If
-        Else
-
-            response = LampStatus.InvalidUsernameOrPassword
-        End If
-
-        Return response
-    End Function
 
 
     Public Function RemoveTemplate(credentials As LampCredentials, guid As String) As LampStatus Implements ILampService.RemoveTemplate
@@ -232,32 +150,7 @@ Public Class LampService
         Return response
     End Function
 
-    Public Async Function RemoveTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampService.RemoveTemplateAsync
-        Dim user = (Await AuthenticateAsync(credentials)).user
-        Dim response As LampStatus = LampStatus.OK
 
-        If user IsNot Nothing Then
-            Dim template = Await Database.SelectTemplateAsync(guid)
-
-            If template IsNot Nothing Then
-
-                If HasRemoveTemplatePerms(user, template) Then
-                    Await Database.RemoveTemplateAsync(template.GUID)
-                Else
-                    response = LampStatus.NoAccess
-                End If
-            Else
-                ' template doesnt exist
-                response = LampStatus.DoesNotExist
-            End If
-
-        Else
-            response = LampStatus.InvalidUsernameOrPassword
-        End If
-
-
-        Return response
-    End Function
 
     Public Function AddUnapprovedTemplate(credentials As LampCredentials, template As LampTemplate) As LampStatus Implements ILampService.AddUnapprovedTemplate
         Throw New NotImplementedException()
@@ -326,11 +219,6 @@ Public Class LampService
     Public Function GetAllTemplate(credentials As LampCredentials) As List(Of LampTemplate) Implements ILampService.GetAllTemplate
         ' TODO add hasview template
         Return Database.GetAllTemplate()
-    End Function
-
-    Private Async Function GetAllTemplateAsync(credentials As LampCredentials) As Task(Of List(Of LampTemplate)) Implements ILampService.GetAllTemplateAsync
-        ' todo do filtering
-        Return Await Database.GetAllTemplateAsync()
     End Function
 
 
@@ -426,71 +314,7 @@ Public Class LampService
 
 
 
-    Public Function GetUserAsync(credentials As LampCredentials) As Task(Of LampUserWrapper) Implements ILampService.GetUserAsync
-        Throw New NotImplementedException()
-    End Function
 
-    Public Function AddUserAsync(credentials As LampCredentials, user As LampUser) As Task(Of LampStatus) Implements ILampService.AddUserAsync
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function EditUserAsync(credentials As LampCredentials, user As LampUser) As Task(Of LampStatus) Implements ILampService.EditUserAsync
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function RemoveUserAsync(credentials As LampCredentials, user As LampUser) As Task(Of LampStatus) Implements ILampService.RemoveUserAsync
-        Throw New NotImplementedException()
-    End Function
-
-    Private Function ILampService_AuthenticateAsync(credentials As LampCredentials) As Task(Of LampUserWrapper) Implements ILampService.AuthenticateAsync
-        Throw New NotImplementedException()
-    End Function
-
-
-
-    Public Function GetUnapprovedTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampTemplateWrapper) Implements ILampService.GetUnapprovedTemplateAsync
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function SelectDxfAsync(credentials As LampCredentials, guid As String) As Task(Of LampDxfDocumentWrapper) Implements ILampService.SelectDxfAsync
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function AddUnapprovedTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus) Implements ILampService.AddUnapprovedTemplateAsync
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function EditUnapprovedTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus) Implements ILampService.EditUnapprovedTemplateAsync
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function RemoveUnapprovedTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampService.RemoveUnapprovedTemplateAsync
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function ApproveTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus) Implements ILampService.ApproveTemplateAsync
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function RevokeTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampService.RevokeTemplateAsync
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function GetJobAsync(credentials As LampCredentials, guid As String) As Task(Of LampJobWrapper) Implements ILampService.GetJobAsync
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function AddJobAsync(credentials As LampCredentials, job As LampJob) As Task(Of LampStatus) Implements ILampService.AddJobAsync
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function EditJobAsync(credentials As LampCredentials, job As LampJob) As Task(Of LampStatus) Implements ILampService.EditJobAsync
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function RemoveJobAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampService.RemoveJobAsync
-        Throw New NotImplementedException()
-    End Function
 
 
 #End Region
