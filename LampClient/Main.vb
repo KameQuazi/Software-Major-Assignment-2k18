@@ -5,7 +5,7 @@ Imports LampService
 Public Module OwO
     Public Property CurrentUser As LampUser = New LampUser(GetNewGuid, UserPermission.Admin, "none@gmail.comg", "hewwwo", "password", "debugger")
 
-    Public Property CurrentSender As ILampClientService
+    Public Property CurrentSender As ILampService
 
     Public Property ClientEndpoint As String = "http://localhost:8733/Design_Time_Addresses/LampService.svc"
 
@@ -16,7 +16,7 @@ Public Module OwO
         CurrentSender = New LampRemoteWcfClient(binding, New EndpointAddress(url))
     End Sub
 
-    Public Sub SetServiceEndpoint(sender As ILampClientService)
+    Public Sub SetServiceEndpoint(sender As ILampService)
         CurrentSender = sender
     End Sub
 

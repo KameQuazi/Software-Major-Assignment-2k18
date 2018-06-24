@@ -1,12 +1,13 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.Collections.Specialized
 
-
 Public Module CommonExtensions
     <System.Runtime.CompilerServices.Extension()>
     Public Function ToSingle(this As Double) As Single
         Return Convert.ToSingle(this)
     End Function
+
+
 
     <System.Runtime.CompilerServices.Extension>
     Public Function ToObservableList(Of T)(this As List(Of T)) As ObservableCollection(Of T)

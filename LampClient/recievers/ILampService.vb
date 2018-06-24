@@ -1,6 +1,7 @@
-﻿Imports System.Threading.Tasks
+﻿Imports System.ServiceModel
 Imports LampCommon
-Namespace ServerService
+
+Namespace ClientService
     <ServiceContract>
     Public Interface ILampService
 
@@ -167,7 +168,70 @@ Namespace ServerService
         <OperationContract>
         Function RemoveJob(credentials As LampCredentials, guid As String) As LampStatus
 
-    End Interface
+        <OperationContract>
+        Function GetTemplateAsync(ByVal credentials As LampCredentials, guid As String) As Task(Of LampTemplateWrapper)
 
+        <OperationContract>
+        Function AddTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus)
+
+        <OperationContract>
+        Function EditTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus)
+
+        <OperationContract>
+        Function RemoveTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus)
+
+        <OperationContract>
+        Function GetUserAsync(credentials As LampCredentials) As Task(Of LampUserWrapper)
+
+        <OperationContract>
+        Function AddUserAsync(credentials As LampCredentials, user As LampUser) As Task(Of LampStatus)
+
+        <OperationContract>
+        Function EditUserAsync(credentials As LampCredentials, user As LampUser) As Task(Of LampStatus)
+
+        <OperationContract>
+        Function RemoveUserAsync(credentials As LampCredentials, user As LampUser) As Task(Of LampStatus)
+
+        <OperationContract>
+        Function AuthenticateAsync(credentials As LampCredentials) As Task(Of LampUserWrapper)
+
+        <OperationContract>
+        Function GetAllTemplateAsync(credentials As LampCredentials) As Task(Of List(Of LampTemplate))
+
+        <OperationContract()>
+        Function GetUnapprovedTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampTemplateWrapper)
+
+        <OperationContract>
+        Function SelectDxfAsync(credentials As LampCredentials, guid As String) As Task(Of LampDxfDocumentWrapper)
+
+        <OperationContract()>
+        Function AddUnapprovedTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus)
+
+        <OperationContract()>
+        Function EditUnapprovedTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus)
+
+        <OperationContract()>
+        Function RemoveUnapprovedTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus)
+
+        <OperationContract()>
+        Function ApproveTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus)
+
+        <OperationContract()>
+        Function RevokeTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus)
+
+        <OperationContract>
+        Function GetJobAsync(credentials As LampCredentials, guid As String) As Task(Of LampJobWrapper)
+
+        <OperationContract>
+        Function AddJobAsync(credentials As LampCredentials, job As LampJob) As Task(Of LampStatus)
+
+        <OperationContract>
+        Function EditJobAsync(credentials As LampCredentials, job As LampJob) As Task(Of LampStatus)
+
+        <OperationContract>
+        Function RemoveJobAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus)
+
+
+    End Interface
 
 End Namespace

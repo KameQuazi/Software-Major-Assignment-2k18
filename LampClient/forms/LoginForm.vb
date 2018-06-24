@@ -28,7 +28,7 @@
 
     Private Async Sub btnlogon_Click(sender As Object, e As EventArgs) Handles btnlogon.Click
         ' TODO: add empty check, max password attempts etc
-        Dim user = Await CurrentSender.AuthenticateAsync(txtUser.Text, txtPass.Text)
+        Dim user = Await CurrentSender.AuthenticateAsync(New LampCommon.LampCredentials(txtUser.Text, txtPass.Text))
 
     End Sub
 End Class

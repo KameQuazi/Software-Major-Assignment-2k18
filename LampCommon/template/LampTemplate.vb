@@ -182,6 +182,12 @@ Public Class LampTemplateMetadata
     <DataMember>
     Public Property CreatorProfile As LampProfile = Nothing
 
+    <IgnoreDataMember>
+    Public ReadOnly Property CreatorId As String
+        Get
+            Return If(CreatorProfile IsNot Nothing, CreatorProfile.UserId, Nothing)
+        End Get
+    End Property
 
     ''' <summary>
     ''' name, email of approver if exists
@@ -191,6 +197,12 @@ Public Class LampTemplateMetadata
     <DataMember>
     Public Property ApproverProfile As LampProfile = Nothing
 
+    <IgnoreDataMember>
+    Public ReadOnly Property Approved As Boolean
+        Get
+            Return ApproverProfile IsNot Nothing
+        End Get
+    End Property
 
     Private _submitDate As Date?
     ''' <summary>
@@ -515,6 +527,8 @@ Public NotInheritable Class LampTemplate
             Return New LampTemplate(GetNewGuid()) 'Gets a New Default guid (0000-0000-0000...)
         End Get
     End Property
+
+
 
     ''' <summary>
     ''' Converts -> json format to be saved as a .spf

@@ -20,21 +20,6 @@
         AboutBox1.Show()
     End Sub
 
-    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
-        Select Case frmStart.lastform
-            Case = "main"
-                frmStart.Show()
-                TemplateSelect.Hide()
-                AboutBox1.Hide()
-                Options.Hide()
-            Case = "view"
-                TemplateSelect.Show()
-                frmStart.Hide()
-                AboutBox1.Hide()
-                Options.Hide()
-        End Select
-        frmStart.lastform = frmStart.curForm
-    End Sub
 
     Private Sub btnQuit_Click(sender As Object, e As EventArgs) Handles btnQuit.Click
         btnQY.Show()
