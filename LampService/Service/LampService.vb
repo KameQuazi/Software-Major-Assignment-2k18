@@ -116,7 +116,7 @@ Public Class LampService
         Throw New NotImplementedException()
     End Function
 
-    Public Function ApproveTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampService.ApproveTemplate
+    Public Function ApproveTemplate(credentials As LampCredentials, template As LampTemplate) As LampStatus Implements ILampService.ApproveTemplate
         Throw New NotImplementedException()
     End Function
 
@@ -124,7 +124,7 @@ Public Class LampService
         Throw New NotImplementedException()
     End Function
 
-    Public Function RevokeTemplate(template As LampTemplate, credentials As LampCredentials) As LampStatus Implements ILampService.RevokeTemplate
+    Public Function RevokeTemplate(credentials As LampCredentials, template As LampTemplate) As LampStatus Implements ILampService.RevokeTemplate
         Throw New NotImplementedException()
     End Function
 
@@ -156,6 +156,54 @@ Public Class LampService
 
     Public Function HasViewTemplatePerms(user As LampUser)
         Return user.PermissionLevel >= UserPermission.Guest
+    End Function
+
+    Public Function GetTemplate(credentials As LampCredentials, guid As String) As LampTemplateWrapper Implements ILampService.GetTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function AddTemplate(credentials As LampCredentials, template As LampTemplate) As LampStatus Implements ILampService.AddTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function EditTemplate(credentials As LampCredentials, template As LampTemplate) As LampStatus Implements ILampService.EditTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function DeleteTemplate(credentials As LampCredentials, guid As String) As LampStatus Implements ILampService.DeleteTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function RemoveUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements ILampService.RemoveUser
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function AddUnapprovedTemplate(credentials As LampCredentials, template As LampTemplate) As LampStatus Implements ILampService.AddUnapprovedTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function EditUnapprovedTemplate(credentials As LampCredentials, template As LampTemplate) As LampStatus Implements ILampService.EditUnapprovedTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function RemoveUnapprovedTemplate(credentials As LampCredentials, guid As String) As LampStatus Implements ILampService.RemoveUnapprovedTemplate
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function GetJob(credentials As LampCredentials, guid As String) As LampJobWrapper Implements ILampService.GetJob
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function AddJob(credentials As LampCredentials, job As LampJob) As LampStatus Implements ILampService.AddJob
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function EditJob(credentials As LampCredentials, job As LampJob) As LampStatus Implements ILampService.EditJob
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function RemoveJob(credentials As LampCredentials, guid As String) As LampStatus Implements ILampService.RemoveJob
+        Throw New NotImplementedException()
     End Function
 
 
