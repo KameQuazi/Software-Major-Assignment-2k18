@@ -74,6 +74,9 @@ Public Class LampUserWrapper
             Me.user.Password = Nothing
         End If
     End Sub
+
+    Public Sub New()
+    End Sub
 End Class
 
 

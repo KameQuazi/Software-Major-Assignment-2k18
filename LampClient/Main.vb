@@ -2,10 +2,15 @@
 Imports LampCommon
 Imports LampService
 
+
+
+
+
+
 Public Module OwO
     Public Property CurrentUser As LampUser = New LampUser(GetNewGuid, UserPermission.Admin, "none@gmail.comg", "hewwwo", "password", "debugger")
 
-    Public Property CurrentSender As ILampService
+    Public Property CurrentSender As ILampServiceBoth
 
     Public Property ClientEndpoint As String = "http://localhost:8733/Design_Time_Addresses/LampService.svc"
 
@@ -16,13 +21,13 @@ Public Module OwO
         CurrentSender = New LampRemoteWcfClient(binding, New EndpointAddress(url))
     End Sub
 
-    Public Sub SetServiceEndpoint(sender As ILampService)
+    Public Sub SetServiceEndpoint(sender As ILampServiceBoth)
         CurrentSender = sender
     End Sub
 
     Public Sub Main()
         InitalizeLibraries()
-        LampLocalWcfClient.Local = New LampLocalWcfClient(New LampService.LampService)
+        LampLocalWcfClient.Local = New LampLocalWcfClient(New LampService.LampServiceLocal)
         SetServiceEndpoint(LampLocalWcfClient.Local)
 
 

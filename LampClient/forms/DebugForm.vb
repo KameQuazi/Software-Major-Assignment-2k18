@@ -94,4 +94,12 @@ Public Class DebugForm
     Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
         Dim x As New LampService.LampHost
     End Sub
+
+    Private Sub TestUserButton_Click(sender As Object, e As EventArgs) Handles TestUserButton.Click
+        Dim user = UserTbox.Text
+        Dim pass = PasswordTbox.Text
+        Dim newuser = CurrentSender.Authenticate(New LampCredentials(user, pass))
+        MessageBox.Show(newuser.status.ToString)
+        CurrentUserTbox.Text = If(newuser.user, "").ToString
+    End Sub
 End Class

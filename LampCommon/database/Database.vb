@@ -991,7 +991,7 @@ Partial Public Class TemplateDatabase
                     Dim permissionLevel = reader.GetInt32(reader.GetOrdinal("permissionLevel"))
                     Dim name = reader.GetString(reader.GetOrdinal("name"))
 
-                    user = New LampUser(userId, permissionLevel, email, password, username, name)
+                    user = New LampUser(userId, permissionLevel, email, username, password, name)
                 End If
             End Using
         End Using
@@ -1083,8 +1083,8 @@ Partial Public Class TemplateDatabase
 
             command.Parameters.AddWithValue("@UserId", user.UserId)
             command.Parameters.AddWithValue("@permissionLevel", user.PermissionLevel)
-            command.Parameters.AddWithValue("@email", user.Email)
-            command.Parameters.AddWithValue("@username", user.Username)
+            command.Parameters.AddWithValue("@email", user.Email.ToLower())
+            command.Parameters.AddWithValue("@username", user.Username.ToLower())
             command.Parameters.AddWithValue("@password", user.Password)
             command.Parameters.AddWithValue("@name", user.Name)
 
@@ -1106,8 +1106,8 @@ Partial Public Class TemplateDatabase
 
             command.Parameters.AddWithValue("@UserId", user.UserId)
             command.Parameters.AddWithValue("@permissionLevel", user.PermissionLevel)
-            command.Parameters.AddWithValue("@email", user.Email)
-            command.Parameters.AddWithValue("@username", user.Username)
+            command.Parameters.AddWithValue("@email", user.Email.ToLower())
+            command.Parameters.AddWithValue("@username", user.Username.ToLower())
             command.Parameters.AddWithValue("@password", user.Password)
             command.Parameters.AddWithValue("@name", user.Name)
 

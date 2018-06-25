@@ -33,9 +33,15 @@ Partial Class DebugForm
         Me.Button9 = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Button10 = New System.Windows.Forms.Button()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
         Me.Button11 = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.UserTbox = New System.Windows.Forms.TextBox()
+        Me.PasswordTbox = New System.Windows.Forms.TextBox()
+        Me.CurrentUserTbox = New System.Windows.Forms.RichTextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.TestUserButton = New System.Windows.Forms.Button()
+        Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
         Me.SuspendLayout()
         '
         'Button1
@@ -94,7 +100,7 @@ Partial Class DebugForm
         '
         'Button7
         '
-        Me.Button7.Location = New System.Drawing.Point(184, 517)
+        Me.Button7.Location = New System.Drawing.Point(331, 398)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(151, 23)
         Me.Button7.TabIndex = 6
@@ -135,28 +141,6 @@ Partial Class DebugForm
         Me.Button10.Text = "ddynamictext"
         Me.Button10.UseVisualStyleBackColor = True
         '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.AutoScroll = True
-        Me.TableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.InsetDouble
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(60, 280)
-        Me.TableLayoutPanel1.MaximumSize = New System.Drawing.Size(573, 341)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(159, 90)
-        Me.TableLayoutPanel1.TabIndex = 13
-        '
-        'MultiTemplateViewer1
-        '
-        Me.MultiTemplateViewer1.Location = New System.Drawing.Point(530, 12)
-        Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
-        Me.MultiTemplateViewer1.Size = New System.Drawing.Size(800, 600)
-        Me.MultiTemplateViewer1.TabIndex = 14
-        '
         'Button11
         '
         Me.Button11.Location = New System.Drawing.Point(263, 240)
@@ -166,13 +150,85 @@ Partial Class DebugForm
         Me.Button11.Text = "Service Start"
         Me.Button11.UseVisualStyleBackColor = True
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(49, 398)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(27, 13)
+        Me.Label1.TabIndex = 16
+        Me.Label1.Text = "user"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(52, 431)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(52, 13)
+        Me.Label2.TabIndex = 17
+        Me.Label2.Text = "password"
+        '
+        'UserTbox
+        '
+        Me.UserTbox.Location = New System.Drawing.Point(121, 391)
+        Me.UserTbox.Name = "UserTbox"
+        Me.UserTbox.Size = New System.Drawing.Size(100, 20)
+        Me.UserTbox.TabIndex = 18
+        '
+        'PasswordTbox
+        '
+        Me.PasswordTbox.Location = New System.Drawing.Point(121, 431)
+        Me.PasswordTbox.Name = "PasswordTbox"
+        Me.PasswordTbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
+        Me.PasswordTbox.Size = New System.Drawing.Size(100, 20)
+        Me.PasswordTbox.TabIndex = 19
+        '
+        'CurrentUserTbox
+        '
+        Me.CurrentUserTbox.Location = New System.Drawing.Point(12, 533)
+        Me.CurrentUserTbox.Name = "CurrentUserTbox"
+        Me.CurrentUserTbox.Size = New System.Drawing.Size(250, 39)
+        Me.CurrentUserTbox.TabIndex = 20
+        Me.CurrentUserTbox.Text = ""
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(41, 517)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(63, 13)
+        Me.Label3.TabIndex = 21
+        Me.Label3.Text = "current user"
+        '
+        'TestUserButton
+        '
+        Me.TestUserButton.Location = New System.Drawing.Point(132, 469)
+        Me.TestUserButton.Name = "TestUserButton"
+        Me.TestUserButton.Size = New System.Drawing.Size(75, 23)
+        Me.TestUserButton.TabIndex = 22
+        Me.TestUserButton.Text = "submit"
+        Me.TestUserButton.UseVisualStyleBackColor = True
+        '
+        'MultiTemplateViewer1
+        '
+        Me.MultiTemplateViewer1.Location = New System.Drawing.Point(530, 12)
+        Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
+        Me.MultiTemplateViewer1.Size = New System.Drawing.Size(800, 600)
+        Me.MultiTemplateViewer1.TabIndex = 14
+        '
         'DebugForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(1342, 811)
+        Me.Controls.Add(Me.TestUserButton)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.CurrentUserTbox)
+        Me.Controls.Add(Me.PasswordTbox)
+        Me.Controls.Add(Me.UserTbox)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Button11)
         Me.Controls.Add(Me.MultiTemplateViewer1)
-        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button9)
@@ -202,7 +258,13 @@ Partial Class DebugForm
     Friend WithEvents Button9 As Button
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Button10 As Button
-    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents MultiTemplateViewer1 As MultiTemplateViewer
     Friend WithEvents Button11 As Button
+    Friend WithEvents Label1 As Label
+    Friend WithEvents Label2 As Label
+    Friend WithEvents UserTbox As TextBox
+    Friend WithEvents PasswordTbox As TextBox
+    Friend WithEvents CurrentUserTbox As RichTextBox
+    Friend WithEvents Label3 As Label
+    Friend WithEvents TestUserButton As Button
 End Class
