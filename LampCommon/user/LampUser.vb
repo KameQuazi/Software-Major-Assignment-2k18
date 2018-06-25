@@ -48,10 +48,11 @@ Public Class LampUser
 End Class
 
 Public Enum UserPermission
-    Guest    ' for not logged in
-    Standard ' for students
-    Elevated ' for teachers
-    Admin    ' for us + ia staff 
+    Guest = 0 ' for not logged in
+    Standard = 1 ' for students
+    Elevated = 2 ' for teachers
+    Admin = 3 ' for us + ia staff 
+    Super = 4
 
 End Enum
 
@@ -65,11 +66,11 @@ Public Class LampUserWrapper
     Public Property user As LampUser
 
     <DataMember>
-    Public Property status As LampStatus
+    Public Property Status As LampStatus
 
     Sub New(user As LampUser, status As LampStatus)
         Me.user = user
-        Me.status = status
+        Me.Status = status
         If user IsNot Nothing Then
             Me.user.Password = Nothing
         End If
@@ -86,11 +87,12 @@ End Class
 ''' </summary>
 <Flags>
 Public Enum LampStatus
-    OK = 0
-    NoAccess = 1
-    DoesNotExist = 2
-    InvalidUsernameOrPassword = 4
-    InternalServerError = 8
-    GuidConflict = 16
+    Invalid = 0
+    OK = 1
+    NoAccess = 2
+    DoesNotExist = 4
+    InvalidUsernameOrPassword = 8
+    InternalServerError = 16
+    GuidConflict = 32
 
 End Enum

@@ -1,5 +1,6 @@
 ﻿Imports System.Threading.Tasks
 Imports LampCommon
+
 <ServiceContract>
 Public Interface ILampService
 
@@ -42,7 +43,7 @@ Public Interface ILampService
     ''' <param name="credentials"></param>
     ''' <returns></returns>
     <OperationContract>
-    Function GetUser(credentials As LampCredentials) As LampUserWrapper
+    Function GetUser(credentials As LampCredentials, guid As String) As LampUserWrapper
 
     ''' <summary>
     ''' adds a user to the server
@@ -183,7 +184,7 @@ Public Interface ILampServiceAsync
     Function RemoveTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus)
 
     <OperationContract>
-    Function GetUserAsync(credentials As LampCredentials) As Task(Of LampUserWrapper)
+    Function GetUserAsync(credentials As LampCredentials, guid As String) As Task(Of LampUserWrapper)
 
     <OperationContract>
     Function AddUserAsync(credentials As LampCredentials, user As LampUser) As Task(Of LampStatus)

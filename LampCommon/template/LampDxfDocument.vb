@@ -13,6 +13,7 @@ Imports System.Drawing
 Imports System.Runtime.Serialization
 
 <DataContract>
+<KnownType(GetType(LampDxfDocument))>
 Public Class LampDxfDocumentWrapper
     <DataMember>
     Public Status As LampStatus

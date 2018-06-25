@@ -108,7 +108,6 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BenchmarkingDatabase.vb" />
     <Compile Include="LampDxfTest.vb" />
     <Compile Include="LampTemplateTest.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -127,6 +126,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="LampDatabaseTests.vb" />
+    <Compile Include="TestWcfLocalService.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

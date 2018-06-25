@@ -10,6 +10,8 @@ Imports System.Runtime.Serialization
 Imports LampCommon
 
 <DataContract>
+<KnownType(GetType(LampTemplate))>
+<KnownType(GetType(LampProfile))>
 Public Class LampTemplateMetadata
     Implements INotifyPropertyChanged
 
@@ -337,6 +339,9 @@ End Class
 
 <JsonObject(MemberSerialization.OptIn)>
 <DataContract()>
+<KnownType(GetType(LampTemplateMetadata))>
+<KnownType(GetType(LampProfile))>
+<KnownType(GetType(LampDxfDocument))>
 Public NotInheritable Class LampTemplate
     Inherits LampTemplateMetadata
     Public Const MaxImages As Integer = 3
@@ -498,6 +503,12 @@ Public NotInheritable Class LampTemplate
         End Using
     End Function
 
+    Public Shared Async Function FromFileAsync(fileName As String) As Task(Of LampTemplate)
+        Using file As New StreamReader(fileName)
+            Return Deserialize(Await file.ReadToEndAsync())
+        End Using
+    End Function
+
     ''' <summary>
     ''' Loads from a json string
     ''' </summary>
@@ -616,10 +627,14 @@ Public NotInheritable Class LampTemplate
     Public Overrides Function GetHashCode() As Integer
         Return MyBase.GetHashCode()
     End Function
+
+
 End Class
 
 
 <DataContract>
+<KnownType(GetType(LampTemplate))>
+<KnownType(GetType(LampStatus))>
 Public Class LampTemplateWrapper
     <DataMember>
     Public Property Template As LampTemplate

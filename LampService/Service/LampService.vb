@@ -25,134 +25,278 @@ Public Class LampService
 
 
 #Region "ImplementILampService"
-    Public Function Authenticate(credentials As LampCredentials) As LampUserWrapper Implements ILampService.Authenticate
-        Dim user As LampUser = Nothing
-        Dim response As New LampUserWrapper()
-        response.status = LampStatus.OK
+
+    Public Function GetTemplate(credentials As LampCredentials, guid As String) As LampTemplateWrapper Implements ILampService.GetTemplate
+        Dim response As New LampTemplateWrapper
 
         Try
-            user = Database.SelectUser(credentials.Username, credentials.Password)
-            If user Is Nothing Then
-                response.status = LampStatus.InvalidUsernameOrPassword
+            Dim auth = Authenticate(credentials)
+
+            If auth.user IsNot Nothing Then
+                Dim user = auth.user
+
+                If user IsNot Nothing Then
+                    Dim template = Database.SelectTemplate(guid)
+
+                    If template IsNot Nothing Then
+
+                        If HasGetTemplatePerms(user, template) Then
+                            response.Template = template
+                            response.Status = LampStatus.OK
+                        Else
+                            response.Status = LampStatus.NoAccess
+                        End If
+                    Else
+                        ' template doesnt exist
+                        response.Status = LampStatus.DoesNotExist
+                    End If
+
+                Else
+                    response.Status = LampStatus.InvalidUsernameOrPassword
+                End If
             Else
-                response.user = user
+                ' no user selected, either no user/password or internal server error
+                response.Status = auth.Status
             End If
 
         Catch ex As Exception
-            response.status = LampStatus.InternalServerError
-            Console.WriteLine(ex)
+            response.Status = LampStatus.InternalServerError
+            Log(ex)
         End Try
 
         Return response
     End Function
 
-
-
-    Public Function GetTemplate(credentials As LampCredentials, guid As String) As LampTemplateWrapper Implements ILampService.GetTemplate
-        Dim user = Authenticate(credentials).user
-        Dim response As New LampTemplateWrapper
-        response.Status = LampStatus.OK
-
-        If user IsNot Nothing Then
-            Dim template = Database.SelectTemplate(guid)
-
-            If template IsNot Nothing Then
-
-                If HasGetTemplatePerms(user, template) Then
-                    response.Template = template
-                Else
-                    response.Status = LampStatus.NoAccess
-                End If
-            Else
-                ' template doesnt exist
-                response.Status = LampStatus.DoesNotExist
-            End If
-
-        Else
-            response.Status = LampStatus.InvalidUsernameOrPassword
-        End If
-
-        Return response
-    End Function
-
-
     Public Function AddTemplate(credentials As LampCredentials, template As LampTemplate) As LampStatus Implements ILampService.AddTemplate
-        Dim user = Authenticate(credentials).user
-        Dim response As LampStatus = LampStatus.OK
+        Dim response As LampStatus
 
-        If user IsNot Nothing Then
-            If Database.SelectTemplateMetadata(template.GUID) Is Nothing Then
-                If HasAddTemplatePerms(user, template) Then
-                    Database.SetTemplate(template, user.UserId, user.UserId)
+        Try
+            Dim auth = Authenticate(credentials)
+            If auth.user IsNot Nothing Then
+                Dim user = auth.user
+
+                If user IsNot Nothing Then
+                    If Database.SelectTemplateMetadata(template.GUID) Is Nothing Then
+                        If HasAddTemplatePerms(user, template) Then
+                            Database.SetTemplate(template, user.UserId, user.UserId)
+
+                            response = LampStatus.OK
+                        Else
+                            response = LampStatus.NoAccess
+                        End If
+                    Else
+                        response = LampStatus.GuidConflict
+                    End If
                 Else
-                    response = LampStatus.NoAccess
+
+                    response = LampStatus.InvalidUsernameOrPassword
                 End If
+
             Else
-                response = LampStatus.GuidConflict
+                ' no user selected, either no user/password or internal server error
+                response = auth.Status
             End If
-        Else
-
-            response = LampStatus.InvalidUsernameOrPassword
-        End If
-
+        Catch ex As Exception
+            response = LampStatus.InternalServerError
+            Log(ex)
+        End Try
         Return response
     End Function
 
     Public Function EditTemplate(credentials As LampCredentials, newTemplate As LampTemplate) As LampStatus Implements ILampService.EditTemplate
-        Dim user = Authenticate(credentials).user
-        Dim response As LampStatus = LampStatus.OK
+        Dim response As LampStatus
 
-        If user IsNot Nothing Then
-            Dim oldTemplate = Database.SelectTemplate(newTemplate.GUID)
-            If oldTemplate IsNot Nothing Then
-                If HasEditTemplatePerms(user, oldTemplate, newTemplate) Then
+        Try
+            Dim auth = Authenticate(credentials)
+            If auth.user IsNot Nothing Then
+                Dim user = auth.user
 
-                    Database.SetTemplate(newTemplate, user.UserId, user.UserId)
+                If user IsNot Nothing Then
+                    Dim oldTemplate = Database.SelectTemplate(newTemplate.GUID)
+                    If oldTemplate IsNot Nothing Then
+                        If HasEditTemplatePerms(user, oldTemplate, newTemplate) Then
+                            Database.SetTemplate(newTemplate, user.UserId, user.UserId)
+
+                            response = LampStatus.OK
+                        Else
+                            response = LampStatus.NoAccess
+                        End If
+                    Else
+                        response = LampStatus.DoesNotExist
+                    End If
                 Else
-                    response = LampStatus.NoAccess
+
+                    response = LampStatus.InvalidUsernameOrPassword
                 End If
+
             Else
-                response = LampStatus.DoesNotExist
+                response = auth.Status
             End If
-        Else
 
+        Catch ex As Exception
             response = LampStatus.InvalidUsernameOrPassword
-        End If
-
+            Log(ex)
+        End Try
         Return response
     End Function
-
-
 
     Public Function RemoveTemplate(credentials As LampCredentials, guid As String) As LampStatus Implements ILampService.RemoveTemplate
-        Dim user = Authenticate(credentials).user
-        Dim response As LampStatus = LampStatus.OK
+        Dim response As LampStatus
 
-        If user IsNot Nothing Then
-            Dim template = Database.SelectTemplate(guid)
+        Try
+            Dim auth = Authenticate(credentials)
+            If auth.user IsNot Nothing Then
 
-            If template IsNot Nothing Then
+                Dim user = Authenticate(credentials).user
+                If user IsNot Nothing Then
+                    Dim template = Database.SelectTemplate(guid)
 
-                If HasRemoveTemplatePerms(user, template) Then
-                    Database.RemoveTemplate(template.GUID)
+                    If template IsNot Nothing Then
+
+                        If HasRemoveTemplatePerms(user, template) Then
+                            Database.RemoveTemplate(template.GUID)
+                        Else
+                            response = LampStatus.NoAccess
+                        End If
+                    Else
+                        ' template doesnt exist
+                        response = LampStatus.DoesNotExist
+                    End If
+
                 Else
-                    response = LampStatus.NoAccess
+                    response = LampStatus.InvalidUsernameOrPassword
                 End If
             Else
-                ' template doesnt exist
-                response = LampStatus.DoesNotExist
+                response = auth.Status
             End If
 
-        Else
-            response = LampStatus.InvalidUsernameOrPassword
-        End If
 
+        Catch ex As Exception
+            response = LampStatus.InvalidUsernameOrPassword
+            Log(ex)
+        End Try
+        Return response
+    End Function
+
+    Public Function GetUser(credentials As LampCredentials, guid As String) As LampUserWrapper Implements ILampService.GetUser
+        Dim response As New LampUserWrapper()
+
+        Try
+            Dim auth = Authenticate(credentials)
+            If auth.user IsNot Nothing Then
+
+                Dim thisUser = auth.user
+
+                Dim gottenUser = Database.SelectUser(guid)
+
+                If HasGetUserPerms(thisUser, gottenUser) Then
+                    response.user = gottenUser
+                    response.Status = LampStatus.OK
+                Else
+                    response.Status = LampStatus.NoAccess
+
+                End If
+            Else
+                response.Status = auth.Status
+            End If
+
+        Catch ex As Exception
+            response.Status = LampStatus.InternalServerError
+            Log(ex)
+        End Try
 
         Return response
     End Function
 
+    Public Function AddUser(credentials As LampCredentials, toAddUser As LampUser) As LampStatus Implements ILampService.AddUser
+        Dim response As LampStatus
+
+        Try
+            Dim auth = Authenticate(credentials)
+            If auth.user IsNot Nothing Then
+
+                Dim thisUser = auth.user
 
 
+                If HasAddUserPerms(thisUser, toAddUser) Then
+                    If Database.SelectUser(toAddUser.UserId) IsNot Nothing Then
+                        Database.SetUser(toAddUser)
+                        response = LampStatus.OK
+                    Else
+                        response = LampStatus.GuidConflict
+                    End If
+
+                Else
+                    response = LampStatus.NoAccess
+
+                End If
+            Else
+                response = auth.Status
+            End If
+
+        Catch ex As Exception
+            response = LampStatus.InternalServerError
+            Log(ex)
+        End Try
+
+        Return response
+    End Function
+
+    Public Function EditUser(credentials As LampCredentials, newUser As LampUser) As LampStatus Implements ILampService.EditUser
+        Dim response As LampStatus
+
+        Try
+            Dim auth = Authenticate(credentials)
+            If auth.user IsNot Nothing Then
+
+                Dim thisUser = auth.user
+
+                Dim oldUser = Database.SelectUser(newUser.UserId)
+
+                If HasEditUserPerms(thisUser, oldUser, newUser) Then
+                    If Database.SelectUser(newUser.UserId) IsNot Nothing Then
+                        Database.SetUser(newUser)
+                        response = LampStatus.OK
+                    Else
+                        response = LampStatus.DoesNotExist
+                    End If
+
+                Else
+                    response = LampStatus.NoAccess
+
+                End If
+            Else
+                response = auth.Status
+            End If
+
+        Catch ex As Exception
+            response = LampStatus.InternalServerError
+            Log(ex)
+        End Try
+
+        Return response
+    End Function
+
+    Public Function Authenticate(credentials As LampCredentials) As LampUserWrapper Implements ILampService.Authenticate
+        Dim user As LampUser = Nothing
+        Dim response As New LampUserWrapper()
+        response.Status = LampStatus.OK
+
+        Try
+            user = Database.SelectUser(credentials.Username, credentials.Password)
+            If user Is Nothing Then
+                response.Status = LampStatus.InvalidUsernameOrPassword
+            Else
+                response.user = user
+            End If
+
+        Catch ex As Exception
+            response.Status = LampStatus.InternalServerError
+            Console.WriteLine(ex)
+        End Try
+
+        Return response
+    End Function
     Public Function AddUnapprovedTemplate(credentials As LampCredentials, template As LampTemplate) As LampStatus Implements ILampService.AddUnapprovedTemplate
         Throw New NotImplementedException()
     End Function
@@ -236,17 +380,7 @@ Public Class LampService
 
 
 
-    Public Function GetUser(credentials As LampCredentials) As LampUserWrapper Implements ILampService.GetUser
-        Throw New NotImplementedException()
-    End Function
 
-    Public Function AddUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements ILampService.AddUser
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function EditUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements ILampService.EditUser
-        Throw New NotImplementedException()
-    End Function
 
 #End Region
 
@@ -287,6 +421,15 @@ Public Class LampService
         Return False
     End Function
 
+    Public Function HasGetUserPerms(thisUser As LampUser, otherUser As LampUser)
+        Return thisUser.PermissionLevel >= UserPermission.Admin
+
+    End Function
+
+    Public Function HasAddUserPerms(thisUser As LampUser, otherUser As LampUser)
+        Return thisUser.PermissionLevel >= UserPermission.Admin
+    End Function
+
 
 
 
@@ -295,6 +438,9 @@ Public Class LampService
         Return user.PermissionLevel >= UserPermission.Elevated
     End Function
 
+    Public Function HasEditUserPerms(user As LampUser, oldUser As LampUser, newUser As LampUser) As Boolean
+        Return oldUser.UserId = user.UserId OrElse user.PermissionLevel >= UserPermission.Admin
+    End Function
 
 
 
@@ -327,51 +473,77 @@ Public Class LampServiceLocal
     Implements ILampServiceBoth
 
     Public Async Function GetTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampTemplateWrapper) Implements ILampServiceAsync.GetTemplateAsync
-        Dim user = (Await AuthenticateAsync(credentials)).user
         Dim response As New LampTemplateWrapper
-        response.Status = LampStatus.OK
 
-        If user IsNot Nothing Then
-            Dim template = Await Database.SelectTemplateAsync(guid)
+        Try
+            Dim auth = Await AuthenticateAsync(credentials)
 
-            If template IsNot Nothing Then
+            If auth.user IsNot Nothing Then
+                Dim user = auth.user
 
-                If HasGetTemplatePerms(user, template) Then
-                    response.Template = template
+                If user IsNot Nothing Then
+                    Dim template = Await Database.SelectTemplateAsync(guid)
+
+                    If template IsNot Nothing Then
+
+                        If HasGetTemplatePerms(user, template) Then
+                            response.Template = template
+                            response.Status = LampStatus.OK
+                        Else
+                            response.Status = LampStatus.NoAccess
+                        End If
+                    Else
+                        ' template doesnt exist
+                        response.Status = LampStatus.DoesNotExist
+                    End If
+
                 Else
-                    response.Status = LampStatus.NoAccess
+                    response.Status = LampStatus.InvalidUsernameOrPassword
                 End If
             Else
-                ' template doesnt exist
-                response.Status = LampStatus.DoesNotExist
+                ' no user selected, either no user/password or internal server error
+                response.Status = auth.Status
             End If
 
-        Else
-            response.Status = LampStatus.InvalidUsernameOrPassword
-        End If
+        Catch
+            response.Status = LampStatus.InternalServerError
+        End Try
 
         Return response
     End Function
 
     Public Async Function AddTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus) Implements ILampServiceAsync.AddTemplateAsync
-        Dim user = (Await AuthenticateAsync(credentials)).user
-        Dim response As LampStatus = LampStatus.OK
+        Dim response As LampStatus
 
-        If user IsNot Nothing Then
-            If Database.SelectTemplateMetadata(template.GUID) Is Nothing Then
-                If HasAddTemplatePerms(user, template) Then
-                    Database.SetTemplate(template, user.UserId, user.UserId)
+        Try
+            Dim auth = Await AuthenticateAsync(credentials)
+            If auth.user IsNot Nothing Then
+                Dim user = auth.user
+
+                If user IsNot Nothing Then
+                    If Await Database.SelectTemplateMetadataAsync(template.GUID) Is Nothing Then
+                        If HasAddTemplatePerms(user, template) Then
+                            Await Database.SetTemplateAsync(template, user.UserId, user.UserId)
+
+                            response = LampStatus.OK
+                        Else
+                            response = LampStatus.NoAccess
+                        End If
+                    Else
+                        response = LampStatus.GuidConflict
+                    End If
                 Else
-                    response = LampStatus.NoAccess
+
+                    response = LampStatus.InvalidUsernameOrPassword
                 End If
+
             Else
-                response = LampStatus.GuidConflict
+                ' no user selected, either no user/password or internal server error
+                response = auth.Status
             End If
-        Else
-
-            response = LampStatus.InvalidUsernameOrPassword
-        End If
-
+        Catch
+            response = LampStatus.InternalServerError
+        End Try
         Return response
     End Function
 
@@ -426,12 +598,69 @@ Public Class LampServiceLocal
         Return response
     End Function
 
-    Public Function GetUserAsync(credentials As LampCredentials) As Task(Of LampUserWrapper) Implements ILampServiceAsync.GetUserAsync
-        Throw New NotImplementedException()
+    Public Async Function GetUserAsync(credentials As LampCredentials, guid As String) As Task(Of LampUserWrapper) Implements ILampServiceAsync.GetUserAsync
+        Dim response As New LampUserWrapper()
+        response.Status = LampStatus.OK
+
+        Try
+            Dim auth = Await AuthenticateAsync(credentials)
+            If auth.user IsNot Nothing Then
+
+                Dim thisUser = auth.user
+
+                Dim gottenUser = Await Database.SelectUserAsync(guid)
+
+                If HasGetUserPerms(thisUser, gottenUser) Then
+                    response.user = gottenUser
+                    response.Status = LampStatus.OK
+                Else
+                    response.Status = LampStatus.NoAccess
+
+                End If
+            Else
+                response.Status = auth.Status
+            End If
+
+        Catch ex As Exception
+            response.Status = LampStatus.InternalServerError
+            Log(ex)
+        End Try
+
+        Return response
     End Function
 
-    Public Function AddUserAsync(credentials As LampCredentials, user As LampUser) As Task(Of LampStatus) Implements ILampServiceAsync.AddUserAsync
-        Throw New NotImplementedException()
+    Public Async Function AddUserAsync(credentials As LampCredentials, toAddUser As LampUser) As Task(Of LampStatus) Implements ILampServiceAsync.AddUserAsync
+        Dim response = LampStatus.OK
+
+        Try
+            Dim auth = Await AuthenticateAsync(credentials)
+            If auth.user IsNot Nothing Then
+
+                Dim thisUser = auth.user
+
+
+                If HasAddUserPerms(thisUser, toAddUser) Then
+                    If Await Database.SelectUserAsync(toAddUser.UserId) IsNot Nothing Then
+                        Await Database.SetUserAsync(toAddUser)
+                        response = LampStatus.OK
+                    Else
+                        response = LampStatus.GuidConflict
+                    End If
+
+                Else
+                    response = LampStatus.InvalidUsernameOrPassword
+
+                End If
+            Else
+                response = auth.Status
+            End If
+
+        Catch ex As Exception
+            response = LampStatus.InternalServerError
+            Log(ex)
+        End Try
+
+        Return response
     End Function
 
     Public Function EditUserAsync(credentials As LampCredentials, user As LampUser) As Task(Of LampStatus) Implements ILampServiceAsync.EditUserAsync
@@ -504,4 +733,18 @@ Public Class LampServiceLocal
     Public Function RemoveJobAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.RemoveJobAsync
         Throw New NotImplementedException()
     End Function
+
+
+
+    Public Sub ResetDatabase()
+        Database.ResetDebug()
+    End Sub
 End Class
+
+
+
+Public Module loggger
+    Public Sub Log(x As Object)
+        Console.WriteLine(x.ToString)
+    End Sub
+End Module

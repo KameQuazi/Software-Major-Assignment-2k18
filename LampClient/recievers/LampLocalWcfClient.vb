@@ -11,13 +11,13 @@ Public Class LampLocalWcfClient
     ''' <summary>
     ''' global local wcf client
     ''' </summary>
-    Public Shared Local As ILampServiceBoth
+    Public Shared Property Local As ILampServiceBoth = New LampLocalWcfClient(New LampServiceLocal)
 
-    Private Property Channel As ILampServiceBoth
+    Public Property Channel As LampServiceLocal
 
 
 
-    Sub New(service As ILampServiceBoth)
+    Sub New(service As LampServiceLocal)
         Me.Channel = service
     End Sub
 
@@ -53,12 +53,12 @@ Public Class LampLocalWcfClient
         Return Channel.RemoveTemplateAsync(credentials, guid)
     End Function
 
-    Public Function GetUser(credentials As LampCredentials) As LampUserWrapper Implements ILampServiceBoth.GetUser
-        Return Channel.GetUser(credentials)
+    Public Function GetUser(credentials As LampCredentials, guid As String) As LampUserWrapper Implements ILampServiceBoth.GetUser
+        Return Channel.GetUser(credentials, guid)
     End Function
 
-    Public Function GetUserAsync(credentials As LampCredentials) As Task(Of LampUserWrapper) Implements ILampServiceBoth.GetUserAsync
-        Return Channel.GetUserAsync(credentials)
+    Public Function GetUserAsync(credentials As LampCredentials, guid As String) As Task(Of LampUserWrapper) Implements ILampServiceBoth.GetUserAsync
+        Return Channel.GetUserAsync(credentials, guid)
     End Function
 
     Public Function AddUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements ILampServiceBoth.AddUser

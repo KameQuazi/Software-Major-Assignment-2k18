@@ -50,8 +50,9 @@ Partial Public Class TemplateDatabase
     ''' Creates all the tables required, if tables not exist
     ''' Does not delete any data
     ''' </summary>
-    Public Sub CreateTables()
-        Using conn = Connection.OpenConnection(), trans = Transaction.LockTransaction, command = Connection.GetCommand(trans)
+    Public Function CreateTables(Optional optTrans As SqliteTransactionWrapper = Nothing) As Boolean
+        Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Transaction.LockTransaction), command = Connection.GetCommand(trans)
+            Dim results As New List(Of Boolean)
             command.CommandText = "CREATE TABLE if not exists users (
                                   UserId Text PRIMARY KEY Not Null,
                                   PermissionLevel Integer Not Null,
@@ -61,7 +62,7 @@ Partial Public Class TemplateDatabase
                                   Name Text Not Null
                                   );
                         "
-            command.ExecuteNonQuery()
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
             command.CommandText = "CREATE TABLE if not exists template (
                                   GUID Text PRIMARY KEY Not NULL,
@@ -81,7 +82,7 @@ Partial Public Class TemplateDatabase
                                   FOREIGN KEY(approverID) REFERENCES users(UserId)
                                   );"
 
-            command.ExecuteNonQuery()
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
 
 
@@ -91,7 +92,7 @@ Partial Public Class TemplateDatabase
                                   
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );"
-            command.ExecuteNonQuery()
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
             command.CommandText = "CREATE TABLE if not exists images (
                                   GUID Text PRIMARY KEY Not NULL, 
@@ -101,7 +102,7 @@ Partial Public Class TemplateDatabase
 
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );"
-            command.ExecuteNonQuery()
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
             command.CommandText = "CREATE TABLE if not exists tags (
                                   GUID Text Not Null,
@@ -110,7 +111,7 @@ Partial Public Class TemplateDatabase
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );
                         "
-            command.ExecuteNonQuery()
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
 
 
@@ -126,34 +127,202 @@ Partial Public Class TemplateDatabase
                                   FOREIGN KEY(submitterId) REFERENCES users(UserId),
                                   FOREIGN KEY(approverId) REFERENCES users(UserId)
                                   );"
-            command.ExecuteNonQuery()
-            trans.Commit()
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
+
+            Dim allSuccess = results.All(Function(x) x = True)
+
+            If optTrans Is Nothing And allSuccess Then
+                ' no transaction given in arguments, commit now
+                trans.Commit()
+            End If
+            Return allSuccess
         End Using
 
-    End Sub
+    End Function
+
+    ''' <summary>
+    ''' Creates all the tables required, if tables not exist
+    ''' Does not delete any data
+    ''' </summary>
+    Public Async Function CreateTablesAsync(Optional optTrans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync), command = Connection.GetCommand(trans)
+            Dim tasks As New List(Of Task(Of Integer))
+            command.CommandText = "CREATE TABLE if not exists users (
+                                  UserId Text PRIMARY KEY Not Null,
+                                  PermissionLevel Integer Not Null,
+                                  email Text Not Null UNIQUE,
+                                  Username text Not NULL UNIQUE,
+                                  Password Text Not Null,
+                                  Name Text Not Null
+                                  );
+                        "
+            tasks.Add(command.ExecuteNonQueryAsync())
+
+            command.CommandText = "CREATE TABLE if not exists template (
+                                  GUID Text PRIMARY KEY Not NULL,
+                                  Name Text DEFAULT '' Not NULL,
+                                  ShortDescription Text DEFAULT '' NOT NULL,
+                                  LongDescription Text DEFAULT '' NOT NULL,
+                                  material Text Not NULL DEFAULT 'none',
+                                  length real Not NULL DEFAULT -1,
+                                  Height real Not NULL DEFAULT -1,
+                                  materialThickness real Not NULL DEFAULT -1,
+                                  creatorID Text,
+                                  approverID Text,
+                                  submitDate Text,
+                                  complete Int DEFAULT FALSE,
+                                    
+                                  FOREIGN KEY(creatorID) REFERENCES users(UserId),
+                                  FOREIGN KEY(approverID) REFERENCES users(UserId)
+                                  );"
+
+            tasks.Add(command.ExecuteNonQueryAsync())
+
+
+
+            command.CommandText = "CREATE TABLE if not exists dxf (
+                                  GUID Text PRIMARY KEY not null,
+                                  DXF Text Not NULL,
+                                  
+                                  FOREIGN KEY(GUID) REFERENCES template(GUID)
+                                  );"
+            tasks.Add(command.ExecuteNonQueryAsync())
+
+            command.CommandText = "CREATE TABLE if not exists images (
+                                  GUID Text PRIMARY KEY Not NULL, 
+                                  image1 blob,
+                                  image2 blob,
+                                  image3 blob,
+
+                                  FOREIGN KEY(GUID) REFERENCES template(GUID)
+                                  );"
+            tasks.Add(command.ExecuteNonQueryAsync())
+
+            command.CommandText = "CREATE TABLE if not exists tags (
+                                  GUID Text Not Null,
+                                  TagName Text Not Null,
+                        
+                                  FOREIGN KEY(GUID) REFERENCES template(GUID)
+                                  );
+                        "
+            tasks.Add(command.ExecuteNonQueryAsync())
+
+
+
+
+            command.CommandText = "CREATE TABLE if not exists jobs (
+                                  jobId Text Not Null,
+                                  templateId Text Not NULL,
+                                  submitterId Text Not NULL,
+                                  approverId Text,
+                                  approved integer Not Null default 0,
+                                  submitDate Text Not null,
+
+                                  FOREIGN KEY(submitterId) REFERENCES users(UserId),
+                                  FOREIGN KEY(approverId) REFERENCES users(UserId)
+                                  );"
+            tasks.Add(command.ExecuteNonQueryAsync())
+
+            Dim results = Await Task.WhenAll(tasks)
+            Dim allSuccess = results.All(Function(x) x > 0)
+            ' check that each insertion inserted at least 1 line (1 table)
+
+            If optTrans Is Nothing And allSuccess Then
+                ' no transaction given in arguments, commit now
+                trans.Commit()
+            End If
+            Return allSuccess
+        End Using
+
+    End Function
 
     ''' <summary>
     ''' Destroys all tables
     ''' </summary>
-    Public Sub RemoveTables()
+    Public Function RemoveTables(Optional optTrans As SqliteTransactionWrapper = Nothing) As Boolean
         ' If the databse is open already, dont close it
-        Using conn = Connection.OpenConnection(), trans = Transaction.LockTransaction, command = Connection.GetCommand(trans)
+        Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Transaction.LockTransaction), command = Connection.GetCommand(trans)
+            Dim results As New List(Of Boolean)
             command.CommandText = "DROP TABLE If exists users"
-            command.ExecuteNonQuery()
-            command.CommandText = "DROP TABLE If exists dxf"
-            command.ExecuteNonQuery()
-            command.CommandText = "DROP TABLE If exists images"
-            command.ExecuteNonQuery()
-            command.CommandText = "DROP TABLE If exists tags"
-            command.ExecuteNonQuery()
-            command.CommandText = "DROP TABLE If exists jobs"
-            command.ExecuteNonQuery()
-            command.CommandText = "DROP TABLE If exists template"
-            command.ExecuteNonQuery()
-            trans.commit()
-        End Using
-    End Sub
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
+            command.CommandText = "DROP TABLE If exists dxf"
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
+
+            command.CommandText = "DROP TABLE If exists images"
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
+
+            command.CommandText = "DROP TABLE If exists tags"
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
+
+            command.CommandText = "DROP TABLE If exists jobs"
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
+
+            command.CommandText = "DROP TABLE If exists template"
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
+
+            Dim allSuccess = results.All(Function(x) x = True)
+            ' check that all elements are = true
+
+            If optTrans Is Nothing And allSuccess Then
+                trans.Commit()
+            End If
+            Return allSuccess
+        End Using
+    End Function
+
+    Public Async Function RemoveTablesAsync(Optional optTrans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
+        ' If the databse is open already, dont close it
+        Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync), command = Connection.GetCommand(trans)
+            Dim tasks As New List(Of Task(Of Integer))
+
+            command.CommandText = "DROP TABLE If exists users"
+            tasks.Add(command.ExecuteNonQueryAsync())
+
+            command.CommandText = "DROP TABLE If exists dxf"
+            tasks.Add(command.ExecuteNonQueryAsync())
+
+            command.CommandText = "DROP TABLE If exists images"
+            tasks.Add(command.ExecuteNonQueryAsync())
+
+            command.CommandText = "DROP TABLE If exists tags"
+            tasks.Add(command.ExecuteNonQueryAsync())
+
+            command.CommandText = "DROP TABLE If exists jobs"
+            tasks.Add(command.ExecuteNonQueryAsync())
+
+            command.CommandText = "DROP TABLE If exists template"
+            tasks.Add(command.ExecuteNonQueryAsync())
+
+            Dim results = Await Task.WhenAll(tasks)
+            Dim allSuccess = results.All(Function(x) x > 0)
+            ' check that each insertion inserted at least 1 line (1 table)
+
+            If optTrans Is Nothing And allSuccess Then
+                ' no transaction given in arguments, commit now
+                trans.Commit()
+            End If
+            Return allSuccess
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Resets the database, should ONLY be used for debug
+    ''' </summary>
+    Public Function ResetDebug() As Boolean
+        Me.RemoveTables()
+        Me.FillDebugDatabase()
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Resets the database, should ONLY be used for debug
+    ''' </summary>
+    Public Async Function ResetDebugAsync() As Task(Of Boolean)
+        Await RemoveTablesAsync()
+        FillDebugDatabase()
+        Return True
+    End Function
 End Class
 
 
@@ -779,6 +948,7 @@ Partial Public Class TemplateDatabase
     ''' <param name="guid"></param>
     ''' <returns></returns>
     Public Function SelectTemplate(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As LampTemplate
+        guid = guid.ToLower()
         Using conn = Connection.OpenConnection()
             Dim template As LampTemplate = SelectTemplateMetadata(guid, trans).ToLampTemplate
 
@@ -813,6 +983,7 @@ Partial Public Class TemplateDatabase
     ''' <param name="guid"></param>
     ''' <returns></returns>
     Public Async Function SelectTemplateAsync(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of LampTemplate)
+        guid = guid.ToLower()
         Using conn = Connection.OpenConnection()
             Dim template = (Await SelectTemplateMetadataAsync(guid, trans)).ToLampTemplate
 
@@ -848,6 +1019,7 @@ Partial Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="template"></param>
     Public Function SetTemplate(template As LampTemplate, Optional creatorId As String = Nothing, Optional approverId As String = Nothing, Optional optTrans As SqliteTransactionWrapper = Nothing) As Boolean
+        template.GUID = template.GUID.ToLower
         Using conn = Connection.OpenConnection, trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Transaction.LockTransaction) ' create auto transaction if needed
 
             If SetTemplateData(template, creatorId, approverId, trans) Then
@@ -881,8 +1053,8 @@ Partial Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="template"></param>
     Public Async Function SetTemplateAsync(template As LampTemplate, Optional creatorId As String = Nothing, Optional approverId As String = Nothing, Optional optTrans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
+        template.GUID = template.GUID.ToLower
         Using conn = Connection.OpenConnection, trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync)
-
             If Await SetTemplateDataAsync(template, creatorId, approverId, trans) Then
                 If Await SetDxfAsync(template.GUID, template.BaseDrawing, trans) Then
 
@@ -916,21 +1088,22 @@ Partial Public Class TemplateDatabase
     ''' <param name="guid">string guid</param>
     ''' <returns>True=Removed, False=None found</returns>
     Public Function RemoveTemplate(guid As String, Optional optTrans As SqliteTransactionWrapper = Nothing) As Boolean
+        guid = guid.ToLower()
         Using conn = Connection.OpenConnection, trans = If(optTrans, Transaction.LockTransaction)
             ' gotta remove these first before the guid in the templates table is gone
             If RemoveTemplateData(guid, trans) Then
                 If RemoveDxf(guid, trans) Then
-                    If RemoveImages(guid, trans) Then
-                        If RemoveTags(guid, trans) Then
+                    ' might not have images/tags, just remove them (itll throw exception if it fails hopefully)
+                    RemoveImages(guid, trans)
+                    RemoveTags(guid, trans)
 
-                            ' actually write it to the database if using the auto transaction, otherwise leave it to the caller
-                            If optTrans Is Nothing Then
-                                trans.Commit()
-                            End If
-
-                            Return True
-                        End If
+                    ' actually write it to the database if using the auto transaction, otherwise leave it to the caller
+                    If optTrans Is Nothing Then
+                        trans.Commit()
                     End If
+
+                    Return True
+
                 End If
             End If
         End Using
@@ -944,23 +1117,25 @@ Partial Public Class TemplateDatabase
     ''' <param name="guid">string guid</param>
     ''' <returns>True=Removed, False=None found</returns>
     Public Async Function RemoveTemplateAsync(guid As String, Optional optTrans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
+        guid = guid.ToLower()
         Using conn = Connection.OpenConnection, trans = If(optTrans, Await Transaction.LockTransactionAsync)
             ' gotta remove these first before the guid in the templates table is gone
             If Await RemoveTemplateDataAsync(guid, trans) Then
                 If Await RemoveDxfAsync(guid, trans) Then
-                    If Await RemoveImagesAsync(guid, trans) Then
-                        If Await RemoveTagsAsync(guid, trans) Then
 
-                            ' actually write it to the database if using the auto transaction, otherwise leave it to the caller
-                            If optTrans Is Nothing Then
-                                trans.Commit()
-                            End If
+                    ' wait for remove images/tags to finish
+                    Await Task.WhenAll(RemoveImagesAsync(guid, trans), RemoveTagsAsync(guid, trans))
 
-                            Return True
-                        End If
+
+                    ' actually write it to the database if using the auto transaction, otherwise leave it to the caller
+                    If optTrans Is Nothing Then
+                        trans.Commit()
                     End If
+
+                    Return True
                 End If
             End If
+
         End Using
         Return False
     End Function
@@ -1353,12 +1528,18 @@ Public Class TemplateDatabase
     ''' The default files are stored in ExampleDxfFiles
     ''' </summary>
     Public Shared Sub FillDebugDatabase(Optional fileName As String = "templateDB.sqlite")
+        Dim db As New TemplateDatabase(fileName)
+        FillDebugDatabase(db)
+    End Sub
+
+    ''' <summary>
+    ''' Fills the database with debug data
+    ''' </summary>
+    ''' <param name="db"></param>
+    Public Shared Sub FillDebugDatabase(db As TemplateDatabase)
 #If Not DEBUG Then
         Throw New Exception("do not use debug db in Release Mode")
 #End If
-
-        Dim db As New TemplateDatabase(fileName)
-
         Dim ExampleSpfFiles() As String = {"1.spf", "2.spf", "3.spf", "4.spf", "5.spf", "6.spf", "7.spf", "8.spf", "9.spf"}
 
         ' add new templates 
@@ -1388,6 +1569,50 @@ Public Class TemplateDatabase
         job = New LampJob(templates(1), shovel.ToProfile)
         db.SetJob(job)
     End Sub
+
+    Public Shared Async Function FillDebugDatabaseAsync(Optional fileName As String = "templateDB.sqlite") As Task
+        Dim db As New TemplateDatabase(fileName)
+        Await TemplateDatabase.FillDebugDatabaseAsync(db)
+    End Function
+
+    Public Shared Async Function FillDebugDatabaseAsync(db As TemplateDatabase) As Task
+#If Not DEBUG Then
+        Throw New Exception("do not use debug db in Release Mode")
+#End If
+        Dim ExampleSpfFiles() As String = {"1.spf", "2.spf", "3.spf", "4.spf", "5.spf", "6.spf", "7.spf", "8.spf", "9.spf"}
+
+        ' add new templates 
+        For Each spfName As String In ExampleSpfFiles
+            Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", "spf", spfName))
+            Dim template = Await LampTemplate.FromFileAsync(fp)
+            Await db.SetTemplateAsync(template)
+        Next
+
+        ' add useres
+        Dim max As New LampUser(GetNewGuid(), UserPermission.Admin, "maxywartonyjonesy@gmail.com", "waxy", "memes", "steve by birth!")
+        Await db.SetUserAsync(max)
+
+        Dim shovel = New LampUser(GetNewGuid(), UserPermission.Admin, "qshoveyl@gmail.com", "shourov", "shovel101", "Knot Jack")
+        Await db.SetUserAsync(shovel)
+
+        Dim jack = New LampUser(GetNewGuid(), UserPermission.Admin, "jackywathyy123@gmail.com", "moji", "snack time", "shovel tool")
+        Await db.SetUserAsync(jack)
+
+
+        Dim templates = Await db.GetAllTemplateAsync
+
+        ' add jobs
+        Dim job As New LampJob(templates(0), max.ToProfile)
+        Await db.SetJobAsync(job)
+
+        job = New LampJob(templates(1), shovel.ToProfile)
+        Await db.SetJobAsync(job)
+    End Function
+
+    Public Sub FillDebugDatabase()
+        FillDebugDatabase(Me)
+    End Sub
+
 
     ''' <summary>
     ''' Gets all templates in the database
