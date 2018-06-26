@@ -143,12 +143,12 @@ Public Class LampRemoteWcfClient
         Return Channel.RemoveUnapprovedTemplateAsync(credentials, guid)
     End Function
 
-    Public Function ApproveTemplate(credentials As LampCredentials, template As LampTemplate) As LampStatus Implements ILampServiceBoth.ApproveTemplate
-        Return Channel.EditUnapprovedTemplate(credentials, template)
+    Public Function ApproveTemplate(credentials As LampCredentials, guid As String) As LampStatus Implements ILampServiceBoth.ApproveTemplate
+        Return Channel.ApproveTemplate(credentials, guid)
     End Function
 
-    Public Function ApproveTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus) Implements ILampServiceBoth.ApproveTemplateAsync
-        Return Channel.EditUnapprovedTemplateAsync(credentials, template)
+    Public Function ApproveTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceBoth.ApproveTemplateAsync
+        Return Channel.ApproveTemplateAsync(credentials, guid)
     End Function
 
     Public Function RevokeTemplate(credentials As LampCredentials, guid As String) As LampStatus Implements ILampServiceBoth.RevokeTemplate

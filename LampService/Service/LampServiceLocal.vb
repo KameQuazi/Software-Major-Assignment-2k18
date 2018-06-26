@@ -468,16 +468,142 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Function RemoveUnapprovedTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.RemoveUnapprovedTemplateAsync
-        Throw New NotImplementedException()
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="credentials"></param>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
+    Public Async Function RemoveUnapprovedTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.RemoveUnapprovedTemplateAsync
+        Dim response As LampStatus
+
+        Try
+            Dim auth = Await AuthenticateAsync(credentials)
+            If auth.user IsNot Nothing Then
+
+                Dim user = auth.user
+
+                Dim oldTemplate = Await Database.SelectTemplateAsync(guid)
+
+                If oldTemplate IsNot Nothing Then
+                    If HasRemoveUnapprovedTemplatePerms(user, oldTemplate) Then
+                        Await Database.RemoveTemplateAsync(guid)
+                        response = LampStatus.OK
+
+                    Else
+                        response = LampStatus.NoAccess
+                    End If
+                Else
+                    response = LampStatus.DoesNotExist
+                End If
+            Else
+                response = auth.Status
+
+            End If
+
+
+        Catch ex As Exception
+            response = LampStatus.InternalServerError
+            Log(ex)
+        End Try
+
+        Return response
     End Function
 
-    Public Function ApproveTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus) Implements ILampServiceAsync.ApproveTemplateAsync
-        Throw New NotImplementedException()
+    Public Async Function ApproveTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.ApproveTemplateAsync
+        Dim response As LampStatus
+
+        Try
+            If guid Is Nothing Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim auth = Await AuthenticateAsync(credentials)
+            If auth.user Is Nothing Then
+                response = auth.Status
+                Return response
+            End If
+
+            Dim user = auth.user
+
+            Dim template = Await Database.SelectTemplateAsync(guid)
+
+            If template Is Nothing Then
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            If template.Approved = True Then
+                response = LampStatus.InvalidOperation
+                Return response
+            End If
+
+            If Not HasApproveTemplatePerms(user, template) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+
+            ' passed all tests
+            Await Database.SetTemplateAsync(template, template.CreatorId, user.UserId) ' new approver
+            response = LampStatus.OK
+            Return response
+
+
+        Catch ex As Exception
+            response = LampStatus.InternalServerError
+            Log(ex)
+            Return response
+        End Try
     End Function
 
-    Public Function RevokeTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.RevokeTemplateAsync
-        Throw New NotImplementedException()
+    Public Async Function RevokeTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.RevokeTemplateAsync
+        Dim response As LampStatus
+
+        Try
+            If guid Is Nothing Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim auth = Await AuthenticateAsync(credentials)
+            If auth.user Is Nothing Then
+                response = auth.Status
+                Return response
+            End If
+
+            Dim user = auth.user
+
+            Dim template = Await Database.SelectTemplateAsync(guid)
+
+            If template Is Nothing Then
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            If template.Approved = False Then
+                response = LampStatus.InvalidOperation
+                Return response
+            End If
+
+            If Not HasRevokeTemplatePerms(user, template) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+
+            ' passed all tests
+            Await Database.SetTemplateAsync(template, template.CreatorId, Nothing) ' remove the approver
+            response = LampStatus.OK
+            Return response
+
+
+        Catch ex As Exception
+            response = LampStatus.InternalServerError
+            Log(ex)
+            Return response
+        End Try
     End Function
 
     Public Function GetJobAsync(credentials As LampCredentials, guid As String) As Task(Of LampJobWrapper) Implements ILampServiceAsync.GetJobAsync

@@ -135,10 +135,10 @@ Public Interface ILampService
     ''' set template to approved to -> into public folder
     ''' </summary>
     ''' <param name="credentials"></param>
-    ''' <param name="template"></param>
+    ''' <param name="guid"></param>
     ''' <returns></returns>
     <OperationContract()>
-    Function ApproveTemplate(credentials As LampCredentials, template As LampTemplate) As LampStatus
+    Function ApproveTemplate(credentials As LampCredentials, guid As String) As LampStatus
 
     ''' <summary>
     ''' unapproves template so it cannot be seen by normal users
@@ -217,7 +217,7 @@ Public Interface ILampServiceAsync
     Function RemoveUnapprovedTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus)
 
     <OperationContract()>
-    Function ApproveTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus)
+    Function ApproveTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus)
 
     <OperationContract()>
     Function RevokeTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus)

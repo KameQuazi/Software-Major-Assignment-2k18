@@ -95,4 +95,5 @@ Public Enum LampStatus
     InternalServerError = 16
     GuidConflict = 32
     InvalidParameters = 64
+    InvalidOperation = 128
 End Enum

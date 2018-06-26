@@ -107,6 +107,7 @@ Public Class LampService
             Else
                 ' no user selected, either no user/password or internal server error
                 response = auth.Status
+
             End If
         Catch ex As Exception
             response = LampStatus.InternalServerError
@@ -114,6 +115,7 @@ Public Class LampService
 
         End Try
 
+        Return response
     End Function
 
     Public Function EditTemplate(credentials As LampCredentials, newTemplate As LampTemplate) As LampStatus Implements ILampService.EditTemplate
@@ -473,6 +475,12 @@ Public Class LampService
 
     End Function
 
+    ''' <summary>
+    ''' only submitter / elevated + can edit
+    ''' </summary>
+    ''' <param name="credentials"></param>
+    ''' <param name="newTemplate"></param>
+    ''' <returns></returns>
     Public Function EditUnapprovedTemplate(credentials As LampCredentials, newTemplate As LampTemplate) As LampStatus Implements ILampService.EditUnapprovedTemplate
         Dim response As LampStatus
 
@@ -514,6 +522,12 @@ Public Class LampService
         End Try
     End Function
 
+    ''' <summary>
+    ''' only submitter and elevated + can remove
+    ''' </summary>
+    ''' <param name="credentials"></param>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
     Public Function RemoveUnapprovedTemplate(credentials As LampCredentials, guid As String) As LampStatus Implements ILampService.RemoveUnapprovedTemplate
         Dim response As LampStatus
 
@@ -527,7 +541,7 @@ Public Class LampService
 
                 If oldTemplate IsNot Nothing Then
                     If HasRemoveUnapprovedTemplatePerms(user, oldTemplate) Then
-                        Database.SetTemplate(newTemplate, user.UserId) ' no approver
+                        Database.RemoveTemplate(guid)
                         response = LampStatus.OK
 
                     Else
@@ -550,9 +564,100 @@ Public Class LampService
         Return response
     End Function
 
+    Public Function ApproveTemplate(credentials As LampCredentials, guid As String) As LampStatus Implements ILampService.ApproveTemplate
+        Dim response As LampStatus
+
+        Try
+            If guid Is Nothing Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response = auth.Status
+                Return response
+            End If
+
+            Dim user = auth.user
+
+            Dim template = Database.SelectTemplate(guid)
+
+            If template Is Nothing Then
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            If template.Approved = True Then
+                response = LampStatus.InvalidOperation
+                Return response
+            End If
+
+            If Not HasApproveTemplatePerms(user, template) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+
+            ' passed all tests
+            Database.SetTemplate(template, template.CreatorId, user.UserId) ' new approver
+            response = LampStatus.OK
+            Return response
+
+
+        Catch ex As Exception
+            response = LampStatus.InternalServerError
+            Log(ex)
+            Return response
+        End Try
+    End Function
 
     Public Function RevokeTemplate(credentials As LampCredentials, guid As String) As LampStatus Implements ILampService.RevokeTemplate
-        Throw New NotImplementedException()
+        Dim response As LampStatus
+
+        Try
+            If guid Is Nothing Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response = auth.Status
+                Return response
+            End If
+
+            Dim user = auth.user
+
+            Dim template = Database.SelectTemplate(guid)
+
+            If template Is Nothing Then
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            If template.Approved = False Then
+                response = LampStatus.InvalidOperation
+                Return response
+            End If
+
+            If Not HasRevokeTemplatePerms(user, template) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+
+            ' passed all tests
+            Database.SetTemplate(template, template.CreatorId, Nothing) ' remove the approver
+            response = LampStatus.OK
+            Return response
+
+
+        Catch ex As Exception
+            response = LampStatus.InternalServerError
+            Log(ex)
+            Return response
+        End Try
     End Function
 
 
@@ -611,9 +716,7 @@ Public Class LampService
 
 
 
-    Public Function ApproveTemplate(credentials As LampCredentials, template As LampTemplate) As LampStatus Implements ILampService.ApproveTemplate
-        Throw New NotImplementedException()
-    End Function
+
 
 
 
@@ -679,6 +782,14 @@ Public Class LampService
 
     Public Function HasAddUserPerms(thisUser As LampUser, otherUser As LampUser)
         Return thisUser.PermissionLevel >= UserPermission.Admin
+    End Function
+
+    Public Function HasApproveTemplatePerms(user As LampUser, template As LampTemplate)
+        Return user.PermissionLevel >= UserPermission.Elevated
+    End Function
+
+    Public Function HasRevokeTemplatePerms(user As LampUser, template As LampTemplate)
+        Return user.PermissionLevel >= UserPermission.Elevated
     End Function
 
 
