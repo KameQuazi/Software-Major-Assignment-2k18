@@ -94,5 +94,5 @@ Public Enum LampStatus
     InvalidUsernameOrPassword = 8
     InternalServerError = 16
     GuidConflict = 32
-
+    InvalidParameters = 64
 End Enum
