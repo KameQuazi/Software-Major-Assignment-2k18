@@ -161,11 +161,52 @@ Public Class LampDxfDocument
     ''' <param name="point"></param>
     Public Sub InsertInto(otherDrawing As LampDxfDocument, point As LampDxfInsertLocation)
         Dim offset = point.InsertPoint
-        For Each line As Line In _DxfFile.Lines
+        For Each line As Line In otherDrawing.DxfFile.Lines
             Dim start = line.StartPoint
+            Dim startend = line.EndPoint
+            start += point.InsertPoint
+            startend += point.InsertPoint
+            Me.AddLine(start, startend)
 
         Next
+
+        For Each text As Text In otherDrawing.DxfFile.Texts
+            Dim start = text.Position
+            start += point.InsertPoint
+            Me.AddText(start.X, start.Y, text.ToString, start.Z)
+        Next
+
+
     End Sub
+
+    ''' <summary>
+    ''' Generates an array of LampDXFInsertLocation base
+    ''' Returns null if it is unable to generate
+    ''' </summary>
+    ''' <param name="otherDrawing"></param>
+    ''' <param name="height"></param>
+    ''' <param name="width"></param>
+    Public Function GenRefPoint(otherDrawing As LampTemplate, width As Integer, height As Integer, Optional number As Integer = -1, Optional offset As Double = 2) As List(Of LampDxfInsertLocation)
+        Dim newArray As New List(Of LampDxfInsertLocation)
+        Dim curx As Double = 0
+        Dim cury As Double = 0
+        While cury + otherDrawing.Height + offset < height
+            While curx + otherDrawing.Length + offset < width
+                newArray.Add(New LampDxfInsertLocation(New netDxf.Vector3(curx, cury, 0)))
+                curx += otherDrawing.Length + offset
+            End While
+            curx = 0
+            cury += otherDrawing.Height + offset
+        End While
+        If number < 0 Then
+            Return newArray
+        ElseIf number > newArray.Count Then
+            Return Nothing
+        Else
+            Return newArray.Take(number).ToList
+        End If
+    End Function
+
 
     ''' <summary>
     ''' Saves the file

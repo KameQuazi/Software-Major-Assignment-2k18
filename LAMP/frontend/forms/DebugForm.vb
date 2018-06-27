@@ -113,4 +113,9 @@ Public Class DebugForm
     Private Sub DynamicFormCreation1_Load(sender As Object, e As EventArgs) Handles DynamicFormCreation1.Load
 
     End Sub
+
+    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
+        Dim ref As New refpointTest
+        ref.ShowDialog()
+    End Sub
 End Class

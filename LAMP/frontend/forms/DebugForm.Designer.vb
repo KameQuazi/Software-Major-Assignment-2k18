@@ -34,6 +34,7 @@ Partial Class DebugForm
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Button10 = New System.Windows.Forms.Button()
         Me.DynamicFormCreation1 = New LAMP.DynamicFormCreation()
+        Me.Button11 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Button1
@@ -142,10 +143,20 @@ Partial Class DebugForm
         Me.DynamicFormCreation1.Size = New System.Drawing.Size(684, 480)
         Me.DynamicFormCreation1.TabIndex = 13
         '
+        'Button11
+        '
+        Me.Button11.Location = New System.Drawing.Point(184, 234)
+        Me.Button11.Name = "Button11"
+        Me.Button11.Size = New System.Drawing.Size(151, 23)
+        Me.Button11.TabIndex = 14
+        Me.Button11.Text = "refpointTest"
+        Me.Button11.UseVisualStyleBackColor = True
+        '
         'DebugForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(1343, 587)
+        Me.Controls.Add(Me.Button11)
         Me.Controls.Add(Me.DynamicFormCreation1)
         Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.TextBox1)
@@ -177,4 +188,5 @@ Partial Class DebugForm
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Button10 As Button
     Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
+    Friend WithEvents Button11 As Button
 End Class
