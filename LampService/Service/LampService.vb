@@ -709,8 +709,55 @@ Public Class LampService
     End Function
 
 
-    Public Function AddJob(credentials As LampCredentials, job As LampJob) As LampStatus Implements ILampService.AddJob
+    ''' <summary>
+    ''' only admins and the creator of the job can view their own job
+    ''' </summary>
+    ''' <param name="credentials"></param>
+    ''' <param name="guid"></param>
+    ''' <returns></returns>
+    Public Function GetJob(credentials As LampCredentials, guid As String) As LampJobWrapper Implements ILampService.GetJob
         ' check if user got permissions
+        Dim response As New LampJobWrapper
+
+
+        Try
+            If guid Is Nothing Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response.Status = auth.Status
+                Return response
+            End If
+
+            Dim user = auth.user
+            Dim job = Database.SelectJob(guid)
+            If job Is Nothing Then
+                ' no job found
+                response.Status = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            If Not HasGetJobPerms(user, job) Then
+                response.Status = LampStatus.NoAccess
+                Return response
+            End If
+
+
+            response.Job = job
+            response.Status = LampStatus.OK
+            Return response
+
+        Catch ex As Exception
+            Log(ex)
+            response.Status = LampStatus.InternalServerError
+            Return response
+        End Try
+    End Function
+
+    Public Function AddJob(credentials As LampCredentials, job As LampJob) As LampStatus Implements ILampService.AddJob
         Dim response As LampStatus
 
         Try
@@ -745,14 +792,10 @@ Public Class LampService
             response = LampStatus.InternalServerError
             Return response
         End Try
-
-
-
     End Function
 
 
     Public Function EditJob(credentials As LampCredentials, job As LampJob) As LampStatus Implements ILampService.EditJob
-        ' check if user got permissions
         Dim response As LampStatus
 
         Try
@@ -769,7 +812,7 @@ Public Class LampService
             Dim user = auth.user
             If Not Database.SelectJob(job.JobId) IsNot Nothing Then
                 ' already exists a job, 
-                response = LampStatus.DoesNotExist
+                response = LampStatus.GuidConflict
                 Return response
             End If
 
@@ -791,7 +834,42 @@ Public Class LampService
     End Function
 
     Public Function RemoveJob(credentials As LampCredentials, guid As String) As LampStatus Implements ILampService.RemoveJob
-        Throw New NotImplementedException()
+        Dim response As LampStatus
+
+        Try
+            If guid Is Nothing Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response = auth.Status
+                Return response
+            End If
+
+            Dim user = auth.user
+            Dim job = Database.SelectJob(guid)
+            If Not job Is Nothing Then
+                ' no job exists
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            If Not HasRemoveJobPerms(user, job) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+
+            Database.RemoveJob(guid)
+            response = LampStatus.OK
+            Return response
+
+        Catch ex As Exception
+            Log(ex)
+            response = LampStatus.InternalServerError
+            Return response
+        End Try
     End Function
 
 
@@ -837,9 +915,8 @@ Public Class LampService
     End Function
 
 
-
     Public Function HasAddTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
-        Return user.PermissionLevel >= UserPermission.Admin
+        Return user.PermissionLevel >= UserPermission.Elevated
     End Function
 
     Public Function HasEditTemplatePerms(user As LampUser, original As LampTemplate, altered As LampTemplate) As Boolean
@@ -858,6 +935,9 @@ Public Class LampService
         End If
         Return False
     End Function
+
+
+
 
     Public Function HasGetUnapprovedTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
         Return user.PermissionLevel >= UserPermission.Elevated Or user.UserId = template.CreatorId
@@ -883,23 +963,52 @@ Public Class LampService
 
 
 
+
+
     Public Function HasGetUserPerms(thisUser As LampUser, otherUser As LampUser)
         Return thisUser.PermissionLevel >= UserPermission.Admin
-
     End Function
 
     Public Function HasAddUserPerms(thisUser As LampUser, otherUser As LampUser)
         Return thisUser.PermissionLevel >= UserPermission.Admin
     End Function
 
+    Public Function HasEditUserPerms(user As LampUser, oldUser As LampUser, newUser As LampUser) As Boolean
+        Return oldUser.UserId = user.UserId OrElse user.PermissionLevel >= UserPermission.Admin
+    End Function
+
+    Public Function HasRemoveUserPerms(user As LampUser, otherUser As LampUser)
+        Return user.PermissionLevel >= UserPermission.Admin
+    End Function
+
+
+
+
+
+    Public Function HasGetJobPerms(user As LampUser, job As LampJob)
+        Return user.PermissionLevel >= UserPermission.Admin OrElse job.SubmitId = user.UserId
+    End Function
+
+    Public Function HasAddJobPerms(user As LampUser, job As LampJob) As Boolean
+        Return user.PermissionLevel >= UserPermission.Elevated
+    End Function
+
     Public Function HasEditJobPerms(thisUser As LampUser, job As LampJob)
         Return thisUser.PermissionLevel >= UserPermission.Admin OrElse thisUser.UserId = job.SubmitId
     End Function
+
+    Public Function HasRemoveJobPerms(user As LampUser, job As LampJob)
+        Return user.PermissionLevel >= UserPermission.Admin OrElse job.SubmitId = user.UserId
+    End Function
+
+
+
 
 
     Public Function HasApproveTemplatePerms(user As LampUser, template As LampTemplate)
         Return user.PermissionLevel >= UserPermission.Elevated
     End Function
+
 
     Public Function HasRevokeTemplatePerms(user As LampUser, template As LampTemplate)
         Return user.PermissionLevel >= UserPermission.Elevated
@@ -909,27 +1018,10 @@ Public Class LampService
 
 
 
-    Public Function HasAddJobPerms(user As LampUser, job As LampJob) As Boolean
-        Return user.PermissionLevel >= UserPermission.Elevated
-    End Function
-
-    Public Function HasEditUserPerms(user As LampUser, oldUser As LampUser, newUser As LampUser) As Boolean
-        Return oldUser.UserId = user.UserId OrElse user.PermissionLevel >= UserPermission.Admin
-    End Function
 
 
 
 
-
-
-
-
-
-
-
-    Public Function GetJob(credentials As LampCredentials, guid As String) As LampJobWrapper Implements ILampService.GetJob
-        Throw New NotImplementedException()
-    End Function
 
 
 
@@ -943,7 +1035,9 @@ Public Class LampService
 
 #End Region
 
-
+    Public Sub ResetDatabase()
+        Database.ResetDebug()
+    End Sub
 End Class
 
 
