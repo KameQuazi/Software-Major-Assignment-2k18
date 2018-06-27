@@ -204,6 +204,12 @@
     <Compile Include="forms\Options.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="forms\refpointTest.Designer.vb">
+      <DependentUpon>refpointTest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\refpointTest.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="forms\TemplateEditor.Designer.vb">
       <DependentUpon>TemplateEditor.vb</DependentUpon>
     </Compile>
@@ -280,6 +286,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\Options.resx">
       <DependentUpon>Options.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\refpointTest.resx">
+      <DependentUpon>refpointTest.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\TemplateEditor.resx">
       <DependentUpon>TemplateEditor.vb</DependentUpon>

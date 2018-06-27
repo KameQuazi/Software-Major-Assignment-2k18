@@ -42,6 +42,7 @@ Partial Class DebugForm
         Me.Label3 = New System.Windows.Forms.Label()
         Me.TestUserButton = New System.Windows.Forms.Button()
         Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
+        Me.Button12 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Button1
@@ -216,10 +217,20 @@ Partial Class DebugForm
         Me.MultiTemplateViewer1.Size = New System.Drawing.Size(800, 600)
         Me.MultiTemplateViewer1.TabIndex = 14
         '
+        'Button12
+        '
+        Me.Button12.Location = New System.Drawing.Point(287, 294)
+        Me.Button12.Name = "Button12"
+        Me.Button12.Size = New System.Drawing.Size(75, 23)
+        Me.Button12.TabIndex = 23
+        Me.Button12.Text = "refPointTest"
+        Me.Button12.UseVisualStyleBackColor = True
+        '
         'DebugForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(1342, 811)
+        Me.Controls.Add(Me.Button12)
         Me.Controls.Add(Me.TestUserButton)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.CurrentUserTbox)
@@ -267,4 +278,5 @@ Partial Class DebugForm
     Friend WithEvents CurrentUserTbox As RichTextBox
     Friend WithEvents Label3 As Label
     Friend WithEvents TestUserButton As Button
+    Friend WithEvents Button12 As Button
 End Class

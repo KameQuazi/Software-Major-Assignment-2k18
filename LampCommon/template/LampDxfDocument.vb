@@ -451,9 +451,9 @@ Public Class LampDxfDocument
         Next
 
         For Each mtext As MText In Drawing.MTexts
-            Dim newmtext As Text = mtext.Clone()
+            Dim newmtext As MText = mtext.Clone()
             newmtext.Position = Transform(newmtext.Position, offset)
-            otherDrawing.AddText(newmtext)
+            otherDrawing.AddMText(newmtext)
         Next
 
         For Each image As Entities.Image In Drawing.Images
@@ -475,6 +475,34 @@ Public Class LampDxfDocument
         Next
         NotifyPropertyChanged(NameOf(Drawing))
     End Sub
+
+    ''' <summary> 
+    ''' Generates an array of LampDXFInsertLocation base 
+    ''' Returns null if it is unable to generate 
+    ''' </summary> 
+    ''' <param name="otherDrawing"></param> 
+    ''' <param name="height"></param> 
+    ''' <param name="width"></param> 
+    Public Function GenRefPoint(otherDrawing As LampTemplate, width As Integer, height As Integer, Optional number As Integer = -1, Optional offset As Double = 2) As List(Of LampDxfInsertLocation)
+        Dim newArray As New List(Of LampDxfInsertLocation)
+        Dim curx As Double = 0
+        Dim cury As Double = 0
+        While cury + otherDrawing.Height + offset < height
+            While curx + otherDrawing.Length + offset < width
+                newArray.Add(New LampDxfInsertLocation(New netDxf.Vector3(curx, cury, 0)))
+                curx += otherDrawing.Length + offset
+            End While
+            curx = 0
+            cury += otherDrawing.Height + offset
+        End While
+        If number < 0 Then
+            Return newArray
+        ElseIf number > newArray.Count Then
+            Return Nothing
+        Else
+            Return newArray.Take(number).ToList
+        End If
+    End Function
 
 
     ''' <summary>

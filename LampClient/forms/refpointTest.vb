@@ -1,4 +1,6 @@
-﻿Public Class refpointTest
+﻿Imports LampCommon
+
+Public Class refpointTest
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim test As New LampDxfDocument
 
@@ -13,7 +15,8 @@
 
         listPoint = test.GenRefPoint(randItem, 600, 400)
         For Each item In listPoint
-            test.InsertInto(randItem.BaseDrawing, item)
+            randItem.BaseDrawing.InsertInto(test, item)
+            ' test.InsertInto(randItem.BaseDrawing, item)
         Next
 
         test.Save("reftest.dxf")
