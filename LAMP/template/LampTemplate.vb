@@ -9,6 +9,7 @@ Imports netDxf
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
+<Serializable>
 <JsonObject(MemberSerialization.OptIn)>
 Public NotInheritable Class LampTemplate
     Implements INotifyPropertyChanged
@@ -186,7 +187,7 @@ Public NotInheritable Class LampTemplate
     ''' The thickness of the material used
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("material)thickness")>
+    <JsonProperty("material_thickness")>
     Public Property MaterialThickness As Double
         Get
             Return _materialThickness
@@ -213,17 +214,17 @@ Public NotInheritable Class LampTemplate
         End Set
     End Property
 
-    Private _dynamicTextList As New ObservableCollection(Of DynamicText)
+    Private _dynamicTextList As New ObservableCollection(Of DynamicTemplateInput)
     ''' <summary>
     ''' Where the dynamic text will be stored:
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("dynamic_text_list")>
-    Public Property DynamicTextList As ObservableCollection(Of DynamicText)
+    Public Property DynamicTextList As ObservableCollection(Of DynamicTemplateInput)
         Get
             Return _dynamicTextList
         End Get
-        Set(value As ObservableCollection(Of DynamicText))
+        Set(value As ObservableCollection(Of DynamicTemplateInput))
             _dynamicTextList = value
             If _dynamicTextList IsNot Nothing Then
                 AddHandler _dynamicTextList.CollectionChanged, (Sub(sender As Object, e As NotifyCollectionChangedEventArgs) NotifyPropertyChanged("DynamicTextList"))
@@ -505,10 +506,19 @@ Public Class ImageListJsonConverter
                     Throw New JsonSerializationException()
                 End If
             Next
+
         Else
             Throw New JsonSerializationException()
         End If
-
+#If DEBUG Then
+        If out.Count > LampTemplate.MaxImages Then
+            Throw New JsonSerializationException("too many images!")
+        End If
+#Else
+        While out.Count > LampTemplate.MaxImages
+            out.RemoveAt(out.Count - 1)
+        End While
+#End If
         Return out
     End Function
 
@@ -541,17 +551,4 @@ Public Class OwO
 
 
 
-End Class
-
-
-Public Class LampDxfInsertLocation
-    <JsonProperty("insertPoint")>
-    Public Property InsertPoint As New Vector3
-    <JsonProperty("rotation")>
-    Public Property Rotation As Double
-    <JsonProperty("dynamicTextData")>
-    Public Property DynamicTextData As New Dictionary(Of DynamicText, String)
-    Sub New(point As Vector3)
-        Me.InsertPoint = point
-    End Sub
 End Class

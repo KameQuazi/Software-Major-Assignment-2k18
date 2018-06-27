@@ -1,6 +1,6 @@
 ﻿Public Class FileDisplay
 
-    Private _template As LampTemplate = LampTemplate.Empty
+    Private _template As LampTemplate
 
     ''' <summary>
     ''' Change template to change the text on the display
@@ -58,5 +58,13 @@
 
     Private Sub Button1_Click(sender As Object, e As EventArgs)
         Me.Visible = False
+    End Sub
+
+    Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Template = LampTemplate.Empty
     End Sub
 End Class

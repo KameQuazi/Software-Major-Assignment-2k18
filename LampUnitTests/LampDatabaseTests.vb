@@ -199,6 +199,20 @@ Public Class LampDatabaseTests
         Next
     End Sub
 
+    <TestMethod()>
+    Public Sub TestUsers()
+        Dim db As New TemplateDatabase
+        Dim user As New LampUser("email@gmail.com", "jackywathy", "abcd1234", NewGuid, UserPermission.Admin)
+        db.AddUser(user)
+        db.SelectUser(user.UserId)
+    End Sub
+
     Private RepeatConnectionTestTimes = 3
 
 End Class
+
+Public Module owo
+    Public Function NewGuid()
+        Return Guid.NewGuid.ToString()
+    End Function
+End Module

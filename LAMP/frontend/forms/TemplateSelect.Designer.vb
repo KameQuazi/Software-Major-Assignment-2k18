@@ -28,15 +28,8 @@ Partial Class TemplateSelect
         Me.Label2 = New System.Windows.Forms.Label()
         Me.cmbSort = New System.Windows.Forms.ComboBox()
         Me.lblSort = New System.Windows.Forms.Label()
-        Me.FileDisplay5 = New LAMP.FileDisplay()
-        Me.FileDisplay6 = New LAMP.FileDisplay()
-        Me.FileDisplay7 = New LAMP.FileDisplay()
-        Me.FileDisplay8 = New LAMP.FileDisplay()
-        Me.FileDisplay4 = New LAMP.FileDisplay()
-        Me.FileDisplay3 = New LAMP.FileDisplay()
-        Me.FileDisplay2 = New LAMP.FileDisplay()
-        Me.FileDisplay1 = New LAMP.FileDisplay()
         Me.ToolBar1 = New LAMP.ToolBar()
+        Me.MultiTemplateViewer1 = New LAMP.MultiTemplateViewer()
         Me.SuspendLayout()
         '
         'btnNext
@@ -97,78 +90,6 @@ Partial Class TemplateSelect
         Me.lblSort.TabIndex = 13
         Me.lblSort.Text = "Sort By:"
         '
-        'FileDisplay5
-        '
-        Me.FileDisplay5.BackColor = System.Drawing.Color.White
-        Me.FileDisplay5.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FileDisplay5.Location = New System.Drawing.Point(91, 426)
-        Me.FileDisplay5.Name = "FileDisplay5"
-        Me.FileDisplay5.Size = New System.Drawing.Size(200, 270)
-        Me.FileDisplay5.TabIndex = 27
-        '
-        'FileDisplay6
-        '
-        Me.FileDisplay6.BackColor = System.Drawing.Color.White
-        Me.FileDisplay6.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FileDisplay6.Location = New System.Drawing.Point(297, 426)
-        Me.FileDisplay6.Name = "FileDisplay6"
-        Me.FileDisplay6.Size = New System.Drawing.Size(200, 270)
-        Me.FileDisplay6.TabIndex = 26
-        '
-        'FileDisplay7
-        '
-        Me.FileDisplay7.BackColor = System.Drawing.Color.White
-        Me.FileDisplay7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FileDisplay7.Location = New System.Drawing.Point(503, 426)
-        Me.FileDisplay7.Name = "FileDisplay7"
-        Me.FileDisplay7.Size = New System.Drawing.Size(200, 270)
-        Me.FileDisplay7.TabIndex = 25
-        '
-        'FileDisplay8
-        '
-        Me.FileDisplay8.BackColor = System.Drawing.Color.White
-        Me.FileDisplay8.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FileDisplay8.Location = New System.Drawing.Point(709, 426)
-        Me.FileDisplay8.Name = "FileDisplay8"
-        Me.FileDisplay8.Size = New System.Drawing.Size(200, 270)
-        Me.FileDisplay8.TabIndex = 24
-        '
-        'FileDisplay4
-        '
-        Me.FileDisplay4.BackColor = System.Drawing.Color.White
-        Me.FileDisplay4.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FileDisplay4.Location = New System.Drawing.Point(709, 150)
-        Me.FileDisplay4.Name = "FileDisplay4"
-        Me.FileDisplay4.Size = New System.Drawing.Size(200, 270)
-        Me.FileDisplay4.TabIndex = 23
-        '
-        'FileDisplay3
-        '
-        Me.FileDisplay3.BackColor = System.Drawing.Color.White
-        Me.FileDisplay3.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FileDisplay3.Location = New System.Drawing.Point(503, 150)
-        Me.FileDisplay3.Name = "FileDisplay3"
-        Me.FileDisplay3.Size = New System.Drawing.Size(200, 270)
-        Me.FileDisplay3.TabIndex = 22
-        '
-        'FileDisplay2
-        '
-        Me.FileDisplay2.BackColor = System.Drawing.Color.White
-        Me.FileDisplay2.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FileDisplay2.Location = New System.Drawing.Point(297, 150)
-        Me.FileDisplay2.Name = "FileDisplay2"
-        Me.FileDisplay2.Size = New System.Drawing.Size(200, 270)
-        Me.FileDisplay2.TabIndex = 21
-        '
-        'FileDisplay1
-        '
-        Me.FileDisplay1.BackColor = System.Drawing.Color.White
-        Me.FileDisplay1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FileDisplay1.Location = New System.Drawing.Point(91, 150)
-        Me.FileDisplay1.Name = "FileDisplay1"
-        Me.FileDisplay1.Size = New System.Drawing.Size(200, 270)
-        Me.FileDisplay1.TabIndex = 20
-        '
         'ToolBar1
         '
         Me.ToolBar1.BackColor = System.Drawing.Color.White
@@ -178,20 +99,22 @@ Partial Class TemplateSelect
         Me.ToolBar1.Size = New System.Drawing.Size(1000, 96)
         Me.ToolBar1.TabIndex = 18
         '
-        'TemplateViewer
+        'MultiTemplateViewer1
+        '
+        Me.MultiTemplateViewer1.ColumnCount = 4
+        Me.MultiTemplateViewer1.Location = New System.Drawing.Point(80, 143)
+        Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
+        Me.MultiTemplateViewer1.RowCount = 2
+        Me.MultiTemplateViewer1.Size = New System.Drawing.Size(873, 561)
+        Me.MultiTemplateViewer1.TabIndex = 19
+        '
+        'TemplateSelect
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1000, 750)
-        Me.Controls.Add(Me.FileDisplay5)
-        Me.Controls.Add(Me.FileDisplay6)
-        Me.Controls.Add(Me.FileDisplay7)
-        Me.Controls.Add(Me.FileDisplay8)
-        Me.Controls.Add(Me.FileDisplay4)
-        Me.Controls.Add(Me.FileDisplay3)
-        Me.Controls.Add(Me.FileDisplay2)
-        Me.Controls.Add(Me.FileDisplay1)
+        Me.Controls.Add(Me.MultiTemplateViewer1)
         Me.Controls.Add(Me.ToolBar1)
         Me.Controls.Add(Me.lblSort)
         Me.Controls.Add(Me.cmbSort)
@@ -201,7 +124,7 @@ Partial Class TemplateSelect
         Me.Controls.Add(Me.btnNext)
         Me.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Name = "TemplateViewer"
+        Me.Name = "TemplateSelect"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Viewer"
         Me.ResumeLayout(False)
@@ -215,12 +138,5 @@ Partial Class TemplateSelect
     Friend WithEvents cmbSort As ComboBox
     Friend WithEvents lblSort As Label
     Friend WithEvents ToolBar1 As ToolBar
-    Friend WithEvents FileDisplay1 As FileDisplay
-    Friend WithEvents FileDisplay2 As FileDisplay
-    Friend WithEvents FileDisplay3 As FileDisplay
-    Friend WithEvents FileDisplay4 As FileDisplay
-    Friend WithEvents FileDisplay5 As FileDisplay
-    Friend WithEvents FileDisplay6 As FileDisplay
-    Friend WithEvents FileDisplay7 As FileDisplay
-    Friend WithEvents FileDisplay8 As FileDisplay
+    Friend WithEvents MultiTemplateViewer1 As MultiTemplateViewer
 End Class

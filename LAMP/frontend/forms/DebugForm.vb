@@ -1,8 +1,10 @@
-﻿Public Class DebugForm
-    Dim db As New TemplateDatabase()
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+﻿Imports netDxf
 
-        db.FillDebugDatabase()
+Public Class DebugForm
+    Dim db As New TemplateDatabase()
+    Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+
+        Await Task.Run(AddressOf TemplateDatabase.FillDebugDatabase)
         db.GetAllTemplate()
     End Sub
 
@@ -39,9 +41,12 @@
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
         Test()
+
     End Sub
 
     Private Sub Test()
+        Dim MultiTemplateViewer As New MultiTemplateViewer()
+        Me.Controls.Add(MultiTemplateViewer)
 
         MultiTemplateViewer.LoadExample()
         Dim db As New TemplateDatabase
@@ -67,9 +72,23 @@
     End Sub
 
     Private Sub Test2()
+        DynamicFormCreation1.Source.Add(New DynamicTemplateInput("whats this?", "a working form apparently", Nothing))
 
-        'Dim temp = LampTemplate.FromFile()
-        ' MultiTemplateViewer.SetTemplateToPosition(0, 0, temp)
+        Dim x As New Bitmap(500, 500)
+        Using g = Graphics.FromImage(x)
+            g.DrawArc(New Pen(Color.AliceBlue), New RectangleF(0, 0, 500, 500), 45, 120)
+        End Using
+        x.Save("out.png")
+
+        Dim y As New DxfDocument
+        Dim txt = New Entities.Text("hello", New Vector3(0, 0, 0), 10, Tables.TextStyle.Default)
+        txt.ObliqueAngle = 10
+        Dim t2 = New Entities.MText("hello", New Vector2(0, 0), 10, 10, Tables.TextStyle.Default)
+        t2.Rotation = 10
+        y.AddEntity(t2)
+        y.AddEntity(txt)
+        y.Save("helow.dxf")
+
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
@@ -81,7 +100,22 @@
         Test2()
     End Sub
 
-    Private Sub MultiTemplateViewer_Load(sender As Object, e As EventArgs) Handles MultiTemplateViewer.Load
+    Private Sub MultiTemplateViewer_Load(sender As Object, e As EventArgs)
 
+    End Sub
+
+    Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
+        Dim frm As New DynamicTextCreationForm
+
+        frm.ShowDialog()
+    End Sub
+
+    Private Sub DynamicFormCreation1_Load(sender As Object, e As EventArgs) Handles DynamicFormCreation1.Load
+
+    End Sub
+
+    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
+        Dim ref As New refpointTest
+        ref.ShowDialog()
     End Sub
 End Class

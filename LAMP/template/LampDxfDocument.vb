@@ -10,11 +10,14 @@ Imports Newtonsoft.Json
 Imports LAMP.LampDxfHelper
 Imports System.ComponentModel
 Imports System.Runtime.CompilerServices
+Imports System.Drawing.Drawing2D
 
 <JsonConverter(GetType(DxfJsonConverter))>
 Public Class LampDxfDocument
     Implements INotifyPropertyChanged
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
+    Public ReadOnly Property DefaultFont As New FontFamily("Arial")
 
     ''' <summary>
     ''' DxfDocument from .netdxf library
@@ -158,11 +161,52 @@ Public Class LampDxfDocument
     ''' <param name="point"></param>
     Public Sub InsertInto(otherDrawing As LampDxfDocument, point As LampDxfInsertLocation)
         Dim offset = point.InsertPoint
-        For Each line As Line In _DxfFile.Lines
+        For Each line As Line In otherDrawing.DxfFile.Lines
             Dim start = line.StartPoint
+            Dim startend = line.EndPoint
+            start += point.InsertPoint
+            startend += point.InsertPoint
+            Me.AddLine(start, startend)
 
         Next
+
+        For Each text As Text In otherDrawing.DxfFile.Texts
+            Dim start = text.Position
+            start += point.InsertPoint
+            Me.AddText(start.X, start.Y, text.ToString, start.Z)
+        Next
+
+
     End Sub
+
+    ''' <summary>
+    ''' Generates an array of LampDXFInsertLocation base
+    ''' Returns null if it is unable to generate
+    ''' </summary>
+    ''' <param name="otherDrawing"></param>
+    ''' <param name="height"></param>
+    ''' <param name="width"></param>
+    Public Function GenRefPoint(otherDrawing As LampTemplate, width As Integer, height As Integer, Optional number As Integer = -1, Optional offset As Double = 2) As List(Of LampDxfInsertLocation)
+        Dim newArray As New List(Of LampDxfInsertLocation)
+        Dim curx As Double = 0
+        Dim cury As Double = 0
+        While cury + otherDrawing.Height + offset < height
+            While curx + otherDrawing.Length + offset < width
+                newArray.Add(New LampDxfInsertLocation(New netDxf.Vector3(curx, cury, 0)))
+                curx += otherDrawing.Length + offset
+            End While
+            curx = 0
+            cury += otherDrawing.Height + offset
+        End While
+        If number < 0 Then
+            Return newArray
+        ElseIf number > newArray.Count Then
+            Return Nothing
+        Else
+            Return newArray.Take(number).ToList
+        End If
+    End Function
+
 
     ''' <summary>
     ''' Saves the file
@@ -298,6 +342,8 @@ Public Class LampDxfDocument
         Return String.Format("CustomDxfDrawing: {0}", _DxfFile)
     End Function
 
+
+
     ''' <summary>
     ''' Draws the contents onto a graphics object
     ''' Only draws lines right now
@@ -333,13 +379,21 @@ Public Class LampDxfDocument
                 upperLeft.Y += arc.Radius
 
                 Dim GdiUpperleft = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperLeft)
+                ' arc startangle is anti-clockwise from the positive x axis, then further anticlockwise till endangle
+                ' however, gdi draws clockwise from positive x axis, then clockwise theta degrees sweepangle
+                ' therefore, the arc's endpoint is actually the arc originates
 
-                Dim angleRotated = arc.StartAngle - arc.EndAngle
+                Dim gdiStartAngle = 360 - arc.EndAngle
+
+                ' if startAngle > endangle, 
+                Dim angleRotated = (arc.EndAngle - arc.StartAngle + 360) Mod 360
+
 
                 ' Width, height = 2x radius
-                Dim arcBound As New RectangleF(GdiUpperleft, New SizeF(arc.Radius * 2, arc.Radius * 2))
+                Dim arcBound As New RectangleF(GdiUpperleft, New SizeF(Convert.ToSingle(arc.Radius * 2), Convert.ToSingle(arc.Radius * 2)))
 
-                g.DrawArc(New Pen(arc.Color.ToColor()), arcBound, arc.StartAngle, angleRotated)
+                g.DrawArc(New Pen(arc.Color.ToColor()), arcBound, Convert.ToSingle(gdiStartAngle), Convert.ToSingle(angleRotated))
+
             End If
         Next
 
@@ -351,9 +405,43 @@ Public Class LampDxfDocument
                 upperleft.X -= circle.Radius
 
                 Dim gdiCenter = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperleft)
-                Dim circleBound As New RectangleF(gdiCenter, New SizeF(circle.Radius * 2, circle.Radius * 2))
+                Dim circleBound As New RectangleF(gdiCenter, New SizeF(Convert.ToSingle(circle.Radius * 2), Convert.ToSingle(circle.Radius * 2)))
 
                 g.DrawEllipse(New Pen(circle.Color.ToColor()), circleBound)
+            End If
+        Next
+
+        For Each polyline As Polyline In DxfFile.Polylines
+            If InsideBounds(bounds, polyline) Then
+                Dim previousPoint As PolylineVertex = Nothing
+                For Each vertex In polyline.Vertexes
+                    If previousPoint IsNot Nothing Then
+                        Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, previousPoint.Position.X, previousPoint.Position.Y)
+
+                        Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, vertex.Position.X, vertex.Position.Y)
+
+                        g.DrawLine(New Pen(polyline.Color.ToColor()), start, [end])
+                    End If
+
+                    previousPoint = vertex
+                Next
+            End If
+        Next
+
+        For Each text As Text In DxfFile.Texts
+            If InsideBounds(bounds, text) Then
+                g.DrawString(text.Value, New Font(New FontFamily(text.Style.FontFamilyName), 30), New SolidBrush(text.Color.ToColor()), New PointF(0, 0))
+                Using path = New GraphicsPath
+                    Dim style = text.Style
+
+                    path.AddString(text.Value, New FontFamily(style.FontFamilyName), DirectCast(FontStyle.Regular, Integer), text.Height, New PointF(0, 0), StringFormat.GenericDefault)
+                    Dim matrix As New Matrix
+                    matrix.Shear(0, 0)
+
+                    g.MultiplyTransform(matrix)
+                    g.FillPath(New SolidBrush(text.Color.ToColor), path)
+                    g.ResetTransform()
+                End Using
             End If
         Next
     End Sub
@@ -371,7 +459,7 @@ Public Class LampDxfDocument
     ''' <summary>
     ''' Todo implement equality lampdxf
     ''' </summary>
-    ''' <param name="first"></param>
+    ''' <param name="first"></param>    
     ''' <param name="second"></param>
     ''' <returns></returns>
     Public Shared Operator <>(ByVal first As LampDxfDocument, ByVal second As LampDxfDocument) As Boolean
@@ -500,6 +588,14 @@ Public Class LampDxfHelper
 #Enable Warning BC42016 ' Implicit conversion
     End Function
 
+    Public Shared Function InsideBounds(rect As RectangleF, text As Text) As Boolean
+        Return True
+    End Function
+
+    Public Shared Function InsideBounds(rect As RectangleF, MText As MText) As Boolean
+        Return True
+    End Function
+
     Public Shared Function InsideBounds(rect As RectangleF, line As Line) As Boolean
         Return True
     End Function
@@ -510,6 +606,10 @@ Public Class LampDxfHelper
 
 
     Public Shared Function InsideBounds(rect As RectangleF, circle As Circle) As Boolean
+        Return True
+    End Function
+
+    Public Shared Function InsideBounds(rect As RectangleF, polyLine As Polyline) As Boolean
         Return True
     End Function
 

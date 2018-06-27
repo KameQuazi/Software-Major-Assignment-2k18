@@ -1,0 +1,11 @@
+clockwise rotation
+negative = anti clockwisre
+text is ref. from bottom left
+mtext is ref from top left
+
+mtext is multi line text/paragraphs. 
+for text, each new line is a seperate entitiy (no built in wrapping etc)
+dtext is now aliased to text (single line)
+
+basically, use mtext as much as you can
+ 
