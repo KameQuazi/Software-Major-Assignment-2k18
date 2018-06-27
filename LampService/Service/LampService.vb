@@ -42,10 +42,6 @@ Public Class LampService
 
 
             Dim user = auth.user
-            If user Is Nothing Then
-                response.Status = LampStatus.InvalidUsernameOrPassword
-                Return response
-            End If
 
             Dim template = Database.SelectTemplate(guid)
             If template Is Nothing Then
@@ -1035,8 +1031,12 @@ Public Class LampService
 
 #End Region
 
-    Public Sub ResetDatabase()
+    Public Sub ResetDebug()
         Database.ResetDebug()
+    End Sub
+
+    Public Sub DeleteDebug()
+        Database.DeleteDebug()
     End Sub
 End Class
 

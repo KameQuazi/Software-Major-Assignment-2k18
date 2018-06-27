@@ -246,7 +246,7 @@ Public Class LampDatabaseTests
 
     Private RepeatConnectionTestTimes As Integer = 5
 
-    Private BenchmarkRepeatTimes As Integer = 100
+    Private BenchmarkRepeatTimes As Integer = 10
 
     <TestMethod>
     Public Sub BenchmarkSyncTemplateInsert()

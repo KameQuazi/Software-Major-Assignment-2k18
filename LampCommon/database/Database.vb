@@ -131,8 +131,9 @@ Partial Public Class TemplateDatabase
 
             Dim allSuccess = results.All(Function(x) x = True)
 
-            If optTrans Is Nothing And allSuccess Then
+            If optTrans Is Nothing Then
                 ' no transaction given in arguments, commit now
+                ' also, creating a table doesnt count as inserting a line, so just skip it for nawww
                 trans.Commit()
             End If
             Return allSuccess
@@ -227,7 +228,7 @@ Partial Public Class TemplateDatabase
             Dim allSuccess = results.All(Function(x) x > 0)
             ' check that each insertion inserted at least 1 line (1 table)
 
-            If optTrans Is Nothing And allSuccess Then
+            If optTrans Is Nothing Then
                 ' no transaction given in arguments, commit now
                 trans.Commit()
             End If
@@ -264,7 +265,8 @@ Partial Public Class TemplateDatabase
             Dim allSuccess = results.All(Function(x) x = True)
             ' check that all elements are = true
 
-            If optTrans Is Nothing And allSuccess Then
+            If optTrans Is Nothing Then
+                ' droping table doesnt count as a line in executeNonQuery
                 trans.Commit()
             End If
             Return allSuccess
@@ -298,7 +300,7 @@ Partial Public Class TemplateDatabase
             Dim allSuccess = results.All(Function(x) x > 0)
             ' check that each insertion inserted at least 1 line (1 table)
 
-            If optTrans Is Nothing And allSuccess Then
+            If optTrans Is Nothing Then
                 ' no transaction given in arguments, commit now
                 trans.Commit()
             End If
@@ -311,7 +313,14 @@ Partial Public Class TemplateDatabase
     ''' </summary>
     Public Function ResetDebug() As Boolean
         Me.RemoveTables()
+        Me.CreateTables()
         Me.FillDebugDatabase()
+        Return True
+    End Function
+
+    Public Function DeleteDebug() As Boolean
+        Me.RemoveTables()
+        Me.CreateTables()
         Return True
     End Function
 
@@ -320,6 +329,7 @@ Partial Public Class TemplateDatabase
     ''' </summary>
     Public Async Function ResetDebugAsync() As Task(Of Boolean)
         Await RemoveTablesAsync()
+        Await CreateTablesAsync()
         FillDebugDatabase()
         Return True
     End Function
@@ -486,7 +496,7 @@ Partial Public Class TemplateDatabase
                     End If
 
                     If Not reader.IsDBNull(reader.GetOrdinal("ApproverId")) Then
-                        metadata.CreatorProfile = SelectUser(reader.GetString(reader.GetOrdinal("ApproverId"))).ToProfile
+                        metadata.ApproverProfile = SelectUser(reader.GetString(reader.GetOrdinal("ApproverId"))).ToProfile
                     End If
 
                     metadata.SubmitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
@@ -531,7 +541,7 @@ Partial Public Class TemplateDatabase
                     End If
 
                     If Not reader.IsDBNull(reader.GetOrdinal("ApproverId")) Then
-                        metadata.CreatorProfile = (Await SelectUserAsync(reader.GetString(reader.GetOrdinal("ApproverId")))).ToProfile
+                        metadata.ApproverProfile = (Await SelectUserAsync(reader.GetString(reader.GetOrdinal("ApproverId")))).ToProfile
                     End If
 
                     metadata.SubmitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))

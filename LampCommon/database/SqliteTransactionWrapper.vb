@@ -60,8 +60,13 @@ Public Class SqliteTransactionWrapper
     End Sub
 
     Public Function LockTransaction() As SqliteTransactionWrapper
-        lock.Wait()
-        IncrementRef()
+        Try
+            lock.Wait()
+            IncrementRef()
+        Catch e As System.InvalidOperationException
+            Throw New Exception("must open db first!")
+        End Try
+
         Return Me
     End Function
 

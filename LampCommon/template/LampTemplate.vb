@@ -32,6 +32,8 @@ Public Class LampTemplateMetadata
         ret.Height = Height
         ret.MaterialThickness = MaterialThickness
         ret.IsComplete = IsComplete
+        ret.ApproverProfile = ApproverProfile
+        ret.CreatorProfile = CreatorProfile
         Return ret
     End Function
 

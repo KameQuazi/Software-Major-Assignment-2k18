@@ -22,10 +22,6 @@ Public Class LampServiceLocal
 
 
             Dim user = auth.user
-            If user Is Nothing Then
-                response.Status = LampStatus.InvalidUsernameOrPassword
-                Return response
-            End If
 
             Dim template = Await Database.SelectTemplateAsync(guid)
             If template Is Nothing Then
