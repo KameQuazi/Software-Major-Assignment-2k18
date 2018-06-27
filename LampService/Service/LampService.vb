@@ -662,41 +662,132 @@ Public Class LampService
 
 
     Public Function SelectDxf(credentials As LampCredentials, guid As String) As LampDxfDocumentWrapper Implements ILampService.SelectDxf
-        Throw New NotImplementedException()
+        Dim response As New LampDxfDocumentWrapper
+
+        Try
+            If guid Is Nothing Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response.Status = auth.Status
+                Return response
+            End If
+
+
+            Dim user = auth.user
+            If user Is Nothing Then
+                response.Status = LampStatus.InvalidUsernameOrPassword
+                Return response
+            End If
+
+            Dim template = Database.SelectTemplate(guid)
+            If template Is Nothing Then
+                response.Status = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            If Not HasGetTemplatePerms(user, template) Then
+                response.Status = LampStatus.NoAccess
+                Return response
+            Else
+                response.Status = LampStatus.OK
+                response.Drawing = template.BaseDrawing
+                Return response
+            End If
+
+
+
+
+        Catch ex As Exception
+            response.Status = LampStatus.InternalServerError
+            Log(ex)
+            Return response
+        End Try
     End Function
-
-
-
-
-
-
 
 
     Public Function AddJob(credentials As LampCredentials, job As LampJob) As LampStatus Implements ILampService.AddJob
         ' check if user got permissions
-        Dim user = Authenticate(credentials).user
-        Dim response As LampStatus = LampStatus.OK
+        Dim response As LampStatus
 
-        If user IsNot Nothing Then
-            If Database.SelectJob(job.JobId) IsNot Nothing Then
-                If HasAddJobPerms(user, job) Then
-                    Database.SetJob(job)
-
-                End If
-            Else
-                response = LampStatus.GuidConflict
+        Try
+            If job Is Nothing Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response = auth.Status
+                Return response
             End If
 
-        Else
-            response = LampStatus.InvalidUsernameOrPassword
-        End If
+            Dim user = auth.user
+            If Database.SelectJob(job.JobId) IsNot Nothing Then
+                ' already exists a job, 
+                response = LampStatus.GuidConflict
+                Return response
+            End If
+            If Not HasAddJobPerms(user, job) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
 
-        Return response
+
+            Database.SetJob(job)
+            response = LampStatus.OK
+            Return response
+
+        Catch ex As Exception
+            Log(ex)
+            response = LampStatus.InternalServerError
+            Return response
+        End Try
+
+
+
     End Function
 
 
     Public Function EditJob(credentials As LampCredentials, job As LampJob) As LampStatus Implements ILampService.EditJob
-        Throw New NotImplementedException()
+        ' check if user got permissions
+        Dim response As LampStatus
+
+        Try
+            If job Is Nothing Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response = auth.Status
+                Return response
+            End If
+
+            Dim user = auth.user
+            If Not Database.SelectJob(job.JobId) IsNot Nothing Then
+                ' already exists a job, 
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            If Not HasEditJobPerms(user, job) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+
+            Database.SetJob(job)
+            response = LampStatus.OK
+            Return response
+
+        Catch ex As Exception
+            Log(ex)
+            response = LampStatus.InternalServerError
+            Return response
+        End Try
     End Function
 
     Public Function RemoveJob(credentials As LampCredentials, guid As String) As LampStatus Implements ILampService.RemoveJob
@@ -727,8 +818,25 @@ Public Class LampService
 
 #Region "HasPermissions"
     Public Function HasGetTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
-        Return user.PermissionLevel >= UserPermission.Guest
+        If template.Approved = True Then
+            ' anyone can access approved templates
+            Return True
+        End If
+
+        If user.UserId = template.CreatorId Then
+            Return True
+            ' same user can access template
+        End If
+
+        If user.PermissionLevel >= UserPermission.Elevated Then
+            ' greater than normal can access all templates
+            Return True
+        End If
+
+        Return False
     End Function
+
+
 
     Public Function HasAddTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
         Return user.PermissionLevel >= UserPermission.Admin
@@ -783,6 +891,11 @@ Public Class LampService
     Public Function HasAddUserPerms(thisUser As LampUser, otherUser As LampUser)
         Return thisUser.PermissionLevel >= UserPermission.Admin
     End Function
+
+    Public Function HasEditJobPerms(thisUser As LampUser, job As LampJob)
+        Return thisUser.PermissionLevel >= UserPermission.Admin OrElse thisUser.UserId = job.SubmitId
+    End Function
+
 
     Public Function HasApproveTemplatePerms(user As LampUser, template As LampTemplate)
         Return user.PermissionLevel >= UserPermission.Elevated
