@@ -103,4 +103,9 @@ Public Class DebugForm
         MessageBox.Show(newuser.Status.ToString)
         CurrentUserTbox.Text = If(newuser.user, "").ToString
     End Sub
+
+    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
+        Dim ref As New refpointTest
+        ref.ShowDialog()
+    End Sub
 End Class
