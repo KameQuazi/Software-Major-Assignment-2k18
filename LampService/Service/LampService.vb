@@ -110,8 +110,8 @@ Public Class LampService
             Log(ex)
 
         End Try
-
         Return response
+
     End Function
 
     Public Function EditTemplate(credentials As LampCredentials, newTemplate As LampTemplate) As LampStatus Implements ILampService.EditTemplate
@@ -122,36 +122,33 @@ Public Class LampService
         End If
         Try
             Dim auth = Authenticate(credentials)
-            If auth.user IsNot Nothing Then
-                Dim user = auth.user
-
-                If user IsNot Nothing Then
-                    Dim oldTemplate = Database.SelectTemplate(newTemplate.GUID)
-                    If oldTemplate IsNot Nothing Then
-                        If HasEditTemplatePerms(user, oldTemplate, newTemplate) Then
-                            Database.SetTemplate(newTemplate, user.UserId, user.UserId)
-
-                            response = LampStatus.OK
-                        Else
-                            response = LampStatus.NoAccess
-                        End If
-                    Else
-                        response = LampStatus.DoesNotExist
-                    End If
-                Else
-
-                    response = LampStatus.InvalidUsernameOrPassword
-                End If
-
-            Else
+            If auth.user Is Nothing Then
                 response = auth.Status
+                Return response
             End If
 
+            Dim user = auth.user
+
+            Dim oldTemplate = Database.SelectTemplate(newTemplate.GUID)
+            If oldTemplate Is Nothing Then
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            If Not HasEditTemplatePerms(user, oldTemplate, newTemplate) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+            Database.SetTemplate(newTemplate, user.UserId, user.UserId)
+            response = LampStatus.OK
+            Return response
+
         Catch ex As Exception
-            response = LampStatus.InvalidUsernameOrPassword
+            response = LampStatus.InternalServerError
             Log(ex)
+            Return response
         End Try
-        Return response
     End Function
 
     Public Function RemoveTemplate(credentials As LampCredentials, guid As String) As LampStatus Implements ILampService.RemoveTemplate
@@ -186,7 +183,7 @@ Public Class LampService
 
 
         Catch ex As Exception
-            response = LampStatus.InvalidUsernameOrPassword
+            response = LampStatus.InternalServerError
             Log(ex)
         End Try
         Return response
@@ -235,31 +232,48 @@ Public Class LampService
                 Return response
             End If
             Dim auth = Authenticate(credentials)
-            If auth.user IsNot Nothing Then
-
-                Dim thisUser = auth.user
-
-
-                If HasAddUserPerms(thisUser, toAddUser) Then
-                    If Database.SelectUser(toAddUser.UserId) IsNot Nothing Then
-                        Database.SetUser(toAddUser)
-                        response = LampStatus.OK
-                    Else
-                        response = LampStatus.GuidConflict
-                    End If
-
-                Else
-                    response = LampStatus.NoAccess
-
-                End If
-            Else
+            If auth.user Is Nothing Then
                 response = auth.Status
+                Return response
             End If
+
+            Dim thisUser = auth.user
+
+
+            If HasAddUserPerms(thisUser, toAddUser) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+            Dim exists = Database.UserExists(toAddUser)
+            If exists <> LampStatus.OK Then
+                response = exists
+                Return response
+            End If
+
+
+            Database.SetUser(toAddUser)
+            response = LampStatus.OK
+            Return response
+
 
         Catch ex As Exception
             response = LampStatus.InternalServerError
             Log(ex)
+            Return response
         End Try
+    End Function
+
+    Public Function DebugAddUser(user As LampUser) As LampStatus
+        Dim response As LampStatus
+        Dim exists = Database.UserExists(user)
+        If exists <> LampStatus.OK Then
+            response = exists
+            Return response
+        End If
+
+        Database.SetUser(user)
+        response = LampStatus.OK
 
         Return response
     End Function
@@ -272,35 +286,44 @@ Public Class LampService
                 response = LampStatus.InvalidParameters
                 Return response
             End If
+
             Dim auth = Authenticate(credentials)
-            If auth.user IsNot Nothing Then
-
-                Dim thisUser = auth.user
-
-                Dim oldUser = Database.SelectUser(newUser.UserId)
-
-                If HasEditUserPerms(thisUser, oldUser, newUser) Then
-                    If oldUser IsNot Nothing Then
-                        Database.SetUser(newUser)
-                        response = LampStatus.OK
-                    Else
-                        response = LampStatus.DoesNotExist
-                    End If
-
-                Else
-                    response = LampStatus.NoAccess
-
-                End If
-            Else
+            If auth.user Is Nothing Then
                 response = auth.Status
+                Return response
             End If
+
+            Dim thisUser = auth.user
+
+            Dim oldUser = Database.SelectUser(newUser.UserId)
+
+            If Not HasEditUserPerms(thisUser, oldUser, newUser) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+            Dim exists = Database.UserExists(newUser)
+            If exists <> LampStatus.OK Then
+                response = exists
+                Return response
+            End If
+
+            If oldUser Is Nothing Then
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+
+            Database.SetUser(newUser)
+            response = LampStatus.OK
+            Return response
 
         Catch ex As Exception
             response = LampStatus.InternalServerError
             Log(ex)
+            Return response
         End Try
 
-        Return response
     End Function
 
     ''' <summary>
@@ -926,7 +949,10 @@ Public Class LampService
     End Function
 
     Public Function HasRemoveTemplatePerms(user As LampUser, template As LampTemplate)
-        If user.UserId >= UserPermission.Admin Then
+        If user.PermissionLevel >= UserPermission.Elevated Then
+            Return True
+        End If
+        If template.CreatorId = user.UserId Then
             Return True
         End If
         Return False
@@ -1047,5 +1073,10 @@ End Class
 Public Module loggger
     Public Sub Log(x As Object)
         Console.WriteLine(x.ToString)
+#If DEBUG Then
+        If x.GetType.IsSubclassOf(GetType(Exception)) Or x.GetType() = GetType(Exception) Then
+            Throw DirectCast(x, Exception)
+        End If
+#End If
     End Sub
 End Module

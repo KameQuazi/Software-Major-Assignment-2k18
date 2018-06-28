@@ -54,13 +54,19 @@ Partial Public Class TemplateDatabase
         Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Transaction.LockTransaction), command = Connection.GetCommand(trans)
             Dim results As New List(Of Boolean)
             command.CommandText = "CREATE TABLE if not exists users (
-                                  UserId Text PRIMARY KEY Not Null,
+                                  UserId Text Not Null,
+                                  email Text Not Null,
+                                  Username text Not NULL,
+
                                   PermissionLevel Integer Not Null,
-                                  email Text Not Null UNIQUE,
-                                  Username text Not NULL UNIQUE,
                                   Password Text Not Null,
-                                  Name Text Not Null
-                                  );
+                                  Name Text Not Null,
+
+                                  PRIMARY KEY (UserId, email, Username)
+                                  ) WITHOUT rowId;
+                                  CREATE INDEX if not exists user_username ON users(username);
+                                  CREATE INDEX if not exists user_email ON users(email);
+                                  
                         "
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
@@ -80,7 +86,7 @@ Partial Public Class TemplateDatabase
                                     
                                   FOREIGN KEY(creatorID) REFERENCES users(UserId),
                                   FOREIGN KEY(approverID) REFERENCES users(UserId)
-                                  );"
+                                  ) WITHOUT rowId;"
 
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
@@ -91,7 +97,7 @@ Partial Public Class TemplateDatabase
                                   DXF Text Not NULL,
                                   
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
-                                  );"
+                                  ) WITHOUT rowId;"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
             command.CommandText = "CREATE TABLE if not exists images (
@@ -110,14 +116,14 @@ Partial Public Class TemplateDatabase
                         
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );
-                        "
+                                  CREATE INDEX if not exists tags_guid_tagname ON tags (guid, tagname);"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
 
 
 
             command.CommandText = "CREATE TABLE if not exists jobs (
-                                  jobId Text Not Null,
+                                  jobId Text PRIMARY KEY Not Null,
                                   templateId Text Not NULL,
                                   submitterId Text Not NULL,
                                   approverId Text,
@@ -126,7 +132,7 @@ Partial Public Class TemplateDatabase
 
                                   FOREIGN KEY(submitterId) REFERENCES users(UserId),
                                   FOREIGN KEY(approverId) REFERENCES users(UserId)
-                                  );"
+                                  ) WITHOUT rowId;"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
             Dim allSuccess = results.All(Function(x) x = True)
@@ -149,13 +155,20 @@ Partial Public Class TemplateDatabase
         Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync), command = Connection.GetCommand(trans)
             Dim tasks As New List(Of Task(Of Integer))
             command.CommandText = "CREATE TABLE if not exists users (
-                                  UserId Text PRIMARY KEY Not Null,
+                                  UserId Text Not Null,
+                                  email Text Not Null,
+                                  Username text Not NULL,
+
                                   PermissionLevel Integer Not Null,
-                                  email Text Not Null UNIQUE,
-                                  Username text Not NULL UNIQUE,
                                   Password Text Not Null,
-                                  Name Text Not Null
-                                  );
+                                  Name Text Not Null,
+
+                                  PRIMARY KEY (UserId, email, Username)
+                                  ) WITHOUT rowId;
+                                  CREATE INDEX if not exists user_username ON users(username);
+                                  CREATE INDEX if not exists user_email ON users(email);
+
+
                         "
             tasks.Add(command.ExecuteNonQueryAsync())
 
@@ -175,7 +188,7 @@ Partial Public Class TemplateDatabase
                                     
                                   FOREIGN KEY(creatorID) REFERENCES users(UserId),
                                   FOREIGN KEY(approverID) REFERENCES users(UserId)
-                                  );"
+                                  ) WITHOUT rowId;"
 
             tasks.Add(command.ExecuteNonQueryAsync())
 
@@ -186,7 +199,7 @@ Partial Public Class TemplateDatabase
                                   DXF Text Not NULL,
                                   
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
-                                  );"
+                                  ) WITHOUT rowId;"
             tasks.Add(command.ExecuteNonQueryAsync())
 
             command.CommandText = "CREATE TABLE if not exists images (
@@ -205,14 +218,14 @@ Partial Public Class TemplateDatabase
                         
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );
-                        "
+                                  CREATE INDEX if not exists tags_guid_tagname ON tags (guid, tagname);"
             tasks.Add(command.ExecuteNonQueryAsync())
 
 
 
 
             command.CommandText = "CREATE TABLE if not exists jobs (
-                                  jobId Text Not Null,
+                                  jobId Text PRMARY KEY Not Null,
                                   templateId Text Not NULL,
                                   submitterId Text Not NULL,
                                   approverId Text,
@@ -221,7 +234,7 @@ Partial Public Class TemplateDatabase
 
                                   FOREIGN KEY(submitterId) REFERENCES users(UserId),
                                   FOREIGN KEY(approverId) REFERENCES users(UserId)
-                                  );"
+                                  ) WITHOUT rowId;"
             tasks.Add(command.ExecuteNonQueryAsync())
 
             Dim results = Await Task.WhenAll(tasks)
@@ -244,7 +257,9 @@ Partial Public Class TemplateDatabase
         ' If the databse is open already, dont close it
         Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Transaction.LockTransaction), command = Connection.GetCommand(trans)
             Dim results As New List(Of Boolean)
-            command.CommandText = "DROP TABLE If exists users"
+            command.CommandText = "DROP TABLE If exists users;
+                                   DROP INDEX if exists user_username;
+                                   DROP INDEX if exists user_email;"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
             command.CommandText = "DROP TABLE If exists dxf"
@@ -253,7 +268,8 @@ Partial Public Class TemplateDatabase
             command.CommandText = "DROP TABLE If exists images"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
-            command.CommandText = "DROP TABLE If exists tags"
+            command.CommandText = "DROP TABLE If exists tags;
+                                   DROP INDEX if exists tags_guid_tagname;"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
             command.CommandText = "DROP TABLE If exists jobs"
@@ -278,7 +294,10 @@ Partial Public Class TemplateDatabase
         Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync), command = Connection.GetCommand(trans)
             Dim tasks As New List(Of Task(Of Integer))
 
-            command.CommandText = "DROP TABLE If exists users"
+            command.CommandText = "DROP TABLE If exists users;
+                                   DROP INDEX if exists user_username;
+                                   DROP INDEX if exists user_email;"
+
             tasks.Add(command.ExecuteNonQueryAsync())
 
             command.CommandText = "DROP TABLE If exists dxf"
@@ -287,7 +306,9 @@ Partial Public Class TemplateDatabase
             command.CommandText = "DROP TABLE If exists images"
             tasks.Add(command.ExecuteNonQueryAsync())
 
-            command.CommandText = "DROP TABLE If exists tags"
+            command.CommandText = "DROP TABLE If exists tags;
+                                   DROP INDEX if exists tags_guid_tagname;"
+
             tasks.Add(command.ExecuteNonQueryAsync())
 
             command.CommandText = "DROP TABLE If exists jobs"
@@ -960,7 +981,8 @@ Partial Public Class TemplateDatabase
     Public Function SelectTemplate(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As LampTemplate
         guid = guid.ToLower()
         Using conn = Connection.OpenConnection()
-            Dim template As LampTemplate = SelectTemplateMetadata(guid, trans).ToLampTemplate
+            Dim data = SelectTemplateMetadata(guid, trans)
+            Dim template As LampTemplate = If(data IsNot Nothing, data.ToLampTemplate, Nothing)
 
             If template IsNot Nothing Then
                 ' dxf
@@ -982,6 +1004,7 @@ Partial Public Class TemplateDatabase
                     template.Tags.Add(tag)
                 Next
             End If
+
             Return template
         End Using
     End Function
@@ -1209,6 +1232,68 @@ Partial Public Class TemplateDatabase
             End Using
         End Using
         Return user
+    End Function
+
+    ''' <summary>
+    ''' Check if any part of the user exists in the db, since username, email and guid are unique
+    ''' </summary>
+    ''' <param name="user"></param>
+    ''' <param name="trans"></param>
+    ''' <returns></returns>
+    Public Function UserExists(user As LampUser, Optional trans As SqliteTransactionWrapper = Nothing) As LampStatus
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
+            command.CommandText = "Select EXISTS(SELECT 1 from Users WHERE userid=@userid)"
+            command.Parameters.AddWithValue("@userid", user.UserId)
+            If command.ExecuteScalar() Then
+                ' 1 or more userid's exist
+                Return LampStatus.GuidConflict
+            End If
+
+            command.CommandText = "Select EXISTS(SELECT 1 from Users WHERE username=@username)"
+            command.Parameters.AddWithValue("@username", user.Username)
+            If command.ExecuteScalar() Then
+                ' 1 or more usernames's exist
+                Return LampStatus.UsernameConflict
+            End If
+
+            command.CommandText = "Select EXISTS(SELECT 1 from Users WHERE email=@email)"
+            command.Parameters.AddWithValue("@email", user.Email)
+            If command.ExecuteScalar() Then
+                ' 1 or more emails's exist
+                Return LampStatus.EmailConflict
+            End If
+
+            Return LampStatus.OK
+        End Using
+
+    End Function
+
+
+    Public Async Function UserExistsAsync(user As LampUser, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of LampStatus)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
+            command.CommandText = "Select EXISTS(SELECT 1 from Users WHERE userid=@userid)"
+            command.Parameters.AddWithValue("@userid", user.UserId)
+            If Await command.ExecuteScalarAsync() Then
+                ' 1 or more userid's exist
+                Return LampStatus.GuidConflict
+            End If
+
+            command.CommandText = "Select EXISTS(SELECT 1 from Users WHERE username=@username)"
+            command.Parameters.AddWithValue("@username", user.Username)
+            If Await command.ExecuteScalarAsync() Then
+                ' 1 or more usernames's exist
+                Return LampStatus.UsernameConflict
+            End If
+
+            command.CommandText = "Select EXISTS(SELECT 1 from Users WHERE email=@email)"
+            command.Parameters.AddWithValue("@email", user.Email)
+            If Await command.ExecuteScalarAsync() Then
+                ' 1 or more emails's exist
+                Return LampStatus.EmailConflict
+            End If
+
+            Return LampStatus.OK
+        End Using
     End Function
 
     ''' <summary>

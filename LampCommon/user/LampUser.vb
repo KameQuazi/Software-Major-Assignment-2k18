@@ -35,7 +35,7 @@ Public Class LampUser
 
 
     Public Function ToProfile() As LampProfile
-        Return New LampProfile(Username, Name, UserId)
+        Return New LampProfile(Username, Name, UserId, PermissionLevel)
     End Function
 
     Public Overrides Function ToString() As String
@@ -96,4 +96,6 @@ Public Enum LampStatus
     GuidConflict = 32
     InvalidParameters = 64
     InvalidOperation = 128
+    UsernameConflict = 256
+    EmailConflict = 512
 End Enum

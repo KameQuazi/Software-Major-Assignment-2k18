@@ -93,39 +93,35 @@ Public Class LampServiceLocal
             response = LampStatus.InvalidParameters
             Return response
         End If
-
         Try
-            Dim auth = Await AuthenticateAsync(credentials)
-            If auth.user IsNot Nothing Then
-                Dim user = auth.user
-
-                If user IsNot Nothing Then
-                    Dim oldTemplate = Await Database.SelectTemplateAsync(newTemplate.GUID)
-                    If oldTemplate IsNot Nothing Then
-                        If HasEditTemplatePerms(user, oldTemplate, newTemplate) Then
-                            Await Database.SetTemplateAsync(newTemplate, user.UserId, user.UserId)
-
-                            response = LampStatus.OK
-                        Else
-                            response = LampStatus.NoAccess
-                        End If
-                    Else
-                        response = LampStatus.DoesNotExist
-                    End If
-                Else
-
-                    response = LampStatus.InvalidUsernameOrPassword
-                End If
-
-            Else
+            Dim auth = Await AuthenticateAsync(credentials).ConfigureAwait(False)
+            If auth.user Is Nothing Then
                 response = auth.Status
+                Return response
             End If
 
+            Dim user = auth.user
+
+            Dim oldTemplate = Await Database.SelectTemplateAsync(newTemplate.GUID).ConfigureAwait(False)
+            If oldTemplate Is Nothing Then
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            If Not HasEditTemplatePerms(user, oldTemplate, newTemplate) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+            Await Database.SetTemplateAsync(newTemplate, user.UserId, user.UserId).ConfigureAwait(False)
+            response = LampStatus.OK
+            Return response
+
         Catch ex As Exception
-            response = LampStatus.InvalidUsernameOrPassword
+            response = LampStatus.InternalServerError
             Log(ex)
+            Return response
         End Try
-        Return response
     End Function
 
     Public Async Function RemoveTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.RemoveTemplateAsync
@@ -136,16 +132,16 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            Dim auth = Await AuthenticateAsync(credentials)
+            Dim auth = Await AuthenticateAsync(credentials).ConfigureAwait(False)
             If auth.user IsNot Nothing Then
 
                 Dim user = auth.user
-                Dim template = Await Database.SelectTemplateAsync(guid)
+                Dim template = Await Database.SelectTemplateAsync(guid).ConfigureAwait(False)
 
                 If template IsNot Nothing Then
 
                     If HasRemoveTemplatePerms(user, template) Then
-                        Await Database.RemoveTemplateAsync(template.GUID)
+                        Await Database.RemoveTemplateAsync(template.GUID).ConfigureAwait(False)
                         response = LampStatus.OK
                     Else
                         response = LampStatus.NoAccess
@@ -160,7 +156,7 @@ Public Class LampServiceLocal
 
 
         Catch ex As Exception
-            response = LampStatus.InvalidUsernameOrPassword
+            response = LampStatus.InternalServerError
             Log(ex)
         End Try
         Return response
@@ -201,7 +197,7 @@ Public Class LampServiceLocal
     End Function
 
     Public Async Function AddUserAsync(credentials As LampCredentials, toAddUser As LampUser) As Task(Of LampStatus) Implements ILampServiceAsync.AddUserAsync
-        Dim response = LampStatus.OK
+        Dim response As LampStatus
 
         Try
             If toAddUser Is Nothing Then
@@ -209,33 +205,36 @@ Public Class LampServiceLocal
                 Return response
             End If
             Dim auth = Await AuthenticateAsync(credentials)
-            If auth.user IsNot Nothing Then
-
-                Dim thisUser = auth.user
-
-
-                If HasAddUserPerms(thisUser, toAddUser) Then
-                    If Await Database.SelectUserAsync(toAddUser.UserId) IsNot Nothing Then
-                        Await Database.SetUserAsync(toAddUser)
-                        response = LampStatus.OK
-                    Else
-                        response = LampStatus.GuidConflict
-                    End If
-
-                Else
-                    response = LampStatus.InvalidUsernameOrPassword
-
-                End If
-            Else
+            If auth.user Is Nothing Then
                 response = auth.Status
+                Return response
             End If
+
+            Dim thisUser = auth.user
+
+
+            If HasAddUserPerms(thisUser, toAddUser) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+            Dim exists = Await Database.UserExistsAsync(toAddUser)
+            If exists <> LampStatus.OK Then
+                response = exists
+                Return response
+            End If
+
+
+            Await Database.SetUserAsync(toAddUser)
+            response = LampStatus.OK
+            Return response
+
 
         Catch ex As Exception
             response = LampStatus.InternalServerError
             Log(ex)
+            Return response
         End Try
-
-        Return response
     End Function
 
     Public Async Function EditUserAsync(credentials As LampCredentials, newUser As LampUser) As Task(Of LampStatus) Implements ILampServiceAsync.EditUserAsync
@@ -246,35 +245,44 @@ Public Class LampServiceLocal
                 response = LampStatus.InvalidParameters
                 Return response
             End If
-            Dim auth = Await AuthenticateAsync(credentials)
-            If auth.user IsNot Nothing Then
 
-                Dim thisUser = auth.user
-
-                Dim oldUser = Await Database.SelectUserAsync(newUser.UserId)
-
-                If HasEditUserPerms(thisUser, oldUser, newUser) Then
-                    If oldUser IsNot Nothing Then
-                        Await Database.SetUserAsync(newUser)
-                        response = LampStatus.OK
-                    Else
-                        response = LampStatus.DoesNotExist
-                    End If
-
-                Else
-                    response = LampStatus.NoAccess
-
-                End If
-            Else
+            Dim auth = Await AuthenticateAsync(credentials).ConfigureAwait(False)
+            If auth.user Is Nothing Then
                 response = auth.Status
+                Return response
             End If
+
+            Dim thisUser = auth.user
+
+            Dim oldUser = Await Database.SelectUserAsync(newUser.UserId).ConfigureAwait(False)
+
+            If Not HasEditUserPerms(thisUser, oldUser, newUser) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+            Dim exists = Database.UserExists(newUser)
+            If exists <> LampStatus.OK Then
+                response = exists
+                Return response
+            End If
+
+            If oldUser Is Nothing Then
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+
+            Await Database.SetUserAsync(newUser).ConfigureAwait(False)
+            response = LampStatus.OK
+            Return response
 
         Catch ex As Exception
             response = LampStatus.InternalServerError
             Log(ex)
+            Return response
         End Try
 
-        Return response
     End Function
 
     Public Async Function RemoveUserAsync(credentials As LampCredentials, newUser As LampUser) As Task(Of LampStatus) Implements ILampServiceAsync.RemoveUserAsync
@@ -286,7 +294,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            Dim auth = Await AuthenticateAsync(credentials)
+            Dim auth = Await AuthenticateAsync(credentials).ConfigureAwait(False)
             If auth.user Is Nothing Then
                 response = auth.Status
                 Return response
@@ -294,7 +302,7 @@ Public Class LampServiceLocal
 
 
             Dim thisUser = auth.user
-            Dim oldUser = Await Database.SelectUserAsync(newUser.UserId)
+            Dim oldUser = Await Database.SelectUserAsync(newUser.UserId).ConfigureAwait(False)
 
             If oldUser Is Nothing Then
                 response = LampStatus.DoesNotExist
@@ -307,7 +315,7 @@ Public Class LampServiceLocal
             End If
 
             ' passed all checks
-            Await Database.SetUserAsync(newUser)
+            Await Database.SetUserAsync(newUser).ConfigureAwait(False)
             response = LampStatus.OK
             Return response
 
