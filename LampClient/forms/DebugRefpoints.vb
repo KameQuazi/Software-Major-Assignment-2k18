@@ -1,6 +1,6 @@
 ﻿Imports LampCommon
 
-Public Class refpointTest
+Public Class DebugRefpoints
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim test As New LampDxfDocument
 

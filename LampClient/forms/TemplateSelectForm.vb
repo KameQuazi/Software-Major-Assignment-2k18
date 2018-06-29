@@ -2,7 +2,7 @@
 Imports System.Collections.Specialized
 Imports LampCommon
 
-Public Class TemplateSelect
+Public Class TemplateSelectForm
 
     Public ReadOnly Property Templates As ObservableCollection(Of LampTemplate)
 

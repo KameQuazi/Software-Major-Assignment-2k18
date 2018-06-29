@@ -35,7 +35,7 @@ Public Class DebugForm
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        Dim x = New TemplateSelect()
+        Dim x = New TemplateSelectForm()
         x.ShowDialog()
 
     End Sub
@@ -69,7 +69,7 @@ Public Class DebugForm
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
-        Dim x As New TemplateEditor
+        Dim x As New TemplateEditorForm
         x.ShowDialog()
     End Sub
 
@@ -105,7 +105,7 @@ Public Class DebugForm
     End Sub
 
     Private Sub Button12_Click(sender As Object, e As EventArgs) Handles Button12.Click
-        Dim ref As New refpointTest
+        Dim ref As New DebugRefpoints
         ref.ShowDialog()
     End Sub
 End Class

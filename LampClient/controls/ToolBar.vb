@@ -10,14 +10,14 @@
 
     Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
         frmStart.Show()
-        Options.Close()
-        Logout.Close()
-        TemplateSelect.Close()
-        AboutBox1.Close()
+        DebugOptions.Close()
+        LogoutBox.Close()
+        TemplateSelectForm.Close()
+        AboutBox.Close()
     End Sub
 
     Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
-        AboutBox1.Show()
+        AboutBox.Show()
     End Sub
 
 
@@ -62,6 +62,6 @@
     End Sub
 
     Private Sub btnLogOut_Click(sender As Object, e As EventArgs) Handles btnLogOut.Click
-        Logout.Show()
+        LogoutBox.Show()
     End Sub
 End Class

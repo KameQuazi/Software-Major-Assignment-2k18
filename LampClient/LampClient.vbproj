@@ -150,10 +150,16 @@
     <Compile Include="controls\ToolBar.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="forms\AboutBox1.designer.vb">
-      <DependentUpon>AboutBox1.vb</DependentUpon>
+    <Compile Include="forms\AboutBox.designer.vb">
+      <DependentUpon>AboutBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\AboutBox1.vb">
+    <Compile Include="forms\AboutBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\CreateJob.Designer.vb">
+      <DependentUpon>CreateJob.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\CreateJob.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\DBViewer.Designer.vb">
@@ -168,6 +174,18 @@
     <Compile Include="forms\DebugForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="forms\DebugOptions.Designer.vb">
+      <DependentUpon>DebugOptions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\DebugOptions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\DebugRefpoints.Designer.vb">
+      <DependentUpon>DebugRefpoints.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\DebugRefpoints.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="forms\DesignerForm.Designer.vb">
       <DependentUpon>DesignerForm.vb</DependentUpon>
     </Compile>
@@ -178,6 +196,12 @@
       <DependentUpon>DynamicTextCreationForm.vb</DependentUpon>
     </Compile>
     <Compile Include="forms\DynamicTextCreationForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\HomeForm.Designer.vb">
+      <DependentUpon>HomeForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\HomeForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\LampInputBox.Designer.vb">
@@ -192,36 +216,25 @@
     <Compile Include="forms\LoginForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\Logout.Designer.vb">
-      <DependentUpon>Logout.vb</DependentUpon>
+    <Compile Include="forms\LogoutBox.Designer.vb">
+      <DependentUpon>LogoutBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\Logout.vb">
+    <Compile Include="forms\LogoutBox.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\Options.Designer.vb">
-      <DependentUpon>Options.vb</DependentUpon>
+    <Compile Include="forms\TemplateEditorForm.Designer.vb">
+      <DependentUpon>TemplateEditorForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\Options.vb">
+    <Compile Include="forms\TemplateEditorForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\refpointTest.Designer.vb">
-      <DependentUpon>refpointTest.vb</DependentUpon>
+    <Compile Include="forms\TemplateSelectForm.Designer.vb">
+      <DependentUpon>TemplateSelectForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\refpointTest.vb">
+    <Compile Include="forms\TemplateSelectForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\TemplateEditor.Designer.vb">
-      <DependentUpon>TemplateEditor.vb</DependentUpon>
-    </Compile>
-    <Compile Include="forms\TemplateEditor.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="forms\TemplateSelect.Designer.vb">
-      <DependentUpon>TemplateSelect.vb</DependentUpon>
-    </Compile>
-    <Compile Include="forms\TemplateSelect.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="recievers\ILampWcfClient.vb" />
     <Compile Include="recievers\LampLocalWcfClient.vb" />
     <Compile Include="recievers\LampRemoteWcfClient.vb" />
     <Compile Include="Main.vb" />
@@ -260,8 +273,11 @@
     <EmbeddedResource Include="controls\ToolBar.resx">
       <DependentUpon>ToolBar.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\AboutBox1.resx">
-      <DependentUpon>AboutBox1.vb</DependentUpon>
+    <EmbeddedResource Include="forms\AboutBox.resx">
+      <DependentUpon>AboutBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\CreateJob.resx">
+      <DependentUpon>CreateJob.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\DBViewer.resx">
       <DependentUpon>DBViewer.vb</DependentUpon>
@@ -269,11 +285,20 @@
     <EmbeddedResource Include="forms\DebugForm.resx">
       <DependentUpon>DebugForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\DebugOptions.resx">
+      <DependentUpon>DebugOptions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\DebugRefpoints.resx">
+      <DependentUpon>DebugRefpoints.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\DesignerForm.resx">
       <DependentUpon>DesignerForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\DynamicTextCreationForm.resx">
       <DependentUpon>DynamicTextCreationForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\HomeForm.resx">
+      <DependentUpon>HomeForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\LampInputBox.resx">
       <DependentUpon>LampInputBox.vb</DependentUpon>
@@ -281,20 +306,14 @@
     <EmbeddedResource Include="forms\LoginForm.resx">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\Logout.resx">
-      <DependentUpon>Logout.vb</DependentUpon>
+    <EmbeddedResource Include="forms\LogoutBox.resx">
+      <DependentUpon>LogoutBox.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\Options.resx">
-      <DependentUpon>Options.vb</DependentUpon>
+    <EmbeddedResource Include="forms\TemplateEditorForm.resx">
+      <DependentUpon>TemplateEditorForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\refpointTest.resx">
-      <DependentUpon>refpointTest.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="forms\TemplateEditor.resx">
-      <DependentUpon>TemplateEditor.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="forms\TemplateSelect.resx">
-      <DependentUpon>TemplateSelect.vb</DependentUpon>
+    <EmbeddedResource Include="forms\TemplateSelectForm.resx">
+      <DependentUpon>TemplateSelectForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

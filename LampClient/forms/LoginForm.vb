@@ -1,34 +1,35 @@
-﻿Public Class frmStart
+﻿Imports LampCommon
+
+Public Class frmStart
+    Public lastform As String = "main"
+    Public curForm As String = "main"
     Private Sub btnQuit_Click(sender As Object, e As EventArgs)
         Me.Close()
     End Sub
 
-    Private Sub btnLogin_Click(sender As Object, e As EventArgs) Handles btnLogin.Click
-        login.Show()
-    End Sub
-
     Private Sub btnAbout_Click(sender As Object, e As EventArgs)
-        AboutBox1.Show()
-    End Sub
-    Private Sub frmStart_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ToolBar1.lblCurScr.Text = "Welcome To LAMP!"
-        ToolBar1.btnLogOut.Enabled = False
-    End Sub
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        login.Hide()
+        AboutBox.Show()
     End Sub
 
     Private Sub frmStart_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        curForm = "main"
     End Sub
 
-    Private Sub WelcomePanel_Paint(sender As Object, e As PaintEventArgs) Handles WelcomePanel.Paint
+    Private Sub btnLogin_Click(sender As Object, e As EventArgs) Handles btnLogin.Click
+        Dim username = txtUser.Text
+        Dim pass = txtPass.Text
 
+        Dim login = CurrentSender.Authenticate(New LampCredentials(username, pass))
+        If login.Status = LampStatus.OK Then
+            CurrentUser = login.user
+            ' TODO login/give message to user
+            MessageBox.Show(String.Format("loggin succ: {0}", CurrentUser))
+        Else
+            ' TODO tell user that they're bad
+            ' 
+            MessageBox.Show(String.Format("login unsucc: {0})", login.Status))
+        End If
     End Sub
 
-    Private Async Sub btnlogon_Click(sender As Object, e As EventArgs) Handles btnlogon.Click
-        ' TODO: add empty check, max password attempts etc
-        Dim user = Await CurrentSender.AuthenticateAsync(New LampCommon.LampCredentials(txtUser.Text, txtPass.Text))
 
-    End Sub
 End Class
