@@ -98,4 +98,5 @@ Public Enum LampStatus
     InvalidOperation = 128
     UsernameConflict = 256
     EmailConflict = 512
+    NoTemplateFound = 1024
 End Enum

@@ -103,6 +103,49 @@ Public Class TestWcfLocalService
 
     End Sub
 
+    <TestMethod()>
+    <TestCategory("WcfLocalService")>
+    Public Async Function TestGetTemplateAsync() As Task
+        Dim response = Await Service.GetTemplateAsync(Nothing, Nothing)
+        Assert.IsTrue(response.Status = LampStatus.InvalidParameters)
+        Assert.IsTrue(response.Template Is Nothing)
+        response = Await Service.GetTemplateAsync(Standard1.ToCredentials, Nothing)
+        Assert.IsTrue(response.Status = LampStatus.InvalidParameters)
+        Assert.IsTrue(response.Template Is Nothing)
+
+        ' anyone should be able to get An approved template
+        response = Await Service.GetTemplateAsync(Standard1.ToCredentials, ApprovedTemplate.GUID)
+        Assert.IsTrue(response.Status = LampStatus.OK)
+        Assert.IsTrue(response.Template IsNot Nothing)
+        response = Await Service.GetTemplateAsync(Standard2.ToCredentials, ApprovedTemplate.GUID)
+        Assert.IsTrue(response.Status = LampStatus.OK)
+        Assert.IsTrue(response.Template IsNot Nothing)
+
+        ' should be able to access own template
+        response = Await Service.GetTemplateAsync(Standard1.ToCredentials, UnApprovedTemplate1.GUID)
+        Assert.IsTrue(response.Status = LampStatus.OK)
+        Assert.IsTrue(response.Template IsNot Nothing)
+
+        ' no access to someone else's approved temaplte
+        response = Await Service.GetTemplateAsync(Standard2.ToCredentials, UnApprovedTemplate1.GUID)
+        Assert.IsTrue(response.Status = LampStatus.NoAccess)
+        Assert.IsTrue(response.Template Is Nothing)
+
+        ' elevated should be able to view any template
+        response = Await Service.GetTemplateAsync(Elevated1.ToCredentials, ApprovedTemplate.GUID)
+        Assert.IsTrue(response.Status = LampStatus.OK)
+        Assert.IsTrue(response.Template IsNot Nothing)
+        response = Await Service.GetTemplateAsync(Elevated1.ToCredentials, UnApprovedTemplate1.GUID)
+        Assert.IsTrue(response.Status = LampStatus.OK)
+        Assert.IsTrue(response.Template IsNot Nothing)
+        response = Await Service.GetTemplateAsync(Elevated2.ToCredentials, ApprovedTemplate.GUID)
+        Assert.IsTrue(response.Status = LampStatus.OK)
+        Assert.IsTrue(response.Template IsNot Nothing)
+        response = Await Service.GetTemplateAsync(Elevated2.ToCredentials, UnApprovedTemplate1.GUID)
+        Assert.IsTrue(response.Status = LampStatus.OK)
+        Assert.IsTrue(response.Template IsNot Nothing)
+    End Function
+
     <TestMethod>
     <TestCategory("WcfLocalService")>
     Public Sub TestSetTemplate()
@@ -125,6 +168,29 @@ Public Class TestWcfLocalService
         response = Service.AddTemplate(Elevated1.ToCredentials, Loaded)
         Assert.IsTrue(response = LampStatus.GuidConflict)
     End Sub
+
+    <TestMethod>
+    <TestCategory("WcfLocalService")>
+    Public Async Function TestSetTemplateAsync() As Task
+        ' test w/ nothing
+        Dim response = Await Service.AddTemplateAsync(Standard1.ToCredentials, Nothing)
+        Assert.IsTrue(response = LampStatus.InvalidParameters)
+        response = Await Service.AddTemplateAsync(Nothing, Nothing)
+        Assert.IsTrue(response = LampStatus.InvalidParameters)
+
+        ' standard should not be able to set templates
+        response = Await Service.AddTemplateAsync(Standard1.ToCredentials, Loaded)
+        Assert.IsTrue(response = LampStatus.NoAccess)
+        response = Await Service.AddTemplateAsync(Standard2.ToCredentials, Loaded)
+        Assert.IsTrue(response = LampStatus.NoAccess)
+
+        ' elevated should be able to set template
+        response = Await Service.AddTemplateAsync(Elevated1.ToCredentials, Loaded)
+        Assert.IsTrue(response = LampStatus.OK)
+        ' test that duplicates give error
+        response = Await Service.AddTemplateAsync(Elevated1.ToCredentials, Loaded)
+        Assert.IsTrue(response = LampStatus.GuidConflict)
+    End Function
 
     <TestMethod>
     <TestCategory("WcfLocalService")>
@@ -153,6 +219,34 @@ Public Class TestWcfLocalService
         response = Service.EditTemplate(Standard1.ToCredentials, Loaded)
         Assert.IsTrue(response = LampStatus.NoAccess)
     End Sub
+
+    <TestMethod>
+    <TestCategory("WcfLocalService")>
+    Public Async Function TestEditTemplateAsync() As Task
+        ' test w/ nothing
+        Dim response = Await Service.AddTemplateAsync(Standard1.ToCredentials, Nothing)
+        Assert.IsTrue(response = LampStatus.InvalidParameters)
+        response = Await Service.AddTemplateAsync(Nothing, Nothing)
+        Assert.IsTrue(response = LampStatus.InvalidParameters)
+
+
+        ' check if template doesnt exists
+        response = Await Service.EditTemplateAsync(Standard1.ToCredentials, Loaded)
+        Assert.IsTrue(response = LampStatus.DoesNotExist)
+        response = Await Service.EditTemplateAsync(Admin.ToCredentials, Loaded)
+        Assert.IsTrue(response = LampStatus.DoesNotExist)
+
+
+        Await Service.Channel.Database.SetTemplateAsync(Loaded, Admin.UserId, Admin.UserId)
+        ' elevated should be able to edit all
+        response = Await Service.EditTemplateAsync(Elevated1.ToCredentials, Loaded)
+        Assert.IsTrue(response = LampStatus.OK)
+
+        Await Service.Channel.Database.SetTemplateAsync(Loaded, Admin.UserId, Admin.UserId)
+        ' Standard should not be able to edit template that is not their's
+        response = Await Service.EditTemplateAsync(Standard1.ToCredentials, Loaded)
+        Assert.IsTrue(response = LampStatus.NoAccess)
+    End Function
 
     <TestMethod>
     <TestCategory("WcfLocalService")>
@@ -186,5 +280,103 @@ Public Class TestWcfLocalService
         Assert.IsTrue(response = LampStatus.OK)
 
     End Sub
+
+
+    <TestMethod>
+    <TestCategory("WcfLocalService")>
+    Public Async Function TestRemoveTemplateAsync() As Task
+        ' test w/ nothing
+        Dim response = Await Service.RemoveTemplateAsync(Standard1.ToCredentials, Nothing)
+        Assert.IsTrue(response = LampStatus.InvalidParameters)
+        response = Await Service.RemoveTemplateAsync(Nothing, Nothing)
+        Assert.IsTrue(response = LampStatus.InvalidParameters)
+
+        Await Service.Channel.Database.SetTemplateAsync(Loaded, Admin.UserId, Admin.UserId)
+        ' elevated should be able to remove standard unapproved, own approved
+        response = Await Service.RemoveTemplateAsync(Elevated1.ToCredentials, Loaded.GUID)
+        Assert.IsTrue(response = LampStatus.OK)
+
+        Await Service.Channel.Database.SetTemplateAsync(Loaded, Admin.UserId, Admin.UserId)
+        ' Admin should be able to remove template
+        response = Await Service.RemoveTemplateAsync(Admin.ToCredentials, Loaded.GUID)
+        Assert.IsTrue(response = LampStatus.OK)
+
+
+        Await Service.Channel.Database.SetTemplateAsync(Loaded, Admin.UserId, Admin.UserId)
+        ' standard should not be able to remove template
+        response = Await Service.RemoveTemplateAsync(Standard1.ToCredentials, Loaded.GUID)
+        Assert.IsTrue(response = LampStatus.NoAccess)
+
+
+        Await Service.Channel.Database.SetTemplateAsync(Loaded, Standard1.UserId, Admin.UserId)
+        ' however, the creater should be able to remove it
+        response = Await Service.RemoveTemplateAsync(Standard1.ToCredentials, Loaded.GUID)
+        Assert.IsTrue(response = LampStatus.OK)
+    End Function
+
+    <TestMethod>
+    <TestCategory("WcfLocalService")>
+    Public Sub TestGetJob()
+        ' test w/ invalid parameters
+        Dim response = Service.GetJob(Nothing, Nothing)
+        Assert.IsTrue(response.Status = LampStatus.InvalidParameters)
+        response = Service.GetJob(Admin.ToCredentials, Nothing)
+        Assert.IsTrue(response.Status = LampStatus.InvalidParameters)
+
+        Dim job1 = New LampJob(Loaded, Elevated1.ToProfile)
+        Service.Channel.Database.SetTemplate(Loaded, Admin.UserId, Admin.UserId)
+        Service.Channel.Database.SetJob(job1)
+
+        ' standard cannot see other jobs
+        response = Service.GetJob(Standard1.ToCredentials, job1.JobId)
+        Assert.IsTrue(response.Status = LampStatus.NoAccess)
+        Assert.IsTrue(response.Job Is Nothing)
+        ' other elevated (no submitter) shouldnt be able to see the job
+        response = Service.GetJob(Elevated2.ToCredentials, job1.JobId)
+        Assert.IsTrue(response.Status = LampStatus.NoAccess)
+        Assert.IsTrue(response.Job Is Nothing)
+
+
+        ' admin and submiter should be able to access the job
+        response = Service.GetJob(Admin.ToCredentials, job1.JobId)
+        Assert.IsTrue(response.Status = LampStatus.OK)
+        Assert.IsTrue(response.Job IsNot Nothing)
+        response = Service.GetJob(Elevated1.ToCredentials, job1.JobId)
+        Assert.IsTrue(response.Status = LampStatus.OK)
+        Assert.IsTrue(response.Job IsNot Nothing)
+    End Sub
+
+
+    <TestMethod>
+    <TestCategory("WcfLocalService")>
+    Public Async Function TestGetJobAsync() As Task
+        ' test w/ invalid parameters
+        Dim response = Await Service.GetJobAsync(Nothing, Nothing)
+        Assert.IsTrue(response.Status = LampStatus.InvalidParameters)
+        response = Await Service.GetJobAsync(Admin.ToCredentials, Nothing)
+        Assert.IsTrue(response.Status = LampStatus.InvalidParameters)
+
+        Dim job1 = New LampJob(Loaded, Elevated1.ToProfile)
+        Await Service.Channel.Database.SetTemplateAsync(Loaded, Admin.UserId, Admin.UserId)
+        Await Service.Channel.Database.SetJobAsync(job1)
+
+        ' standard cannot see other jobs
+        response = Await Service.GetJobAsync(Standard1.ToCredentials, job1.JobId)
+        Assert.IsTrue(response.Status = LampStatus.NoAccess)
+        Assert.IsTrue(response.Job Is Nothing)
+        ' other elevated (no submitter) shouldnt be able to see the job
+        response = Await Service.GetJobAsync(Elevated2.ToCredentials, job1.JobId)
+        Assert.IsTrue(response.Status = LampStatus.NoAccess)
+        Assert.IsTrue(response.Job Is Nothing)
+
+
+        ' admin and submiter should be able to access the job
+        response = Await Service.GetJobAsync(Admin.ToCredentials, job1.JobId)
+        Assert.IsTrue(response.Status = LampStatus.OK)
+        Assert.IsTrue(response.Job IsNot Nothing)
+        response = Await Service.GetJobAsync(Elevated1.ToCredentials, job1.JobId)
+        Assert.IsTrue(response.Status = LampStatus.OK)
+        Assert.IsTrue(response.Job IsNot Nothing)
+    End Function
 
 End Class

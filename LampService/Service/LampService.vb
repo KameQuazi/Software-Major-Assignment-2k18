@@ -796,6 +796,12 @@ Public Class LampService
                 response = LampStatus.GuidConflict
                 Return response
             End If
+
+            If Database.SelectTemplateMetadata(job.Template.GUID) Is Nothing Then ' check if exists
+                response = LampStatus.NoTemplateFound
+                Return response
+            End If
+
             If Not HasAddJobPerms(user, job) Then
                 response = LampStatus.NoAccess
                 Return response
@@ -822,6 +828,7 @@ Public Class LampService
                 response = LampStatus.InvalidParameters
                 Return response
             End If
+
             Dim auth = Authenticate(credentials)
             If auth.user Is Nothing Then
                 response = auth.Status
@@ -829,9 +836,15 @@ Public Class LampService
             End If
 
             Dim user = auth.user
+
             If Not Database.SelectJob(job.JobId) IsNot Nothing Then
                 ' already exists a job, 
                 response = LampStatus.GuidConflict
+                Return response
+            End If
+
+            If Database.SelectTemplateMetadata(job.Template.GUID) Is Nothing Then ' check if exists
+                response = LampStatus.NoTemplateFound
                 Return response
             End If
 
@@ -1075,7 +1088,9 @@ Public Module loggger
         Console.WriteLine(x.ToString)
 #If DEBUG Then
         If x.GetType.IsSubclassOf(GetType(Exception)) Or x.GetType() = GetType(Exception) Then
-            Throw DirectCast(x, Exception)
+            Dim ex = DirectCast(x, Exception)
+            Console.Write(ex.InnerException)
+            Throw ex
         End If
 #End If
     End Sub
