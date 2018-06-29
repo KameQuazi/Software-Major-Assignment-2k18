@@ -1,4 +1,4 @@
-﻿Public Class Main
+﻿Public Class HomeForm
     Private Sub btnNewOrder_Click(sender As Object, e As EventArgs) Handles btnNewOrder.Click
         TemplateSelectForm.Show()
     End Sub

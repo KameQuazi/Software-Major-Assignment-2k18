@@ -21,7 +21,7 @@ Public Class DebugForm
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        Dim screen As New frmStart()
+        Dim screen As New LoginForm()
         screen.ShowDialog()
     End Sub
 

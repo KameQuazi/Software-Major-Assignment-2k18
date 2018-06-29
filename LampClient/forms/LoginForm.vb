@@ -1,6 +1,6 @@
 ﻿Imports LampCommon
 
-Public Class frmStart
+Public Class LoginForm
     Public lastform As String = "main"
     Public curForm As String = "main"
     Private Sub btnQuit_Click(sender As Object, e As EventArgs)

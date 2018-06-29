@@ -9,7 +9,7 @@
     End Property
 
     Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
-        frmStart.Show()
+        LoginForm.Show()
         DebugOptions.Close()
         LogoutBox.Close()
         TemplateSelectForm.Close()
