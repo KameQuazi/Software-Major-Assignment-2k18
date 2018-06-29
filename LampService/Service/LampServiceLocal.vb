@@ -170,12 +170,12 @@ Public Class LampServiceLocal
                 response.Status = LampStatus.InvalidParameters
                 Return response
             End If
-            Dim auth = Await AuthenticateAsync(credentials)
+            Dim auth = Await AuthenticateAsync(credentials).ConfigureAwait(False)
             If auth.user IsNot Nothing Then
 
                 Dim thisUser = auth.user
 
-                Dim gottenUser = Await Database.SelectUserAsync(guid)
+                Dim gottenUser = Await Database.SelectUserAsync(guid).ConfigureAwait(False)
 
                 If HasGetUserPerms(thisUser, gottenUser) Then
                     response.user = gottenUser
@@ -656,6 +656,12 @@ Public Class LampServiceLocal
         End Try
     End Function
 
+    ''' <summary>
+    ''' invalid operation = no template in db
+    ''' </summary>
+    ''' <param name="credentials"></param>
+    ''' <param name="job"></param>
+    ''' <returns></returns>
     Public Async Function AddJobAsync(credentials As LampCredentials, job As LampJob) As Task(Of LampStatus) Implements ILampServiceAsync.AddJobAsync
         Dim response As LampStatus
 
@@ -676,6 +682,12 @@ Public Class LampServiceLocal
                 response = LampStatus.GuidConflict
                 Return response
             End If
+
+            If Await Database.SelectTemplateMetadataAsync(job.Template.GUID).ConfigureAwait(False) Is Nothing Then ' check if exists
+                response = LampStatus.NoTemplateFound
+                Return response
+            End If
+
             If Not HasAddJobPerms(user, job) Then
                 response = LampStatus.NoAccess
                 Return response
@@ -711,6 +723,12 @@ Public Class LampServiceLocal
             If Not Await Database.SelectJobAsync(job.JobId) IsNot Nothing Then
                 ' already exists a job, 
                 response = LampStatus.GuidConflict
+                Return response
+            End If
+
+            If Await Database.SelectTemplateMetadataAsync(job.Template.GUID).ConfigureAwait(False) Is Nothing Then
+                ' no template found
+                response = LampStatus.NoTemplateFound
                 Return response
             End If
 

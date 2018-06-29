@@ -3,8 +3,8 @@ Imports LampService
 
 Public Class DebugForm
     Dim db As New TemplateDatabase()
-    Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
+    Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Await TemplateDatabase.FillDebugDatabaseAsync
         db.GetAllTemplate()
     End Sub
