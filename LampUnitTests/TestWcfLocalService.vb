@@ -59,7 +59,8 @@ Public Class TestWcfLocalService
 
 
     <TestMethod()>
-    <TestCategory("WcfLocalService")>
+    <TestCategory("WcfService")>
+    <TestCategory("WcfTemplate")>
     Public Sub TestGetTemplate()
         Dim response = Service.GetTemplate(Nothing, Nothing)
         Assert.IsTrue(response.Status = LampStatus.InvalidParameters)
