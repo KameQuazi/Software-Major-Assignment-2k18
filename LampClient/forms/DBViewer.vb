@@ -1,9 +1,7 @@
 ﻿Imports System.Data.SQLite
 Imports LampCommon
-Imports LampService
-
 Public Class DBViewer
-    Dim DB As New TemplateDatabase
+    Dim DB As New TemplateDatabase
     Dim ds As New DataSet()
     Dim sqlite_conn As New SQLiteConnection
     Dim sqlite_cmd As New SQLiteCommand
@@ -37,21 +35,18 @@ Public Class DBViewer
 
     Private Sub DBViewer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-    End Sub
-    Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles DBGrid.UserDeletingRow
-        For Each item As DataGridViewRow In DBGrid.SelectedRows
+    End Sub
+
+    Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles DBGrid.UserDeletingRow        For Each item As DataGridViewRow In DBGrid.SelectedRows
             Try
-                If Not DB.RemoveTemplate(item.Cells("GUID").Value.ToString) Then
-                    ' no row removed/
-                    MessageBox.Show("no row removed?")
-                End If
-            Catch ex As Exception
-                MessageBox.Show(ex.ToString)
+                DB.RemoveTemplate(item.Cells("GUID").Value.ToString)
+            Catch
+
             End Try
 
 
         Next
-        sqlite_conn.Open()
+        sqlite_conn.Open()
         sqlite_conn.Close()
-    End Sub
+    End Sub
 End Class

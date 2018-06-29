@@ -139,7 +139,7 @@ Public Class DesignerForm
         Dim input As New LampInputBox("enter location (x y) to insert", "enter a point [x y] without brackets")
         If input.ShowDialog = DialogResult.OK Then
             Try
-                Dim output = input.Value.Split(" "c)
+                Dim output = input.LabelText.Split(" "c)
                 Dim x = Double.Parse(output(0))
                 Dim y = Double.Parse(output(1))
                 Drawing.InsertInto(Drawing, New LampDxfInsertLocation(New netDxf.Vector3(x, y, 0)))

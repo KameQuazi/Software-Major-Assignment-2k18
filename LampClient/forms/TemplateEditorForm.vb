@@ -254,7 +254,7 @@ Public Class TemplateEditor
     Private Sub AddTag_Click(sender As Object, e As EventArgs) Handles AddTag.Click
         Dim dialog As New LampInputBox("New tag", "Enter new tag")
         If dialog.ShowDialog() = DialogResult.OK Then
-            Dim newTag = NormalizeTags(dialog.Value)
+            Dim newTag = NormalizeTags(dialog.LabelText)
 
             If Me.Template.Tags.Contains(newTag) Then
                 ' dont allow duplicates

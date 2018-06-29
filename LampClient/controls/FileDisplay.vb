@@ -52,7 +52,7 @@ Public Class FileDisplay
     Private Sub DisplayBox_Click(sender As Object, e As EventArgs) Handles DisplayBox.Click
         If Me.Enabled And Template IsNot Nothing Then
             ' Oepn up the single template Viewer
-            Dim singleViewer As New TemplateEditor()
+            Dim singleViewer As New TemplateEditorForm()
             singleViewer.Template = Me.Template
             singleViewer.ShowDialog()
             Me.Template = singleViewer.Template

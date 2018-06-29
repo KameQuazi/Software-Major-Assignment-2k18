@@ -7,7 +7,7 @@
     ''' The text that is inputted by the user
     ''' </summary>
     ''' <returns></returns>
-    Public Property Value As String
+    Public Property InputText As String
         Get
             Return RichTextBox1.Text
         End Get

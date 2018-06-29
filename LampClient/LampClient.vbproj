@@ -156,6 +156,12 @@
     <Compile Include="forms\AboutBox1.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="forms\CreateJob.Designer.vb">
+      <DependentUpon>CreateJob.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\CreateJob.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="forms\DBViewer.Designer.vb">
       <DependentUpon>DBViewer.vb</DependentUpon>
     </Compile>
@@ -180,6 +186,12 @@
     <Compile Include="forms\DynamicTextCreationForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="forms\Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="forms\LampInputBox.Designer.vb">
       <DependentUpon>LampInputBox.vb</DependentUpon>
     </Compile>
@@ -196,6 +208,12 @@
       <DependentUpon>Logout.vb</DependentUpon>
     </Compile>
     <Compile Include="forms\Logout.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\Main.Designer.vb">
+      <DependentUpon>Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Main.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\Options.Designer.vb">
@@ -222,6 +240,7 @@
     <Compile Include="forms\TemplateSelect.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="recievers\ILampWcfClient.vb" />
     <Compile Include="recievers\LampLocalWcfClient.vb" />
     <Compile Include="recievers\LampRemoteWcfClient.vb" />
     <Compile Include="Main.vb" />
@@ -263,6 +282,9 @@
     <EmbeddedResource Include="forms\AboutBox1.resx">
       <DependentUpon>AboutBox1.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\CreateJob.resx">
+      <DependentUpon>CreateJob.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\DBViewer.resx">
       <DependentUpon>DBViewer.vb</DependentUpon>
     </EmbeddedResource>
@@ -275,6 +297,9 @@
     <EmbeddedResource Include="forms\DynamicTextCreationForm.resx">
       <DependentUpon>DynamicTextCreationForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\LampInputBox.resx">
       <DependentUpon>LampInputBox.vb</DependentUpon>
     </EmbeddedResource>
@@ -283,6 +308,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\Logout.resx">
       <DependentUpon>Logout.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\Main.resx">
+      <DependentUpon>Main.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\Options.resx">
       <DependentUpon>Options.vb</DependentUpon>
