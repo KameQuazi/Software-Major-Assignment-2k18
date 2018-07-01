@@ -106,6 +106,7 @@ Public Class TestWcfLocalService
 
     <TestMethod()>
     <TestCategory("WcfLocalService")>
+    <TestCategory("WcfTemplate")>
     Public Async Function TestGetTemplateAsync() As Task
         Dim response = Await Service.GetTemplateAsync(Nothing, Nothing)
         Assert.IsTrue(response.Status = LampStatus.InvalidParameters)
@@ -148,7 +149,8 @@ Public Class TestWcfLocalService
     End Function
 
     <TestMethod>
-    <TestCategory("WcfLocalService")>
+    <TestCategory("WcfService")>
+    <TestCategory("WcfTemplate")>
     Public Sub TestSetTemplate()
         ' test w/ nothing
         Dim response = Service.AddTemplate(Standard1.ToCredentials, Nothing)
@@ -172,6 +174,7 @@ Public Class TestWcfLocalService
 
     <TestMethod>
     <TestCategory("WcfLocalService")>
+    <TestCategory("WcfTemplate")>
     Public Async Function TestSetTemplateAsync() As Task
         ' test w/ nothing
         Dim response = Await Service.AddTemplateAsync(Standard1.ToCredentials, Nothing)
@@ -194,7 +197,8 @@ Public Class TestWcfLocalService
     End Function
 
     <TestMethod>
-    <TestCategory("WcfLocalService")>
+    <TestCategory("WcfService")>
+    <TestCategory("WcfTemplate")>
     Public Sub TestEditTemplate()
         ' test w/ nothing
         Dim response = Service.AddTemplate(Standard1.ToCredentials, Nothing)
@@ -223,6 +227,7 @@ Public Class TestWcfLocalService
 
     <TestMethod>
     <TestCategory("WcfLocalService")>
+    <TestCategory("WcfTemplate")>
     Public Async Function TestEditTemplateAsync() As Task
         ' test w/ nothing
         Dim response = Await Service.AddTemplateAsync(Standard1.ToCredentials, Nothing)
@@ -250,7 +255,8 @@ Public Class TestWcfLocalService
     End Function
 
     <TestMethod>
-    <TestCategory("WcfLocalService")>
+    <TestCategory("WcfService")>
+    <TestCategory("WcfTemplate")>
     Public Sub TestRemoveTemplate()
         ' test w/ nothing
         Dim response = Service.RemoveTemplate(Standard1.ToCredentials, Nothing)
@@ -285,6 +291,7 @@ Public Class TestWcfLocalService
 
     <TestMethod>
     <TestCategory("WcfLocalService")>
+    <TestCategory("WcfTemplate")>
     Public Async Function TestRemoveTemplateAsync() As Task
         ' test w/ nothing
         Dim response = Await Service.RemoveTemplateAsync(Standard1.ToCredentials, Nothing)
@@ -316,7 +323,8 @@ Public Class TestWcfLocalService
     End Function
 
     <TestMethod>
-    <TestCategory("WcfLocalService")>
+    <TestCategory("WcfService")>
+    <TestCategory("WcfJob")>
     Public Sub TestGetJob()
         ' test w/ invalid parameters
         Dim response = Service.GetJob(Nothing, Nothing)
@@ -350,6 +358,7 @@ Public Class TestWcfLocalService
 
     <TestMethod>
     <TestCategory("WcfLocalService")>
+    <TestCategory("WcfJob")>
     Public Async Function TestGetJobAsync() As Task
         ' test w/ invalid parameters
         Dim response = Await Service.GetJobAsync(Nothing, Nothing)
@@ -380,4 +389,76 @@ Public Class TestWcfLocalService
         Assert.IsTrue(response.Job IsNot Nothing)
     End Function
 
+
+    <TestMethod>
+    <TestCategory("WcfService")>
+    <TestCategory("WcfJob")>
+    Public Sub TestAddJob()
+        ' test w/ invalid parameters
+        Dim response = Service.AddJob(Nothing, Nothing)
+        Assert.IsTrue(response = LampStatus.InvalidParameters)
+        response = Service.AddJob(Admin.ToCredentials, Nothing)
+        Assert.IsTrue(response = LampStatus.InvalidParameters)
+
+
+        Dim job1 = New LampJob(Loaded, Elevated1.ToProfile)
+
+        Service.Channel.Database.SetTemplate(job1.Template)
+        Service.Channel.Database.SetJob(job1)
+        ' standard cannot submit job
+        response = Service.AddJob(Standard1.ToCredentials, job1)
+        Assert.IsTrue(response = LampStatus.NoAccess)
+        Service.Channel.Database.RemoveTemplate(job1.Template.GUID)
+        Service.Channel.Database.RemoveJob(job1.JobId)
+
+
+        Service.Channel.Database.SetTemplate(Loaded, Admin.UserId, Admin.UserId)
+        Service.Channel.Database.SetJob(job1)
+
+        ' cannot add same job twice
+        response = Service.AddJob(Elevated1.ToCredentials, job1)
+        Assert.IsTrue(response = LampStatus.GuidConflict)
+
+        Service.Channel.Database.RemoveJob(job1.JobId)
+
+
+        ' elevated should be able to submit jobs
+        response = Service.AddJob(Elevated2.ToCredentials, job1)
+        Assert.IsTrue(response = LampStatus.OK)
+
+    End Sub
+
+    <TestMethod>
+    <TestCategory("WcfLocalService")>
+    <TestCategory("WcfJob")>
+    Public Async Function TestAddJobAsync() As Task
+        ' test w/ invalid parameters
+        Dim response = Service.AddJob(Nothing, Nothing)
+        Assert.IsTrue(response = LampStatus.InvalidParameters)
+        response = Service.AddJob(Admin.ToCredentials, Nothing)
+        Assert.IsTrue(response = LampStatus.InvalidParameters)
+
+
+        Dim job1 = New LampJob(Loaded, Elevated1.ToProfile)
+
+        ' standard cannot submit job
+        response = Service.AddJob(Standard1.ToCredentials, job1)
+        Assert.IsTrue(response = LampStatus.NoAccess)
+
+
+        Service.Channel.Database.SetTemplate(Loaded, Admin.UserId, Admin.UserId)
+        Service.Channel.Database.SetJob(job1)
+
+        ' cannot add same job twice
+        response = Service.AddJob(Elevated1.ToCredentials, job1)
+        Assert.IsTrue(response = LampStatus.GuidConflict)
+
+        Service.Channel.Database.RemoveJob(job1.JobId)
+
+
+        ' elevated should be able to submit jobs
+        response = Service.AddJob(Elevated2.ToCredentials, job1)
+        Assert.IsTrue(response = LampStatus.OK)
+
+    End Function
 End Class

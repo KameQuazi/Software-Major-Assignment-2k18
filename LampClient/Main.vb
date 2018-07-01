@@ -26,12 +26,13 @@ Public Module OwO
     End Sub
 
     Public Sub Main()
+
+        Console.WriteLine("Start")
         InitalizeLibraries()
         LampLocalWcfClient.Local = New LampLocalWcfClient(New LampService.LampServiceLocal)
         SetServiceEndpoint(LampLocalWcfClient.Local)
 
-
-
+        Console.WriteLine("hewwo?")
 
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)

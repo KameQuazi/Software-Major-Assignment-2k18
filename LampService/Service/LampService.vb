@@ -42,21 +42,22 @@ Public Class LampService
 
 
             Dim user = auth.user
-
             Dim template = Database.SelectTemplate(guid)
+            If Not HasGetTemplatePerms(user, template) Then
+                response.Status = LampStatus.NoAccess
+                Return response
+            End If
+
+
             If template Is Nothing Then
                 response.Status = LampStatus.DoesNotExist
                 Return response
             End If
 
-            If Not HasGetTemplatePerms(user, template) Then
-                response.Status = LampStatus.NoAccess
+
+            response.Status = LampStatus.OK
+            response.Template = template
                 Return response
-            Else
-                response.Status = LampStatus.OK
-                response.Template = template
-                Return response
-            End If
 
 
 
@@ -80,47 +81,46 @@ Public Class LampService
             End If
 
             Dim auth = Authenticate(credentials)
-            If auth.user IsNot Nothing Then
-                Dim user = auth.user
-
-                If user IsNot Nothing Then
-                    If Database.SelectTemplateMetadata(template.GUID) Is Nothing Then
-                        If HasAddTemplatePerms(user, template) Then
-                            Database.SetTemplate(template, user.UserId, user.UserId)
-
-                            response = LampStatus.OK
-                        Else
-                            response = LampStatus.NoAccess
-                        End If
-                    Else
-                        response = LampStatus.GuidConflict
-                    End If
-                Else
-
-                    response = LampStatus.InvalidUsernameOrPassword
-                End If
-
-            Else
-                ' no user selected, either no user/password or internal server error
+            If auth.user Is Nothing Then
                 response = auth.Status
-
+                Return response
             End If
+
+            Dim user = auth.user
+            If user Is Nothing Then
+                response = auth.Status
+                Return response
+            End If
+            If Not HasAddTemplatePerms(user, template) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+            If Database.SelectTemplateMetadata(template.GUID) Is Nothing Then
+                response = LampStatus.GuidConflict
+                Return response
+            End If
+
+            Database.SetTemplate(template, user.UserId, user.UserId)
+            response = LampStatus.OK
+            Return response
         Catch ex As Exception
             response = LampStatus.InternalServerError
             Log(ex)
-
+            Return response
         End Try
-        Return response
 
     End Function
 
     Public Function EditTemplate(credentials As LampCredentials, newTemplate As LampTemplate) As LampStatus Implements ILampService.EditTemplate
         Dim response As LampStatus
-        If newTemplate Is Nothing Then
-            response = LampStatus.InvalidParameters
-            Return response
-        End If
+
         Try
+            If newTemplate Is Nothing Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+
             Dim auth = Authenticate(credentials)
             If auth.user Is Nothing Then
                 response = auth.Status
@@ -130,15 +130,18 @@ Public Class LampService
             Dim user = auth.user
 
             Dim oldTemplate = Database.SelectTemplate(newTemplate.GUID)
-            If oldTemplate Is Nothing Then
-                response = LampStatus.DoesNotExist
-                Return response
-            End If
 
             If Not HasEditTemplatePerms(user, oldTemplate, newTemplate) Then
                 response = LampStatus.NoAccess
                 Return response
             End If
+
+            If oldTemplate Is Nothing Then
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+
 
             Database.SetTemplate(newTemplate, user.UserId, user.UserId)
             response = LampStatus.OK
@@ -160,26 +163,25 @@ Public Class LampService
             End If
 
             Dim auth = Authenticate(credentials)
-            If auth.user IsNot Nothing Then
-
-                Dim user = auth.user
-                Dim template = Database.SelectTemplate(guid)
-
-                If template IsNot Nothing Then
-
-                    If HasRemoveTemplatePerms(user, template) Then
-                        Database.RemoveTemplate(template.GUID)
-                        response = LampStatus.OK
-                    Else
-                        response = LampStatus.NoAccess
-                    End If
-                Else
-                    ' template doesnt exist
-                    response = LampStatus.DoesNotExist
-                End If
-            Else
+            If auth.user Is Nothing Then
                 response = auth.Status
+                Return response
             End If
+
+            Dim user = auth.user
+            Dim template = Database.SelectTemplate(guid)
+            If Not HasRemoveTemplatePerms(user, template) Then
+                response = LampStatus.NoAccess
+            End If
+
+            If template Is Nothing Then
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            Database.RemoveTemplate(template.GUID)
+            response = LampStatus.OK
+            Return response
 
 
         Catch ex As Exception
@@ -791,6 +793,12 @@ Public Class LampService
             End If
 
             Dim user = auth.user
+
+            If Not HasAddJobPerms(user, job) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
             If Database.SelectJob(job.JobId) IsNot Nothing Then
                 ' already exists a job, 
                 response = LampStatus.GuidConflict
@@ -802,10 +810,7 @@ Public Class LampService
                 Return response
             End If
 
-            If Not HasAddJobPerms(user, job) Then
-                response = LampStatus.NoAccess
-                Return response
-            End If
+
 
 
             Database.SetJob(job)
@@ -837,6 +842,11 @@ Public Class LampService
 
             Dim user = auth.user
 
+            If Not HasEditJobPerms(user, job) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
             If Not Database.SelectJob(job.JobId) IsNot Nothing Then
                 ' already exists a job, 
                 response = LampStatus.GuidConflict
@@ -845,11 +855,6 @@ Public Class LampService
 
             If Database.SelectTemplateMetadata(job.Template.GUID) Is Nothing Then ' check if exists
                 response = LampStatus.NoTemplateFound
-                Return response
-            End If
-
-            If Not HasEditJobPerms(user, job) Then
-                response = LampStatus.NoAccess
                 Return response
             End If
 
@@ -880,17 +885,20 @@ Public Class LampService
             End If
 
             Dim user = auth.user
+
             Dim job = Database.SelectJob(guid)
+
+            If Not HasRemoveJobPerms(user, job) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
             If Not job Is Nothing Then
                 ' no job exists
                 response = LampStatus.DoesNotExist
                 Return response
             End If
 
-            If Not HasRemoveJobPerms(user, job) Then
-                response = LampStatus.NoAccess
-                Return response
-            End If
+
 
 
             Database.RemoveJob(guid)

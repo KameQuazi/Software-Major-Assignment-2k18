@@ -53,7 +53,7 @@ Public Class DesignerForm
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-
+        Me.KeyPreview = True
     End Sub
 
     Sub New(Optional dxf As LampDxfDocument = Nothing)
@@ -79,6 +79,30 @@ Public Class DesignerForm
     End Sub
 
 
+
+    ''' <summary>
+    ''' super override the keydown
+    ''' </summary>
+    ''' <param name="message"></param>
+    ''' <param name="keyData"></param>
+    ''' <returns></returns>
+    Protected Overrides Function ProcessCmdKey(ByRef message As Message, keyData As Keys) As Boolean
+        Select Case keyData
+            Case Keys.Down
+                DesignerScreen1.Center = Transform(DesignerScreen1.Center, 0, -10)
+                Return True
+            Case Keys.Up
+                DesignerScreen1.Center = Transform(DesignerScreen1.Center, 0, 10)
+                Return True
+            Case Keys.Left
+                DesignerScreen1.Center = Transform(DesignerScreen1.Center, -10, 0)
+                Return True
+            Case Keys.Right
+                DesignerScreen1.Center = Transform(DesignerScreen1.Center, 10, 0)
+                Return True
+        End Select
+        Return MyBase.ProcessCmdKey(message, keyData)
+    End Function
 
     Private Sub rightButton_Click(sender As Object, e As EventArgs) Handles rightButton.Click
         DesignerScreen1.Center = Transform(DesignerScreen1.Center, 10, 0)
@@ -118,7 +142,7 @@ Public Class DesignerForm
         DesignerScreen1.ZoomY = zoom
     End Sub
 
-    Private Sub DesignerScreen1_MouseWheel(sender As Object, e As MouseEventArgs) Handles DesignerScreen1.MouseWheel
+    Private Sub DesignerScreen1_MouseWheel(sender As Object, e As MouseEventArgs) Handles MyBase.MouseWheel
         Dim zoomDiff = e.Delta / 120 / 4
         If zoomDiff > 0 Then
             Dim newZoom = Math.Min(DesignerScreen1.ZoomX + zoomDiff, 3)
@@ -147,6 +171,14 @@ Public Class DesignerForm
                 MessageBox.Show("invalid input: reason {" + ex.ToString + "}")
             End Try
         End If
+    End Sub
+
+    Private Sub DesignerForm_KeyDown(sender As Object, e As KeyEventArgs)
+
+    End Sub
+
+    Private Sub DesignerForm_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
+        Console.WriteLine("hewww-wo?")
     End Sub
 End Class
 

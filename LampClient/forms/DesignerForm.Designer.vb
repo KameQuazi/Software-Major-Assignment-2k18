@@ -42,8 +42,8 @@ Partial Class DesignerForm
         Me.SaveFileDialog2 = New System.Windows.Forms.SaveFileDialog()
         Me.TrackBar1 = New System.Windows.Forms.TrackBar()
         Me.ZoomLevelBox = New System.Windows.Forms.TextBox()
-        Me.DesignerScreen1 = New Global.LampClient.DxfViewerControl()
         Me.DuplicateButton = New System.Windows.Forms.Button()
+        Me.DesignerScreen1 = New LampClient.DxfViewerControl()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -199,19 +199,6 @@ Partial Class DesignerForm
         Me.ZoomLevelBox.TabIndex = 20
         Me.ZoomLevelBox.Text = "1"
         '
-        'DesignerScreen1
-        '
-        Me.DesignerScreen1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DesignerScreen1.Center = CType(resources.GetObject("DesignerScreen1.Center"), System.Drawing.PointF)
-        Me.DesignerScreen1.Location = New System.Drawing.Point(212, 54)
-        Me.DesignerScreen1.Margin = New System.Windows.Forms.Padding(4)
-        Me.DesignerScreen1.Name = "DesignerScreen1"
-        Me.DesignerScreen1.Size = New System.Drawing.Size(376, 407)
-        Me.DesignerScreen1.Drawing = Nothing
-        Me.DesignerScreen1.TabIndex = 17
-        Me.DesignerScreen1.ZoomX = 1.0R
-        Me.DesignerScreen1.ZoomY = 1.0R
-        '
         'DuplicateButton
         '
         Me.DuplicateButton.Location = New System.Drawing.Point(63, 381)
@@ -220,6 +207,19 @@ Partial Class DesignerForm
         Me.DuplicateButton.TabIndex = 21
         Me.DuplicateButton.Text = "duplicate"
         Me.DuplicateButton.UseVisualStyleBackColor = True
+        '
+        'DesignerScreen1
+        '
+        Me.DesignerScreen1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DesignerScreen1.Center = CType(resources.GetObject("DesignerScreen1.Center"), System.Drawing.PointF)
+        Me.DesignerScreen1.Drawing = Nothing
+        Me.DesignerScreen1.Location = New System.Drawing.Point(212, 54)
+        Me.DesignerScreen1.Margin = New System.Windows.Forms.Padding(4)
+        Me.DesignerScreen1.Name = "DesignerScreen1"
+        Me.DesignerScreen1.Size = New System.Drawing.Size(376, 407)
+        Me.DesignerScreen1.TabIndex = 17
+        Me.DesignerScreen1.ZoomX = 1.0R
+        Me.DesignerScreen1.ZoomY = 1.0R
         '
         'DesignerForm
         '
