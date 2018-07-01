@@ -24,6 +24,9 @@ Public Class LoginForm
             CurrentUser = login.user
             ' TODO login/give message to user
             MessageBox.Show(String.Format("loggin succ: {0}", CurrentUser))
+            Me.Close()
+            ' Dim home As New HomeForm()
+            HomeForm.Show()
         Else
             ' TODO tell user that they're bad
             ' 

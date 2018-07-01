@@ -130,7 +130,7 @@ Partial Class HomeForm
         Me.Username.Font = New System.Drawing.Font("Arial", 12.25!)
         Me.Username.Location = New System.Drawing.Point(1106, 5)
         Me.Username.Name = "Username"
-        Me.Username.Size = New System.Drawing.Size(122, 96)
+        Me.Username.Size = New System.Drawing.Size(96, 76)
         Me.Username.TabIndex = 36
         Me.Username.Text = "Hello " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Username!" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Welcome to" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "LAMP"
         Me.Username.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -220,11 +220,11 @@ Partial Class HomeForm
         Me.lblHelp1.Font = New System.Drawing.Font("Arial", 18.8!)
         Me.lblHelp1.Location = New System.Drawing.Point(364, 360)
         Me.lblHelp1.Name = "lblHelp1"
-        Me.lblHelp1.Size = New System.Drawing.Size(505, 36)
+        Me.lblHelp1.Size = New System.Drawing.Size(414, 31)
         Me.lblHelp1.TabIndex = 33
         Me.lblHelp1.Text = "select a tool from the toolbar above"
         '
-        'Main
+        'HomeForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.SystemColors.ScrollBar
@@ -233,7 +233,7 @@ Partial Class HomeForm
         Me.Controls.Add(Me.Bar)
         Me.Font = New System.Drawing.Font("Arial", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Name = "Main"
+        Me.Name = "HomeForm"
         Me.Text = "Main"
         Me.Bar.ResumeLayout(False)
         Me.Bar.PerformLayout()
