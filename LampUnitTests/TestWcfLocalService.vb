@@ -208,7 +208,7 @@ Public Class TestWcfLocalService
 
 
         ' check if template doesnt exists
-        response = Service.EditTemplate(Standard1.ToCredentials, Loaded)
+        response = Service.EditTemplate(Admin.ToCredentials, Loaded)
         Assert.IsTrue(response = LampStatus.DoesNotExist)
         response = Service.EditTemplate(Admin.ToCredentials, Loaded)
         Assert.IsTrue(response = LampStatus.DoesNotExist)
@@ -231,16 +231,16 @@ Public Class TestWcfLocalService
     Public Async Function TestEditTemplateAsync() As Task
         ' test w/ nothing
         Dim response = Await Service.AddTemplateAsync(Standard1.ToCredentials, Nothing)
-        Assert.IsTrue(response = LampStatus.InvalidParameters)
+        Assert.AreEqual(LampStatus.InvalidParameters, response)
         response = Await Service.AddTemplateAsync(Nothing, Nothing)
-        Assert.IsTrue(response = LampStatus.InvalidParameters)
+        Assert.AreEqual(LampStatus.InvalidParameters, response)
 
 
         ' check if template doesnt exists
-        response = Await Service.EditTemplateAsync(Standard1.ToCredentials, Loaded)
-        Assert.IsTrue(response = LampStatus.DoesNotExist)
         response = Await Service.EditTemplateAsync(Admin.ToCredentials, Loaded)
-        Assert.IsTrue(response = LampStatus.DoesNotExist)
+        Assert.AreEqual(LampStatus.DoesNotExist, response)
+        response = Await Service.EditTemplateAsync(Admin.ToCredentials, Loaded)
+        Assert.AreEqual(LampStatus.DoesNotExist, response)
 
 
         Await Service.Channel.Database.SetTemplateAsync(Loaded, Admin.UserId, Admin.UserId)
@@ -301,7 +301,7 @@ Public Class TestWcfLocalService
 
         Await Service.Channel.Database.SetTemplateAsync(Loaded, Admin.UserId, Admin.UserId)
         ' elevated should be able to remove standard unapproved, own approved
-        response = Await Service.RemoveTemplateAsync(Elevated1.ToCredentials, Loaded.GUID)
+        response = Await Service.RemoveTemplateAsync(Admin.ToCredentials, Loaded.GUID)
         Assert.IsTrue(response = LampStatus.OK)
 
         Await Service.Channel.Database.SetTemplateAsync(Loaded, Admin.UserId, Admin.UserId)
@@ -313,7 +313,7 @@ Public Class TestWcfLocalService
         Await Service.Channel.Database.SetTemplateAsync(Loaded, Admin.UserId, Admin.UserId)
         ' standard should not be able to remove template
         response = Await Service.RemoveTemplateAsync(Standard1.ToCredentials, Loaded.GUID)
-        Assert.IsTrue(response = LampStatus.NoAccess)
+        Assert.AreEqual(LampStatus.NoAccess, response)
 
 
         Await Service.Channel.Database.SetTemplateAsync(Loaded, Standard1.UserId, Admin.UserId)
@@ -433,31 +433,31 @@ Public Class TestWcfLocalService
     <TestCategory("WcfJob")>
     Public Async Function TestAddJobAsync() As Task
         ' test w/ invalid parameters
-        Dim response = Service.AddJob(Nothing, Nothing)
-        Assert.IsTrue(response = LampStatus.InvalidParameters)
-        response = Service.AddJob(Admin.ToCredentials, Nothing)
-        Assert.IsTrue(response = LampStatus.InvalidParameters)
+        Dim response = Await Service.AddJobAsync(Nothing, Nothing)
+        Assert.AreEqual(LampStatus.InvalidParameters, response)
+        response = Await Service.AddJobAsync(Admin.ToCredentials, Nothing)
+        Assert.AreEqual(LampStatus.InvalidParameters, response)
 
 
         Dim job1 = New LampJob(Loaded, Elevated1.ToProfile)
 
         ' standard cannot submit job
-        response = Service.AddJob(Standard1.ToCredentials, job1)
+        response = Await Service.AddJobAsync(Standard1.ToCredentials, job1)
         Assert.IsTrue(response = LampStatus.NoAccess)
 
 
-        Service.Channel.Database.SetTemplate(Loaded, Admin.UserId, Admin.UserId)
-        Service.Channel.Database.SetJob(job1)
+        Await Service.Channel.Database.SetTemplateAsync(Loaded, Admin.UserId, Admin.UserId)
+        Await Service.Channel.Database.SetJobAsync(job1)
 
         ' cannot add same job twice
-        response = Service.AddJob(Elevated1.ToCredentials, job1)
+        response = Await Service.AddJobAsync(Elevated1.ToCredentials, job1)
         Assert.IsTrue(response = LampStatus.GuidConflict)
 
-        Service.Channel.Database.RemoveJob(job1.JobId)
+        Await Service.Channel.Database.RemoveJobAsync(job1.JobId)
 
 
         ' elevated should be able to submit jobs
-        response = Service.AddJob(Elevated2.ToCredentials, job1)
+        response = Await Service.AddJobAsync(Elevated2.ToCredentials, job1)
         Assert.IsTrue(response = LampStatus.OK)
 
     End Function

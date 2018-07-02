@@ -167,6 +167,8 @@ Public Interface ILampService
     <OperationContract>
     Function RemoveJob(credentials As LampCredentials, guid As String) As LampStatus
 
+    <OperationContract>
+    Function GetTemplates(credentials As LampCredentials, tags As IEnumerable(Of String), limit As Integer, offset As Integer)
 End Interface
 
 <ServiceContract>

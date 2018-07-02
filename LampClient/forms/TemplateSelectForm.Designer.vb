@@ -96,7 +96,6 @@ Partial Class TemplateSelectForm
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
         Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.ScreenName = "Select Template"
         Me.ToolBar1.Size = New System.Drawing.Size(1000, 96)
         Me.ToolBar1.TabIndex = 18
         Me.ToolBar1.TabStop = False

@@ -96,7 +96,7 @@ Public Class LampService
                 Return response
             End If
 
-            If Database.SelectTemplateMetadata(template.GUID) Is Nothing Then
+            If Database.SelectTemplateMetadata(template.GUID) IsNot Nothing Then
                 response = LampStatus.GuidConflict
                 Return response
             End If
@@ -172,6 +172,7 @@ Public Class LampService
             Dim template = Database.SelectTemplate(guid)
             If Not HasRemoveTemplatePerms(user, template) Then
                 response = LampStatus.NoAccess
+                Return response
             End If
 
             If template Is Nothing Then
@@ -960,7 +961,7 @@ Public Class LampService
     End Function
 
     Public Function HasEditTemplatePerms(user As LampUser, original As LampTemplate, altered As LampTemplate) As Boolean
-        If user.UserId = original.CreatorId Then
+        If original IsNot Nothing AndAlso user.UserId = original.CreatorId Then
             Return True
         End If
         If user.PermissionLevel >= UserPermission.Elevated Then
@@ -969,11 +970,11 @@ Public Class LampService
         Return False
     End Function
 
-    Public Function HasRemoveTemplatePerms(user As LampUser, template As LampTemplate)
+    Public Function HasRemoveTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
         If user.PermissionLevel >= UserPermission.Elevated Then
             Return True
         End If
-        If template.CreatorId = user.UserId Then
+        If template IsNot Nothing AndAlso template.CreatorId = user.UserId Then
             Return True
         End If
         Return False

@@ -70,7 +70,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            If Await Database.SelectTemplateMetadataAsync(template.GUID).ConfigureAwait(False) Is Nothing Then
+            If Await Database.SelectTemplateMetadataAsync(template.GUID).ConfigureAwait(False) IsNot Nothing Then
                 response = LampStatus.GuidConflict
                 Return response
             End If
@@ -145,6 +145,7 @@ Public Class LampServiceLocal
             Dim template = Await Database.SelectTemplateAsync(guid).ConfigureAwait(False)
             If Not HasRemoveTemplatePerms(user, template) Then
                 response = LampStatus.NoAccess
+                Return response
             End If
 
             If template Is Nothing Then

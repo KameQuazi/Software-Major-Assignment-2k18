@@ -1,14 +1,18 @@
 ﻿Public Class ToolBar
-    Public Property ScreenName As String
+    Public Property HomeEnabled As Boolean
         Get
-            Return lblCurScr.Text
+            Return btnHome.Enabled
         End Get
-        Set(value As String)
-            lblCurScr.Text = value
+        Set(value As Boolean)
+            btnHome.Enabled = value
         End Set
     End Property
 
-    Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
+    Public Sub SetUsername(username As String)
+
+    End Sub
+
+    Private Sub btnHome_Click(sender As Object, e As EventArgs)
         LoginForm.Show()
         DebugOptions.Close()
         LogoutBox.Close()
@@ -16,21 +20,17 @@
         AboutBox.Close()
     End Sub
 
-    Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
+    Private Sub btnAbout_Click(sender As Object, e As EventArgs)
         AboutBox.Show()
     End Sub
 
 
-    Private Sub btnQuit_Click(sender As Object, e As EventArgs) Handles btnQuit.Click
-        btnQY.Show()
-        btnQN.Show()
-        btnQuit.Hide()
+    Private Sub btnQuit_Click(sender As Object, e As EventArgs)
+
     End Sub
 
-    Private Sub btnQN_Click(sender As Object, e As EventArgs) Handles btnQN.Click
-        btnQY.Hide()
-        btnQN.Hide()
-        btnQuit.Show()
+    Private Sub btnQN_Click(sender As Object, e As EventArgs)
+
     End Sub
 
     ''' <summary>
@@ -38,7 +38,7 @@
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub btnQY_Click(sender As Object, e As EventArgs) Handles btnQY.Click
+    Private Sub btnQY_Click(sender As Object, e As EventArgs)
         Dim currentParent As Control = Me.Parent
         Dim closed As Boolean = False
 
@@ -61,7 +61,7 @@
 
     End Sub
 
-    Private Sub btnLogOut_Click(sender As Object, e As EventArgs) Handles btnLogOut.Click
+    Private Sub btnLogOut_Click(sender As Object, e As EventArgs)
         LogoutBox.Show()
     End Sub
 End Class

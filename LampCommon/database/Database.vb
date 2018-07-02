@@ -1591,7 +1591,7 @@ Public Class TemplateDatabase
     ''' If no template is found, returns nothing
     ''' </summary>
     ''' <returns></returns>
-    Public Function SelectTemplateWithTags(tags As List(Of String), Optional limit As Integer = 10, Optional offset As Integer = 0) As List(Of LampTemplate)
+    Public Function SelectTemplateWithTags(tags As List(Of String), Optional limit As Integer = 10, Optional offset As Integer = 0, Optional Approved As Boolean = True) As List(Of LampTemplate)
         ' If the databse is open already, dont close it
 
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
@@ -1601,12 +1601,17 @@ Public Class TemplateDatabase
             For i = 0 To tags.Count - 1
                 tagParameters.Insert(i, "@tag" + i.ToString())
             Next
-            ' find all templates w/
-            command.CommandText = String.Format("Select guid from tags
-                                      WHERE tagName IN ({0})
+            Dim approveText = ""
+            If Approved = True Then
+                approveText = "AND approverId IS NOT null"
+            End If
+            Dim stringCommand = String.Format("Select guid from tags
+                                      WHERE tagName IN ({0}) {1}
                                       LIMIT @limit
                                       OFFSET @offset
-                                     ", tagParameters.ToString())
+                                     ", tagParameters.ToString(), approveText)
+            ' find all templates w/
+            command.CommandText = stringCommand
             For i = 0 To tags.Count - 1
                 command.Parameters.AddWithValue("@tag" + i.ToString(), tags(i).ToLower())
             Next
@@ -1624,7 +1629,6 @@ Public Class TemplateDatabase
 
             Return matchingTemplates
         End Using
-
     End Function
 
     ''' <summary>

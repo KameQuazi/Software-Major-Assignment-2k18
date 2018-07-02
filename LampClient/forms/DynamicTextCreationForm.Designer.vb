@@ -44,7 +44,6 @@ Partial Class DynamicTextCreationForm
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.Location = New System.Drawing.Point(-6, 0)
         Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.ScreenName = "Attach/Edit Parameters"
         Me.ToolBar1.Size = New System.Drawing.Size(1000, 91)
         Me.ToolBar1.TabIndex = 1
         '

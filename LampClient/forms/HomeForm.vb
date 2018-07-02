@@ -14,4 +14,8 @@
     Private Sub Username_Click(sender As Object, e As EventArgs) Handles Username.Click
 
     End Sub
+
+    Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
+
+    End Sub
 End Class
