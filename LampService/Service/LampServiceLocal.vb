@@ -5,6 +5,10 @@ Public Class LampServiceLocal
     Inherits LampService
     Implements ILampServiceBoth
 
+    Public Sub New(databasePath As String)
+        MyBase.New(databasePath)
+    End Sub
+
     Public Async Function GetTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampTemplateWrapper) Implements ILampServiceAsync.GetTemplateAsync
         Dim response As New LampTemplateWrapper
 
@@ -161,8 +165,8 @@ Public Class LampServiceLocal
         Catch ex As Exception
             response = LampStatus.InternalServerError
             Log(ex)
+            Return response
         End Try
-        Return response
     End Function
 
     Public Async Function GetUserAsync(credentials As LampCredentials, guid As String) As Task(Of LampUserWrapper) Implements ILampServiceAsync.GetUserAsync
@@ -334,24 +338,31 @@ Public Class LampServiceLocal
         Dim response As New LampUserWrapper()
 
         Try
-            If credentials.Username IsNot Nothing And credentials.Password IsNot Nothing Then
-                user = Await Database.SelectUserAsync(credentials.Username, credentials.Password)
-                If user Is Nothing Then
-                    response.Status = LampStatus.InvalidUsernameOrPassword
-                Else
-                    response.user = user
-                    response.Status = LampStatus.OK
-                End If
-            Else
+            If credentials Is Nothing Then
                 response.Status = LampStatus.InvalidParameters
+                Return response
             End If
+
+            If credentials.Username Is Nothing Or credentials.Password Is Nothing Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            user = Await Database.SelectUserAsync(credentials.Username, credentials.Password)
+            If user Is Nothing Then
+                response.Status = LampStatus.InvalidUsernameOrPassword
+                Return response
+            End If
+
+            response.user = user
+            response.Status = LampStatus.OK
+            Return response
 
         Catch ex As Exception
             response.Status = LampStatus.InternalServerError
             Log(ex)
+            Return response
         End Try
-
-        Return response
     End Function
 
     Public Function GetAllTemplateAsync(credentials As LampCredentials) As Task(Of List(Of LampTemplate)) Implements ILampServiceAsync.GetAllTemplateAsync
@@ -851,6 +862,41 @@ Public Class LampServiceLocal
     End Function
 
 
+    Public Async Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of LampTemplateListWrapper) Implements ILampServiceBoth.GetTemplateListAsync
+        Dim response As New LampTemplateListWrapper
+        Try
+            If limit <= 0 Or offset < 0 Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            If limit > MAX_TEMPLATES_PER_REQUEST Then
+                response.Status = LampStatus.InvalidOperation
+                Return response
+            End If
+
+            Dim auth = Await AuthenticateAsync(credentials)
+            If auth.user IsNot Nothing Then
+                response.Status = auth.Status
+                Return response
+            End If
+            Dim user = auth.user
+
+            If Not HasGetTemplateListPerms(user, includeUnapproved) Then
+                response.Status = LampStatus.NoAccess
+                Return response
+            End If
+
+            response.Templates = Await Database.GetMultipleTemplateAsync(tags, limit, offset, includeUnapproved)
+            response.Status = LampStatus.OK
+            Return response
+
+        Catch ex As Exception
+            response.Status = LampStatus.InternalServerError
+            Log(ex)
+            Return response
+        End Try
+    End Function
 
 
 End Class

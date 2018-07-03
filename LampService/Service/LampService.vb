@@ -386,24 +386,31 @@ Public Class LampService
         Dim response As New LampUserWrapper()
 
         Try
-            If credentials.Username IsNot Nothing And credentials.Password IsNot Nothing Then
-                Dim user = Database.SelectUser(credentials.Username, credentials.Password)
-                If user Is Nothing Then
-                    response.Status = LampStatus.InvalidUsernameOrPassword
-                Else
-                    response.user = user
-                    response.Status = LampStatus.OK
-                End If
-            Else
+            If credentials Is Nothing Then
                 response.Status = LampStatus.InvalidParameters
+                Return response
             End If
+
+            If credentials.Username Is Nothing Or credentials.Password Is Nothing Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim user = Database.SelectUser(credentials.Username, credentials.Password)
+            If user Is Nothing Then
+                response.Status = LampStatus.InvalidUsernameOrPassword
+                Return response
+            End If
+
+            response.user = user
+            response.Status = LampStatus.OK
+            Return response
 
         Catch ex As Exception
             response.Status = LampStatus.InternalServerError
             Log(ex)
+            Return response
         End Try
-
-        Return response
     End Function
 
     ''' <summary>
@@ -901,7 +908,6 @@ Public Class LampService
 
 
 
-
             Database.RemoveJob(guid)
             response = LampStatus.OK
             Return response
@@ -919,15 +925,43 @@ Public Class LampService
         Return Database.GetAllTemplate()
     End Function
 
+    Public Const MAX_TEMPLATES_PER_REQUEST = 50
 
+    Public Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As LampTemplateListWrapper Implements ILampService.GetTemplateList
+        Dim response As New LampTemplateListWrapper
+        Try
+            If limit <= 0 Or offset < 0 Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
 
+            If limit > MAX_TEMPLATES_PER_REQUEST Then
+                response.Status = LampStatus.InvalidOperation
+                Return response
+            End If
 
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response.Status = auth.Status
+                Return response
+            End If
+            Dim user = auth.user
 
+            If Not HasGetTemplateListPerms(user, includeUnapproved) Then
+                response.Status = LampStatus.NoAccess
+                Return response
+            End If
 
+            response.Templates = Database.GetMultipleTemplate(tags, limit, offset, includeUnapproved)
+            response.Status = LampStatus.OK
+            Return response
 
-
-
-
+        Catch ex As Exception
+            response.Status = LampStatus.InternalServerError
+            Log(ex)
+            Return response
+        End Try
+    End Function
 
 
 
@@ -935,7 +969,15 @@ Public Class LampService
 
 #End Region
 
+
 #Region "HasPermissions"
+    Public Function HasGetTemplateListPerms(user As LampUser, includeUnapproved As Boolean) As Boolean
+        If includeUnapproved And user.PermissionLevel < UserPermission.Elevated Then
+            Return False
+        End If
+        Return user.PermissionLevel >= UserPermission.Standard
+    End Function
+
     Public Function HasGetTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
         If template.Approved = True Then
             ' anyone can access approved templates
@@ -1086,6 +1128,8 @@ Public Class LampService
     Public Sub DeleteDebug()
         Database.DeleteDebug()
     End Sub
+
+
 End Class
 
 
@@ -1104,3 +1148,9 @@ Public Module loggger
 #End If
     End Sub
 End Module
+
+
+Public Class LampTemplateListWrapper
+    Public Status As LampStatus
+    Public Templates As New List(Of LampTemplate)
+End Class

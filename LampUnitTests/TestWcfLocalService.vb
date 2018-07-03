@@ -27,6 +27,7 @@ Public Class TestWcfLocalService
 
     Public Loaded As LampTemplate
     Public Loaded2 As LampTemplate
+
     <TestInitialize>
     Public Sub Setup()
         Dim channel = Service.Channel
@@ -461,4 +462,42 @@ Public Class TestWcfLocalService
         Assert.IsTrue(response = LampStatus.OK)
 
     End Function
+
+
+    <TestMethod>
+    <TestCategory("WcfService")>
+    <TestCategory("WcfTemplate")>
+    Public Sub TestGetTemplateList()
+        Dim response = Service.GetTemplateList(Nothing, New List(Of String), 10, 0, False)
+        Assert.AreEqual(LampStatus.InvalidParameters, response.Status)
+
+        response = Service.GetTemplateList(Admin.ToCredentials, Nothing, 0, 0, False)
+        Assert.AreEqual(LampStatus.InvalidParameters, response.Status)
+
+        ' add som approved templatess
+        For i = 0 To 20
+            Service.AddTemplate(Admin.ToCredentials, New LampTemplate)
+        Next i
+
+        ' standard cant access non approved templates
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, 5, 0, True)
+        Assert.AreEqual(LampStatus.NoAccess, response.Status)
+        Assert.AreEqual(0, response.Templates.Count())
+
+        ' standard can access approved templates
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, 5, 0, False)
+        Assert.AreEqual(LampStatus.OK, response.Status)
+        Assert.AreEqual(5, response.Templates.Count())
+
+        ' standard can also filter thru tags
+        response = Service.GetTemplateList(Standard1.ToCredentials, New List(Of String) From {"grape"}, 10, 0, False)
+        Assert.AreEqual(LampStatus.OK, response.Status)
+        Assert.AreEqual(1, response.Templates.Count())
+        AreEqual(ApprovedTemplate.GUID, response.Templates(0).GUID)
+
+        ' cannot request more than 50 templates
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, 51, 0, False)
+        Assert.AreEqual(LampStatus.InvalidOperation, response.Status)
+
+    End Sub
 End Class

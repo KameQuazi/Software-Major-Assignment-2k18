@@ -116,7 +116,8 @@ Partial Public Class TemplateDatabase
                         
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );
-                                  CREATE INDEX if not exists tags_guid_tagname ON tags (guid, tagname);"
+                                  CREATE INDEX if not exists tags_guid_tagname ON tags (guid, tagname);
+                                  CREATE INDEX if not exists tags_tagname_guid ON tags (TagName, GUID);"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
 
@@ -218,7 +219,8 @@ Partial Public Class TemplateDatabase
                         
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );
-                                  CREATE INDEX if not exists tags_guid_tagname ON tags (guid, tagname);"
+                                  CREATE INDEX if not exists tags_guid_tagname ON tags (guid, tagname);
+                                  CREATE INDEX if not exists tags_tagname_guid ON tags (TagName, GUID);"
             tasks.Add(command.ExecuteNonQueryAsync())
 
 
@@ -269,7 +271,8 @@ Partial Public Class TemplateDatabase
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
             command.CommandText = "DROP TABLE If exists tags;
-                                   DROP INDEX if exists tags_guid_tagname;"
+                                   DROP INDEX if exists tags_guid_tagname;
+                                   DROP INDEX if exists tags_tagname_guid;"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
             command.CommandText = "DROP TABLE If exists jobs"
@@ -307,7 +310,8 @@ Partial Public Class TemplateDatabase
             tasks.Add(command.ExecuteNonQueryAsync())
 
             command.CommandText = "DROP TABLE If exists tags;
-                                   DROP INDEX if exists tags_guid_tagname;"
+                                   DROP INDEX if exists tags_guid_tagname;
+                                   DROP INDEX if exists tags_tagname_guid;"
 
             tasks.Add(command.ExecuteNonQueryAsync())
 
@@ -915,7 +919,7 @@ Partial Public Class TemplateDatabase
             Dim insertedRows = 0
             command.Parameters.AddWithValue("@guid", guid)
             For Each tag In tags
-                command.Parameters.AddWithValue("@tagName", tag)
+                command.Parameters.AddWithValue("@tagName", tag.ToLower().Trim())
 
                 insertedRows += command.ExecuteNonQuery()
             Next
@@ -938,7 +942,7 @@ Partial Public Class TemplateDatabase
             Dim insertedRows As Integer = 0
             command.Parameters.AddWithValue("@guid", guid)
             For Each tag In tags
-                command.Parameters.AddWithValue("@tagName", tag)
+                command.Parameters.AddWithValue("@tagName", tag.ToLower().Trim())
 
                 insertedRows += Await command.ExecuteNonQueryAsync().ConfigureAwait(False)
             Next
@@ -1586,30 +1590,173 @@ Partial Public Class TemplateDatabase
 End Class
 
 Public Class TemplateDatabase
+    Public Function GetMultipleTemplate(tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
+        If tags Is Nothing OrElse tags.Count() = 0 Then
+            Return GetTemplateList(limit, offset, includeUnapproved)
+        Else
+            Return SelectTemplateWithTags(tags, limit, offset, includeUnapproved)
+        End If
+    End Function
+
+    Public Async Function GetMultipleTemplateAsync(tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
+        If tags Is Nothing OrElse tags.Count() = 0 Then
+            Return Await GetTemplateListAsync(limit, offset, includeUnapproved).ConfigureAwait(False)
+        Else
+            Return Await SelectTemplateWithTagsAsync(tags, limit, offset, includeUnapproved).ConfigureAwait(False)
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Gets a list of templates without tag filtering
+    ''' </summary>
+    ''' <param name="limit"></param>
+    ''' <param name="offset"></param>
+    ''' <param name="includeUnapproved"></param>
+    ''' <returns></returns>
+    Private Function GetTemplateList(limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
+        Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
+            Dim matchingTemplates As New List(Of LampTemplate)
+
+            Dim approveText = "1"
+            If includeUnapproved = False Then
+                approveText = "approverId is not null"
+            End If
+
+            Dim stringCommand = String.Format("SELECT guid FROM template WHERE {0} 
+                                            LIMIT @limit
+                                            OFFSET @offset",
+                                           approveText)
+            command.CommandText = stringCommand
+            command.Parameters.AddWithValue("@limit", limit)
+            command.Parameters.AddWithValue("@offset", offset)
+
+            Using sqlite_reader = command.ExecuteReader()
+                While sqlite_reader.Read()
+                    Dim guid = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
+                    matchingTemplates.Add(SelectTemplate(guid))
+                End While
+
+            End Using
+
+            Return matchingTemplates
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' async version of <see cref="GetTemplateList(Integer, Integer, Boolean)"></see>
+    ''' </summary>
+    ''' <param name="limit"></param>
+    ''' <param name="offset"></param>
+    ''' <param name="includeUnapproved"></param>
+    ''' <returns></returns>
+    Private Async Function GetTemplateListAsync(limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
+        Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
+            Dim matchingTemplates As New List(Of LampTemplate)
+
+            Dim approveText = "1"
+            If includeUnapproved = False Then
+                approveText = "approverId is not null"
+            End If
+
+            Dim stringCommand = String.Format("SELECT guid FROM template WHERE {0} 
+                                            LIMIT @limit
+                                            OFFSET @offset",
+                                           approveText)
+            command.CommandText = stringCommand
+            command.Parameters.AddWithValue("@limit", limit)
+            command.Parameters.AddWithValue("@offset", offset)
+
+            Using sqlite_reader = Await command.ExecuteReaderAsync().ConfigureAwait(False)
+                While Await sqlite_reader.ReadAsync().ConfigureAwait(False)
+                    Dim guid = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
+                    matchingTemplates.Add(Await SelectTemplateAsync(guid).ConfigureAwait(False))
+                End While
+
+            End Using
+
+            Return matchingTemplates
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Gets all templates in the database
+    ''' Debug only
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function GetAllTemplate() As List(Of LampTemplate)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            Dim templateList As New List(Of LampTemplate)
+            command.CommandText = "Select guid FROM template"
+
+            Using reader = command.ExecuteReader()
+                While reader.Read()
+                    ' read the data off this sqlite_reader
+                    Dim template = SelectTemplate(reader.GetString(reader.GetOrdinal("guid")))
+
+                    templateList.Add(template)
+                End While
+            End Using
+
+            Return templateList
+        End Using
+
+    End Function
+
+    ''' <summary>
+    ''' Gets all templates asyncrohonously
+    ''' </summary>
+    ''' <returns></returns>
+    Public Async Function GetAllTemplateAsync() As Task(Of List(Of LampTemplate))
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            Dim templateList As New List(Of LampTemplate)
+            command.CommandText = "Select guid FROM template"
+
+            Using reader = Await command.ExecuteReaderAsync()
+                While Await reader.ReadAsync()
+                    ' read the data off this sqlite_reader
+                    Dim template = SelectTemplate(reader.GetString(reader.GetOrdinal("guid")))
+
+                    templateList.Add(template)
+                End While
+            End Using
+
+            Return templateList
+        End Using
+    End Function
+
+
     ''' <summary>
     ''' Finds a template in the database, given its corresponding guid
     ''' If no template is found, returns nothing
     ''' </summary>
     ''' <returns></returns>
-    Public Function SelectTemplateWithTags(tags As List(Of String), Optional limit As Integer = 10, Optional offset As Integer = 0, Optional Approved As Boolean = True) As List(Of LampTemplate)
+    Private Function SelectTemplateWithTags(tags As List(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
         ' If the databse is open already, dont close it
 
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingTemplates As New List(Of LampTemplate)
 
+            If tags.Count() = 0 Then
+                Throw New Exception("must have at least 1 tag")
+            End If
+
             Dim tagParameters As New StringBuilder()
+
             For i = 0 To tags.Count - 1
                 tagParameters.Insert(i, "@tag" + i.ToString())
             Next
-            Dim approveText = ""
-            If Approved = True Then
-                approveText = "AND approverId IS NOT null"
+            Dim tagString = "tagName IN (" + tagParameters.ToString() + ")"
+
+            Dim approveText = "1"
+            If includeUnapproved = False Then
+                approveText = "(SELECT 1 from template WHERE template.guid = tags.guid and approverId is not null)"
             End If
-            Dim stringCommand = String.Format("Select guid from tags
-                                      WHERE tagName IN ({0}) {1}
+
+            Dim stringCommand = String.Format("Select tags.guid from tags
+                                      WHERE {0} AND {1}
                                       LIMIT @limit
                                       OFFSET @offset
-                                     ", tagParameters.ToString(), approveText)
+                                     ", tagString, approveText)
             ' find all templates w/
             command.CommandText = stringCommand
             For i = 0 To tags.Count - 1
@@ -1630,6 +1777,59 @@ Public Class TemplateDatabase
             Return matchingTemplates
         End Using
     End Function
+
+    ''' <summary>
+    ''' Finds a template in the database, given its corresponding guid
+    ''' If no template is found, returns nothing
+    ''' </summary>
+    ''' <returns></returns>
+    Private Async Function SelectTemplateWithTagsAsync(tags As List(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
+        Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
+            Dim matchingTemplates As New List(Of LampTemplate)
+
+            If tags.Count() = 0 Then
+                Throw New Exception("must have at least 1 tag")
+            End If
+
+            Dim tagParameters As New StringBuilder()
+
+            For i = 0 To tags.Count - 1
+                tagParameters.Insert(i, "@tag" + i.ToString())
+            Next
+            Dim tagString = "tagName IN (" + tagParameters.ToString() + ")"
+
+            Dim approveText = "1"
+            If includeUnapproved = False Then
+                approveText = "(SELECT 1 from template WHERE template.guid = tags.guid and approverId is not null)"
+            End If
+
+            Dim stringCommand = String.Format("Select tags.guid from tags
+                                      WHERE {0} AND {1}
+                                      LIMIT @limit
+                                      OFFSET @offset
+                                     ", tagString, approveText)
+            ' find all templates w/
+            command.CommandText = stringCommand
+            For i = 0 To tags.Count - 1
+                command.Parameters.AddWithValue("@tag" + i.ToString(), tags(i).ToLower())
+            Next
+            command.Parameters.AddWithValue("@limit", limit)
+            command.Parameters.AddWithValue("@offset", offset)
+
+
+            Using sqlite_reader = Await command.ExecuteReaderAsync().ConfigureAwait(False)
+                While Await sqlite_reader.ReadAsync().ConfigureAwait(False)
+                    Dim guid = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
+                    matchingTemplates.Add(Await SelectTemplateAsync(guid).ConfigureAwait(False))
+                End While
+
+            End Using
+
+            Return matchingTemplates
+        End Using
+    End Function
+
+
 
     ''' <summary>
     ''' Fills database with dxf files located in project root/templates
@@ -1722,50 +1922,7 @@ Public Class TemplateDatabase
     End Sub
 
 
-    ''' <summary>
-    ''' Gets all templates in the database
-    ''' </summary>
-    ''' <returns></returns>
-    Public Function GetAllTemplate() As List(Of LampTemplate)
-        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
-            Dim templateList As New List(Of LampTemplate)
-            command.CommandText = "Select guid FROM template"
 
-            Using reader = command.ExecuteReader()
-                While reader.Read()
-                    ' read the data off this sqlite_reader
-                    Dim template = SelectTemplate(reader.GetString(reader.GetOrdinal("guid")))
-
-                    templateList.Add(template)
-                End While
-            End Using
-
-            Return templateList
-        End Using
-
-    End Function
-
-    ''' <summary>
-    ''' Gets all templates asyncrohonously
-    ''' </summary>
-    ''' <returns></returns>
-    Public Async Function GetAllTemplateAsync() As Task(Of List(Of LampTemplate))
-        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
-            Dim templateList As New List(Of LampTemplate)
-            command.CommandText = "Select guid FROM template"
-
-            Using reader = Await command.ExecuteReaderAsync()
-                While Await reader.ReadAsync()
-                    ' read the data off this sqlite_reader
-                    Dim template = SelectTemplate(reader.GetString(reader.GetOrdinal("guid")))
-
-                    templateList.Add(template)
-                End While
-            End Using
-
-            Return templateList
-        End Using
-    End Function
 
     ''' <summary>
     ''' Sets or unsets the approver of a template

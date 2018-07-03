@@ -29,7 +29,7 @@ Public Module OwO
 
         Console.WriteLine("Start")
         InitalizeLibraries()
-        LampLocalWcfClient.Local = New LampLocalWcfClient(New LampService.LampServiceLocal)
+        LampLocalWcfClient.Local = New LampLocalWcfClient(New LampService.LampServiceLocal("templateDB.sqlite"))
         SetServiceEndpoint(LampLocalWcfClient.Local)
 
         Console.WriteLine("hewwo?")
