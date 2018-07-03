@@ -1848,14 +1848,6 @@ Public Class TemplateDatabase
 #If Not DEBUG Then
         Throw New Exception("do not use debug db in Release Mode")
 #End If
-        Dim ExampleSpfFiles() As String = {"1.spf", "2.spf", "3.spf", "4.spf", "5.spf", "6.spf", "7.spf", "8.spf", "9.spf"}
-
-        ' add new templates 
-        For Each spfName As String In ExampleSpfFiles
-            Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", "spf", spfName))
-            Dim template = LampTemplate.FromFile(fp)
-            db.SetTemplate(template)
-        Next
 
         ' add useres
         Dim max As New LampUser(GetNewGuid(), UserPermission.Admin, "maxywartonyjonesy@gmail.com", "waxy", "memes", "steve by birth!")
@@ -1866,6 +1858,18 @@ Public Class TemplateDatabase
 
         Dim jack = New LampUser(GetNewGuid(), UserPermission.Admin, "jackywathyy123@gmail.com", "moji", "snack time", "shovel tool")
         db.SetUser(jack)
+
+
+        Dim ExampleSpfFiles() As String = {"1.spf", "2.spf", "3.spf", "4.spf", "5.spf", "6.spf", "7.spf", "8.spf", "9.spf"}
+
+        ' add new templates 
+        For Each spfName As String In ExampleSpfFiles
+            Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", "spf", spfName))
+            Dim template = LampTemplate.FromFile(fp)
+            db.SetTemplate(template, shovel.UserId, shovel.UserId)
+        Next
+
+
 
 
         Dim templates = db.GetAllTemplate
@@ -1888,14 +1892,6 @@ Public Class TemplateDatabase
         Throw New Exception("do not use debug db in Release Mode")
 #End If
         Dim ExampleSpfFiles() As String = {"1.spf", "2.spf", "3.spf", "4.spf", "5.spf", "6.spf", "7.spf", "8.spf", "9.spf"}
-
-        ' add new templates 
-        For Each spfName As String In ExampleSpfFiles
-            Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", "spf", spfName))
-            Dim template = Await LampTemplate.FromFileAsync(fp)
-            Await db.SetTemplateAsync(template).ConfigureAwait(False)
-        Next
-
         ' add useres
         Dim max As New LampUser(GetNewGuid(), UserPermission.Admin, "maxywartonyjonesy@gmail.com", "waxy", "memes", "steve by birth!")
         Await db.SetUserAsync(max).ConfigureAwait(False)
@@ -1905,6 +1901,15 @@ Public Class TemplateDatabase
 
         Dim jack = New LampUser(GetNewGuid(), UserPermission.Admin, "jackywathyy123@gmail.com", "moji", "snack time", "shovel tool")
         Await db.SetUserAsync(jack).ConfigureAwait(False)
+
+        ' add new templates 
+        For Each spfName As String In ExampleSpfFiles
+            Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", "spf", spfName))
+            Dim template = Await LampTemplate.FromFileAsync(fp)
+            Await db.SetTemplateAsync(template, shovel.UserId, shovel.UserId).ConfigureAwait(False)
+        Next
+
+
 
 
         Dim templates = Await db.GetAllTemplateAsync.ConfigureAwait(False)

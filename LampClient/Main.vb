@@ -25,20 +25,7 @@ Public Module OwO
         CurrentSender = sender
     End Sub
 
-    Public Sub Main()
 
-        Console.WriteLine("Start")
-        InitalizeLibraries()
-        LampLocalWcfClient.Local = New LampLocalWcfClient(New LampService.LampServiceLocal("templateDB.sqlite"))
-        SetServiceEndpoint(LampLocalWcfClient.Local)
-
-        Console.WriteLine("hewwo?")
-
-        Application.EnableVisualStyles()
-        Application.SetCompatibleTextRenderingDefault(False)
-        Application.Run(New DebugForm())
-
-    End Sub
 
     Sub InitalizeLibraries()
         ' extract necessary dll files

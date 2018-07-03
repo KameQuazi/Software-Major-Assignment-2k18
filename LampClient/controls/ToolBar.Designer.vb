@@ -192,7 +192,6 @@ Partial Class ToolBar
         'btnHome
         '
         Me.btnHome.BackColor = System.Drawing.Color.White
-        Me.btnHome.Enabled = False
         Me.btnHome.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnHome.Font = New System.Drawing.Font("Arial", 12.25!)
         Me.btnHome.Location = New System.Drawing.Point(99, 5)

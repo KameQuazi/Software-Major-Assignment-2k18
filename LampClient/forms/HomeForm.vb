@@ -1,21 +1,36 @@
 ﻿Public Class HomeForm
-    Private Sub btnNewOrder_Click(sender As Object, e As EventArgs) Handles btnNewOrder.Click
+    Private Sub btnNewOrder_Click(sender As Object, e As EventArgs)
         TemplateSelectForm.Show()
     End Sub
 
-    Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
+    Private Sub btnAbout_Click(sender As Object, e As EventArgs)
         AboutBox.Show()
     End Sub
 
     Private Sub HomeForm_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
-        Me.Username.Text = String.Format("Hello" + vbCrLf + "{0}!" + vbCrLf + "Welcome to LAMP", CurrentUser.Name)
     End Sub
 
-    Private Sub Username_Click(sender As Object, e As EventArgs) Handles Username.Click
+    Private Sub Username_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
+    Private Sub btnHome_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub ToolBar1_Load(sender As Object, e As EventArgs) Handles ToolBar1.Load
+
+    End Sub
+
+    Private Sub pbLogo_Click(sender As Object, e As EventArgs) Handles pbLogo.Click
+        DebugForm.Show()
+    End Sub
+
+    Private Sub HomeForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub pnlStart_Paint(sender As Object, e As PaintEventArgs) Handles pnlStart.Paint
 
     End Sub
 End Class

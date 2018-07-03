@@ -6,11 +6,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{3CBBC25D-39E3-4637-86DA-7EEB2B52E79A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Sub Main</StartupObject>
+    <StartupObject>LampClient.My.MyApplication</StartupObject>
     <RootNamespace>LampClient</RootNamespace>
     <AssemblyName>LampClient</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>WindowsFormsWithCustomSubMain</MyType>
+    <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
@@ -114,6 +114,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
     <Compile Include="controls\DxfViewerControl.Designer.vb">
       <DependentUpon>DxfViewerControl.vb</DependentUpon>
     </Compile>
@@ -198,6 +199,12 @@
     <Compile Include="forms\DynamicTextCreationForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="forms\HelpForm.Designer.vb">
+      <DependentUpon>HelpForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\HelpForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="forms\HomeForm.Designer.vb">
       <DependentUpon>HomeForm.vb</DependentUpon>
     </Compile>
@@ -220,6 +227,24 @@
       <DependentUpon>LogoutBox.vb</DependentUpon>
     </Compile>
     <Compile Include="forms\LogoutBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\MyOrdersForm.Designer.vb">
+      <DependentUpon>MyOrdersForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\MyOrdersForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\MyTemplatesForm.Designer.vb">
+      <DependentUpon>MyTemplatesForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\MyTemplatesForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\NewOrderForm.Designer.vb">
+      <DependentUpon>NewOrderForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\NewOrderForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\TemplateEditorForm.Designer.vb">
@@ -308,6 +333,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\LogoutBox.resx">
       <DependentUpon>LogoutBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\MyOrdersForm.resx">
+      <DependentUpon>MyOrdersForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\MyTemplatesForm.resx">
+      <DependentUpon>MyTemplatesForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\NewOrderForm.resx">
+      <DependentUpon>NewOrderForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\TemplateEditorForm.resx">
       <DependentUpon>TemplateEditorForm.vb</DependentUpon>
