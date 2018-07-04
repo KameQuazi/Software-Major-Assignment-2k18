@@ -30,4 +30,15 @@ many faults such as - Scaling issues
 						Limited functionality (School trohies)
 						No editor (cant make your own)
 						Images werent working(had to be added MANUALLY)
-					
+
+TODO:
+help
+update SetUsername in toolbar.vb
+order viewer (like file viewer, but for jobs)
+multiorderviewer (views multiple orders)
+order submit screen
+make forms open in same place
+https://stackoverflow.com/questions/4608156/showing-the-second-form-exactly-on-the-place-of-first-form
+store username/password in my.settings if save password checkbox is checked
+fix close dialog box
+diff color scheme for each tab?
