@@ -46,7 +46,8 @@ Partial Class HomeForm
         Me.pnlStart.BackColor = System.Drawing.SystemColors.InactiveCaption
         Me.pnlStart.Controls.Add(Me.lblHelp1)
         Me.pnlStart.Controls.Add(Me.pbLogo)
-        Me.pnlStart.Location = New System.Drawing.Point(0, 107)
+        Me.pnlStart.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlStart.Location = New System.Drawing.Point(0, 108)
         Me.pnlStart.Name = "pnlStart"
         Me.pnlStart.Size = New System.Drawing.Size(1232, 596)
         Me.pnlStart.TabIndex = 33
@@ -63,14 +64,16 @@ Partial Class HomeForm
         '
         'ToolBar1
         '
-        Me.ToolBar1.BackColor = System.Drawing.Color.White
+        Me.ToolBar1.BackColor = System.Drawing.Color.Fuchsia
+        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Top
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.HomeEnabled = False
-        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
+        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
+        Me.ToolBar1.MyOrdersEnabled = True
         Me.ToolBar1.MyTrophyEnabled = True
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.NewOrderEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
+        Me.ToolBar1.Size = New System.Drawing.Size(1232, 108)
         Me.ToolBar1.TabIndex = 34
         '
         'HomeForm
@@ -78,8 +81,8 @@ Partial Class HomeForm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.SystemColors.ScrollBar
         Me.ClientSize = New System.Drawing.Size(1232, 703)
-        Me.Controls.Add(Me.ToolBar1)
         Me.Controls.Add(Me.pnlStart)
+        Me.Controls.Add(Me.ToolBar1)
         Me.Font = New System.Drawing.Font("Arial", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "HomeForm"

@@ -27,14 +27,16 @@ Partial Class MyOrdersForm
         '
         'ToolBar1
         '
-        Me.ToolBar1.BackColor = System.Drawing.Color.White
+        Me.ToolBar1.BackColor = System.Drawing.Color.Fuchsia
+        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Top
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(0, 1)
+        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
+        Me.ToolBar1.MyOrdersEnabled = False
         Me.ToolBar1.MyTrophyEnabled = True
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.NewOrderEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
+        Me.ToolBar1.Size = New System.Drawing.Size(1232, 108)
         Me.ToolBar1.TabIndex = 0
         '
         'MyOrdersForm

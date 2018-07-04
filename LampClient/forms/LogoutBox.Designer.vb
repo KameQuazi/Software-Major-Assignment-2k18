@@ -49,6 +49,7 @@ Partial Class LogoutBox
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.OK_Button.BackColor = System.Drawing.Color.White
+        Me.OK_Button.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.OK_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.OK_Button.Location = New System.Drawing.Point(3, 3)
         Me.OK_Button.Name = "OK_Button"
@@ -90,7 +91,7 @@ Partial Class LogoutBox
         Me.Label1.TabIndex = 2
         Me.Label1.Text = "(You will be redirected to the login screen)"
         '
-        'Logout
+        'LogoutBox
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -104,7 +105,7 @@ Partial Class LogoutBox
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "Logout"
+        Me.Name = "LogoutBox"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Logout?"

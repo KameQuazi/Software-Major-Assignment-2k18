@@ -18,7 +18,7 @@
 
     End Sub
 
-    Private Sub ToolBar1_Load(sender As Object, e As EventArgs) Handles ToolBar1.Load
+    Private Sub ToolBar1_Load(sender As Object, e As EventArgs) 
 
     End Sub
 

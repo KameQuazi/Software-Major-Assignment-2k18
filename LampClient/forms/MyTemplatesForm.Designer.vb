@@ -22,29 +22,31 @@ Partial Class MyTemplatesForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.ToolBar1 = New LampClient.ToolBar()
         Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
+        Me.ToolBar1 = New LampClient.ToolBar()
         Me.SuspendLayout()
+        '
+        'MultiTemplateViewer1
+        '
+        Me.MultiTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.MultiTemplateViewer1.Location = New System.Drawing.Point(0, 108)
+        Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
+        Me.MultiTemplateViewer1.Size = New System.Drawing.Size(1232, 590)
+        Me.MultiTemplateViewer1.TabIndex = 1
         '
         'ToolBar1
         '
-        Me.ToolBar1.BackColor = System.Drawing.Color.White
+        Me.ToolBar1.BackColor = System.Drawing.Color.Fuchsia
+        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Top
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(-1, 1)
+        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
         Me.ToolBar1.MyOrdersEnabled = True
         Me.ToolBar1.MyTrophyEnabled = False
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.NewOrderEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
-        Me.ToolBar1.TabIndex = 0
-        '
-        'MultiTemplateViewer1
-        '
-        Me.MultiTemplateViewer1.Location = New System.Drawing.Point(-1, 115)
-        Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
-        Me.MultiTemplateViewer1.Size = New System.Drawing.Size(1231, 590)
-        Me.MultiTemplateViewer1.TabIndex = 1
+        Me.ToolBar1.Size = New System.Drawing.Size(1232, 108)
+        Me.ToolBar1.TabIndex = 2
         '
         'MyTemplatesForm
         '
@@ -58,7 +60,6 @@ Partial Class MyTemplatesForm
         Me.ResumeLayout(False)
 
     End Sub
-
-    Friend WithEvents ToolBar1 As ToolBar
     Friend WithEvents MultiTemplateViewer1 As MultiTemplateViewer
+    Friend WithEvents ToolBar1 As ToolBar
 End Class

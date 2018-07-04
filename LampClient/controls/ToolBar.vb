@@ -69,8 +69,13 @@
 
     End Sub
 
-    Private Sub btnLogOut_Click(sender As Object, e As EventArgs)
-        LogoutBox.Show()
+    Private Sub btnLogOut_Click(sender As Object, e As EventArgs) Handles btnLogOut.Click
+        If LogoutBox.ShowDialog() = DialogResult.OK Then
+            PreviousForms.Clear()
+            LoginForm.Show()
+
+            ParentForm.Close()
+        End If
     End Sub
 
 
@@ -106,7 +111,7 @@
         HelpForm.ShowDialog()
     End Sub
 
-    Private Sub btnAbout_Click(sender As Object, e As EventArgs)
+    Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
         AboutBox.ShowDialog()
     End Sub
 
@@ -165,6 +170,12 @@
             Case GetType(TemplateSelectForm)
                 PreviousForms.Add(LampForm.TemplateSelectForm)
         End Select
+    End Sub
+
+    Private Sub btnQuit_Click(sender As Object, e As EventArgs) Handles btnQuit.Click
+        If CloseBox.ShowDialog() = DialogResult.OK Then
+            End
+        End If
     End Sub
 
 

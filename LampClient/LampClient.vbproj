@@ -157,10 +157,16 @@
     <Compile Include="forms\AboutBox.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\CreateJob.Designer.vb">
-      <DependentUpon>CreateJob.vb</DependentUpon>
+    <Compile Include="forms\CloseBox.Designer.vb">
+      <DependentUpon>CloseBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\CreateJob.vb">
+    <Compile Include="forms\CloseBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\NewOrderForm.Designer.vb">
+      <DependentUpon>NewOrderForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\NewOrderForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\DBViewer.Designer.vb">
@@ -241,12 +247,6 @@
     <Compile Include="forms\MyTemplatesForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\NewOrderForm.Designer.vb">
-      <DependentUpon>NewOrderForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="forms\NewOrderForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="forms\TemplateEditorForm.Designer.vb">
       <DependentUpon>TemplateEditorForm.vb</DependentUpon>
     </Compile>
@@ -301,8 +301,11 @@
     <EmbeddedResource Include="forms\AboutBox.resx">
       <DependentUpon>AboutBox.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\CreateJob.resx">
-      <DependentUpon>CreateJob.vb</DependentUpon>
+    <EmbeddedResource Include="forms\CloseBox.resx">
+      <DependentUpon>CloseBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\NewOrderForm.resx">
+      <DependentUpon>NewOrderForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\DBViewer.resx">
       <DependentUpon>DBViewer.vb</DependentUpon>
@@ -339,9 +342,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\MyTemplatesForm.resx">
       <DependentUpon>MyTemplatesForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="forms\NewOrderForm.resx">
-      <DependentUpon>NewOrderForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\TemplateEditorForm.resx">
       <DependentUpon>TemplateEditorForm.vb</DependentUpon>
