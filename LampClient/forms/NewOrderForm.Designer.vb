@@ -113,6 +113,7 @@ Partial Class NewOrderForm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(1232, 703)
+        Me.Controls.Add(Me.TreeView1)
         Me.Controls.Add(Me.ToolBar1)
         Me.Controls.Add(Me.grpParameters)
         Me.Name = "CreateJob"
@@ -130,4 +131,5 @@ Partial Class NewOrderForm
     Friend WithEvents chkYear As CheckBox
     Friend WithEvents Label1 As Label
     Friend WithEvents ToolBar1 As ToolBar
+    Friend WithEvents TreeView1 As TreeView
 End Class

@@ -90,6 +90,7 @@
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.108.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Deployment" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -133,10 +134,22 @@
     <Compile Include="controls\FileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="controls\JobViewerControl.Designer.vb">
+      <DependentUpon>JobViewerControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\JobViewerControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\MultiTemplateViewer.Designer.vb">
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
     </Compile>
     <Compile Include="controls\MultiTemplateViewer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\ProfileViewControl.Designer.vb">
+      <DependentUpon>ProfileViewControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\ProfileViewControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="controls\SingleDynamicTExt.Designer.vb">
@@ -289,8 +302,14 @@
     <EmbeddedResource Include="controls\fileDisplay.resx">
       <DependentUpon>FileDisplay.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="controls\JobViewerControl.resx">
+      <DependentUpon>JobViewerControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\MultiTemplateViewer.resx">
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\ProfileViewControl.resx">
+      <DependentUpon>ProfileViewControl.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\SingleDynamicTExt.resx">
       <DependentUpon>SingleDynamicText.vb</DependentUpon>

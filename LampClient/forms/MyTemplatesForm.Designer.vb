@@ -24,6 +24,7 @@ Partial Class MyTemplatesForm
     Private Sub InitializeComponent()
         Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
         Me.ToolBar1 = New LampClient.ToolBar()
+        Me.MultiTemplateViewer2 = New LampClient.MultiTemplateViewer()
         Me.SuspendLayout()
         '
         'MultiTemplateViewer1
@@ -48,11 +49,20 @@ Partial Class MyTemplatesForm
         Me.ToolBar1.Size = New System.Drawing.Size(1232, 108)
         Me.ToolBar1.TabIndex = 2
         '
+        'MultiTemplateViewer2
+        '
+        Me.MultiTemplateViewer2.Dock = System.Windows.Forms.DockStyle.Top
+        Me.MultiTemplateViewer2.Location = New System.Drawing.Point(0, 698)
+        Me.MultiTemplateViewer2.Name = "MultiTemplateViewer2"
+        Me.MultiTemplateViewer2.Size = New System.Drawing.Size(1232, 600)
+        Me.MultiTemplateViewer2.TabIndex = 3
+        '
         'MyTemplatesForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1232, 703)
+        Me.Controls.Add(Me.MultiTemplateViewer2)
         Me.Controls.Add(Me.MultiTemplateViewer1)
         Me.Controls.Add(Me.ToolBar1)
         Me.Name = "MyTemplatesForm"
@@ -62,4 +72,5 @@ Partial Class MyTemplatesForm
     End Sub
     Friend WithEvents MultiTemplateViewer1 As MultiTemplateViewer
     Friend WithEvents ToolBar1 As ToolBar
+    Friend WithEvents MultiTemplateViewer2 As MultiTemplateViewer
 End Class
