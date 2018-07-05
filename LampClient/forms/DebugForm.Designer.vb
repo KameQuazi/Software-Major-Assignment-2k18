@@ -35,8 +35,8 @@ Partial Class DebugForm
         Me.Button10 = New System.Windows.Forms.Button()
         Me.Button11 = New System.Windows.Forms.Button()
         Me.ToolBar1 = New LampClient.ToolBar()
-        Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
         Me.Button12 = New System.Windows.Forms.Button()
+        Me.JobDisplay1 = New LampClient.JobDisplay()
         Me.SuspendLayout()
         '
         'Button1
@@ -180,18 +180,6 @@ Partial Class DebugForm
         Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
         Me.ToolBar1.TabIndex = 15
         '
-        'DynamicFormCreation1
-        '
-        Me.DynamicFormCreation1.AutoScroll = True
-        Me.DynamicFormCreation1.BackColor = System.Drawing.Color.White
-        Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DynamicFormCreation1.Location = New System.Drawing.Point(480, 160)
-        Me.DynamicFormCreation1.Margin = New System.Windows.Forms.Padding(4)
-        Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
-        Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(0, 0, 17, 0)
-        Me.DynamicFormCreation1.Size = New System.Drawing.Size(684, 480)
-        Me.DynamicFormCreation1.TabIndex = 13
-        '
         'Button12
         '
         Me.Button12.BackColor = System.Drawing.Color.White
@@ -203,15 +191,23 @@ Partial Class DebugForm
         Me.Button12.Text = "Test Refpoints"
         Me.Button12.UseVisualStyleBackColor = False
         '
+        'JobDisplay1
+        '
+        Me.JobDisplay1.Job = Nothing
+        Me.JobDisplay1.Location = New System.Drawing.Point(397, 137)
+        Me.JobDisplay1.Name = "JobDisplay1"
+        Me.JobDisplay1.Size = New System.Drawing.Size(961, 304)
+        Me.JobDisplay1.TabIndex = 17
+        '
         'DebugForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(1232, 703)
+        Me.Controls.Add(Me.JobDisplay1)
         Me.Controls.Add(Me.Button12)
         Me.Controls.Add(Me.ToolBar1)
         Me.Controls.Add(Me.Button11)
-        Me.Controls.Add(Me.DynamicFormCreation1)
         Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button9)
@@ -241,8 +237,8 @@ Partial Class DebugForm
     Friend WithEvents Button9 As Button
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Button10 As Button
-    Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
     Friend WithEvents Button11 As Button
     Friend WithEvents ToolBar1 As ToolBar
     Friend WithEvents Button12 As Button
+    Friend WithEvents JobDisplay1 As JobDisplay
 End Class

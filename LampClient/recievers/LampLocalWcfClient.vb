@@ -195,5 +195,13 @@ Public Class LampLocalWcfClient
     Public Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of LampTemplateListWrapper) Implements ILampServiceAsync.GetTemplateListAsync
         Return DirectCast(Channel, ILampServiceBoth).GetTemplateListAsync(credentials, tags, limit, offset, includeUnapproved)
     End Function
+
+    Public Function GetUserTemplateList(credentials As LampCredentials, limit As Integer, offset As Integer) As LampTemplateListWrapper Implements ILampService.GetUserTemplateList
+        Return DirectCast(Channel, ILampServiceBoth).GetUserTemplateList(credentials, limit, offset)
+    End Function
+
+    Public Function GetUserTemplateListAsync(credentials As LampCredentials, limit As Integer, offset As Integer) As Task(Of LampTemplateListWrapper) Implements ILampServiceAsync.GetUserTemplateListAsync
+        Return DirectCast(Channel, ILampServiceBoth).GetUserTemplateListAsync(credentials, limit, offset)
+    End Function
 End Class
 

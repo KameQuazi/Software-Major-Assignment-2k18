@@ -46,6 +46,9 @@ Public Class DebugForm
     End Sub
 
     Private Sub Test()
+        Dim x As New LampTemplate
+        x.DynamicTextList.Add(New DynamicTextKey("asdf", "asdf", New Point))
+        JobDisplay1.Job = New LampJob(x, New LampProfile("asdf", "b", "{}{}{}", UserPermission.Admin))
 
     End Sub
 

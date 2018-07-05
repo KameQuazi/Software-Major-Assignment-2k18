@@ -16,9 +16,9 @@ Public Structure DynamicTextKey
     ''' name of the dynamic input: e.g. year, name, date etc
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("paramterName")>
+    <JsonProperty("parameter_name")>
     <DataMember>
-    Public ReadOnly Property ParameterName As String
+    Public Property ParameterName As String
 
     ''' <summary>
     ''' The description of the dynamic input: e.g. 'year this student blah blah blah'
@@ -26,7 +26,7 @@ Public Structure DynamicTextKey
     ''' <returns></returns>
     <JsonProperty("description")>
     <DataMember>
-    Public ReadOnly Property Description As String
+    Public Property Description As String
 
     ''' <summary>
     ''' Where to insert the item
@@ -34,7 +34,7 @@ Public Structure DynamicTextKey
     ''' <returns></returns>
     <JsonProperty("location")>
     <DataMember>
-    Public ReadOnly Property Location As Point
+    Public Property Location As Point
 
     ''' <summary>
     ''' The normal font to use
@@ -42,7 +42,7 @@ Public Structure DynamicTextKey
     ''' <returns></returns>
     <JsonProperty("font")>
     <DataMember>
-    Public ReadOnly Property Font As Font
+    Public Property Font As String
 
     ''' <summary>
     ''' if the user can override font
@@ -50,17 +50,17 @@ Public Structure DynamicTextKey
     ''' <returns></returns>
     <JsonProperty("can_override_font")>
     <DataMember>
-    Public ReadOnly Property CanOverrideFont As Boolean
+    Public Property CanOverrideFont As Boolean
 
     ''' <summary>
     ''' The type of input. 
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("inputType")>
+    <JsonProperty("input_type")>
     <DataMember>
     Public Property InputType As InputType
 
-    Private Shared defaultFont As Font = SystemFonts.DefaultFont
+    Private Shared defaultFont As String = SystemFonts.DefaultFont.Name
 
     ''' <summary>
     ''' 
@@ -69,7 +69,7 @@ Public Structure DynamicTextKey
     ''' <param name="description">description of parameter</param>
     ''' <param name="location">where it should be inserted, rel bottom left of the template</param>
     ''' <param name="font">font to use (for text)</param>
-    Public Sub New(parameterName As String, description As String, location As Point, Optional inputType As InputType = InputType.RichTextBox, Optional font As Font = Nothing)
+    Public Sub New(parameterName As String, description As String, location As Point, Optional inputType As InputType = InputType.RichTextBox, Optional font As String = Nothing)
         Me.ParameterName = parameterName
         Me.Description = description
         Me.Location = location

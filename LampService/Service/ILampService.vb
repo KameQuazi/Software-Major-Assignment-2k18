@@ -169,6 +169,9 @@ Public Interface ILampService
 
     <OperationContract>
     Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As LampTemplateListWrapper
+
+    <OperationContract>
+    Function GetUserTemplateList(credentials As LampCredentials, limit As Integer, offset As Integer) As LampTemplateListWrapper
 End Interface
 
 <ServiceContract>
@@ -238,6 +241,9 @@ Public Interface ILampServiceAsync
 
     <OperationContract>
     Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of LampTemplateListWrapper)
+
+    <OperationContract>
+    Function GetUserTemplateListAsync(credentials As LampCredentials, limit As Integer, offset As Integer) As Task(Of LampTemplateListWrapper)
 End Interface
 
 <ServiceContract>

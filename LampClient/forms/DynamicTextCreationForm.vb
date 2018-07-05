@@ -10,7 +10,9 @@ Public Class DynamicTextCreationForm
         End Get
         Set(value As LampTemplate)
             _source = value
-            AddHandler _source.PropertyChanged, Sub(sender As Object, e As PropertyChangedEventArgs) UpdateDynamicText()
+            If _source IsNot Nothing Then
+                AddHandler _source.PropertyChanged, Sub(sender As Object, e As PropertyChangedEventArgs) UpdateDynamicText()
+            End If
             UpdateDynamicText()
         End Set
     End Property

@@ -100,7 +100,7 @@ Partial Class LoginForm
         Me.btnCreate.Name = "btnCreate"
         Me.btnCreate.Size = New System.Drawing.Size(91, 53)
         Me.btnCreate.TabIndex = 6
-        Me.btnCreate.Text = "Create Account"
+        Me.btnCreate.Text = "Sign Up"
         Me.btnCreate.UseVisualStyleBackColor = False
         '
         'PasswordCheckbox

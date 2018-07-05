@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class DynamicTextCreationForm
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -25,17 +25,16 @@ Partial Class DynamicTextCreationForm
         Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.ToolBar1 = New LampClient.ToolBar()
-        Me.DynamicFormCreation2 = New LampClient.DynamicFormCreation()
         Me.SuspendLayout()
         '
         'DynamicFormCreation1
         '
         Me.DynamicFormCreation1.AutoScroll = True
         Me.DynamicFormCreation1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.DynamicFormCreation1.Location = New System.Drawing.Point(0, 118)
+        Me.DynamicFormCreation1.Location = New System.Drawing.Point(0, 147)
         Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
         Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(0, 0, 17, 0)
-        Me.DynamicFormCreation1.Size = New System.Drawing.Size(1232, 585)
+        Me.DynamicFormCreation1.Size = New System.Drawing.Size(1232, 556)
         Me.DynamicFormCreation1.TabIndex = 0
         '
         'Button1
@@ -61,22 +60,11 @@ Partial Class DynamicTextCreationForm
         Me.ToolBar1.Size = New System.Drawing.Size(1232, 108)
         Me.ToolBar1.TabIndex = 3
         '
-        'DynamicFormCreation2
-        '
-        Me.DynamicFormCreation2.AutoScroll = True
-        Me.DynamicFormCreation2.Dock = System.Windows.Forms.DockStyle.Top
-        Me.DynamicFormCreation2.Location = New System.Drawing.Point(0, 108)
-        Me.DynamicFormCreation2.Name = "DynamicFormCreation2"
-        Me.DynamicFormCreation2.Padding = New System.Windows.Forms.Padding(0, 0, 17, 0)
-        Me.DynamicFormCreation2.Size = New System.Drawing.Size(1232, 595)
-        Me.DynamicFormCreation2.TabIndex = 4
-        '
         'DynamicTextCreationForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1232, 703)
-        Me.Controls.Add(Me.DynamicFormCreation2)
         Me.Controls.Add(Me.ToolBar1)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.DynamicFormCreation1)
@@ -89,5 +77,4 @@ Partial Class DynamicTextCreationForm
     Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
     Friend WithEvents Button1 As Button
     Friend WithEvents ToolBar1 As ToolBar
-    Friend WithEvents DynamicFormCreation2 As DynamicFormCreation
 End Class

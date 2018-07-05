@@ -134,16 +134,22 @@
     <Compile Include="controls\FileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="controls\JobViewerControl.Designer.vb">
-      <DependentUpon>JobViewerControl.vb</DependentUpon>
+    <Compile Include="controls\JobDisplay.Designer.vb">
+      <DependentUpon>JobDisplay.vb</DependentUpon>
     </Compile>
-    <Compile Include="controls\JobViewerControl.vb">
+    <Compile Include="controls\JobDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="controls\MultiTemplateViewer.Designer.vb">
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
     </Compile>
     <Compile Include="controls\MultiTemplateViewer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\ProfileDisplay.Designer.vb">
+      <DependentUpon>ProfileDisplay.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\ProfileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="controls\ProfileViewControl.Designer.vb">
@@ -302,11 +308,14 @@
     <EmbeddedResource Include="controls\fileDisplay.resx">
       <DependentUpon>FileDisplay.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="controls\JobViewerControl.resx">
-      <DependentUpon>JobViewerControl.vb</DependentUpon>
+    <EmbeddedResource Include="controls\JobDisplay.resx">
+      <DependentUpon>JobDisplay.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\MultiTemplateViewer.resx">
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\ProfileDisplay.resx">
+      <DependentUpon>ProfileDisplay.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\ProfileViewControl.resx">
       <DependentUpon>ProfileViewControl.vb</DependentUpon>

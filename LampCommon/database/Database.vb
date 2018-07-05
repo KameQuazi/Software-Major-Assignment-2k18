@@ -1589,6 +1589,11 @@ Partial Public Class TemplateDatabase
 
 End Class
 
+Public Enum LampSort
+    DateTime
+
+End Enum
+
 Public Class TemplateDatabase
     Public Function GetMultipleTemplate(tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
         If tags Is Nothing OrElse tags.Count() = 0 Then
@@ -1749,7 +1754,7 @@ Public Class TemplateDatabase
 
             Dim approveText = "1"
             If includeUnapproved = False Then
-                approveText = "(SELECT 1 from template WHERE template.guid = tags.guid and approverId is not null)"
+                approveText = "(SELECT 1 from template WHERE template.guid = tags.guid AND approverId is not null)"
             End If
 
             Dim stringCommand = String.Format("Select tags.guid from tags

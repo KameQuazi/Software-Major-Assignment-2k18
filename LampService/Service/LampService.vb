@@ -936,7 +936,7 @@ Public Class LampService
             End If
 
             If limit > MAX_TEMPLATES_PER_REQUEST Then
-                response.Status = LampStatus.InvalidOperation
+                response.Status = LampStatus.InvalidParameters
                 Return response
             End If
 
@@ -963,6 +963,41 @@ Public Class LampService
         End Try
     End Function
 
+    Public Function GetUserTemplateList(credentials As LampCredentials, limit As Integer, offset As Integer) As LampTemplateListWrapper Implements ILampService.GetUserTemplateList
+        Dim response As New LampTemplateListWrapper
+        Try
+            If limit <= 0 Or offset < 0 Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            If limit > MAX_TEMPLATES_PER_REQUEST Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response.Status = auth.Status
+                Return response
+            End If
+            Dim user = auth.user
+
+            If Not HasGetUserTemplateList(user) Then
+                response.Status = LampStatus.NoAccess
+                Return response
+            End If
+
+            Throw New Exception()
+
+
+        Catch ex As Exception
+            response.Status = LampStatus.InternalServerError
+            Log(ex)
+            Return response
+        End Try
+    End Function
+
 
 
 
@@ -971,6 +1006,11 @@ Public Class LampService
 
 
 #Region "HasPermissions"
+
+    Public Function HasGetUserTemplateList(user As LampUser) As Boolean
+        Return user.PermissionLevel >= UserPermission.Standard
+    End Function
+
     Public Function HasGetTemplateListPerms(user As LampUser, includeUnapproved As Boolean) As Boolean
         If includeUnapproved And user.PermissionLevel < UserPermission.Elevated Then
             Return False

@@ -10,6 +10,7 @@ Imports System.Runtime.Serialization
 Imports LampCommon
 
 <DataContract>
+<JsonObject(MemberSerialization.OptIn)>
 <KnownType(GetType(LampTemplate))>
 <KnownType(GetType(LampProfile))>
 Public Class LampTemplateMetadata
@@ -452,6 +453,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <returns></returns>
     <DataMember>
+    <JsonIgnore>
     Private Property _serializePreviewImages As IEnumerable(Of String)
         Get
             Return LampDxfDocument.ImageListToBase64(PreviewImages)

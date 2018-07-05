@@ -21,6 +21,7 @@ Public Class LampJob
     ''' The job id of this job
     ''' </summary>
     ''' <returns></returns>
+    <JsonProperty("job_id")>
     Public Property JobId As String
         Get
             Return _jobId
@@ -36,6 +37,7 @@ Public Class LampJob
     ''' the base template that the job is based off of
     ''' </summary>
     ''' <returns></returns>
+    <JsonProperty("template")>
     Public Property Template As LampTemplate
         Get
             Return _template
@@ -67,6 +69,7 @@ Public Class LampJob
     ''' The submitter of 
     ''' </summary>
     ''' <returns></returns>
+    <JsonProperty("submitter_profile")>
     Public Property Submitter As LampProfile
         Get
             Return _submitter
@@ -76,6 +79,9 @@ Public Class LampJob
                 RemoveHandler _submitter.PropertyChanged, AddressOf Submitter_PropertyChanged
             End If
             _submitter = value
+            If _submitter IsNot Nothing Then
+                AddHandler _submitter.PropertyChanged, AddressOf Submitter_PropertyChanged
+            End If
             NotifyPropertyChanged()
         End Set
     End Property
@@ -84,7 +90,23 @@ Public Class LampJob
         NotifyPropertyChanged(NameOf(Submitter))
     End Sub
 
+    Private _approver As LampProfile
+    <JsonProperty("approver_profile")>
     Public Property Approver As LampProfile
+        Get
+            Return _approver
+        End Get
+        Set(value As LampProfile)
+            If _approver IsNot Nothing Then
+                RemoveHandler _approver.PropertyChanged, AddressOf Approver_PropertyChanged
+            End If
+            _approver = value
+            If _approver IsNot Nothing Then
+                AddHandler _approver.PropertyChanged, AddressOf Approver_PropertyChanged
+            End If
+            NotifyPropertyChanged()
+        End Set
+    End Property
 
     Private Sub Approver_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
         NotifyPropertyChanged(NameOf(Approver))
@@ -134,28 +156,22 @@ Public Class LampJob
         NotifyPropertyChanged(NameOf(InsertionLocations))
     End Sub
 
-    Public Property SubmitId As String
+    Public ReadOnly Property SubmitId As String
         Get
+            If Submitter Is Nothing Then
+                Return Nothing
+            End If
             Return Submitter.UserId
         End Get
-        Set(value As String)
-            Submitter.UserId = value
-        End Set
     End Property
 
-    Public Property ApproverId As String
+    Public ReadOnly Property ApproverId As String
         Get
             If Approver Is Nothing Then
                 Return Nothing
             End If
             Return Approver.UserId
         End Get
-        Set(value As String)
-            If Approver Is Nothing Then
-                Throw New ArgumentNullException(NameOf(Approver) + " cannot be nothing")
-            End If
-            Approver.UserId = value
-        End Set
     End Property
 
 

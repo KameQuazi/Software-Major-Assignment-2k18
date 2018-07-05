@@ -1,5 +1,6 @@
 ﻿Imports System.Threading.Tasks
 Imports LampCommon
+Imports LampService
 
 Public Class LampServiceLocal
     Inherits LampService
@@ -848,8 +849,8 @@ Public Class LampServiceLocal
 
             ' passed all tests
             response.Status = LampStatus.OK
-                response.Drawing = template.BaseDrawing
-                Return response
+            response.Drawing = template.BaseDrawing
+            Return response
 
 
 
@@ -898,5 +899,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-
+    Public Function GetUserTemplateListAsync(credentials As LampCredentials, limit As Integer, offset As Integer) As Task(Of LampTemplateListWrapper) Implements ILampServiceAsync.GetUserTemplateListAsync
+        Throw New NotImplementedException()
+    End Function
 End Class

@@ -117,6 +117,7 @@
     <Compile Include="template\ImageListJsonConverter.vb" />
     <Compile Include="template\LampDxfDocument.vb" />
     <Compile Include="template\job\LampJob.vb" />
+    <Compile Include="template\TemplateParts\DynamicTextDictionary.vb" />
     <Compile Include="template\TemplateParts\DynamicTextKey.vb" />
     <Compile Include="template\TemplateParts\DynamicTextValue.vb" />
     <Compile Include="user\LampCredentials.vb" />

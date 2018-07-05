@@ -199,6 +199,14 @@ Public Class LampRemoteWcfClient
         Return Channel.GetTemplateListAsync(credentials, tags, limit, offset, includeUnapproved)
     End Function
 
+    Public Function GetUserTemplateList(credentials As LampCredentials, limit As Integer, offset As Integer) As LampTemplateListWrapper Implements ILampService.GetUserTemplateList
+        Return Channel.GetUserTemplateList(credentials, limit, offset)
+    End Function
+
+    Public Function GetUserTemplateListAsync(credentials As LampCredentials, limit As Integer, offset As Integer) As Task(Of LampTemplateListWrapper) Implements ILampServiceAsync.GetUserTemplateListAsync
+        Return Channel.GetUserTemplateListAsync(credentials, limit, offset)
+    End Function
+
 
 
 #End Region
