@@ -1,9 +1,9 @@
-﻿Imports System.IO
-Imports System.Text
-Imports System.Data.SQLite
+﻿Imports System.Data.SQLite
 Imports System.Drawing
-Imports LampCommon.DatabaseHelper
+Imports System.IO
+Imports System.Text
 Imports LampCommon
+Imports LampCommon.DatabaseHelper
 
 ''' <summary>
 ''' Template database
@@ -116,7 +116,8 @@ Partial Public Class TemplateDatabase
                         
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );
-                                  CREATE INDEX if not exists tags_guid_tagname ON tags (guid, tagname);"
+                                  CREATE INDEX if not exists tags_guid_tagname ON tags (guid, tagname);
+                                  CREATE INDEX if not exists tags_tagname_guid ON tags (TagName, GUID);"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
 
@@ -152,7 +153,7 @@ Partial Public Class TemplateDatabase
     ''' Does not delete any data
     ''' </summary>
     Public Async Function CreateTablesAsync(Optional optTrans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
-        Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync), command = Connection.GetCommand(trans)
+        Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync.ConfigureAwait(False)), command = Connection.GetCommand(trans)
             Dim tasks As New List(Of Task(Of Integer))
             command.CommandText = "CREATE TABLE if not exists users (
                                   UserId Text Not Null,
@@ -218,7 +219,8 @@ Partial Public Class TemplateDatabase
                         
                                   FOREIGN KEY(GUID) REFERENCES template(GUID)
                                   );
-                                  CREATE INDEX if not exists tags_guid_tagname ON tags (guid, tagname);"
+                                  CREATE INDEX if not exists tags_guid_tagname ON tags (guid, tagname);
+                                  CREATE INDEX if not exists tags_tagname_guid ON tags (TagName, GUID);"
             tasks.Add(command.ExecuteNonQueryAsync())
 
 
@@ -237,7 +239,7 @@ Partial Public Class TemplateDatabase
                                   ) WITHOUT rowId;"
             tasks.Add(command.ExecuteNonQueryAsync())
 
-            Dim results = Await Task.WhenAll(tasks)
+            Dim results = Await Task.WhenAll(tasks).ConfigureAwait(False)
             Dim allSuccess = results.All(Function(x) x > 0)
             ' check that each insertion inserted at least 1 line (1 table)
 
@@ -269,7 +271,8 @@ Partial Public Class TemplateDatabase
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
             command.CommandText = "DROP TABLE If exists tags;
-                                   DROP INDEX if exists tags_guid_tagname;"
+                                   DROP INDEX if exists tags_guid_tagname;
+                                   DROP INDEX if exists tags_tagname_guid;"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
             command.CommandText = "DROP TABLE If exists jobs"
@@ -291,7 +294,7 @@ Partial Public Class TemplateDatabase
 
     Public Async Function RemoveTablesAsync(Optional optTrans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
         ' If the databse is open already, dont close it
-        Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync), command = Connection.GetCommand(trans)
+        Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync.ConfigureAwait(False)), command = Connection.GetCommand(trans)
             Dim tasks As New List(Of Task(Of Integer))
 
             command.CommandText = "DROP TABLE If exists users;
@@ -307,7 +310,8 @@ Partial Public Class TemplateDatabase
             tasks.Add(command.ExecuteNonQueryAsync())
 
             command.CommandText = "DROP TABLE If exists tags;
-                                   DROP INDEX if exists tags_guid_tagname;"
+                                   DROP INDEX if exists tags_guid_tagname;
+                                   DROP INDEX if exists tags_tagname_guid;"
 
             tasks.Add(command.ExecuteNonQueryAsync())
 
@@ -317,7 +321,7 @@ Partial Public Class TemplateDatabase
             command.CommandText = "DROP TABLE If exists template"
             tasks.Add(command.ExecuteNonQueryAsync())
 
-            Dim results = Await Task.WhenAll(tasks)
+            Dim results = Await Task.WhenAll(tasks).ConfigureAwait(False)
             Dim allSuccess = results.All(Function(x) x > 0)
             ' check that each insertion inserted at least 1 line (1 table)
 
@@ -349,8 +353,8 @@ Partial Public Class TemplateDatabase
     ''' Resets the database, should ONLY be used for debug
     ''' </summary>
     Public Async Function ResetDebugAsync() As Task(Of Boolean)
-        Await RemoveTablesAsync()
-        Await CreateTablesAsync()
+        Await RemoveTablesAsync().ConfigureAwait(False)
+        Await CreateTablesAsync().ConfigureAwait(False)
         FillDebugDatabase()
         Return True
     End Function
@@ -387,7 +391,7 @@ Partial Public Class TemplateDatabase
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
             command.CommandText = "Select DXF from dxf WHERE guid=@guid"
             command.Parameters.AddWithValue("@guid", guid)
-            Dim dxfString = DirectCast(Await command.ExecuteScalarAsync(), String)
+            Dim dxfString = DirectCast(Await command.ExecuteScalarAsync().ConfigureAwait(False), String)
             If dxfString IsNot Nothing Then
                 dxf = LampDxfDocument.FromString(dxfString)
             End If
@@ -430,7 +434,7 @@ Partial Public Class TemplateDatabase
     ''' <param name="template"></param>
     ''' <returns></returns>
     Private Async Function SetDxfAsync(template As LampTemplate, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
-        Return Await SetDxfAsync(template.GUID, template.BaseDrawing, trans)
+        Return Await SetDxfAsync(template.GUID, template.BaseDrawing, trans).ConfigureAwait(False)
     End Function
 
     ''' <summary>
@@ -450,7 +454,7 @@ Partial Public Class TemplateDatabase
             command.Parameters.AddWithValue("@guid", guid)
             command.Parameters.AddWithValue("@DXF", dxf.ToDxfString())
 
-            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
         End Using
     End Function
 
@@ -480,7 +484,7 @@ Partial Public Class TemplateDatabase
             command.CommandText = "DELETE from dxf WHERE GUID = @guid"
             command.Parameters.AddWithValue("@guid", guid)
 
-            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
         End Using
     End Function
 
@@ -544,7 +548,7 @@ Partial Public Class TemplateDatabase
 
                                     FROM template WHERE guid = @guid"
             command.Parameters.AddWithValue("@guid", guid)
-            Using reader = Await command.ExecuteReaderAsync()
+            Using reader = Await command.ExecuteReaderAsync().ConfigureAwait(False)
                 ' read only 1 row off the database
                 If Await reader.ReadAsync() Then
                     metadata = New LampTemplateMetadata(guid)
@@ -558,11 +562,11 @@ Partial Public Class TemplateDatabase
                     metadata.MaterialThickness = reader.GetDouble(reader.GetOrdinal("MaterialThickness"))
 
                     If Not reader.IsDBNull(reader.GetOrdinal("CreatorId")) Then
-                        metadata.CreatorProfile = (Await SelectUserAsync(reader.GetString(reader.GetOrdinal("CreatorId")))).ToProfile
+                        metadata.CreatorProfile = (Await SelectUserAsync(reader.GetString(reader.GetOrdinal("CreatorId"))).ConfigureAwait(False)).ToProfile
                     End If
 
                     If Not reader.IsDBNull(reader.GetOrdinal("ApproverId")) Then
-                        metadata.ApproverProfile = (Await SelectUserAsync(reader.GetString(reader.GetOrdinal("ApproverId")))).ToProfile
+                        metadata.ApproverProfile = (Await SelectUserAsync(reader.GetString(reader.GetOrdinal("ApproverId"))).ConfigureAwait(False)).ToProfile
                     End If
 
                     metadata.SubmitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
@@ -644,7 +648,7 @@ Partial Public Class TemplateDatabase
             command.Parameters.AddWithValue("@approverId", approverId)
             command.Parameters.AddWithValue("@complete", template.IsComplete)
 
-            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
         End Using
     End Function
 
@@ -674,7 +678,7 @@ Partial Public Class TemplateDatabase
             command.CommandText = "DELETE from template WHERE GUID = @guid"
             command.Parameters.AddWithValue("@guid", guid)
 
-            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
         End Using
     End Function
 
@@ -728,8 +732,8 @@ Partial Public Class TemplateDatabase
             command.CommandText = "Select image1, image2, image3 FROM images WHERE guid = @guid"
             command.Parameters.AddWithValue("@guid", guid)
 
-            Using reader = Await command.ExecuteReaderAsync()
-                If Await reader.ReadAsync() Then
+            Using reader = Await command.ExecuteReaderAsync().ConfigureAwait(False)
+                If Await reader.ReadAsync().ConfigureAwait(False) Then
                     For i = 1 To LampTemplate.MaxImages
                         Dim columnNumber = reader.GetOrdinal(String.Format("image{0}", i))
 
@@ -824,7 +828,7 @@ Partial Public Class TemplateDatabase
                 Throw New ArgumentOutOfRangeException(NameOf(images), images, "Images must have at least 1 not-null element")
             End If
 
-            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
         End Using
     End Function
 
@@ -850,7 +854,7 @@ Partial Public Class TemplateDatabase
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
             command.CommandText = "DELETE from images WHERE GUID = @guid"
             command.Parameters.AddWithValue("@guid", guid)
-            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
         End Using
     End Function
 
@@ -890,9 +894,9 @@ Partial Public Class TemplateDatabase
             command.Parameters.AddWithValue("@guid", guid)
 
             Dim tags As New List(Of String)
-            Dim reader = Await command.ExecuteReaderAsync()
+            Dim reader = Await command.ExecuteReaderAsync().ConfigureAwait(False)
 
-            While Await reader.ReadAsync()
+            While Await reader.ReadAsync().ConfigureAwait(False)
                 tags.Add(reader.GetString(reader.GetOrdinal("tagName")))
             End While
 
@@ -915,7 +919,7 @@ Partial Public Class TemplateDatabase
             Dim insertedRows = 0
             command.Parameters.AddWithValue("@guid", guid)
             For Each tag In tags
-                command.Parameters.AddWithValue("@tagName", tag)
+                command.Parameters.AddWithValue("@tagName", tag.ToLower().Trim())
 
                 insertedRows += command.ExecuteNonQuery()
             Next
@@ -938,9 +942,9 @@ Partial Public Class TemplateDatabase
             Dim insertedRows As Integer = 0
             command.Parameters.AddWithValue("@guid", guid)
             For Each tag In tags
-                command.Parameters.AddWithValue("@tagName", tag)
+                command.Parameters.AddWithValue("@tagName", tag.ToLower().Trim())
 
-                insertedRows += Await command.ExecuteNonQueryAsync()
+                insertedRows += Await command.ExecuteNonQueryAsync().ConfigureAwait(False)
             Next
             Return insertedRows
         End Using
@@ -968,7 +972,7 @@ Partial Public Class TemplateDatabase
         Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand(trans)
             sqlite_cmd.CommandText = "DELETE from tags WHERE guid = @guid"
             sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-            Return Await sqlite_cmd.ExecuteNonQueryAsync()
+            Return Await sqlite_cmd.ExecuteNonQueryAsync().ConfigureAwait(False)
         End Using
     End Function
 
@@ -1018,17 +1022,20 @@ Partial Public Class TemplateDatabase
     Public Async Function SelectTemplateAsync(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of LampTemplate)
         guid = guid.ToLower()
         Using conn = Connection.OpenConnection()
-            Dim template = (Await SelectTemplateMetadataAsync(guid, trans)).ToLampTemplate
+            Dim data = Await SelectTemplateMetadataAsync(guid, trans).ConfigureAwait(False)
+            Dim template As LampTemplate = If(data IsNot Nothing, data.ToLampTemplate, Nothing)
 
             If template IsNot Nothing Then
                 Dim dxfTask = SelectDxfAsync(guid, trans)
                 Dim imageTask = SelectImagesAsync(guid, trans)
                 Dim tagTask = SelectTagsAsync(guid, trans)
 
-                Await Task.WhenAll(dxfTask, imageTask, tagTask)
+                Await Task.WhenAll(dxfTask, imageTask, tagTask).ConfigureAwait(False)
 
                 If dxfTask.Result IsNot Nothing Then
                     template.BaseDrawing = dxfTask.Result
+                Else
+                    Return Nothing ' dxf cannot be nothing
                 End If
 
                 If imageTask.Result IsNot Nothing Then
@@ -1040,10 +1047,11 @@ Partial Public Class TemplateDatabase
                 For Each tag In tagTask.Result
                     template.Tags.Add(tag)
                 Next
-
             End If
+
             Return template
         End Using
+
 
     End Function
 
@@ -1087,17 +1095,17 @@ Partial Public Class TemplateDatabase
     ''' <param name="template"></param>
     Public Async Function SetTemplateAsync(template As LampTemplate, Optional creatorId As String = Nothing, Optional approverId As String = Nothing, Optional optTrans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
         template.GUID = template.GUID.ToLower
-        Using conn = Connection.OpenConnection, trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync)
-            If Await SetTemplateDataAsync(template, creatorId, approverId, trans) Then
-                If Await SetDxfAsync(template.GUID, template.BaseDrawing, trans) Then
+        Using conn = Connection.OpenConnection, trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync.ConfigureAwait(False))
+            If Await SetTemplateDataAsync(template, creatorId, approverId, trans).ConfigureAwait(False) Then
+                If Await SetDxfAsync(template.GUID, template.BaseDrawing, trans).ConfigureAwait(False) Then
 
                     ' check that there is at least 1 image
                     If template.PreviewImages.HasNotNothing() Then
-                        Await SetImagesAsync(template.GUID, template.PreviewImages, trans)
+                        Await SetImagesAsync(template.GUID, template.PreviewImages, trans).ConfigureAwait(False)
                     End If
 
                     If template.Tags.Count > 0 Then
-                        Await SetTagsAsync(template.GUID, template.Tags, trans)
+                        Await SetTagsAsync(template.GUID, template.Tags, trans).ConfigureAwait(False)
                     End If
 
                     ' actually write it to the database if using the auto transaction, otherwise leave it to the caller
@@ -1151,13 +1159,13 @@ Partial Public Class TemplateDatabase
     ''' <returns>True=Removed, False=None found</returns>
     Public Async Function RemoveTemplateAsync(guid As String, Optional optTrans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
         guid = guid.ToLower()
-        Using conn = Connection.OpenConnection, trans = If(optTrans, Await Transaction.LockTransactionAsync)
+        Using conn = Connection.OpenConnection, trans = If(optTrans, Await Transaction.LockTransactionAsync.ConfigureAwait(False))
             ' gotta remove these first before the guid in the templates table is gone
-            If Await RemoveTemplateDataAsync(guid, trans) Then
-                If Await RemoveDxfAsync(guid, trans) Then
+            If Await RemoveTemplateDataAsync(guid, trans).ConfigureAwait(False) Then
+                If Await RemoveDxfAsync(guid, trans).ConfigureAwait(False) Then
 
                     ' wait for remove images/tags to finish
-                    Await Task.WhenAll(RemoveImagesAsync(guid, trans), RemoveTagsAsync(guid, trans))
+                    Await Task.WhenAll(RemoveImagesAsync(guid, trans), RemoveTagsAsync(guid, trans)).ConfigureAwait(False)
 
 
                     ' actually write it to the database if using the auto transaction, otherwise leave it to the caller
@@ -1219,8 +1227,8 @@ Partial Public Class TemplateDatabase
                                           WHERE userId = @guid"
             command.Parameters.AddWithValue("@guid", userId)
 
-            Using reader = Await command.ExecuteReaderAsync()
-                If Await reader.ReadAsync() Then
+            Using reader = Await command.ExecuteReaderAsync().ConfigureAwait(False)
+                If Await reader.ReadAsync().ConfigureAwait(False) Then
                     Dim email = reader.GetString(reader.GetOrdinal("email"))
                     Dim username = reader.GetString(reader.GetOrdinal("username"))
                     Dim password = reader.GetString(reader.GetOrdinal("password"))
@@ -1273,21 +1281,21 @@ Partial Public Class TemplateDatabase
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
             command.CommandText = "Select EXISTS(SELECT 1 from Users WHERE userid=@userid)"
             command.Parameters.AddWithValue("@userid", user.UserId)
-            If Await command.ExecuteScalarAsync() Then
+            If Await command.ExecuteScalarAsync().ConfigureAwait(False) Then
                 ' 1 or more userid's exist
                 Return LampStatus.GuidConflict
             End If
 
             command.CommandText = "Select EXISTS(SELECT 1 from Users WHERE username=@username)"
             command.Parameters.AddWithValue("@username", user.Username)
-            If Await command.ExecuteScalarAsync() Then
+            If Await command.ExecuteScalarAsync().ConfigureAwait(False) Then
                 ' 1 or more usernames's exist
                 Return LampStatus.UsernameConflict
             End If
 
             command.CommandText = "Select EXISTS(SELECT 1 from Users WHERE email=@email)"
             command.Parameters.AddWithValue("@email", user.Email)
-            If Await command.ExecuteScalarAsync() Then
+            If Await command.ExecuteScalarAsync().ConfigureAwait(False) Then
                 ' 1 or more emails's exist
                 Return LampStatus.EmailConflict
             End If
@@ -1331,7 +1339,7 @@ Partial Public Class TemplateDatabase
             command.Parameters.AddWithValue("@username", username)
             command.Parameters.AddWithValue("@password", password)
 
-            Dim userId = Await command.ExecuteScalarAsync()
+            Dim userId = Await command.ExecuteScalarAsync().ConfigureAwait(False)
             If userId IsNot Nothing Then
                 Return SelectUser(DirectCast(userId, String), trans)
             Else
@@ -1382,7 +1390,7 @@ Partial Public Class TemplateDatabase
             command.Parameters.AddWithValue("@name", user.Name)
 
 
-            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
         End Using
     End Function
 
@@ -1408,7 +1416,7 @@ Partial Public Class TemplateDatabase
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
             command.CommandText = "DELETE from users WHERE userId = @userid"
             command.Parameters.AddWithValue("@userid", userId)
-            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
         End Using
     End Function
 
@@ -1417,7 +1425,7 @@ Partial Public Class TemplateDatabase
     ''' <returns></returns>
     Public Function SelectJob(jobId As String, Optional trans As SqliteTransactionWrapper = Nothing) As LampJob
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            command.CommandText = "Select templateId, submitterId, approverId, approved, submitDate from Users 
+            command.CommandText = "Select templateId, submitterId, approverId, approved, submitDate from jobs 
                                           WHERE jobId = @jobId"
             command.Parameters.AddWithValue("@jobId", jobId)
 
@@ -1428,25 +1436,28 @@ Partial Public Class TemplateDatabase
                     Dim template = SelectTemplate(templateId)
 
                     Dim submitterId = reader.GetString(reader.GetOrdinal("submitterId"))
-                    Dim approverId = reader.GetString(reader.GetOrdinal("approverId"))
 
-                    Dim submitter As LampUser = Nothing
+                    Dim approverId As String = Nothing
+                    If Not reader.IsDBNull(reader.GetOrdinal("approverId")) Then
+                        approverId = reader.GetString(reader.GetOrdinal("approverId"))
+                    End If
+
+                    Dim submitterP As LampProfile = Nothing
                     If submitterId IsNot Nothing Then
-                        submitter = SelectUser(submitterId, trans)
+                        submitterP = SelectUser(submitterId, trans).ToProfile
                     End If
 
-                    Dim approver As LampUser = Nothing
+                    Dim approverP As LampProfile = Nothing
                     If approverId IsNot Nothing Then
-                        approver = SelectUser(approverId, trans)
+                        approverP = SelectUser(approverId, trans).ToProfile
                     End If
 
 
-                    Dim approved = reader.GetString(reader.GetOrdinal("approved"))
+                    Dim approved = reader.GetBoolean(reader.GetOrdinal("approved"))
                     Dim submitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
 
-                    job = New LampJob(template, submitter.ToProfile, approver.ToProfile, approved, submitDate)
+                    job = New LampJob(template, submitterP, approverP, approved, submitDate)
                 End If
-
                 Return job
             End Using
         End Using
@@ -1457,34 +1468,40 @@ Partial Public Class TemplateDatabase
     ''' <returns></returns>
     Public Async Function SelectJobAsync(jobId As String, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of LampJob)
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            command.CommandText = "Select templateId, submitterId, approverId, approved, submitDate from Users 
+            command.CommandText = "Select templateId, submitterId, approverId, approved, submitDate from jobs 
                                           WHERE jobId = @jobId"
             command.Parameters.AddWithValue("@jobId", jobId)
 
-            Using reader = Await command.ExecuteReaderAsync()
+            Using reader = Await command.ExecuteReaderAsync().ConfigureAwait(False)
                 Dim job As LampJob = Nothing
-                If Await reader.ReadAsync() Then
+                If Await reader.ReadAsync().ConfigureAwait(False) Then
+
                     Dim templateId = reader.GetString(reader.GetOrdinal("templateId"))
                     Dim template = SelectTemplate(templateId)
 
                     Dim submitterId = reader.GetString(reader.GetOrdinal("submitterId"))
-                    Dim approverId = reader.GetString(reader.GetOrdinal("approverId"))
 
-                    Dim submitter As LampUser = Nothing
+                    Dim approverId As String = Nothing
+                    If Not reader.IsDBNull(reader.GetOrdinal("approverId")) Then
+                        approverId = reader.GetString(reader.GetOrdinal("approverId"))
+                    End If
+
+                    ' TODO combine in 1 sql statement
+                    Dim submitterP As LampProfile = Nothing
                     If submitterId IsNot Nothing Then
-                        submitter = Await SelectUserAsync(submitterId, trans)
+                        submitterP = (Await SelectUserAsync(submitterId, trans)).ToProfile
                     End If
 
-                    Dim approver As LampUser = Nothing
+                    Dim approverP As LampProfile = Nothing
                     If approverId IsNot Nothing Then
-                        approver = Await SelectUserAsync(approverId, trans)
+                        approverP = (Await SelectUserAsync(approverId, trans).ConfigureAwait(False)).ToProfile
                     End If
 
 
-                    Dim approved = reader.GetString(reader.GetOrdinal("approved"))
+                    Dim approved = reader.GetBoolean(reader.GetOrdinal("approved"))
                     Dim submitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
 
-                    job = New LampJob(template, submitter.ToProfile, approver.ToProfile, approved, submitDate)
+                    job = New LampJob(template, submitterP, approverP, approved, submitDate)
                 End If
 
                 Return job
@@ -1493,14 +1510,12 @@ Partial Public Class TemplateDatabase
     End Function
 
     ''' <summary>
-    ''' Adds a job to the database
+    ''' Adds a job to the database, returns false if not inserted or not template in db
     ''' </summary>
     Public Function SetJob(job As LampJob, Optional trans As SqliteTransactionWrapper = Nothing) As Boolean
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            Dim fromDb = SelectTemplate(job.Template.GUID)
-            If fromDb Is Nothing Then
-                SetTemplate(job.Template, optTrans:=trans)
-            ElseIf Not fromDb.Equals(job.Template) Then
+            Dim fromDb = SelectTemplateAsync(job.Template.GUID)
+            If fromDb Is Nothing Then ' add check for 2 templates equal
                 Return False
             End If
 
@@ -1521,14 +1536,12 @@ Partial Public Class TemplateDatabase
     End Function
 
     ''' <summary>
-    ''' Adds a job to the database
+    ''' Adds a job to the database, returns false if not inserted or no template in db
     ''' </summary>
     Public Async Function SetJobAsync(job As LampJob, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            Dim fromDb = Await SelectTemplateAsync(job.Template.GUID)
-            If fromDb Is Nothing Then
-                Await SetTemplateAsync(job.Template, optTrans:=trans)
-            ElseIf Not fromDb.Equals(job.Template) Then
+            Dim fromDb = Await SelectTemplateMetadataAsync(job.Template.GUID).ConfigureAwait(False)
+            If fromDb Is Nothing Then ' add check for 2 template equal TODO
                 Return False
             End If
 
@@ -1544,7 +1557,7 @@ Partial Public Class TemplateDatabase
             command.Parameters.AddWithValue("@approverId", job.ApproverId)
             command.Parameters.AddWithValue("@approved", job.Approved)
 
-            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync())
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
         End Using
     End Function
 
@@ -1570,40 +1583,52 @@ Partial Public Class TemplateDatabase
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
             command.CommandText = "DELETE from jobs WHERE jobId = @jobId"
             command.Parameters.AddWithValue("@jobId", jobId)
-            Return Await command.ExecuteNonQueryAsync()
+            Return Await command.ExecuteNonQueryAsync().ConfigureAwait(False)
         End Using
     End Function
 
 End Class
 
 Public Class TemplateDatabase
-    ''' <summary>
-    ''' Finds a template in the database, given its corresponding guid
-    ''' If no template is found, returns nothing
-    ''' </summary>
-    ''' <returns></returns>
-    Public Function SelectTemplateWithTags(tags As List(Of String), Optional limit As Integer = 10, Optional offset As Integer = 0) As List(Of LampTemplate)
-        ' If the databse is open already, dont close it
+    Public Function GetMultipleTemplate(tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
+        If tags Is Nothing OrElse tags.Count() = 0 Then
+            Return GetTemplateList(limit, offset, includeUnapproved)
+        Else
+            Return SelectTemplateWithTags(tags, limit, offset, includeUnapproved)
+        End If
+    End Function
 
+    Public Async Function GetMultipleTemplateAsync(tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
+        If tags Is Nothing OrElse tags.Count() = 0 Then
+            Return Await GetTemplateListAsync(limit, offset, includeUnapproved).ConfigureAwait(False)
+        Else
+            Return Await SelectTemplateWithTagsAsync(tags, limit, offset, includeUnapproved).ConfigureAwait(False)
+        End If
+    End Function
+
+    ''' <summary>
+    ''' Gets a list of templates without tag filtering
+    ''' </summary>
+    ''' <param name="limit"></param>
+    ''' <param name="offset"></param>
+    ''' <param name="includeUnapproved"></param>
+    ''' <returns></returns>
+    Private Function GetTemplateList(limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingTemplates As New List(Of LampTemplate)
 
-            Dim tagParameters As New StringBuilder()
-            For i = 0 To tags.Count - 1
-                tagParameters.Insert(i, "@tag" + i.ToString())
-            Next
-            ' find all templates w/
-            command.CommandText = String.Format("Select guid from tags
-                                      WHERE tagName IN ({0})
-                                      LIMIT @limit
-                                      OFFSET @offset
-                                     ", tagParameters.ToString())
-            For i = 0 To tags.Count - 1
-                command.Parameters.AddWithValue("@tag" + i.ToString(), tags(i).ToLower())
-            Next
+            Dim approveText = "1"
+            If includeUnapproved = False Then
+                approveText = "approverId is not null"
+            End If
+
+            Dim stringCommand = String.Format("SELECT guid FROM template WHERE {0} 
+                                            LIMIT @limit
+                                            OFFSET @offset",
+                                           approveText)
+            command.CommandText = stringCommand
             command.Parameters.AddWithValue("@limit", limit)
             command.Parameters.AddWithValue("@offset", offset)
-
 
             Using sqlite_reader = command.ExecuteReader()
                 While sqlite_reader.Read()
@@ -1615,102 +1640,47 @@ Public Class TemplateDatabase
 
             Return matchingTemplates
         End Using
-
     End Function
 
     ''' <summary>
-    ''' Fills database with dxf files located in project root/templates
-    ''' The default files are stored in ExampleDxfFiles
+    ''' async version of <see cref="GetTemplateList(Integer, Integer, Boolean)"></see>
     ''' </summary>
-    Public Shared Sub FillDebugDatabase(Optional fileName As String = "templateDB.sqlite")
-        Dim db As New TemplateDatabase(fileName)
-        FillDebugDatabase(db)
-    End Sub
+    ''' <param name="limit"></param>
+    ''' <param name="offset"></param>
+    ''' <param name="includeUnapproved"></param>
+    ''' <returns></returns>
+    Private Async Function GetTemplateListAsync(limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
+        Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
+            Dim matchingTemplates As New List(Of LampTemplate)
 
-    ''' <summary>
-    ''' Fills the database with debug data
-    ''' </summary>
-    ''' <param name="db"></param>
-    Public Shared Sub FillDebugDatabase(db As TemplateDatabase)
-#If Not DEBUG Then
-        Throw New Exception("do not use debug db in Release Mode")
-#End If
-        Dim ExampleSpfFiles() As String = {"1.spf", "2.spf", "3.spf", "4.spf", "5.spf", "6.spf", "7.spf", "8.spf", "9.spf"}
+            Dim approveText = "1"
+            If includeUnapproved = False Then
+                approveText = "approverId is not null"
+            End If
 
-        ' add new templates 
-        For Each spfName As String In ExampleSpfFiles
-            Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", "spf", spfName))
-            Dim template = LampTemplate.FromFile(fp)
-            db.SetTemplate(template)
-        Next
+            Dim stringCommand = String.Format("SELECT guid FROM template WHERE {0} 
+                                            LIMIT @limit
+                                            OFFSET @offset",
+                                           approveText)
+            command.CommandText = stringCommand
+            command.Parameters.AddWithValue("@limit", limit)
+            command.Parameters.AddWithValue("@offset", offset)
 
-        ' add useres
-        Dim max As New LampUser(GetNewGuid(), UserPermission.Admin, "maxywartonyjonesy@gmail.com", "waxy", "memes", "steve by birth!")
-        db.SetUser(max)
+            Using sqlite_reader = Await command.ExecuteReaderAsync().ConfigureAwait(False)
+                While Await sqlite_reader.ReadAsync().ConfigureAwait(False)
+                    Dim guid = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
+                    matchingTemplates.Add(Await SelectTemplateAsync(guid).ConfigureAwait(False))
+                End While
 
-        Dim shovel = New LampUser(GetNewGuid(), UserPermission.Admin, "qshoveyl@gmail.com", "shourov", "shovel101", "Knot Jack")
-        db.SetUser(shovel)
+            End Using
 
-        Dim jack = New LampUser(GetNewGuid(), UserPermission.Admin, "jackywathyy123@gmail.com", "moji", "snack time", "shovel tool")
-        db.SetUser(jack)
-
-
-        Dim templates = db.GetAllTemplate
-
-        ' add jobs
-        Dim job As New LampJob(templates(0), max.ToProfile)
-        db.SetJob(job)
-
-        job = New LampJob(templates(1), shovel.ToProfile)
-        db.SetJob(job)
-    End Sub
-
-    Public Shared Async Function FillDebugDatabaseAsync(Optional fileName As String = "templateDB.sqlite") As Task
-        Dim db As New TemplateDatabase(fileName)
-        Await TemplateDatabase.FillDebugDatabaseAsync(db)
+            Return matchingTemplates
+        End Using
     End Function
-
-    Public Shared Async Function FillDebugDatabaseAsync(db As TemplateDatabase) As Task
-#If Not DEBUG Then
-        Throw New Exception("do not use debug db in Release Mode")
-#End If
-        Dim ExampleSpfFiles() As String = {"1.spf", "2.spf", "3.spf", "4.spf", "5.spf", "6.spf", "7.spf", "8.spf", "9.spf"}
-
-        ' add new templates 
-        For Each spfName As String In ExampleSpfFiles
-            Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", "spf", spfName))
-            Dim template = Await LampTemplate.FromFileAsync(fp)
-            Await db.SetTemplateAsync(template)
-        Next
-
-        ' add useres
-        Dim max As New LampUser(GetNewGuid(), UserPermission.Admin, "maxywartonyjonesy@gmail.com", "waxy", "memes", "steve by birth!")
-        Await db.SetUserAsync(max)
-
-        Dim shovel = New LampUser(GetNewGuid(), UserPermission.Admin, "qshoveyl@gmail.com", "shourov", "shovel101", "Knot Jack")
-        Await db.SetUserAsync(shovel)
-
-        Dim jack = New LampUser(GetNewGuid(), UserPermission.Admin, "jackywathyy123@gmail.com", "moji", "snack time", "shovel tool")
-        Await db.SetUserAsync(jack)
-
-
-        Dim templates = Await db.GetAllTemplateAsync
-
-        ' add jobs
-        Dim job As New LampJob(templates(0), max.ToProfile)
-        Await db.SetJobAsync(job)
-
-        job = New LampJob(templates(1), shovel.ToProfile)
-        Await db.SetJobAsync(job)
-    End Function
-
-    Public Sub FillDebugDatabase()
-        FillDebugDatabase(Me)
-    End Sub
-
 
     ''' <summary>
     ''' Gets all templates in the database
+    ''' Debug only
     ''' </summary>
     ''' <returns></returns>
     Public Function GetAllTemplate() As List(Of LampTemplate)
@@ -1754,6 +1724,211 @@ Public Class TemplateDatabase
         End Using
     End Function
 
+
+    ''' <summary>
+    ''' Finds a template in the database, given its corresponding guid
+    ''' If no template is found, returns nothing
+    ''' </summary>
+    ''' <returns></returns>
+    Private Function SelectTemplateWithTags(tags As List(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
+        ' If the databse is open already, dont close it
+
+        Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
+            Dim matchingTemplates As New List(Of LampTemplate)
+
+            If tags.Count() = 0 Then
+                Throw New Exception("must have at least 1 tag")
+            End If
+
+            Dim tagParameters As New StringBuilder()
+
+            For i = 0 To tags.Count - 1
+                tagParameters.Insert(i, "@tag" + i.ToString())
+            Next
+            Dim tagString = "tagName IN (" + tagParameters.ToString() + ")"
+
+            Dim approveText = "1"
+            If includeUnapproved = False Then
+                approveText = "(SELECT 1 from template WHERE template.guid = tags.guid and approverId is not null)"
+            End If
+
+            Dim stringCommand = String.Format("Select tags.guid from tags
+                                      WHERE {0} AND {1}
+                                      LIMIT @limit
+                                      OFFSET @offset
+                                     ", tagString, approveText)
+            ' find all templates w/
+            command.CommandText = stringCommand
+            For i = 0 To tags.Count - 1
+                command.Parameters.AddWithValue("@tag" + i.ToString(), tags(i).ToLower())
+            Next
+            command.Parameters.AddWithValue("@limit", limit)
+            command.Parameters.AddWithValue("@offset", offset)
+
+
+            Using sqlite_reader = command.ExecuteReader()
+                While sqlite_reader.Read()
+                    Dim guid = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
+                    matchingTemplates.Add(SelectTemplate(guid))
+                End While
+
+            End Using
+
+            Return matchingTemplates
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Finds a template in the database, given its corresponding guid
+    ''' If no template is found, returns nothing
+    ''' </summary>
+    ''' <returns></returns>
+    Private Async Function SelectTemplateWithTagsAsync(tags As List(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
+        Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
+            Dim matchingTemplates As New List(Of LampTemplate)
+
+            If tags.Count() = 0 Then
+                Throw New Exception("must have at least 1 tag")
+            End If
+
+            Dim tagParameters As New StringBuilder()
+
+            For i = 0 To tags.Count - 1
+                tagParameters.Insert(i, "@tag" + i.ToString())
+            Next
+            Dim tagString = "tagName IN (" + tagParameters.ToString() + ")"
+
+            Dim approveText = "1"
+            If includeUnapproved = False Then
+                approveText = "(SELECT 1 from template WHERE template.guid = tags.guid and approverId is not null)"
+            End If
+
+            Dim stringCommand = String.Format("Select tags.guid from tags
+                                      WHERE {0} AND {1}
+                                      LIMIT @limit
+                                      OFFSET @offset
+                                     ", tagString, approveText)
+            ' find all templates w/
+            command.CommandText = stringCommand
+            For i = 0 To tags.Count - 1
+                command.Parameters.AddWithValue("@tag" + i.ToString(), tags(i).ToLower())
+            Next
+            command.Parameters.AddWithValue("@limit", limit)
+            command.Parameters.AddWithValue("@offset", offset)
+
+
+            Using sqlite_reader = Await command.ExecuteReaderAsync().ConfigureAwait(False)
+                While Await sqlite_reader.ReadAsync().ConfigureAwait(False)
+                    Dim guid = sqlite_reader.GetString(sqlite_reader.GetOrdinal("guid"))
+                    matchingTemplates.Add(Await SelectTemplateAsync(guid).ConfigureAwait(False))
+                End While
+
+            End Using
+
+            Return matchingTemplates
+        End Using
+    End Function
+
+
+
+    ''' <summary>
+    ''' Fills database with dxf files located in project root/templates
+    ''' The default files are stored in ExampleDxfFiles
+    ''' </summary>
+    Public Shared Sub FillDebugDatabase(Optional fileName As String = "templateDB.sqlite")
+        Dim db As New TemplateDatabase(fileName)
+        FillDebugDatabase(db)
+    End Sub
+
+    ''' <summary>
+    ''' Fills the database with debug data
+    ''' </summary>
+    ''' <param name="db"></param>
+    Public Shared Sub FillDebugDatabase(db As TemplateDatabase)
+#If Not DEBUG Then
+        Throw New Exception("do not use debug db in Release Mode")
+#End If
+
+        ' add useres
+        Dim max As New LampUser(GetNewGuid(), UserPermission.Admin, "maxywartonyjonesy@gmail.com", "waxy", "memes", "steve by birth!")
+        db.SetUser(max)
+
+        Dim shovel = New LampUser(GetNewGuid(), UserPermission.Admin, "qshoveyl@gmail.com", "shourov", "shovel101", "Knot Jack")
+        db.SetUser(shovel)
+
+        Dim jack = New LampUser(GetNewGuid(), UserPermission.Admin, "jackywathyy123@gmail.com", "moji", "snack time", "shovel tool")
+        db.SetUser(jack)
+
+
+        Dim ExampleSpfFiles() As String = {"1.spf", "2.spf", "3.spf", "4.spf", "5.spf", "6.spf", "7.spf", "8.spf", "9.spf"}
+
+        ' add new templates 
+        For Each spfName As String In ExampleSpfFiles
+            Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", "spf", spfName))
+            Dim template = LampTemplate.FromFile(fp)
+            db.SetTemplate(template, shovel.UserId, shovel.UserId)
+        Next
+
+
+
+
+        Dim templates = db.GetAllTemplate
+
+        ' add jobs
+        Dim job As New LampJob(templates(0), max.ToProfile)
+        db.SetJob(job)
+
+        job = New LampJob(templates(1), shovel.ToProfile)
+        db.SetJob(job)
+    End Sub
+
+    Public Shared Async Function FillDebugDatabaseAsync(Optional fileName As String = "templateDB.sqlite") As Task
+        Dim db As New TemplateDatabase(fileName)
+        Await TemplateDatabase.FillDebugDatabaseAsync(db)
+    End Function
+
+    Public Shared Async Function FillDebugDatabaseAsync(db As TemplateDatabase) As Task
+#If Not DEBUG Then
+        Throw New Exception("do not use debug db in Release Mode")
+#End If
+        Dim ExampleSpfFiles() As String = {"1.spf", "2.spf", "3.spf", "4.spf", "5.spf", "6.spf", "7.spf", "8.spf", "9.spf"}
+        ' add useres
+        Dim max As New LampUser(GetNewGuid(), UserPermission.Admin, "maxywartonyjonesy@gmail.com", "waxy", "memes", "steve by birth!")
+        Await db.SetUserAsync(max).ConfigureAwait(False)
+
+        Dim shovel = New LampUser(GetNewGuid(), UserPermission.Admin, "qshoveyl@gmail.com", "shourov", "shovel101", "Knot Jack")
+        Await db.SetUserAsync(shovel).ConfigureAwait(False)
+
+        Dim jack = New LampUser(GetNewGuid(), UserPermission.Admin, "jackywathyy123@gmail.com", "moji", "snack time", "shovel tool")
+        Await db.SetUserAsync(jack).ConfigureAwait(False)
+
+        ' add new templates 
+        For Each spfName As String In ExampleSpfFiles
+            Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", "spf", spfName))
+            Dim template = Await LampTemplate.FromFileAsync(fp)
+            Await db.SetTemplateAsync(template, shovel.UserId, shovel.UserId).ConfigureAwait(False)
+        Next
+
+
+
+
+        Dim templates = Await db.GetAllTemplateAsync.ConfigureAwait(False)
+
+        ' add jobs
+        Dim job As New LampJob(templates(0), max.ToProfile)
+        Await db.SetJobAsync(job).ConfigureAwait(False)
+
+        job = New LampJob(templates(1), shovel.ToProfile)
+        Await db.SetJobAsync(job).ConfigureAwait(False)
+    End Function
+
+    Public Sub FillDebugDatabase()
+        FillDebugDatabase(Me)
+    End Sub
+
+
+
+
     ''' <summary>
     ''' Sets or unsets the approver of a template
     ''' if a template has an approver of nothing, it is counted as not approved
@@ -1782,7 +1957,7 @@ Public Class TemplateDatabase
             sqlite_cmd.CommandText = "UPDATE template SET approverId = @approverId"
             sqlite_cmd.Parameters.AddWithValue("@approverId", approver)
 
-            Return Convert.ToBoolean(Await sqlite_cmd.ExecuteNonQueryAsync())
+            Return Convert.ToBoolean(Await sqlite_cmd.ExecuteNonQueryAsync().ConfigureAwait(False))
         End Using
     End Function
 

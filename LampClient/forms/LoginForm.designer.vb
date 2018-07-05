@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class frmStart
+Partial Class LoginForm
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +22,7 @@ Partial Class frmStart
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmStart))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(LoginForm))
         Me.txtUser = New System.Windows.Forms.TextBox()
         Me.txtPass = New System.Windows.Forms.TextBox()
         Me.lblUser = New System.Windows.Forms.Label()
@@ -30,6 +30,7 @@ Partial Class frmStart
         Me.pbLogo = New System.Windows.Forms.PictureBox()
         Me.btnLogin = New System.Windows.Forms.Button()
         Me.btnCreate = New System.Windows.Forms.Button()
+        Me.PasswordCheckbox = New System.Windows.Forms.CheckBox()
         CType(Me.pbLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -102,11 +103,22 @@ Partial Class frmStart
         Me.btnCreate.Text = "Create Account"
         Me.btnCreate.UseVisualStyleBackColor = False
         '
-        'frmStart
+        'PasswordCheckbox
+        '
+        Me.PasswordCheckbox.AutoSize = True
+        Me.PasswordCheckbox.Location = New System.Drawing.Point(669, 531)
+        Me.PasswordCheckbox.Name = "PasswordCheckbox"
+        Me.PasswordCheckbox.Size = New System.Drawing.Size(104, 18)
+        Me.PasswordCheckbox.TabIndex = 7
+        Me.PasswordCheckbox.Text = "Save Password"
+        Me.PasswordCheckbox.UseVisualStyleBackColor = True
+        '
+        'LoginForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.SystemColors.ScrollBar
         Me.ClientSize = New System.Drawing.Size(1000, 750)
+        Me.Controls.Add(Me.PasswordCheckbox)
         Me.Controls.Add(Me.btnCreate)
         Me.Controls.Add(Me.btnLogin)
         Me.Controls.Add(Me.pbLogo)
@@ -117,7 +129,7 @@ Partial Class frmStart
         Me.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Name = "frmStart"
+        Me.Name = "LoginForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Log In"
         CType(Me.pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
@@ -133,4 +145,5 @@ Partial Class frmStart
     Friend WithEvents pbLogo As PictureBox
     Friend WithEvents btnLogin As Button
     Friend WithEvents btnCreate As Button
+    Friend WithEvents PasswordCheckbox As CheckBox
 End Class

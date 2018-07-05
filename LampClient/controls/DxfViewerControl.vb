@@ -102,7 +102,7 @@ Public Class DxfViewerControl
         UpdateView()
     End Sub
 
-    Private Sub DesignerScreen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-    End Sub
+
+
 End Class

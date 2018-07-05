@@ -25,19 +25,7 @@ Public Module OwO
         CurrentSender = sender
     End Sub
 
-    Public Sub Main()
-        InitalizeLibraries()
-        LampLocalWcfClient.Local = New LampLocalWcfClient(New LampService.LampServiceLocal)
-        SetServiceEndpoint(LampLocalWcfClient.Local)
 
-
-
-
-        Application.EnableVisualStyles()
-        Application.SetCompatibleTextRenderingDefault(False)
-        Application.Run(New DebugForm())
-
-    End Sub
 
     Sub InitalizeLibraries()
         ' extract necessary dll files

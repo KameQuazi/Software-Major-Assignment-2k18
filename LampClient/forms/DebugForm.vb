@@ -3,8 +3,8 @@ Imports LampService
 
 Public Class DebugForm
     Dim db As New TemplateDatabase()
-    Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
+    Private Async Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Await TemplateDatabase.FillDebugDatabaseAsync
         db.GetAllTemplate()
     End Sub
@@ -21,7 +21,7 @@ Public Class DebugForm
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        Dim screen As New frmStart()
+        Dim screen As New LoginForm()
         screen.ShowDialog()
     End Sub
 
@@ -36,7 +36,7 @@ Public Class DebugForm
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         Dim x = New TemplateSelectForm()
-        x.ShowDialog()
+        x.Show()
 
     End Sub
 
@@ -46,25 +46,11 @@ Public Class DebugForm
     End Sub
 
     Private Sub Test()
-        'TableLayoutPanel1.Controls.Add(New FileDisplay() With {.Text = "hello!"})
-        'TableLayoutPanel1.Padding = New Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0)
-        MultiTemplateViewer1.Templates.Clear()
+
     End Sub
 
     Private Async Sub Test2()
-        'TableLayoutPanel1.RowCount += 1
-        'TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.AutoSize))
-        ' Dim temps = New TemplateDatabase().GetAllTemplate.
-        Dim temps = Await CurrentSender.GetAllTemplateAsync(CurrentUser.ToCredentials)
 
-
-        MultiTemplateViewer1.Suspend()
-
-        For Each temp In temps
-            MultiTemplateViewer1.Templates.Add(temp)
-        Next
-
-        MultiTemplateViewer1.EndSuspend()
 
     End Sub
 
@@ -96,13 +82,6 @@ Public Class DebugForm
         x.StartListenerFromConfig()
     End Sub
 
-    Private Sub TestUserButton_Click(sender As Object, e As EventArgs) Handles TestUserButton.Click
-        Dim user = UserTbox.Text
-        Dim pass = PasswordTbox.Text
-        Dim newuser = CurrentSender.Authenticate(New LampCredentials(user, pass))
-        MessageBox.Show(newuser.Status.ToString)
-        CurrentUserTbox.Text = If(newuser.user, "").ToString
-    End Sub
 
     Private Sub Button12_Click(sender As Object, e As EventArgs) Handles Button12.Click
         Dim ref As New DebugRefpoints

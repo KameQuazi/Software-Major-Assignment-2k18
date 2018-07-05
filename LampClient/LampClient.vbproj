@@ -6,11 +6,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{3CBBC25D-39E3-4637-86DA-7EEB2B52E79A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Sub Main</StartupObject>
+    <StartupObject>LampClient.My.MyApplication</StartupObject>
     <RootNamespace>LampClient</RootNamespace>
     <AssemblyName>LampClient</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>WindowsFormsWithCustomSubMain</MyType>
+    <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
@@ -90,6 +90,7 @@
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.108.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Deployment" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -114,6 +115,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
     <Compile Include="controls\DxfViewerControl.Designer.vb">
       <DependentUpon>DxfViewerControl.vb</DependentUpon>
     </Compile>
@@ -132,10 +134,22 @@
     <Compile Include="controls\FileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="controls\JobViewerControl.Designer.vb">
+      <DependentUpon>JobViewerControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\JobViewerControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\MultiTemplateViewer.Designer.vb">
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
     </Compile>
     <Compile Include="controls\MultiTemplateViewer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\ProfileViewControl.Designer.vb">
+      <DependentUpon>ProfileViewControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\ProfileViewControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="controls\SingleDynamicTExt.Designer.vb">
@@ -150,16 +164,22 @@
     <Compile Include="controls\ToolBar.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="forms\AboutBox1.designer.vb">
-      <DependentUpon>AboutBox1.vb</DependentUpon>
+    <Compile Include="forms\AboutBox.designer.vb">
+      <DependentUpon>AboutBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\AboutBox1.vb">
+    <Compile Include="forms\AboutBox.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\CreateJob.Designer.vb">
-      <DependentUpon>CreateJob.vb</DependentUpon>
+    <Compile Include="forms\CloseBox.Designer.vb">
+      <DependentUpon>CloseBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\CreateJob.vb">
+    <Compile Include="forms\CloseBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\NewOrderForm.Designer.vb">
+      <DependentUpon>NewOrderForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\NewOrderForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\DBViewer.Designer.vb">
@@ -174,6 +194,18 @@
     <Compile Include="forms\DebugForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="forms\DebugOptions.Designer.vb">
+      <DependentUpon>DebugOptions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\DebugOptions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\DebugRefpoints.Designer.vb">
+      <DependentUpon>DebugRefpoints.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\DebugRefpoints.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="forms\DesignerForm.Designer.vb">
       <DependentUpon>DesignerForm.vb</DependentUpon>
     </Compile>
@@ -186,10 +218,16 @@
     <Compile Include="forms\DynamicTextCreationForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\Form1.Designer.vb">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <Compile Include="forms\HelpForm.Designer.vb">
+      <DependentUpon>HelpForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\Form1.vb">
+    <Compile Include="forms\HelpForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\HomeForm.Designer.vb">
+      <DependentUpon>HomeForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\HomeForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\LampInputBox.Designer.vb">
@@ -204,40 +242,34 @@
     <Compile Include="forms\LoginForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\Logout.Designer.vb">
-      <DependentUpon>Logout.vb</DependentUpon>
+    <Compile Include="forms\LogoutBox.Designer.vb">
+      <DependentUpon>LogoutBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\Logout.vb">
+    <Compile Include="forms\LogoutBox.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\Main.Designer.vb">
-      <DependentUpon>Main.vb</DependentUpon>
+    <Compile Include="forms\MyOrdersForm.Designer.vb">
+      <DependentUpon>MyOrdersForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\Main.vb">
+    <Compile Include="forms\MyOrdersForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\Options.Designer.vb">
-      <DependentUpon>Options.vb</DependentUpon>
+    <Compile Include="forms\MyTemplatesForm.Designer.vb">
+      <DependentUpon>MyTemplatesForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\Options.vb">
+    <Compile Include="forms\MyTemplatesForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\refpointTest.Designer.vb">
-      <DependentUpon>refpointTest.vb</DependentUpon>
+    <Compile Include="forms\TemplateEditorForm.Designer.vb">
+      <DependentUpon>TemplateEditorForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\refpointTest.vb">
+    <Compile Include="forms\TemplateEditorForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\TemplateEditor.Designer.vb">
-      <DependentUpon>TemplateEditor.vb</DependentUpon>
+    <Compile Include="forms\TemplateSelectForm.Designer.vb">
+      <DependentUpon>TemplateSelectForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\TemplateEditor.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="forms\TemplateSelect.Designer.vb">
-      <DependentUpon>TemplateSelect.vb</DependentUpon>
-    </Compile>
-    <Compile Include="forms\TemplateSelect.vb">
+    <Compile Include="forms\TemplateSelectForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="recievers\ILampWcfClient.vb" />
@@ -270,8 +302,14 @@
     <EmbeddedResource Include="controls\fileDisplay.resx">
       <DependentUpon>FileDisplay.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="controls\JobViewerControl.resx">
+      <DependentUpon>JobViewerControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\MultiTemplateViewer.resx">
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\ProfileViewControl.resx">
+      <DependentUpon>ProfileViewControl.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\SingleDynamicTExt.resx">
       <DependentUpon>SingleDynamicText.vb</DependentUpon>
@@ -279,11 +317,14 @@
     <EmbeddedResource Include="controls\ToolBar.resx">
       <DependentUpon>ToolBar.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\AboutBox1.resx">
-      <DependentUpon>AboutBox1.vb</DependentUpon>
+    <EmbeddedResource Include="forms\AboutBox.resx">
+      <DependentUpon>AboutBox.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\CreateJob.resx">
-      <DependentUpon>CreateJob.vb</DependentUpon>
+    <EmbeddedResource Include="forms\CloseBox.resx">
+      <DependentUpon>CloseBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\NewOrderForm.resx">
+      <DependentUpon>NewOrderForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\DBViewer.resx">
       <DependentUpon>DBViewer.vb</DependentUpon>
@@ -291,14 +332,20 @@
     <EmbeddedResource Include="forms\DebugForm.resx">
       <DependentUpon>DebugForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\DebugOptions.resx">
+      <DependentUpon>DebugOptions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\DebugRefpoints.resx">
+      <DependentUpon>DebugRefpoints.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\DesignerForm.resx">
       <DependentUpon>DesignerForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\DynamicTextCreationForm.resx">
       <DependentUpon>DynamicTextCreationForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\Form1.resx">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <EmbeddedResource Include="forms\HomeForm.resx">
+      <DependentUpon>HomeForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\LampInputBox.resx">
       <DependentUpon>LampInputBox.vb</DependentUpon>
@@ -306,23 +353,20 @@
     <EmbeddedResource Include="forms\LoginForm.resx">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\Logout.resx">
-      <DependentUpon>Logout.vb</DependentUpon>
+    <EmbeddedResource Include="forms\LogoutBox.resx">
+      <DependentUpon>LogoutBox.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\Main.resx">
-      <DependentUpon>Main.vb</DependentUpon>
+    <EmbeddedResource Include="forms\MyOrdersForm.resx">
+      <DependentUpon>MyOrdersForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\Options.resx">
-      <DependentUpon>Options.vb</DependentUpon>
+    <EmbeddedResource Include="forms\MyTemplatesForm.resx">
+      <DependentUpon>MyTemplatesForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\refpointTest.resx">
-      <DependentUpon>refpointTest.vb</DependentUpon>
+    <EmbeddedResource Include="forms\TemplateEditorForm.resx">
+      <DependentUpon>TemplateEditorForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\TemplateEditor.resx">
-      <DependentUpon>TemplateEditor.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="forms\TemplateSelect.resx">
-      <DependentUpon>TemplateSelect.vb</DependentUpon>
+    <EmbeddedResource Include="forms\TemplateSelectForm.resx">
+      <DependentUpon>TemplateSelectForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -371,6 +415,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo w Circle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo w Circle.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

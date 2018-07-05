@@ -2,7 +2,7 @@
 Imports System.Collections.Specialized
 Imports LampCommon
 
-Public Class TemplateSelect
+Public Class TemplateSelectForm
 
     Public ReadOnly Property Templates As ObservableCollection(Of LampTemplate)
 
@@ -34,7 +34,7 @@ Public Class TemplateSelect
 
     End Sub
 
-    Private Sub ToolBar1_Load(sender As Object, e As EventArgs) Handles ToolBar1.Load
+    Private Sub ToolBar1_Load(sender As Object, e As EventArgs) 
 
     End Sub
 End Class

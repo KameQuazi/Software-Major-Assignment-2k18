@@ -28,8 +28,8 @@ Partial Class TemplateSelectForm
         Me.Label2 = New System.Windows.Forms.Label()
         Me.cmbSort = New System.Windows.Forms.ComboBox()
         Me.lblSort = New System.Windows.Forms.Label()
-        Me.ToolBar1 = New Global.LampClient.ToolBar()
-        Me.MultiTemplateViewer1 = New Global.LampClient.MultiTemplateViewer()
+        Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
+        Me.ToolBar1 = New LampClient.ToolBar()
         Me.SuspendLayout()
         '
         'btnNext
@@ -90,17 +90,6 @@ Partial Class TemplateSelectForm
         Me.lblSort.TabIndex = 13
         Me.lblSort.Text = "Sort By:"
         '
-        'ToolBar1
-        '
-        Me.ToolBar1.BackColor = System.Drawing.Color.White
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.ScreenName = "Select Template"
-        Me.ToolBar1.Size = New System.Drawing.Size(1000, 96)
-        Me.ToolBar1.TabIndex = 18
-        Me.ToolBar1.TabStop = False
-        '
         'MultiTemplateViewer1
         '
         Me.MultiTemplateViewer1.Location = New System.Drawing.Point(80, 143)
@@ -108,14 +97,27 @@ Partial Class TemplateSelectForm
         Me.MultiTemplateViewer1.Size = New System.Drawing.Size(873, 561)
         Me.MultiTemplateViewer1.TabIndex = 19
         '
-        'TemplateSelect
+        'ToolBar1
+        '
+        Me.ToolBar1.BackColor = System.Drawing.Color.Fuchsia
+        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolBar1.HomeEnabled = True
+        Me.ToolBar1.Location = New System.Drawing.Point(22, 0)
+        Me.ToolBar1.MyOrdersEnabled = True
+        Me.ToolBar1.MyTrophyEnabled = True
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.NewOrderEnabled = True
+        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
+        Me.ToolBar1.TabIndex = 20
+        '
+        'TemplateSelectForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(1000, 750)
-        Me.Controls.Add(Me.MultiTemplateViewer1)
+        Me.ClientSize = New System.Drawing.Size(1248, 742)
         Me.Controls.Add(Me.ToolBar1)
+        Me.Controls.Add(Me.MultiTemplateViewer1)
         Me.Controls.Add(Me.lblSort)
         Me.Controls.Add(Me.cmbSort)
         Me.Controls.Add(Me.Label2)
@@ -124,7 +126,7 @@ Partial Class TemplateSelectForm
         Me.Controls.Add(Me.btnNext)
         Me.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Name = "TemplateSelect"
+        Me.Name = "TemplateSelectForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Viewer"
         Me.ResumeLayout(False)
@@ -137,6 +139,6 @@ Partial Class TemplateSelectForm
     Friend WithEvents Label2 As Label
     Friend WithEvents cmbSort As ComboBox
     Friend WithEvents lblSort As Label
-    Friend WithEvents ToolBar1 As ToolBar
     Friend WithEvents MultiTemplateViewer1 As MultiTemplateViewer
+    Friend WithEvents ToolBar1 As ToolBar
 End Class

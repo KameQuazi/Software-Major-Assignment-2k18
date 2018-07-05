@@ -1,18 +1,18 @@
 ﻿Imports System.Text
-Imports LAMP
 Imports Microsoft.VisualStudio.TestTools.UnitTesting.Assert
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports System.Drawing
 Imports System.IO
-Imports LAMP.LampDxfHelper
+Imports LampCommon.LampDxfHelper
 Imports netDxf.Entities
-
-
 Imports netDxf
+Imports LampCommon
 
-<TestClass()> Public Class LampDxfTest
 
-    <TestMethod()> Public Sub CartesianToGdiTest()
+<TestClass()>
+Public Class LampDxfTest
+    <TestMethod()>
+    Public Sub CartesianToGdiTest()
         Dim zero = New PointF(0, 0)
         ' test P(0, 0) with zero center
         AreEqual(CartesianToGdi(zero, 200, 200, 0, 0), New PointF(100, 100))
@@ -38,11 +38,11 @@ Imports netDxf
         dxf.AddLine(10, 10, 20, 0)
         dxf.AddLine(20, 0, 0, 0)
         Dim template As New LampTemplate(dxf)
-        template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(0, 0, 0)))
-        template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(30, 0, 0)))
-        template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(60, 0, 0)))
+        ' template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(0, 0, 0)))
+        ' template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(30, 0, 0)))
+        ' template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(60, 0, 0)))
         template.Save("template.spf")
-        template.CompletedDrawing.Save("finished drawing.dxf")
+        ' template.CompletedDrawing.Save("finished drawing.dxf")
     End Sub
 
     <TestMethod>

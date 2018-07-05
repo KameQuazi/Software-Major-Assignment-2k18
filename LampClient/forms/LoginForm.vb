@@ -1,35 +1,44 @@
 ﻿Imports LampCommon
 
-Public Class frmStart
-    Public lastform As String = "main"
-    Public curForm As String = "main"
-    Private Sub btnQuit_Click(sender As Object, e As EventArgs)
-        Me.Close()
-    End Sub
-
-    Private Sub btnAbout_Click(sender As Object, e As EventArgs)
-        AboutBox1.Show()
-    End Sub
-
-    Private Sub frmStart_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
-        curForm = "main"
-    End Sub
-
+Public Class LoginForm
     Private Sub btnLogin_Click(sender As Object, e As EventArgs) Handles btnLogin.Click
         Dim username = txtUser.Text
         Dim pass = txtPass.Text
+        Login(username, pass)
 
-        Dim login = CurrentSender.Authenticate(New LampCredentials(username, pass))
-        If login.Status = LampStatus.OK Then
-            CurrentUser = login.user
-            ' TODO login/give message to user
-            MessageBox.Show(String.Format("loggin succ: {0}", CurrentUser))
-        Else
-            ' TODO tell user that they're bad
-            ' 
-            MessageBox.Show(String.Format("login unsucc: {0})", login.Status))
+    End Sub
+
+    Private Sub LoginForm_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown, txtPass.KeyDown, txtUser.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            Dim username = txtUser.Text
+            Dim pass = txtPass.Text
+            Login(username, pass)
         End If
     End Sub
 
 
+    Private Function Login(username As String, password As String) As Boolean
+        Dim loginResponse = CurrentSender.Authenticate(New LampCredentials(username, password))
+        If loginResponse.Status = LampStatus.OK Then
+            CurrentUser = loginResponse.user
+
+            HomeForm.Show()
+            Me.Close()
+            Return True
+        Else
+            txtUser.Focus()
+            Return False
+        End If
+    End Function
+
+    Private Async Sub pbLogo_Click(sender As Object, e As EventArgs) Handles pbLogo.Click
+#If DEBUG Then
+        If Not Login("moji", "snack time") Then
+            Await TemplateDatabase.FillDebugDatabaseAsync
+            Login("moji", "snack time")
+
+        End If
+
+#End If
+    End Sub
 End Class

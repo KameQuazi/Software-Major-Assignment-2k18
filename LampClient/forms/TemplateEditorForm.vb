@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports LampCommon
 
-Public Class TemplateEditor
+Public Class TemplateEditorForm
     ''' <summary>
     ''' Array of 3 images
     ''' </summary>

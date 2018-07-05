@@ -11,7 +11,7 @@ Public Class LampLocalWcfClient
     ''' <summary>
     ''' global local wcf client
     ''' </summary>
-    Public Shared Property Local As ILampServiceBoth = New LampLocalWcfClient(New LampServiceLocal)
+    Public Shared Property Local As ILampServiceBoth = New LampLocalWcfClient(New LampServiceLocal("templateDB.sqlite"))
 
     Public Property Channel As LampServiceLocal
 
@@ -188,5 +188,12 @@ Public Class LampLocalWcfClient
         Return Channel.RemoveJobAsync(credentials, guid)
     End Function
 
+    Public Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As LampTemplateListWrapper Implements ILampService.GetTemplateList
+        Return DirectCast(Channel, ILampServiceBoth).GetTemplateList(credentials, tags, limit, offset, includeUnapproved)
+    End Function
+
+    Public Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of LampTemplateListWrapper) Implements ILampServiceAsync.GetTemplateListAsync
+        Return DirectCast(Channel, ILampServiceBoth).GetTemplateListAsync(credentials, tags, limit, offset, includeUnapproved)
+    End Function
 End Class
 

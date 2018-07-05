@@ -30,27 +30,30 @@ Partial Class DBViewer
         'DBGrid
         '
         Me.DBGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DBGrid.Location = New System.Drawing.Point(34, 44)
+        Me.DBGrid.Location = New System.Drawing.Point(45, 54)
+        Me.DBGrid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.DBGrid.Name = "DBGrid"
-        Me.DBGrid.Size = New System.Drawing.Size(751, 315)
+        Me.DBGrid.Size = New System.Drawing.Size(1001, 388)
         Me.DBGrid.TabIndex = 0
         '
         'btnUpdate
         '
-        Me.btnUpdate.Location = New System.Drawing.Point(466, 382)
+        Me.btnUpdate.Location = New System.Drawing.Point(621, 470)
+        Me.btnUpdate.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.btnUpdate.Name = "btnUpdate"
-        Me.btnUpdate.Size = New System.Drawing.Size(75, 23)
+        Me.btnUpdate.Size = New System.Drawing.Size(100, 28)
         Me.btnUpdate.TabIndex = 1
         Me.btnUpdate.Text = "Button1"
         Me.btnUpdate.UseVisualStyleBackColor = True
         '
         'DBViewer
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(814, 440)
+        Me.ClientSize = New System.Drawing.Size(1085, 542)
         Me.Controls.Add(Me.btnUpdate)
         Me.Controls.Add(Me.DBGrid)
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Name = "DBViewer"
         Me.Text = "DBViewer"
         CType(Me.DBGrid, System.ComponentModel.ISupportInitialize).EndInit()

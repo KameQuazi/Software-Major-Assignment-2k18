@@ -89,7 +89,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -107,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LampDxfTest.vb" />
+    <Compile Include="LampTemplateTest.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -123,6 +126,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="LampDatabaseTests.vb" />
+    <Compile Include="TestWcfLocalService.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -146,9 +150,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LAMP\LAMP.vbproj">
-      <Project>{5038e134-b806-4534-8152-0fd76115d27a}</Project>
-      <Name>LAMP</Name>
+    <ProjectReference Include="..\LampClient\LampClient.vbproj">
+      <Project>{3cbbc25d-39e3-4637-86da-7eeb2b52e79a}</Project>
+      <Name>LampClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LampCommon\LampCommon.vbproj">
+      <Project>{f78807ff-c75e-4b88-8055-c498c9cf813f}</Project>
+      <Name>LampCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LampService\LampService.vbproj">
+      <Project>{2aaf3bb9-ca07-4f22-96e4-566c299ae69a}</Project>
+      <Name>LampService</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
@@ -178,6 +190,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(SolutionDir)packages\System.Data.SQLite.Core.1.0.108.0\build\net451" "$(OutDir)" /y /f
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

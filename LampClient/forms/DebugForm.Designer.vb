@@ -34,212 +34,184 @@ Partial Class DebugForm
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Button10 = New System.Windows.Forms.Button()
         Me.Button11 = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.UserTbox = New System.Windows.Forms.TextBox()
-        Me.PasswordTbox = New System.Windows.Forms.TextBox()
-        Me.CurrentUserTbox = New System.Windows.Forms.RichTextBox()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.TestUserButton = New System.Windows.Forms.Button()
-        Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
+        Me.ToolBar1 = New LampClient.ToolBar()
+        Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
         Me.Button12 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(68, 52)
+        Me.Button1.BackColor = System.Drawing.Color.White
+        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button1.Location = New System.Drawing.Point(62, 160)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(151, 23)
+        Me.Button1.Size = New System.Drawing.Size(151, 35)
         Me.Button1.TabIndex = 0
         Me.Button1.Text = "Fill Database with data"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.Button1.UseVisualStyleBackColor = False
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(68, 96)
+        Me.Button2.BackColor = System.Drawing.Color.White
+        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button2.Location = New System.Drawing.Point(62, 204)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(151, 23)
+        Me.Button2.Size = New System.Drawing.Size(151, 35)
         Me.Button2.TabIndex = 1
         Me.Button2.Text = "View database"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.Button2.UseVisualStyleBackColor = False
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(68, 143)
+        Me.Button3.BackColor = System.Drawing.Color.White
+        Me.Button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button3.Location = New System.Drawing.Point(62, 251)
         Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(151, 23)
+        Me.Button3.Size = New System.Drawing.Size(151, 35)
         Me.Button3.TabIndex = 2
         Me.Button3.Text = "View Designer"
-        Me.Button3.UseVisualStyleBackColor = True
+        Me.Button3.UseVisualStyleBackColor = False
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(68, 187)
+        Me.Button4.BackColor = System.Drawing.Color.White
+        Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button4.Location = New System.Drawing.Point(62, 295)
         Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(151, 23)
+        Me.Button4.Size = New System.Drawing.Size(151, 35)
         Me.Button4.TabIndex = 3
         Me.Button4.Text = "View Login"
-        Me.Button4.UseVisualStyleBackColor = True
+        Me.Button4.UseVisualStyleBackColor = False
         '
         'Button5
         '
-        Me.Button5.Location = New System.Drawing.Point(246, 52)
+        Me.Button5.BackColor = System.Drawing.Color.White
+        Me.Button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button5.Location = New System.Drawing.Point(240, 160)
         Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(151, 23)
+        Me.Button5.Size = New System.Drawing.Size(151, 35)
         Me.Button5.TabIndex = 4
         Me.Button5.Text = "Reset Database"
-        Me.Button5.UseVisualStyleBackColor = True
+        Me.Button5.UseVisualStyleBackColor = False
         '
         'Button6
         '
-        Me.Button6.Location = New System.Drawing.Point(246, 96)
+        Me.Button6.BackColor = System.Drawing.Color.White
+        Me.Button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button6.Location = New System.Drawing.Point(240, 204)
         Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(151, 23)
+        Me.Button6.Size = New System.Drawing.Size(151, 35)
         Me.Button6.TabIndex = 5
         Me.Button6.Text = "View trophies"
-        Me.Button6.UseVisualStyleBackColor = True
+        Me.Button6.UseVisualStyleBackColor = False
         '
         'Button7
         '
-        Me.Button7.Location = New System.Drawing.Point(331, 398)
+        Me.Button7.BackColor = System.Drawing.Color.White
+        Me.Button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button7.Location = New System.Drawing.Point(178, 615)
         Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(151, 23)
+        Me.Button7.Size = New System.Drawing.Size(151, 36)
         Me.Button7.TabIndex = 6
         Me.Button7.Text = "Test"
-        Me.Button7.UseVisualStyleBackColor = True
+        Me.Button7.UseVisualStyleBackColor = False
         '
         'Button8
         '
-        Me.Button8.Location = New System.Drawing.Point(246, 143)
+        Me.Button8.BackColor = System.Drawing.Color.White
+        Me.Button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button8.Location = New System.Drawing.Point(240, 251)
         Me.Button8.Name = "Button8"
-        Me.Button8.Size = New System.Drawing.Size(151, 23)
+        Me.Button8.Size = New System.Drawing.Size(151, 35)
         Me.Button8.TabIndex = 7
         Me.Button8.Text = "Add template"
-        Me.Button8.UseVisualStyleBackColor = True
+        Me.Button8.UseVisualStyleBackColor = False
         '
         'Button9
         '
-        Me.Button9.Location = New System.Drawing.Point(356, 517)
+        Me.Button9.BackColor = System.Drawing.Color.White
+        Me.Button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button9.Location = New System.Drawing.Point(350, 615)
         Me.Button9.Name = "Button9"
-        Me.Button9.Size = New System.Drawing.Size(75, 23)
+        Me.Button9.Size = New System.Drawing.Size(75, 36)
         Me.Button9.TabIndex = 9
         Me.Button9.Text = "Test2"
-        Me.Button9.UseVisualStyleBackColor = True
+        Me.Button9.UseVisualStyleBackColor = False
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(331, 479)
+        Me.TextBox1.Location = New System.Drawing.Point(325, 587)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(100, 20)
         Me.TextBox1.TabIndex = 10
         '
         'Button10
         '
-        Me.Button10.Location = New System.Drawing.Point(246, 186)
+        Me.Button10.BackColor = System.Drawing.Color.White
+        Me.Button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button10.Location = New System.Drawing.Point(240, 294)
         Me.Button10.Name = "Button10"
-        Me.Button10.Size = New System.Drawing.Size(151, 23)
+        Me.Button10.Size = New System.Drawing.Size(151, 35)
         Me.Button10.TabIndex = 12
-        Me.Button10.Text = "ddynamictext"
-        Me.Button10.UseVisualStyleBackColor = True
+        Me.Button10.Text = "dynamictext"
+        Me.Button10.UseVisualStyleBackColor = False
         '
         'Button11
         '
-        Me.Button11.Location = New System.Drawing.Point(263, 240)
+        Me.Button11.BackColor = System.Drawing.Color.White
+        Me.Button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button11.Location = New System.Drawing.Point(62, 339)
         Me.Button11.Name = "Button11"
-        Me.Button11.Size = New System.Drawing.Size(75, 23)
-        Me.Button11.TabIndex = 15
-        Me.Button11.Text = "Service Start"
-        Me.Button11.UseVisualStyleBackColor = True
+        Me.Button11.Size = New System.Drawing.Size(151, 35)
+        Me.Button11.TabIndex = 14
+        Me.Button11.Text = "Home"
+        Me.Button11.UseVisualStyleBackColor = False
         '
-        'Label1
+        'ToolBar1
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(49, 398)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(27, 13)
-        Me.Label1.TabIndex = 16
-        Me.Label1.Text = "user"
+        Me.ToolBar1.BackColor = System.Drawing.Color.Fuchsia
+        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolBar1.HomeEnabled = True
+        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
+        Me.ToolBar1.MyOrdersEnabled = True
+        Me.ToolBar1.MyTrophyEnabled = True
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.NewOrderEnabled = True
+        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
+        Me.ToolBar1.TabIndex = 15
         '
-        'Label2
+        'DynamicFormCreation1
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(52, 431)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(52, 13)
-        Me.Label2.TabIndex = 17
-        Me.Label2.Text = "password"
-        '
-        'UserTbox
-        '
-        Me.UserTbox.Location = New System.Drawing.Point(121, 391)
-        Me.UserTbox.Name = "UserTbox"
-        Me.UserTbox.Size = New System.Drawing.Size(100, 20)
-        Me.UserTbox.TabIndex = 18
-        '
-        'PasswordTbox
-        '
-        Me.PasswordTbox.Location = New System.Drawing.Point(121, 431)
-        Me.PasswordTbox.Name = "PasswordTbox"
-        Me.PasswordTbox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.PasswordTbox.Size = New System.Drawing.Size(100, 20)
-        Me.PasswordTbox.TabIndex = 19
-        '
-        'CurrentUserTbox
-        '
-        Me.CurrentUserTbox.Location = New System.Drawing.Point(12, 533)
-        Me.CurrentUserTbox.Name = "CurrentUserTbox"
-        Me.CurrentUserTbox.Size = New System.Drawing.Size(250, 39)
-        Me.CurrentUserTbox.TabIndex = 20
-        Me.CurrentUserTbox.Text = ""
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(41, 517)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(63, 13)
-        Me.Label3.TabIndex = 21
-        Me.Label3.Text = "current user"
-        '
-        'TestUserButton
-        '
-        Me.TestUserButton.Location = New System.Drawing.Point(132, 469)
-        Me.TestUserButton.Name = "TestUserButton"
-        Me.TestUserButton.Size = New System.Drawing.Size(75, 23)
-        Me.TestUserButton.TabIndex = 22
-        Me.TestUserButton.Text = "submit"
-        Me.TestUserButton.UseVisualStyleBackColor = True
-        '
-        'MultiTemplateViewer1
-        '
-        Me.MultiTemplateViewer1.Location = New System.Drawing.Point(530, 12)
-        Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
-        Me.MultiTemplateViewer1.Size = New System.Drawing.Size(800, 600)
-        Me.MultiTemplateViewer1.TabIndex = 14
+        Me.DynamicFormCreation1.AutoScroll = True
+        Me.DynamicFormCreation1.BackColor = System.Drawing.Color.White
+        Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DynamicFormCreation1.Location = New System.Drawing.Point(480, 160)
+        Me.DynamicFormCreation1.Margin = New System.Windows.Forms.Padding(4)
+        Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
+        Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(0, 0, 17, 0)
+        Me.DynamicFormCreation1.Size = New System.Drawing.Size(684, 480)
+        Me.DynamicFormCreation1.TabIndex = 13
         '
         'Button12
         '
-        Me.Button12.Location = New System.Drawing.Point(287, 294)
+        Me.Button12.BackColor = System.Drawing.Color.White
+        Me.Button12.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button12.Location = New System.Drawing.Point(240, 339)
         Me.Button12.Name = "Button12"
-        Me.Button12.Size = New System.Drawing.Size(75, 23)
-        Me.Button12.TabIndex = 23
-        Me.Button12.Text = "refPointTest"
-        Me.Button12.UseVisualStyleBackColor = True
+        Me.Button12.Size = New System.Drawing.Size(151, 35)
+        Me.Button12.TabIndex = 16
+        Me.Button12.Text = "Test Refpoints"
+        Me.Button12.UseVisualStyleBackColor = False
         '
         'DebugForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
-        Me.ClientSize = New System.Drawing.Size(1342, 811)
+        Me.BackColor = System.Drawing.Color.Silver
+        Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.Button12)
-        Me.Controls.Add(Me.TestUserButton)
-        Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.CurrentUserTbox)
-        Me.Controls.Add(Me.PasswordTbox)
-        Me.Controls.Add(Me.UserTbox)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.ToolBar1)
         Me.Controls.Add(Me.Button11)
-        Me.Controls.Add(Me.MultiTemplateViewer1)
+        Me.Controls.Add(Me.DynamicFormCreation1)
         Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button9)
@@ -269,14 +241,8 @@ Partial Class DebugForm
     Friend WithEvents Button9 As Button
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Button10 As Button
-    Friend WithEvents MultiTemplateViewer1 As MultiTemplateViewer
+    Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
     Friend WithEvents Button11 As Button
-    Friend WithEvents Label1 As Label
-    Friend WithEvents Label2 As Label
-    Friend WithEvents UserTbox As TextBox
-    Friend WithEvents PasswordTbox As TextBox
-    Friend WithEvents CurrentUserTbox As RichTextBox
-    Friend WithEvents Label3 As Label
-    Friend WithEvents TestUserButton As Button
+    Friend WithEvents ToolBar1 As ToolBar
     Friend WithEvents Button12 As Button
 End Class
