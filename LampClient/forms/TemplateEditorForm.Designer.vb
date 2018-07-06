@@ -47,10 +47,13 @@ Partial Class TemplateEditorForm
         Me.Label3 = New System.Windows.Forms.Label()
         Me.LongDescription = New System.Windows.Forms.RichTextBox()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.DxfViewerControl1 = New Global.LampClient.DxfViewerControl()
         Me.GuidBox = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.NewGuidButton = New System.Windows.Forms.Button()
+        Me.RemoveDyn = New System.Windows.Forms.Button()
+        Me.adddyn = New System.Windows.Forms.Button()
+        Me.Dynbox = New System.Windows.Forms.ListBox()
+        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -246,16 +249,6 @@ Partial Class TemplateEditorForm
         Me.Button1.Text = "Save"
         Me.Button1.UseVisualStyleBackColor = True
         '
-        'DxfViewerControl1
-        '
-        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
-        Me.DxfViewerControl1.Location = New System.Drawing.Point(566, 197)
-        Me.DxfViewerControl1.Name = "DxfViewerControl1"
-        Me.DxfViewerControl1.Size = New System.Drawing.Size(342, 311)
-        Me.DxfViewerControl1.Drawing = Nothing
-        Me.DxfViewerControl1.TabIndex = 12
-        '
         'GuidBox
         '
         Me.GuidBox.Enabled = False
@@ -282,11 +275,53 @@ Partial Class TemplateEditorForm
         Me.NewGuidButton.Text = "New guid"
         Me.NewGuidButton.UseVisualStyleBackColor = True
         '
-        'TemplateEditor
+        'removedyn
+        '
+        Me.RemoveDyn.Location = New System.Drawing.Point(1079, 164)
+        Me.RemoveDyn.Name = "removedyn"
+        Me.RemoveDyn.Size = New System.Drawing.Size(113, 23)
+        Me.RemoveDyn.TabIndex = 27
+        Me.RemoveDyn.Text = "Remove Dyn"
+        Me.RemoveDyn.UseVisualStyleBackColor = True
+        '
+        'adddyn
+        '
+        Me.adddyn.Location = New System.Drawing.Point(998, 164)
+        Me.adddyn.Name = "adddyn"
+        Me.adddyn.Size = New System.Drawing.Size(75, 23)
+        Me.adddyn.TabIndex = 26
+        Me.adddyn.Text = "Add Dyn"
+        Me.adddyn.UseVisualStyleBackColor = True
+        '
+        'Dynbox
+        '
+        Me.Dynbox.FormattingEnabled = True
+        Me.Dynbox.Items.AddRange(New Object() {""})
+        Me.Dynbox.Location = New System.Drawing.Point(904, 12)
+        Me.Dynbox.Name = "Dynbox"
+        Me.Dynbox.Size = New System.Drawing.Size(322, 134)
+        Me.Dynbox.TabIndex = 25
+        '
+        'DxfViewerControl1
+        '
+        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
+        Me.DxfViewerControl1.Drawing = Nothing
+        Me.DxfViewerControl1.Location = New System.Drawing.Point(566, 197)
+        Me.DxfViewerControl1.Name = "DxfViewerControl1"
+        Me.DxfViewerControl1.Size = New System.Drawing.Size(342, 311)
+        Me.DxfViewerControl1.TabIndex = 12
+        Me.DxfViewerControl1.ZoomX = 1.0R
+        Me.DxfViewerControl1.ZoomY = 1.0R
+        '
+        'TemplateEditorForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(920, 520)
+        Me.ClientSize = New System.Drawing.Size(1221, 520)
+        Me.Controls.Add(Me.RemoveDyn)
+        Me.Controls.Add(Me.adddyn)
+        Me.Controls.Add(Me.Dynbox)
         Me.Controls.Add(Me.NewGuidButton)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.GuidBox)
@@ -310,7 +345,7 @@ Partial Class TemplateEditorForm
         Me.Controls.Add(Me.Preview3)
         Me.Controls.Add(Me.Preview2)
         Me.Controls.Add(Me.Preview1)
-        Me.Name = "TemplateEditor"
+        Me.Name = "TemplateEditorForm"
         Me.Text = "AddTemplate"
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).EndInit()
@@ -348,4 +383,7 @@ Partial Class TemplateEditorForm
     Friend WithEvents GuidBox As TextBox
     Friend WithEvents Label4 As Label
     Friend WithEvents NewGuidButton As Button
+    Friend WithEvents RemoveDyn As Button
+    Friend WithEvents adddyn As Button
+    Friend WithEvents Dynbox As ListBox
 End Class

@@ -415,7 +415,7 @@ Public NotInheritable Class LampTemplate
         NotifyPropertyChanged(NameOf(Tags))
     End Sub
 
-    Private _dynamicTextList As New ObservableCollection(Of DynamicTextKey)
+    Private _dynamicTextList As ObservableCollection(Of DynamicTextKey)
     ''' <summary>
     ''' Where the dynamic text will be stored:
     ''' </summary>
@@ -444,7 +444,7 @@ Public NotInheritable Class LampTemplate
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub DynamicTextList_PropertyChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
-        NotifyPropertyChanged("DynamicTextList")
+        NotifyPropertyChanged(NameOf(DynamicTextList))
     End Sub
 
     ''' <summary>
@@ -607,6 +607,7 @@ Public NotInheritable Class LampTemplate
         Me.GUID = guid
         Me.BaseDrawing = dxf
         Me.Tags = New ObservableCollection(Of String)
+        Me.DynamicTextList = New ObservableCollection(Of DynamicTextKey)
 
         PreviewImages = New ObservableCollection(Of Image)
         PreviewImages.ClearAsArray()

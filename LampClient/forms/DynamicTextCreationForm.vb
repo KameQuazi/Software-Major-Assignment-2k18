@@ -32,12 +32,17 @@ Public Class DynamicTextCreationForm
 
     End Sub
 
-    Sub New()
+    Sub New(Optional item As LampTemplate = Nothing)
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Source = LampTemplate.Empty
+        If item Is Nothing Then
+            Source = LampTemplate.Empty
+        Else
+            Source = item
+        End If
+
     End Sub
 
     Private Sub DynamicTextCreationForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load

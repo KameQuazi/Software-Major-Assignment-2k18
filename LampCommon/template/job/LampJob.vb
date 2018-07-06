@@ -21,6 +21,7 @@ Public Class LampJob
     ''' The job id of this job
     ''' </summary>
     ''' <returns></returns>
+    ''' 
     <JsonProperty("job_id")>
     Public Property JobId As String
         Get
@@ -31,6 +32,38 @@ Public Class LampJob
             NotifyPropertyChanged()
         End Set
     End Property
+
+
+    Private _dynamicTextDict As ObservableCollection(Of DynamicTextDictionary)
+    ''' <summary>
+    ''' Where the dynamic stuff
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("dynamic_text_dictionary")>
+    <DataMember>
+    Public Property DynamicTextDictionary As ObservableCollection(Of DynamicTextDictionary)
+        Get
+            Return _dynamicTextDict
+        End Get
+        Private Set(value As ObservableCollection(Of DynamicTextDictionary))
+            If _dynamicTextDict IsNot Nothing Then
+                RemoveHandler _dynamicTextDict.CollectionChanged, AddressOf DynamicTextDictionary_PropertyChanged
+            End If
+            _dynamicTextDict = value
+
+            If _dynamicTextDict IsNot Nothing Then
+                AddHandler _dynamicTextDict.CollectionChanged, AddressOf DynamicTextDictionary_PropertyChanged
+            End If
+        End Set
+    End Property
+    ''' <summary>
+    ''' Handler for dynamic text changes
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub DynamicTextDictionary_PropertyChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
+        NotifyPropertyChanged("DynamicTextDictionary")
+    End Sub
 
     Private _template As LampTemplate
     ''' <summary>
