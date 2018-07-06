@@ -863,7 +863,7 @@ Public Class LampServiceLocal
     End Function
 
 
-    Public Async Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of LampTemplateListWrapper) Implements ILampServiceBoth.GetTemplateListAsync
+    Public Async Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of LampTemplateListWrapper) Implements ILampServiceBoth.GetTemplateListAsync
         Dim response As New LampTemplateListWrapper
         Try
             If limit <= 0 Or offset < 0 Then
@@ -876,8 +876,15 @@ Public Class LampServiceLocal
                 Return response
             End If
 
+            If tags Is Nothing Then
+                tags = New List(Of String)
+            End If
+            If byUser Is Nothing Then
+                byUser = New List(Of String)
+            End If
+
             Dim auth = Await AuthenticateAsync(credentials)
-            If auth.user IsNot Nothing Then
+            If auth.user Is Nothing Then
                 response.Status = auth.Status
                 Return response
             End If
@@ -888,7 +895,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            response.Templates = Await Database.GetMultipleTemplateAsync(tags, limit, offset, includeUnapproved)
+            response.Templates = Await Database.GetMultipleTemplateAsync(tags, byUser, limit, offset, includeUnapproved)
             response.Status = LampStatus.OK
             Return response
 
@@ -899,7 +906,5 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Function GetUserTemplateListAsync(credentials As LampCredentials, limit As Integer, offset As Integer) As Task(Of LampTemplateListWrapper) Implements ILampServiceAsync.GetUserTemplateListAsync
-        Throw New NotImplementedException()
-    End Function
+
 End Class

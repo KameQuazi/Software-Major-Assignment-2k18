@@ -23,6 +23,8 @@ Partial Class MultiTemplateViewer
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.GridPanel = New System.Windows.Forms.TableLayoutPanel()
+        Me.LoadingPictureBox = New System.Windows.Forms.PictureBox()
+        CType(Me.LoadingPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GridPanel
@@ -41,17 +43,32 @@ Partial Class MultiTemplateViewer
         Me.GridPanel.Size = New System.Drawing.Size(800, 600)
         Me.GridPanel.TabIndex = 0
         '
+        'LoadingPictureBox
+        '
+        Me.LoadingPictureBox.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.LoadingPictureBox.Image = Global.LampClient.My.Resources.Resources.loading
+        Me.LoadingPictureBox.Location = New System.Drawing.Point(0, 0)
+        Me.LoadingPictureBox.Name = "LoadingPictureBox"
+        Me.LoadingPictureBox.Size = New System.Drawing.Size(800, 600)
+        Me.LoadingPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.LoadingPictureBox.TabIndex = 0
+        Me.LoadingPictureBox.TabStop = False
+        Me.LoadingPictureBox.Visible = False
+        '
         'MultiTemplateViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.LoadingPictureBox)
         Me.Controls.Add(Me.GridPanel)
         Me.DoubleBuffered = True
         Me.Name = "MultiTemplateViewer"
         Me.Size = New System.Drawing.Size(800, 600)
+        CType(Me.LoadingPictureBox, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
 
     Friend WithEvents GridPanel As TableLayoutPanel
+    Friend WithEvents LoadingPictureBox As PictureBox
 End Class

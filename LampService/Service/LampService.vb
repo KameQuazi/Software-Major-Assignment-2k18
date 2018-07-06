@@ -927,7 +927,7 @@ Public Class LampService
 
     Public Const MAX_TEMPLATES_PER_REQUEST = 50
 
-    Public Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As LampTemplateListWrapper Implements ILampService.GetTemplateList
+    Public Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As LampTemplateListWrapper Implements ILampService.GetTemplateList
         Dim response As New LampTemplateListWrapper
         Try
             If limit <= 0 Or offset < 0 Then
@@ -938,6 +938,13 @@ Public Class LampService
             If limit > MAX_TEMPLATES_PER_REQUEST Then
                 response.Status = LampStatus.InvalidParameters
                 Return response
+            End If
+
+            If tags Is Nothing Then
+                tags = New List(Of String)
+            End If
+            If byUser Is Nothing Then
+                byUser = New List(Of String)
             End If
 
             Dim auth = Authenticate(credentials)
@@ -952,7 +959,7 @@ Public Class LampService
                 Return response
             End If
 
-            response.Templates = Database.GetMultipleTemplate(tags, limit, offset, includeUnapproved)
+            response.Templates = Database.GetMultipleTemplate(tags, byUser, limit, offset, includeUnapproved)
             response.Status = LampStatus.OK
             Return response
 

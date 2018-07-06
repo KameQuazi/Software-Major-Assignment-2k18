@@ -55,6 +55,13 @@ Public Class MultiTemplateViewer
         ResumeLayout()
     End Sub
 
+    Friend Sub StopLoading()
+        LoadingPictureBox.Visible = False
+    End Sub
+
+    Friend Sub ShowLoading()
+        LoadingPictureBox.Visible = True
+    End Sub
 
     Private _suspend As Boolean = False
     Public Sub Suspend()
@@ -78,6 +85,7 @@ Public Class MultiTemplateViewer
             Return baseParams
         End Get
     End Property
+
 
 
 

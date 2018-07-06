@@ -1595,19 +1595,19 @@ Public Enum LampSort
 End Enum
 
 Public Class TemplateDatabase
-    Public Function GetMultipleTemplate(tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
+    Public Function GetMultipleTemplate(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
         If tags Is Nothing OrElse tags.Count() = 0 Then
-            Return GetTemplateList(limit, offset, includeUnapproved)
+            Return GetTemplateList(byUser, limit, offset, includeUnapproved)
         Else
-            Return SelectTemplateWithTags(tags, limit, offset, includeUnapproved)
+            Return SelectTemplateWithTags(tags, byUser, limit, offset, includeUnapproved)
         End If
     End Function
 
-    Public Async Function GetMultipleTemplateAsync(tags As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
+    Public Async Function GetMultipleTemplateAsync(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
         If tags Is Nothing OrElse tags.Count() = 0 Then
-            Return Await GetTemplateListAsync(limit, offset, includeUnapproved).ConfigureAwait(False)
+            Return Await GetTemplateListAsync(byUser, limit, offset, includeUnapproved).ConfigureAwait(False)
         Else
-            Return Await SelectTemplateWithTagsAsync(tags, limit, offset, includeUnapproved).ConfigureAwait(False)
+            Return Await SelectTemplateWithTagsAsync(tags, byUser, limit, offset, includeUnapproved).ConfigureAwait(False)
         End If
     End Function
 
@@ -1618,7 +1618,7 @@ Public Class TemplateDatabase
     ''' <param name="offset"></param>
     ''' <param name="includeUnapproved"></param>
     ''' <returns></returns>
-    Private Function GetTemplateList(limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
+    Private Function GetTemplateList(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingTemplates As New List(Of LampTemplate)
 
@@ -1627,13 +1627,28 @@ Public Class TemplateDatabase
                 approveText = "approverId is not null"
             End If
 
-            Dim stringCommand = String.Format("SELECT guid FROM template WHERE {0} 
+            Dim userParameter = "1"
+            If byUser.Count <> 0 Then
+                userParameter = "template.creatorId in ("
+                For i = 0 To byUser.Count() - 1
+                    userParameter += ("@user" + i.ToString())
+                Next
+
+                userParameter += ")"
+            End If
+
+
+            Dim stringCommand = String.Format("SELECT guid FROM template WHERE {0} AND {1}
                                             LIMIT @limit
                                             OFFSET @offset",
-                                           approveText)
+                                           approveText, userParameter)
             command.CommandText = stringCommand
             command.Parameters.AddWithValue("@limit", limit)
             command.Parameters.AddWithValue("@offset", offset)
+
+            For i = 0 To byUser.Count() - 1
+                command.Parameters.AddWithValue("@user" + i.ToString(), byUser(i))
+            Next
 
             Using sqlite_reader = command.ExecuteReader()
                 While sqlite_reader.Read()
@@ -1648,13 +1663,13 @@ Public Class TemplateDatabase
     End Function
 
     ''' <summary>
-    ''' async version of <see cref="GetTemplateList(Integer, Integer, Boolean)"></see>
+    ''' async version of <see cref="GetTemplateList(IEnumerable(Of String),Integer , Integer, Boolean)"></see>
     ''' </summary>
     ''' <param name="limit"></param>
     ''' <param name="offset"></param>
     ''' <param name="includeUnapproved"></param>
     ''' <returns></returns>
-    Private Async Function GetTemplateListAsync(limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
+    Private Async Function GetTemplateListAsync(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingTemplates As New List(Of LampTemplate)
 
@@ -1663,13 +1678,27 @@ Public Class TemplateDatabase
                 approveText = "approverId is not null"
             End If
 
-            Dim stringCommand = String.Format("SELECT guid FROM template WHERE {0} 
+            Dim userParameter = "1"
+            If byUser.Count <> 0 Then
+                userParameter = "template.creatorId in ("
+                For i = 0 To byUser.Count() - 1
+                    userParameter += ("@user" + i.ToString())
+                Next
+
+                userParameter += ")"
+            End If
+
+            Dim stringCommand = String.Format("SELECT guid FROM template WHERE {0} AND {1}
                                             LIMIT @limit
                                             OFFSET @offset",
-                                           approveText)
+                                           approveText, userParameter)
             command.CommandText = stringCommand
             command.Parameters.AddWithValue("@limit", limit)
             command.Parameters.AddWithValue("@offset", offset)
+
+            For i = 0 To byUser.Count() - 1
+                command.Parameters.AddWithValue("@user" + i.ToString(), byUser(i))
+            Next
 
             Using sqlite_reader = Await command.ExecuteReaderAsync().ConfigureAwait(False)
                 While Await sqlite_reader.ReadAsync().ConfigureAwait(False)
@@ -1735,7 +1764,7 @@ Public Class TemplateDatabase
     ''' If no template is found, returns nothing
     ''' </summary>
     ''' <returns></returns>
-    Private Function SelectTemplateWithTags(tags As List(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
+    Private Function SelectTemplateWithTags(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
         ' If the databse is open already, dont close it
 
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
@@ -1745,12 +1774,22 @@ Public Class TemplateDatabase
                 Throw New Exception("must have at least 1 tag")
             End If
 
-            Dim tagParameters As New StringBuilder()
-
+            Dim tagParameters = "tagName IN ("
             For i = 0 To tags.Count - 1
-                tagParameters.Insert(i, "@tag" + i.ToString())
+                tagParameters += "@tag" + i.ToString()
             Next
-            Dim tagString = "tagName IN (" + tagParameters.ToString() + ")"
+            tagParameters += ")"
+
+            Dim userParameter = "1"
+            If byUser.Count <> 0 Then
+                userParameter = "template.creatorId in ("
+                For i = 0 To byUser.Count() - 1
+                    userParameter += ("@user" + i.ToString())
+                Next
+
+                userParameter += ")"
+            End If
+
 
             Dim approveText = "1"
             If includeUnapproved = False Then
@@ -1758,15 +1797,21 @@ Public Class TemplateDatabase
             End If
 
             Dim stringCommand = String.Format("Select tags.guid from tags
-                                      WHERE {0} AND {1}
+                                      WHERE {0} AND {1} AND {2}
                                       LIMIT @limit
                                       OFFSET @offset
-                                     ", tagString, approveText)
+                                     ", tagParameters, approveText, userParameter)
             ' find all templates w/
             command.CommandText = stringCommand
             For i = 0 To tags.Count - 1
                 command.Parameters.AddWithValue("@tag" + i.ToString(), tags(i).ToLower())
             Next
+
+            For i = 0 To byUser.Count() - 1
+                command.Parameters.AddWithValue("@user" + i.ToString(), byUser(i))
+            Next
+
+
             command.Parameters.AddWithValue("@limit", limit)
             command.Parameters.AddWithValue("@offset", offset)
 
@@ -1788,7 +1833,7 @@ Public Class TemplateDatabase
     ''' If no template is found, returns nothing
     ''' </summary>
     ''' <returns></returns>
-    Private Async Function SelectTemplateWithTagsAsync(tags As List(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
+    Private Async Function SelectTemplateWithTagsAsync(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingTemplates As New List(Of LampTemplate)
 
@@ -1803,21 +1848,38 @@ Public Class TemplateDatabase
             Next
             Dim tagString = "tagName IN (" + tagParameters.ToString() + ")"
 
+            Dim userParameter = "1"
+            If byUser.Count <> 0 Then
+                userParameter = "template.creatorId in ("
+                For i = 0 To byUser.Count() - 1
+                    userParameter += ("@user" + i.ToString())
+                Next
+
+                userParameter += ")"
+            End If
+
+
+
             Dim approveText = "1"
             If includeUnapproved = False Then
                 approveText = "(SELECT 1 from template WHERE template.guid = tags.guid and approverId is not null)"
             End If
 
             Dim stringCommand = String.Format("Select tags.guid from tags
-                                      WHERE {0} AND {1}
+                                      WHERE {0} AND {1} AND {2}
                                       LIMIT @limit
                                       OFFSET @offset
-                                     ", tagString, approveText)
+                                     ", tagString, approveText, userParameter)
             ' find all templates w/
             command.CommandText = stringCommand
             For i = 0 To tags.Count - 1
                 command.Parameters.AddWithValue("@tag" + i.ToString(), tags(i).ToLower())
             Next
+
+            For i = 0 To byUser.Count() - 1
+                command.Parameters.AddWithValue("@user" + i.ToString(), byUser(i))
+            Next
+
             command.Parameters.AddWithValue("@limit", limit)
             command.Parameters.AddWithValue("@offset", offset)
 
