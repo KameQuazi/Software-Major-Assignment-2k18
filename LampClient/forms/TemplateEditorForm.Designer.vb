@@ -54,6 +54,7 @@ Partial Class TemplateEditorForm
         Me.adddyn = New System.Windows.Forms.Button()
         Me.Dynbox = New System.Windows.Forms.ListBox()
         Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
+        Me.ToolBar1 = New LampClient.ToolBar()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -64,7 +65,7 @@ Partial Class TemplateEditorForm
         Me.Preview1.BackColor = System.Drawing.Color.White
         Me.Preview1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Preview1.Location = New System.Drawing.Point(45, 444)
-        Me.Preview1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Preview1.Margin = New System.Windows.Forms.Padding(4)
         Me.Preview1.Name = "Preview1"
         Me.Preview1.Size = New System.Drawing.Size(187, 147)
         Me.Preview1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -76,7 +77,7 @@ Partial Class TemplateEditorForm
         Me.Preview2.BackColor = System.Drawing.Color.White
         Me.Preview2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Preview2.Location = New System.Drawing.Point(280, 444)
-        Me.Preview2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Preview2.Margin = New System.Windows.Forms.Padding(4)
         Me.Preview2.Name = "Preview2"
         Me.Preview2.Size = New System.Drawing.Size(187, 147)
         Me.Preview2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -88,7 +89,7 @@ Partial Class TemplateEditorForm
         Me.Preview3.BackColor = System.Drawing.Color.White
         Me.Preview3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Preview3.Location = New System.Drawing.Point(512, 444)
-        Me.Preview3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Preview3.Margin = New System.Windows.Forms.Padding(4)
         Me.Preview3.Name = "Preview3"
         Me.Preview3.Size = New System.Drawing.Size(187, 147)
         Me.Preview3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -98,19 +99,19 @@ Partial Class TemplateEditorForm
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(45, 143)
+        Me.Label1.Location = New System.Drawing.Point(13, 143)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(49, 17)
+        Me.Label1.Size = New System.Drawing.Size(38, 13)
         Me.Label1.TabIndex = 3
         Me.Label1.Text = "Name:"
         '
         'NameBox
         '
-        Me.NameBox.Location = New System.Drawing.Point(133, 140)
-        Me.NameBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.NameBox.Location = New System.Drawing.Point(76, 143)
+        Me.NameBox.Margin = New System.Windows.Forms.Padding(4)
         Me.NameBox.Name = "NameBox"
-        Me.NameBox.Size = New System.Drawing.Size(347, 22)
+        Me.NameBox.Size = New System.Drawing.Size(347, 20)
         Me.NameBox.TabIndex = 4
         '
         'SelectDxf
@@ -118,7 +119,7 @@ Partial Class TemplateEditorForm
         Me.SelectDxf.BackColor = System.Drawing.Color.White
         Me.SelectDxf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.SelectDxf.Location = New System.Drawing.Point(304, 664)
-        Me.SelectDxf.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SelectDxf.Margin = New System.Windows.Forms.Padding(4)
         Me.SelectDxf.Name = "SelectDxf"
         Me.SelectDxf.Size = New System.Drawing.Size(100, 28)
         Me.SelectDxf.TabIndex = 6
@@ -139,7 +140,7 @@ Partial Class TemplateEditorForm
         Me.AddToDb.BackColor = System.Drawing.Color.White
         Me.AddToDb.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.AddToDb.Location = New System.Drawing.Point(581, 664)
-        Me.AddToDb.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.AddToDb.Margin = New System.Windows.Forms.Padding(4)
         Me.AddToDb.Name = "AddToDb"
         Me.AddToDb.Size = New System.Drawing.Size(100, 28)
         Me.AddToDb.TabIndex = 7
@@ -152,7 +153,7 @@ Partial Class TemplateEditorForm
         Me.DxfIndicator.Location = New System.Drawing.Point(334, 357)
         Me.DxfIndicator.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.DxfIndicator.Name = "DxfIndicator"
-        Me.DxfIndicator.Size = New System.Drawing.Size(0, 17)
+        Me.DxfIndicator.Size = New System.Drawing.Size(0, 13)
         Me.DxfIndicator.TabIndex = 9
         '
         'ExportSpf
@@ -160,7 +161,7 @@ Partial Class TemplateEditorForm
         Me.ExportSpf.BackColor = System.Drawing.Color.White
         Me.ExportSpf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ExportSpf.Location = New System.Drawing.Point(129, 664)
-        Me.ExportSpf.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ExportSpf.Margin = New System.Windows.Forms.Padding(4)
         Me.ExportSpf.Name = "ExportSpf"
         Me.ExportSpf.Size = New System.Drawing.Size(157, 28)
         Me.ExportSpf.TabIndex = 10
@@ -172,7 +173,7 @@ Partial Class TemplateEditorForm
         Me.ExportDxf.BackColor = System.Drawing.Color.White
         Me.ExportDxf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ExportDxf.Location = New System.Drawing.Point(412, 664)
-        Me.ExportDxf.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ExportDxf.Margin = New System.Windows.Forms.Padding(4)
         Me.ExportDxf.Name = "ExportDxf"
         Me.ExportDxf.Size = New System.Drawing.Size(135, 28)
         Me.ExportDxf.TabIndex = 11
@@ -190,12 +191,11 @@ Partial Class TemplateEditorForm
         'TagsBox
         '
         Me.TagsBox.FormattingEnabled = True
-        Me.TagsBox.ItemHeight = 16
         Me.TagsBox.Items.AddRange(New Object() {""})
-        Me.TagsBox.Location = New System.Drawing.Point(776, 131)
-        Me.TagsBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TagsBox.Location = New System.Drawing.Point(493, 153)
+        Me.TagsBox.Margin = New System.Windows.Forms.Padding(4)
         Me.TagsBox.Name = "TagsBox"
-        Me.TagsBox.Size = New System.Drawing.Size(428, 116)
+        Me.TagsBox.Size = New System.Drawing.Size(428, 134)
         Me.TagsBox.TabIndex = 13
         '
         'SpfOpenDialog
@@ -207,7 +207,7 @@ Partial Class TemplateEditorForm
         Me.ImportSpf.BackColor = System.Drawing.Color.White
         Me.ImportSpf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ImportSpf.Location = New System.Drawing.Point(21, 664)
-        Me.ImportSpf.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ImportSpf.Margin = New System.Windows.Forms.Padding(4)
         Me.ImportSpf.Name = "ImportSpf"
         Me.ImportSpf.Size = New System.Drawing.Size(100, 28)
         Me.ImportSpf.TabIndex = 14
@@ -218,8 +218,8 @@ Partial Class TemplateEditorForm
         '
         Me.AddTag.BackColor = System.Drawing.Color.White
         Me.AddTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.AddTag.Location = New System.Drawing.Point(901, 270)
-        Me.AddTag.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.AddTag.Location = New System.Drawing.Point(512, 311)
+        Me.AddTag.Margin = New System.Windows.Forms.Padding(4)
         Me.AddTag.Name = "AddTag"
         Me.AddTag.Size = New System.Drawing.Size(100, 28)
         Me.AddTag.TabIndex = 15
@@ -230,8 +230,8 @@ Partial Class TemplateEditorForm
         '
         Me.RemoveTag.BackColor = System.Drawing.Color.White
         Me.RemoveTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.RemoveTag.Location = New System.Drawing.Point(1009, 270)
-        Me.RemoveTag.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RemoveTag.Location = New System.Drawing.Point(722, 311)
+        Me.RemoveTag.Margin = New System.Windows.Forms.Padding(4)
         Me.RemoveTag.Name = "RemoveTag"
         Me.RemoveTag.Size = New System.Drawing.Size(151, 28)
         Me.RemoveTag.TabIndex = 16
@@ -240,8 +240,8 @@ Partial Class TemplateEditorForm
         '
         'ShortDescription
         '
-        Me.ShortDescription.Location = New System.Drawing.Point(129, 186)
-        Me.ShortDescription.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ShortDescription.Location = New System.Drawing.Point(76, 175)
+        Me.ShortDescription.Margin = New System.Windows.Forms.Padding(4)
         Me.ShortDescription.Name = "ShortDescription"
         Me.ShortDescription.Size = New System.Drawing.Size(351, 43)
         Me.ShortDescription.TabIndex = 17
@@ -250,27 +250,27 @@ Partial Class TemplateEditorForm
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(45, 264)
+        Me.Label2.Location = New System.Drawing.Point(8, 248)
         Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(79, 17)
+        Me.Label2.Size = New System.Drawing.Size(60, 13)
         Me.Label2.TabIndex = 18
         Me.Label2.Text = "Description"
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(45, 190)
+        Me.Label3.Location = New System.Drawing.Point(18, 186)
         Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(67, 17)
+        Me.Label3.Size = New System.Drawing.Size(50, 13)
         Me.Label3.TabIndex = 19
         Me.Label3.Text = "Summary"
         '
         'LongDescription
         '
-        Me.LongDescription.Location = New System.Drawing.Point(129, 260)
-        Me.LongDescription.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.LongDescription.Location = New System.Drawing.Point(72, 236)
+        Me.LongDescription.Margin = New System.Windows.Forms.Padding(4)
         Me.LongDescription.Name = "LongDescription"
         Me.LongDescription.Size = New System.Drawing.Size(351, 149)
         Me.LongDescription.TabIndex = 20
@@ -281,43 +281,29 @@ Partial Class TemplateEditorForm
         Me.Button1.BackColor = System.Drawing.Color.White
         Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Button1.Location = New System.Drawing.Point(581, 628)
-        Me.Button1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Button1.Margin = New System.Windows.Forms.Padding(4)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(100, 28)
         Me.Button1.TabIndex = 21
         Me.Button1.Text = "Save"
         Me.Button1.UseVisualStyleBackColor = False
         '
-        'DxfViewerControl1
-        '
-        Me.DxfViewerControl1.BackColor = System.Drawing.Color.White
-        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
-        Me.DxfViewerControl1.Drawing = Nothing
-        Me.DxfViewerControl1.Location = New System.Drawing.Point(763, 310)
-        Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
-        Me.DxfViewerControl1.Name = "DxfViewerControl1"
-        Me.DxfViewerControl1.Size = New System.Drawing.Size(455, 382)
-        Me.DxfViewerControl1.TabIndex = 12
-        Me.DxfViewerControl1.ZoomX = 1.0R
-        Me.DxfViewerControl1.ZoomY = 1.0R
-        '
         'GuidBox
         '
         Me.GuidBox.Enabled = False
-        Me.GuidBox.Location = New System.Drawing.Point(536, 140)
-        Me.GuidBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GuidBox.Location = New System.Drawing.Point(72, 403)
+        Me.GuidBox.Margin = New System.Windows.Forms.Padding(4)
         Me.GuidBox.Name = "GuidBox"
-        Me.GuidBox.Size = New System.Drawing.Size(228, 22)
+        Me.GuidBox.Size = New System.Drawing.Size(228, 20)
         Me.GuidBox.TabIndex = 22
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(489, 143)
+        Me.Label4.Location = New System.Drawing.Point(22, 403)
         Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(38, 17)
+        Me.Label4.Size = New System.Drawing.Size(29, 13)
         Me.Label4.TabIndex = 23
         Me.Label4.Text = "Guid"
         '
@@ -325,28 +311,28 @@ Partial Class TemplateEditorForm
         '
         Me.NewGuidButton.BackColor = System.Drawing.Color.White
         Me.NewGuidButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.NewGuidButton.Location = New System.Drawing.Point(614, 178)
-        Me.NewGuidButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.NewGuidButton.Location = New System.Drawing.Point(327, 398)
+        Me.NewGuidButton.Margin = New System.Windows.Forms.Padding(4)
         Me.NewGuidButton.Name = "NewGuidButton"
         Me.NewGuidButton.Size = New System.Drawing.Size(100, 28)
         Me.NewGuidButton.TabIndex = 24
         Me.NewGuidButton.Text = "New guid"
         Me.NewGuidButton.UseVisualStyleBackColor = False
         '
-        'removedyn
+        'RemoveDyn
         '
-        Me.RemoveDyn.Location = New System.Drawing.Point(1079, 164)
-        Me.RemoveDyn.Name = "removedyn"
-        Me.RemoveDyn.Size = New System.Drawing.Size(113, 23)
+        Me.RemoveDyn.Location = New System.Drawing.Point(1228, 311)
+        Me.RemoveDyn.Name = "RemoveDyn"
+        Me.RemoveDyn.Size = New System.Drawing.Size(130, 28)
         Me.RemoveDyn.TabIndex = 27
         Me.RemoveDyn.Text = "Remove Dyn"
         Me.RemoveDyn.UseVisualStyleBackColor = True
         '
         'adddyn
         '
-        Me.adddyn.Location = New System.Drawing.Point(998, 164)
+        Me.adddyn.Location = New System.Drawing.Point(1056, 311)
         Me.adddyn.Name = "adddyn"
-        Me.adddyn.Size = New System.Drawing.Size(75, 23)
+        Me.adddyn.Size = New System.Drawing.Size(95, 28)
         Me.adddyn.TabIndex = 26
         Me.adddyn.Text = "Add Dyn"
         Me.adddyn.UseVisualStyleBackColor = True
@@ -355,28 +341,45 @@ Partial Class TemplateEditorForm
         '
         Me.Dynbox.FormattingEnabled = True
         Me.Dynbox.Items.AddRange(New Object() {""})
-        Me.Dynbox.Location = New System.Drawing.Point(904, 12)
+        Me.Dynbox.Location = New System.Drawing.Point(1009, 153)
         Me.Dynbox.Name = "Dynbox"
-        Me.Dynbox.Size = New System.Drawing.Size(322, 134)
+        Me.Dynbox.Size = New System.Drawing.Size(372, 134)
         Me.Dynbox.TabIndex = 25
         '
         'DxfViewerControl1
         '
+        Me.DxfViewerControl1.BackColor = System.Drawing.Color.White
         Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
         Me.DxfViewerControl1.Drawing = Nothing
-        Me.DxfViewerControl1.Location = New System.Drawing.Point(566, 197)
+        Me.DxfViewerControl1.Location = New System.Drawing.Point(752, 403)
+        Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(5)
         Me.DxfViewerControl1.Name = "DxfViewerControl1"
         Me.DxfViewerControl1.Size = New System.Drawing.Size(342, 311)
         Me.DxfViewerControl1.TabIndex = 12
         Me.DxfViewerControl1.ZoomX = 1.0R
         Me.DxfViewerControl1.ZoomY = 1.0R
         '
+        'ToolBar1
+        '
+        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolBar1.HomeEnabled = True
+        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
+        Me.ToolBar1.MyOrdersEnabled = True
+        Me.ToolBar1.MyTrophyEnabled = True
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.NewOrderEnabled = True
+        Me.ToolBar1.Size = New System.Drawing.Size(1443, 108)
+        Me.ToolBar1.TabIndex = 28
+        '
         'TemplateEditorForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1221, 520)
+        Me.ClientSize = New System.Drawing.Size(1443, 781)
+        Me.Controls.Add(Me.ToolBar1)
         Me.Controls.Add(Me.RemoveDyn)
         Me.Controls.Add(Me.adddyn)
         Me.Controls.Add(Me.Dynbox)
@@ -444,4 +447,5 @@ Partial Class TemplateEditorForm
     Friend WithEvents RemoveDyn As Button
     Friend WithEvents adddyn As Button
     Friend WithEvents Dynbox As ListBox
+    Friend WithEvents ToolBar1 As ToolBar
 End Class

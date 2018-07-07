@@ -82,7 +82,10 @@ Public Class MyTemplatesForm
             Dim newTask = New Task(Async Sub()
                                        Await UpdateInterface()
                                    End Sub)
-            newTask.ContinueWith(Sub() MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) MultiTemplateViewer1.StopLoading()))
+
+            newTask.ContinueWith(Sub(x)
+                                     MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) MultiTemplateViewer1.StopLoading())
+                                 End Sub)
             newTask.Start()
 
         Catch e As ObjectDisposedException

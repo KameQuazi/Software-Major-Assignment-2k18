@@ -48,4 +48,11 @@
         Me.DialogResult = DialogResult.OK
         Me.Close()
     End Sub
+
+    Private Sub RichTextBox1_KeyDown(sender As Object, e As KeyEventArgs) Handles RichTextBox1.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            Me.DialogResult = DialogResult.OK
+            Me.Close()
+        End If
+    End Sub
 End Class

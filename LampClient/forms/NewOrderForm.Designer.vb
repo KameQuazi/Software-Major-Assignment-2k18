@@ -105,10 +105,10 @@ Partial Class NewOrderForm
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.HomeEnabled = True
         Me.ToolBar1.Location = New System.Drawing.Point(1, 0)
-        Me.ToolBar1.MyOrdersEnabled = True
+        Me.ToolBar1.MyOrdersEnabled = False
         Me.ToolBar1.MyTrophyEnabled = True
         Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = False
+        Me.ToolBar1.NewOrderEnabled = True
         Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
         Me.ToolBar1.TabIndex = 37
         '

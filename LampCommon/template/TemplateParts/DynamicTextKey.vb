@@ -104,11 +104,47 @@ Public Class DynamicTextKey
         Return ret
     End Function
 
-    'tood!
-    'Protected Overrides Function GetHash()
 
-    'End Function
+    Public Overrides Function GetHashCode() As Integer
+        Dim hash = MyBase.GetHashCode()
+        ' XOR operator + prime number
+        hash = (hash * 397) Xor ParameterName.GetHashCode()
+        hash = (hash * 397) Xor Description.GetHashCode()
+        hash = (hash * 397) Xor Location.GetHashCode()
+        hash = (hash * 397) Xor Font.GetHashCode()
+        hash = (hash * 397) Xor CanOverrideFont.GetHashCode()
+        hash = (hash * 397) Xor InputType.GetHashCode()
+        Return hash
+    End Function
 
+    Public Overrides Function Equals(obj As Object) As Boolean
+        If Not (obj.GetType().IsSubclassOf(GetType(DynamicTextKey)) Or obj.GetType() = GetType(DynamicTextKey)) Then
+            Return False
+        End If
+        Dim item As DynamicTextKey = obj
+        If item.ParameterName <> Me.ParameterName Then
+            Return False
+        End If
+        If item.Description <> Me.Description Then
+            Return False
+        End If
+        If item.Location <> Me.Location Then
+            Return False
+        End If
+        If item.Font <> Me.Font Then
+            Return False
+        End If
+        If item.CanOverrideFont <> Me.CanOverrideFont Then
+            Return False
+        End If
+
+        If item.InputType <> Me.InputType Then
+            Return False
+        End If
+
+        Return True
+
+    End Function
 
 End Class
 

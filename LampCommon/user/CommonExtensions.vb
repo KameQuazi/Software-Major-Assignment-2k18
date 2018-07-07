@@ -1,5 +1,6 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.Collections.Specialized
+Imports System.ComponentModel
 
 Public Module CommonExtensions
     <System.Runtime.CompilerServices.Extension()>
@@ -41,6 +42,15 @@ Public Module CommonExtensions
         Next
         Return False
     End Function
+
+    <System.Runtime.CompilerServices.Extension>
+    Public Sub InvokeEx(this As ISynchronizeInvoke, action As Action(Of ISynchronizeInvoke))
+        If this.InvokeRequired Then
+            this.Invoke(action, New Object() {this})
+        Else
+            action(this)
+        End If
+    End Sub
 
     Public Function GetNewGuid() As String
         Return Guid.NewGuid().ToString()
