@@ -38,6 +38,7 @@ Public Class LoginForm
 
             HomeForm.Show()
             Me.Close()
+            SaveLogin(username, password, PasswordCheckbox.Checked)
             Return True
         Else
             ' TODO tell user that they're bad

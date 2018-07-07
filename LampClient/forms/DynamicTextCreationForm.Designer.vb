@@ -41,6 +41,7 @@ Partial Class DynamicTextCreationForm
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.DynamicFormCreation1)
         Me.Name = "DynamicTextCreationForm"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "DynamicTextCreationForm"
         Me.ResumeLayout(False)
 

@@ -47,7 +47,7 @@ Public Class MultiTemplateViewer
                 GridPanel.RowStyles.Add(NewRowStyle)
             End If
 
-            GridPanel.Controls.Add(New FileDisplay() With {.Template = template})
+            GridPanel.Controls.Add(New FileDisplay() With {.Template = template, .Dock = DockStyle.Fill})
 
             count += 1
         Next

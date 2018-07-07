@@ -83,7 +83,7 @@ Partial Class DesignerForm
         Me.TextBox1.Location = New System.Drawing.Point(125, 433)
         Me.TextBox1.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 22)
+        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
         Me.TextBox1.TabIndex = 5
         '
         'TextBox2
@@ -91,7 +91,7 @@ Partial Class DesignerForm
         Me.TextBox2.Location = New System.Drawing.Point(125, 474)
         Me.TextBox2.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(100, 22)
+        Me.TextBox2.Size = New System.Drawing.Size(100, 20)
         Me.TextBox2.TabIndex = 6
         '
         'Button4
@@ -111,7 +111,7 @@ Partial Class DesignerForm
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(83, 433)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(36, 17)
+        Me.Label1.Size = New System.Drawing.Size(27, 13)
         Me.Label1.TabIndex = 8
         Me.Label1.Text = "start"
         '
@@ -120,7 +120,7 @@ Partial Class DesignerForm
         Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(83, 477)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(32, 17)
+        Me.Label2.Size = New System.Drawing.Size(25, 13)
         Me.Label2.TabIndex = 9
         Me.Label2.Text = "end"
         '
@@ -210,7 +210,7 @@ Partial Class DesignerForm
         Me.TrackBar1.Maximum = 30
         Me.TrackBar1.Minimum = 1
         Me.TrackBar1.Name = "TrackBar1"
-        Me.TrackBar1.Size = New System.Drawing.Size(268, 56)
+        Me.TrackBar1.Size = New System.Drawing.Size(268, 45)
         Me.TrackBar1.TabIndex = 19
         Me.TrackBar1.Value = 10
         '
@@ -220,7 +220,7 @@ Partial Class DesignerForm
         Me.ZoomLevelBox.Location = New System.Drawing.Point(948, 628)
         Me.ZoomLevelBox.Margin = New System.Windows.Forms.Padding(4)
         Me.ZoomLevelBox.Name = "ZoomLevelBox"
-        Me.ZoomLevelBox.Size = New System.Drawing.Size(132, 22)
+        Me.ZoomLevelBox.Size = New System.Drawing.Size(132, 20)
         Me.ZoomLevelBox.TabIndex = 20
         Me.ZoomLevelBox.Text = "1"
         '
@@ -288,6 +288,7 @@ Partial Class DesignerForm
         Me.Controls.Add(Me.OpenFileBtn)
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "DesignerForm"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Designer"
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)

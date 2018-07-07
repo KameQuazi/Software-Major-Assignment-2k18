@@ -9,59 +9,67 @@ Public Class MyTemplatesForm
     End Sub
 
     Private Async Function UpdateInterface() As Task
-        ' check if the next page exists (offset - tempaltes-per-page)
-        MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) MultiTemplateViewer1.Templates.Clear())
+        Try
+            ' check if the next page exists (offset - tempaltes-per-page)
+            MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) MultiTemplateViewer1.Templates.Clear())
 
-        If offset - TEMPLATES_PER_PAGE >= 0 Then
-            Dim previousPage = Await CurrentSender.GetTemplateListAsync(CurrentUser.ToCredentials,
+            If offset - TEMPLATES_PER_PAGE >= 0 Then
+                Dim previousPage = Await CurrentSender.GetTemplateListAsync(CurrentUser.ToCredentials,
                                                         Nothing, New List(Of String) From {CurrentUser.UserId},
                                                         TEMPLATES_PER_PAGE, offset - TEMPLATES_PER_PAGE, False)
-            If previousPage.Status = LampStatus.OK Then
-                If previousPage.Templates.Count() > 0 Then
-                    MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) btnPreviousPage.Enabled = True)
+                If previousPage.Status = LampStatus.OK Then
+                    If previousPage.Templates.Count() > 0 Then
+                        MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) btnPreviousPage.Enabled = True)
+                    Else
+                        MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) btnPreviousPage.Enabled = False)
+                    End If
                 Else
-                    MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) btnPreviousPage.Enabled = False)
+                    ShowError(previousPage.Status)
+                    Return
                 End If
-            Else
-                ShowError(previousPage.Status)
-                Return
             End If
-        End If
 
 
-        Dim request = Await CurrentSender.GetTemplateListAsync(CurrentUser.ToCredentials,
+            Dim request = Await CurrentSender.GetTemplateListAsync(CurrentUser.ToCredentials,
                                                                Nothing, New List(Of String) From {CurrentUser.UserId},
                                                                TEMPLATES_PER_PAGE, offset, False)
 
-        If request.Status <> LampStatus.OK Then
-            ShowError(request.Status)
-            Return
-        End If
-        For Each item In request.Templates
-            MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Add(item))
-        Next
-
-        ' check if the next page exists
-        If offset + TEMPLATES_PER_PAGE >= 0 Then
-            Dim previousPage = Await CurrentSender.GetTemplateListAsync(CurrentUser.ToCredentials,
-                                                        Nothing, New List(Of String) From {CurrentUser.UserId},
-                                                        TEMPLATES_PER_PAGE, offset + TEMPLATES_PER_PAGE, False)
-            If previousPage.Status = LampStatus.OK Then
-                If previousPage.Templates.Count() > 0 Then
-                    MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) btnNextPage.Enabled = True)
-                Else
-                    MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) btnNextPage.Enabled = False)
-                End If
-            Else
-                ShowError(previousPage.Status)
+            If request.Status <> LampStatus.OK Then
+                ShowError(request.Status)
                 Return
             End If
-        End If
+            For Each item In request.Templates
+                MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Add(item))
+            Next
 
+            ' check if the next page exists
+            If offset + TEMPLATES_PER_PAGE >= 0 Then
+                Dim previousPage = Await CurrentSender.GetTemplateListAsync(CurrentUser.ToCredentials,
+                                                            Nothing, New List(Of String) From {CurrentUser.UserId},
+                                                            TEMPLATES_PER_PAGE, offset + TEMPLATES_PER_PAGE, False)
+                If previousPage.Status = LampStatus.OK Then
+                    If previousPage.Templates.Count() > 0 Then
+                        MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) btnNextPage.Enabled = True)
+                    Else
+                        MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) btnNextPage.Enabled = False)
+                    End If
+                Else
+                    ShowError(previousPage.Status)
+                    Return
+                End If
+            End If
+        Catch e As ObjectDisposedException
+            ' if the form gets closed b4 request is finish, it will crash
+            ' we just want to catch it
+#If DEBUG Then
+            MessageBox.Show(e.ToString)
+
+#End If
+        End Try
     End Function
 
-    Private Sub MyTemplatesForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        LoadComplete
+    Private Sub MyTemplatesForm_Load(sender As Object, e As EventArgs) Handles MyBase.Shown
+        LoadComplete()
 
     End Sub
 
@@ -69,11 +77,22 @@ Public Class MyTemplatesForm
         btnNextPage.Enabled = False
         btnPreviousPage.Enabled = False
         MultiTemplateViewer1.ShowLoading()
-        Dim newTask = New Task(Async Sub()
-                                   Await UpdateInterface()
-                               End Sub)
-        newTask.ContinueWith(Sub() MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) MultiTemplateViewer1.StopLoading()))
-        newTask.Start()
+
+        Try
+            Dim newTask = New Task(Async Sub()
+                                       Await UpdateInterface()
+                                   End Sub)
+            newTask.ContinueWith(Sub() MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) MultiTemplateViewer1.StopLoading()))
+            newTask.Start()
+
+        Catch e As ObjectDisposedException
+            ' if the form gets closed b4 request is finish, it will crash
+            ' we just want to catch it
+#If DEBUG Then
+            MessageBox.Show(e.ToString)
+
+#End If
+        End Try
     End Sub
 
 

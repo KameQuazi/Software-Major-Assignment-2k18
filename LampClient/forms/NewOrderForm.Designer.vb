@@ -41,7 +41,7 @@ Partial Class NewOrderForm
         Me.txtRecipient.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!)
         Me.txtRecipient.Location = New System.Drawing.Point(173, 29)
         Me.txtRecipient.Name = "txtRecipient"
-        Me.txtRecipient.Size = New System.Drawing.Size(224, 34)
+        Me.txtRecipient.Size = New System.Drawing.Size(224, 29)
         Me.txtRecipient.TabIndex = 33
         Me.txtRecipient.Text = "Insert Name Here"
         '
@@ -52,7 +52,7 @@ Partial Class NewOrderForm
         Me.txtPrefix.Items.AddRange(New Object() {"Awarded to:", "to:"})
         Me.txtPrefix.Location = New System.Drawing.Point(6, 29)
         Me.txtPrefix.Name = "txtPrefix"
-        Me.txtPrefix.Size = New System.Drawing.Size(161, 37)
+        Me.txtPrefix.Size = New System.Drawing.Size(161, 32)
         Me.txtPrefix.TabIndex = 34
         '
         'grpParameters
@@ -75,7 +75,7 @@ Partial Class NewOrderForm
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(18, 384)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(59, 25)
+        Me.Label1.Size = New System.Drawing.Size(47, 20)
         Me.Label1.TabIndex = 37
         Me.Label1.Text = "Year:"
         '
@@ -84,7 +84,7 @@ Partial Class NewOrderForm
         Me.chkYear.AutoSize = True
         Me.chkYear.Location = New System.Drawing.Point(23, 352)
         Me.chkYear.Name = "chkYear"
-        Me.chkYear.Size = New System.Drawing.Size(154, 29)
+        Me.chkYear.Size = New System.Drawing.Size(127, 24)
         Me.chkYear.TabIndex = 36
         Me.chkYear.Text = "Include Year?"
         Me.chkYear.UseVisualStyleBackColor = True
@@ -95,7 +95,7 @@ Partial Class NewOrderForm
         Me.TextBox1.Location = New System.Drawing.Point(83, 380)
         Me.TextBox1.MaxLength = 4
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(63, 34)
+        Me.TextBox1.Size = New System.Drawing.Size(63, 29)
         Me.TextBox1.TabIndex = 35
         Me.TextBox1.Text = "2018"
         '
@@ -108,7 +108,7 @@ Partial Class NewOrderForm
         Me.ToolBar1.MyOrdersEnabled = True
         Me.ToolBar1.MyTrophyEnabled = True
         Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = True
+        Me.ToolBar1.NewOrderEnabled = False
         Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
         Me.ToolBar1.TabIndex = 37
         '
@@ -131,7 +131,7 @@ Partial Class NewOrderForm
         Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
         Me.DxfViewerControl1.Drawing = Nothing
         Me.DxfViewerControl1.Location = New System.Drawing.Point(1, 108)
-        Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(4)
         Me.DxfViewerControl1.Name = "DxfViewerControl1"
         Me.DxfViewerControl1.Size = New System.Drawing.Size(609, 532)
         Me.DxfViewerControl1.TabIndex = 39
@@ -163,7 +163,7 @@ Partial Class NewOrderForm
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "NewOrderForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "CreateJob"
+        Me.Text = "Create New Job"
         Me.grpParameters.ResumeLayout(False)
         Me.grpParameters.PerformLayout()
         Me.ResumeLayout(False)

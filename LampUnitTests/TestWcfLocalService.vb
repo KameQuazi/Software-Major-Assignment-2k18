@@ -468,10 +468,10 @@ Public Class TestWcfLocalService
     <TestCategory("WcfService")>
     <TestCategory("WcfTemplate")>
     Public Sub TestGetTemplateList()
-        Dim response = Service.GetTemplateList(Nothing, New List(Of String), 10, 0, False)
+        Dim response = Service.GetTemplateList(Nothing, Nothing, Nothing, 10, 0, False)
         Assert.AreEqual(LampStatus.InvalidParameters, response.Status)
 
-        response = Service.GetTemplateList(Admin.ToCredentials, Nothing, 0, 0, False)
+        response = Service.GetTemplateList(Admin.ToCredentials, Nothing, Nothing, 0, 0, False)
         Assert.AreEqual(LampStatus.InvalidParameters, response.Status)
 
         ' add som approved templatess
@@ -480,24 +480,24 @@ Public Class TestWcfLocalService
         Next i
 
         ' standard cant access non approved templates
-        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, 5, 0, True)
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 5, 0, True)
         Assert.AreEqual(LampStatus.NoAccess, response.Status)
         Assert.AreEqual(0, response.Templates.Count())
 
         ' standard can access approved templates
-        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, 5, 0, False)
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 5, 0, False)
         Assert.AreEqual(LampStatus.OK, response.Status)
         Assert.AreEqual(5, response.Templates.Count())
 
         ' standard can also filter thru tags
-        response = Service.GetTemplateList(Standard1.ToCredentials, New List(Of String) From {"grape"}, 10, 0, False)
+        response = Service.GetTemplateList(Standard1.ToCredentials, New List(Of String) From {"grape"}, Nothing, 10, 0, False)
         Assert.AreEqual(LampStatus.OK, response.Status)
         Assert.AreEqual(1, response.Templates.Count())
         AreEqual(ApprovedTemplate.GUID, response.Templates(0).GUID)
 
         ' cannot request more than 50 templates
-        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, 51, 0, False)
-        Assert.AreEqual(LampStatus.InvalidOperation, response.Status)
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 51, 0, False)
+        Assert.AreEqual(LampStatus.InvalidParameters, response.Status)
 
     End Sub
 End Class

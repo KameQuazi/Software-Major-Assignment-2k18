@@ -46,8 +46,9 @@ Partial Class MyOrdersForm
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.ToolBar1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "MyOrdersForm"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "MyOrdersForm"
         Me.ResumeLayout(False)
 

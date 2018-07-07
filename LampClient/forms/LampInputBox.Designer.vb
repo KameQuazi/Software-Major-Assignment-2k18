@@ -45,21 +45,21 @@ Partial Class LampInputBox
         Me.RichTextBox1.TabIndex = 1
         Me.RichTextBox1.Text = ""
         '
-        'Button1
+        'CancelExitButon
         '
         Me.CancelExitButon.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.CancelExitButon.Location = New System.Drawing.Point(108, 181)
-        Me.CancelExitButon.Name = "Button1"
+        Me.CancelExitButon.Name = "CancelExitButon"
         Me.CancelExitButon.Size = New System.Drawing.Size(75, 23)
         Me.CancelExitButon.TabIndex = 2
         Me.CancelExitButon.Text = "Cancel"
         Me.CancelExitButon.UseVisualStyleBackColor = True
         '
-        'Button2
+        'OkButton
         '
         Me.OkButton.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.OkButton.Location = New System.Drawing.Point(202, 181)
-        Me.OkButton.Name = "Button2"
+        Me.OkButton.Name = "OkButton"
         Me.OkButton.Size = New System.Drawing.Size(75, 23)
         Me.OkButton.TabIndex = 3
         Me.OkButton.Text = "Ok"
@@ -75,6 +75,7 @@ Partial Class LampInputBox
         Me.Controls.Add(Me.RichTextBox1)
         Me.Controls.Add(Me.Label1)
         Me.Name = "LampInputBox"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "LampInputBox"
         Me.ResumeLayout(False)
         Me.PerformLayout()

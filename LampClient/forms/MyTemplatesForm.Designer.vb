@@ -24,7 +24,6 @@ Partial Class MyTemplatesForm
     Private Sub InitializeComponent()
         Me.btnNextPage = New System.Windows.Forms.Button()
         Me.btnPreviousPage = New System.Windows.Forms.Button()
-        Me.MultiTemplateViewer2 = New LampClient.MultiTemplateViewer()
         Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
         Me.ToolBar1 = New LampClient.ToolBar()
         Me.SuspendLayout()
@@ -49,21 +48,13 @@ Partial Class MyTemplatesForm
         Me.btnPreviousPage.Text = "<-"
         Me.btnPreviousPage.UseVisualStyleBackColor = True
         '
-        'MultiTemplateViewer2
-        '
-        Me.MultiTemplateViewer2.Dock = System.Windows.Forms.DockStyle.Top
-        Me.MultiTemplateViewer2.Location = New System.Drawing.Point(0, 662)
-        Me.MultiTemplateViewer2.Name = "MultiTemplateViewer2"
-        Me.MultiTemplateViewer2.Size = New System.Drawing.Size(1232, 600)
-        Me.MultiTemplateViewer2.TabIndex = 3
-        '
         'MultiTemplateViewer1
         '
         Me.MultiTemplateViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.MultiTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Top
         Me.MultiTemplateViewer1.Location = New System.Drawing.Point(0, 108)
         Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
-        Me.MultiTemplateViewer1.Size = New System.Drawing.Size(1232, 554)
+        Me.MultiTemplateViewer1.Size = New System.Drawing.Size(1232, 594)
         Me.MultiTemplateViewer1.TabIndex = 1
         '
         'ToolBar1
@@ -87,17 +78,16 @@ Partial Class MyTemplatesForm
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.btnPreviousPage)
         Me.Controls.Add(Me.btnNextPage)
-        Me.Controls.Add(Me.MultiTemplateViewer2)
         Me.Controls.Add(Me.MultiTemplateViewer1)
         Me.Controls.Add(Me.ToolBar1)
         Me.Name = "MyTemplatesForm"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "MyTemplatesForm"
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents MultiTemplateViewer1 As MultiTemplateViewer
     Friend WithEvents ToolBar1 As ToolBar
-    Friend WithEvents MultiTemplateViewer2 As MultiTemplateViewer
     Friend WithEvents btnNextPage As Button
     Friend WithEvents btnPreviousPage As Button
 End Class

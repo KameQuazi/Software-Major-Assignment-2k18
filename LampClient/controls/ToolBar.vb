@@ -1,4 +1,7 @@
-﻿Public Class ToolBar
+﻿Imports System.ComponentModel
+
+Public Class ToolBar
+    <Category("DisableButtons")>
     Public Property NewOrderEnabled As Boolean
         Get
             Return btnNewOrder.Enabled
@@ -8,6 +11,7 @@
         End Set
     End Property
 
+    <Category("DisableButtons")>
     Public Property HomeEnabled As Boolean
         Get
             Return btnHome.Enabled
@@ -17,6 +21,7 @@
         End Set
     End Property
 
+    <Category("DisableButtons")>
     Public Property MyTrophyEnabled As Boolean
         Get
             Return btnDesigns.Enabled
@@ -26,7 +31,7 @@
         End Set
     End Property
 
-
+    <Category("DisableButtons")>
     Public Property MyOrdersEnabled As Boolean
         Get
             Return btnOrders.Enabled
@@ -35,6 +40,7 @@
             btnOrders.Enabled = value
         End Set
     End Property
+
 
     Public Sub SetUsername(username As String)
         Me.Username.Text = String.Format("Welcome {0}", username)

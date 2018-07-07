@@ -34,13 +34,14 @@ Partial Class DebugRefpoints
         Me.Button1.Text = "CreateStuff"
         Me.Button1.UseVisualStyleBackColor = True
         '
-        'refpointTest
+        'DebugRefpoints
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(284, 261)
         Me.Controls.Add(Me.Button1)
-        Me.Name = "refpointTest"
+        Me.Name = "DebugRefpoints"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "refpointTest"
         Me.ResumeLayout(False)
 

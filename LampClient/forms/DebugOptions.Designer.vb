@@ -44,14 +44,15 @@ Partial Class DebugOptions
         Me.Button2.Text = "Designer"
         Me.Button2.UseVisualStyleBackColor = True
         '
-        'Form2
+        'DebugOptions
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(398, 536)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
-        Me.Name = "Form2"
+        Me.Name = "DebugOptions"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Form2"
         Me.ResumeLayout(False)
 

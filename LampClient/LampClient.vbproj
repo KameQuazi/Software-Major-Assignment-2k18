@@ -332,6 +332,9 @@
     <EmbeddedResource Include="forms\CloseBox.resx">
       <DependentUpon>CloseBox.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\HelpForm.resx">
+      <DependentUpon>HelpForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\NewOrderForm.resx">
       <DependentUpon>NewOrderForm.vb</DependentUpon>
     </EmbeddedResource>
