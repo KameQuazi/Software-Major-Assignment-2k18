@@ -33,23 +33,11 @@ Public Class LoginForm
 
     Private Function Login(username As String, password As String) As Boolean
         Dim loginResponse = CurrentSender.Authenticate(New LampCredentials(username, password))
-
-
         If loginResponse.Status = LampStatus.OK Then
             CurrentUser = loginResponse.user
 
-            SaveLogin(username, password, PasswordCheckbox.Checked)
-
-            MessageBox.Show(String.Format("loggin succ: {0}", CurrentUser))
-            If PasswordCheckbox.Checked Then
-
-
-            End If
-
             HomeForm.Show()
             Me.Close()
-
-
             Return True
         Else
             ' TODO tell user that they're bad

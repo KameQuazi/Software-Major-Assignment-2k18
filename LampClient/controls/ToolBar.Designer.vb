@@ -82,18 +82,18 @@ Partial Class ToolBar
         Me.btnDesigns.Name = "btnDesigns"
         Me.btnDesigns.Size = New System.Drawing.Size(97, 97)
         Me.btnDesigns.TabIndex = 48
-        Me.btnDesigns.Text = "My Template Designs"
+        Me.btnDesigns.Text = "My Trophy Designs"
         Me.btnDesigns.UseVisualStyleBackColor = False
         '
         'Username
         '
         Me.Username.AutoSize = True
         Me.Username.BackColor = System.Drawing.Color.Transparent
-        Me.Username.Font = New System.Drawing.Font("Arial", 18.25!)
+        Me.Username.Font = New System.Drawing.Font("Arial", 16.25!)
         Me.Username.ForeColor = System.Drawing.Color.White
-        Me.Username.Location = New System.Drawing.Point(646, 16)
+        Me.Username.Location = New System.Drawing.Point(619, 20)
         Me.Username.Name = "Username"
-        Me.Username.Size = New System.Drawing.Size(225, 56)
+        Me.Username.Size = New System.Drawing.Size(247, 64)
         Me.Username.TabIndex = 47
         Me.Username.Text = "Hello Username!" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Welcome to LAMP"
         Me.Username.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -171,7 +171,7 @@ Partial Class ToolBar
         'ToolBar
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
-        Me.BackColor = System.Drawing.Color.Fuchsia
+        Me.BackColor = System.Drawing.Color.MediumSlateBlue
         Me.Controls.Add(Me.btnBack)
         Me.Controls.Add(Me.btnNewOrder)
         Me.Controls.Add(Me.btnHelp)

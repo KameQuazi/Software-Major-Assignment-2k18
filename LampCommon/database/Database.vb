@@ -1754,7 +1754,7 @@ Public Class TemplateDatabase
 
             Dim approveText = "1"
             If includeUnapproved = False Then
-                approveText = "(SELECT 1 from template WHERE template.guid = tags.guid AND approverId is not null)"
+                approveText = "(SELECT 1 from template WHERE template.guid = tags.guid and approverId is not null)"
             End If
 
             Dim stringCommand = String.Format("Select tags.guid from tags

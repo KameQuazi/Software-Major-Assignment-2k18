@@ -37,7 +37,7 @@
     End Property
 
     Public Sub SetUsername(username As String)
-        Me.Username.Text = String.Format("hewwo {0}?", username)
+        Me.Username.Text = String.Format("Welcome {0}", username)
     End Sub
 
 
@@ -177,8 +177,6 @@
             End
         End If
     End Sub
-
-
 End Class
 
 

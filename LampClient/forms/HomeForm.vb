@@ -33,4 +33,8 @@
     Private Sub pnlStart_Paint(sender As Object, e As PaintEventArgs) Handles pnlStart.Paint
 
     End Sub
+
+    Private Sub ToolBar1_Load_1(sender As Object, e As EventArgs) Handles ToolBar1.Load
+        ToolBar1.HomeEnabled = False
+    End Sub
 End Class

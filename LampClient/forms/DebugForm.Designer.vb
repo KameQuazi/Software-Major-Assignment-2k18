@@ -142,7 +142,7 @@ Partial Class DebugForm
         '
         Me.TextBox1.Location = New System.Drawing.Point(325, 587)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox1.Size = New System.Drawing.Size(100, 22)
         Me.TextBox1.TabIndex = 10
         '
         'Button10
@@ -220,6 +220,7 @@ Partial Class DebugForm
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
         Me.Name = "DebugForm"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "DebugForm"
         Me.ResumeLayout(False)
         Me.PerformLayout()

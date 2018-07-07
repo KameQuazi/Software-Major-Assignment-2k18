@@ -44,17 +44,21 @@ Partial Class DesignerForm
         Me.ZoomLevelBox = New System.Windows.Forms.TextBox()
         Me.DuplicateButton = New System.Windows.Forms.Button()
         Me.DesignerScreen1 = New LampClient.DxfViewerControl()
+        Me.ToolBar1 = New LampClient.ToolBar()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OpenFileBtn
         '
-        Me.OpenFileBtn.Location = New System.Drawing.Point(44, 45)
+        Me.OpenFileBtn.BackColor = System.Drawing.Color.White
+        Me.OpenFileBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.OpenFileBtn.Location = New System.Drawing.Point(115, 163)
+        Me.OpenFileBtn.Margin = New System.Windows.Forms.Padding(4)
         Me.OpenFileBtn.Name = "OpenFileBtn"
-        Me.OpenFileBtn.Size = New System.Drawing.Size(75, 23)
+        Me.OpenFileBtn.Size = New System.Drawing.Size(100, 28)
         Me.OpenFileBtn.TabIndex = 0
         Me.OpenFileBtn.Text = "Open file"
-        Me.OpenFileBtn.UseVisualStyleBackColor = True
+        Me.OpenFileBtn.UseVisualStyleBackColor = False
         '
         'OpenFileDialog1
         '
@@ -63,169 +67,207 @@ Partial Class DesignerForm
         '
         'SaveFileBtn
         '
+        Me.SaveFileBtn.BackColor = System.Drawing.Color.White
         Me.SaveFileBtn.Enabled = False
-        Me.SaveFileBtn.Location = New System.Drawing.Point(44, 74)
+        Me.SaveFileBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.SaveFileBtn.Location = New System.Drawing.Point(115, 199)
+        Me.SaveFileBtn.Margin = New System.Windows.Forms.Padding(4)
         Me.SaveFileBtn.Name = "SaveFileBtn"
-        Me.SaveFileBtn.Size = New System.Drawing.Size(75, 23)
+        Me.SaveFileBtn.Size = New System.Drawing.Size(100, 28)
         Me.SaveFileBtn.TabIndex = 1
         Me.SaveFileBtn.Text = "Save file"
-        Me.SaveFileBtn.UseVisualStyleBackColor = True
+        Me.SaveFileBtn.UseVisualStyleBackColor = False
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(52, 264)
-        Me.TextBox1.Margin = New System.Windows.Forms.Padding(2)
+        Me.TextBox1.Location = New System.Drawing.Point(125, 433)
+        Me.TextBox1.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(76, 20)
+        Me.TextBox1.Size = New System.Drawing.Size(100, 22)
         Me.TextBox1.TabIndex = 5
         '
         'TextBox2
         '
-        Me.TextBox2.Location = New System.Drawing.Point(52, 297)
-        Me.TextBox2.Margin = New System.Windows.Forms.Padding(2)
+        Me.TextBox2.Location = New System.Drawing.Point(125, 474)
+        Me.TextBox2.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(76, 20)
+        Me.TextBox2.Size = New System.Drawing.Size(100, 22)
         Me.TextBox2.TabIndex = 6
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(63, 343)
-        Me.Button4.Margin = New System.Windows.Forms.Padding(2)
+        Me.Button4.BackColor = System.Drawing.Color.White
+        Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button4.Location = New System.Drawing.Point(140, 530)
+        Me.Button4.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(56, 19)
+        Me.Button4.Size = New System.Drawing.Size(75, 23)
         Me.Button4.TabIndex = 7
         Me.Button4.Text = "New line"
-        Me.Button4.UseVisualStyleBackColor = True
+        Me.Button4.UseVisualStyleBackColor = False
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(20, 264)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.Label1.Location = New System.Drawing.Point(83, 433)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(27, 13)
+        Me.Label1.Size = New System.Drawing.Size(36, 17)
         Me.Label1.TabIndex = 8
         Me.Label1.Text = "start"
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(20, 300)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
+        Me.Label2.Location = New System.Drawing.Point(83, 477)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(25, 13)
+        Me.Label2.Size = New System.Drawing.Size(32, 17)
         Me.Label2.TabIndex = 9
         Me.Label2.Text = "end"
         '
         'jsonOutput
         '
-        Me.jsonOutput.Location = New System.Drawing.Point(615, 208)
-        Me.jsonOutput.Margin = New System.Windows.Forms.Padding(2)
+        Me.jsonOutput.Location = New System.Drawing.Point(913, 343)
+        Me.jsonOutput.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.jsonOutput.Name = "jsonOutput"
-        Me.jsonOutput.Size = New System.Drawing.Size(154, 171)
+        Me.jsonOutput.Size = New System.Drawing.Size(204, 210)
         Me.jsonOutput.TabIndex = 11
         Me.jsonOutput.Text = "serialized her"
         '
         'rightButton
         '
-        Me.rightButton.Location = New System.Drawing.Point(753, 122)
+        Me.rightButton.BackColor = System.Drawing.Color.White
+        Me.rightButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.rightButton.Location = New System.Drawing.Point(1018, 258)
+        Me.rightButton.Margin = New System.Windows.Forms.Padding(4)
         Me.rightButton.Name = "rightButton"
-        Me.rightButton.Size = New System.Drawing.Size(75, 23)
+        Me.rightButton.Size = New System.Drawing.Size(100, 28)
         Me.rightButton.TabIndex = 12
         Me.rightButton.Text = "->"
-        Me.rightButton.UseVisualStyleBackColor = True
+        Me.rightButton.UseVisualStyleBackColor = False
         '
         'downButton
         '
-        Me.downButton.Location = New System.Drawing.Point(668, 163)
+        Me.downButton.BackColor = System.Drawing.Color.White
+        Me.downButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.downButton.Location = New System.Drawing.Point(966, 294)
+        Me.downButton.Margin = New System.Windows.Forms.Padding(4)
         Me.downButton.Name = "downButton"
-        Me.downButton.Size = New System.Drawing.Size(75, 23)
+        Me.downButton.Size = New System.Drawing.Size(100, 28)
         Me.downButton.TabIndex = 13
         Me.downButton.Text = "v"
-        Me.downButton.UseVisualStyleBackColor = True
+        Me.downButton.UseVisualStyleBackColor = False
         '
         'leftButton
         '
-        Me.leftButton.Location = New System.Drawing.Point(594, 122)
+        Me.leftButton.BackColor = System.Drawing.Color.White
+        Me.leftButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.leftButton.Location = New System.Drawing.Point(910, 258)
+        Me.leftButton.Margin = New System.Windows.Forms.Padding(4)
         Me.leftButton.Name = "leftButton"
-        Me.leftButton.Size = New System.Drawing.Size(75, 23)
+        Me.leftButton.Size = New System.Drawing.Size(100, 28)
         Me.leftButton.TabIndex = 14
         Me.leftButton.Text = "<-"
-        Me.leftButton.UseVisualStyleBackColor = True
+        Me.leftButton.UseVisualStyleBackColor = False
         '
         'upButton
         '
-        Me.upButton.Location = New System.Drawing.Point(668, 71)
+        Me.upButton.BackColor = System.Drawing.Color.White
+        Me.upButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.upButton.Location = New System.Drawing.Point(966, 222)
+        Me.upButton.Margin = New System.Windows.Forms.Padding(4)
         Me.upButton.Name = "upButton"
-        Me.upButton.Size = New System.Drawing.Size(75, 23)
+        Me.upButton.Size = New System.Drawing.Size(100, 28)
         Me.upButton.TabIndex = 15
         Me.upButton.Text = "^"
-        Me.upButton.UseVisualStyleBackColor = True
+        Me.upButton.UseVisualStyleBackColor = False
         '
         'FilenameTbox
         '
-        Me.FilenameTbox.Location = New System.Drawing.Point(9, 144)
-        Me.FilenameTbox.Margin = New System.Windows.Forms.Padding(2)
+        Me.FilenameTbox.Location = New System.Drawing.Point(68, 285)
+        Me.FilenameTbox.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.FilenameTbox.Name = "FilenameTbox"
-        Me.FilenameTbox.Size = New System.Drawing.Size(195, 79)
+        Me.FilenameTbox.Size = New System.Drawing.Size(259, 96)
         Me.FilenameTbox.TabIndex = 16
         Me.FilenameTbox.Text = ""
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(44, 103)
+        Me.Button1.BackColor = System.Drawing.Color.White
+        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button1.Location = New System.Drawing.Point(115, 235)
+        Me.Button1.Margin = New System.Windows.Forms.Padding(4)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.Size = New System.Drawing.Size(100, 28)
         Me.Button1.TabIndex = 18
         Me.Button1.Text = "Save As Dxf"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.Button1.UseVisualStyleBackColor = False
         '
         'TrackBar1
         '
-        Me.TrackBar1.Location = New System.Drawing.Point(627, 395)
+        Me.TrackBar1.BackColor = System.Drawing.Color.White
+        Me.TrackBar1.Location = New System.Drawing.Point(892, 594)
+        Me.TrackBar1.Margin = New System.Windows.Forms.Padding(4)
         Me.TrackBar1.Maximum = 30
         Me.TrackBar1.Minimum = 1
         Me.TrackBar1.Name = "TrackBar1"
-        Me.TrackBar1.Size = New System.Drawing.Size(201, 45)
+        Me.TrackBar1.Size = New System.Drawing.Size(268, 56)
         Me.TrackBar1.TabIndex = 19
         Me.TrackBar1.Value = 10
         '
         'ZoomLevelBox
         '
         Me.ZoomLevelBox.Enabled = False
-        Me.ZoomLevelBox.Location = New System.Drawing.Point(668, 439)
+        Me.ZoomLevelBox.Location = New System.Drawing.Point(948, 628)
+        Me.ZoomLevelBox.Margin = New System.Windows.Forms.Padding(4)
         Me.ZoomLevelBox.Name = "ZoomLevelBox"
-        Me.ZoomLevelBox.Size = New System.Drawing.Size(100, 20)
+        Me.ZoomLevelBox.Size = New System.Drawing.Size(132, 22)
         Me.ZoomLevelBox.TabIndex = 20
         Me.ZoomLevelBox.Text = "1"
         '
         'DuplicateButton
         '
-        Me.DuplicateButton.Location = New System.Drawing.Point(63, 381)
+        Me.DuplicateButton.BackColor = System.Drawing.Color.White
+        Me.DuplicateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.DuplicateButton.Location = New System.Drawing.Point(140, 577)
+        Me.DuplicateButton.Margin = New System.Windows.Forms.Padding(4)
         Me.DuplicateButton.Name = "DuplicateButton"
-        Me.DuplicateButton.Size = New System.Drawing.Size(75, 23)
+        Me.DuplicateButton.Size = New System.Drawing.Size(100, 28)
         Me.DuplicateButton.TabIndex = 21
         Me.DuplicateButton.Text = "duplicate"
-        Me.DuplicateButton.UseVisualStyleBackColor = True
+        Me.DuplicateButton.UseVisualStyleBackColor = False
         '
         'DesignerScreen1
         '
         Me.DesignerScreen1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.DesignerScreen1.Center = CType(resources.GetObject("DesignerScreen1.Center"), System.Drawing.PointF)
         Me.DesignerScreen1.Drawing = Nothing
-        Me.DesignerScreen1.Location = New System.Drawing.Point(212, 54)
-        Me.DesignerScreen1.Margin = New System.Windows.Forms.Padding(4)
+        Me.DesignerScreen1.Location = New System.Drawing.Point(339, 174)
+        Me.DesignerScreen1.Margin = New System.Windows.Forms.Padding(5)
         Me.DesignerScreen1.Name = "DesignerScreen1"
-        Me.DesignerScreen1.Size = New System.Drawing.Size(376, 407)
+        Me.DesignerScreen1.Size = New System.Drawing.Size(501, 500)
         Me.DesignerScreen1.TabIndex = 17
         Me.DesignerScreen1.ZoomX = 1.0R
         Me.DesignerScreen1.ZoomY = 1.0R
         '
+        'ToolBar1
+        '
+        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolBar1.HomeEnabled = True
+        Me.ToolBar1.Location = New System.Drawing.Point(1, 0)
+        Me.ToolBar1.MyOrdersEnabled = True
+        Me.ToolBar1.MyTrophyEnabled = True
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.NewOrderEnabled = True
+        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
+        Me.ToolBar1.TabIndex = 22
+        '
         'DesignerForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(864, 471)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.BackColor = System.Drawing.Color.Silver
+        Me.ClientSize = New System.Drawing.Size(1232, 703)
+        Me.Controls.Add(Me.ToolBar1)
         Me.Controls.Add(Me.DuplicateButton)
         Me.Controls.Add(Me.ZoomLevelBox)
         Me.Controls.Add(Me.TrackBar1)
@@ -244,8 +286,9 @@ Partial Class DesignerForm
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.SaveFileBtn)
         Me.Controls.Add(Me.OpenFileBtn)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "DesignerForm"
-        Me.Text = "Form1"
+        Me.Text = "Designer"
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -273,4 +316,5 @@ Partial Class DesignerForm
     Friend WithEvents TrackBar1 As TrackBar
     Friend WithEvents ZoomLevelBox As TextBox
     Friend WithEvents DuplicateButton As Button
+    Friend WithEvents ToolBar1 As ToolBar
 End Class
