@@ -23,7 +23,6 @@ Partial Class FileDisplay
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FileDisplay))
-        Me.DisplayBox = New System.Windows.Forms.PictureBox()
         Me.lblName = New System.Windows.Forms.Label()
         Me.lblCreator = New System.Windows.Forms.Label()
         Me.lblHeight = New System.Windows.Forms.Label()
@@ -36,18 +35,9 @@ Partial Class FileDisplay
         Me.editwidth = New System.Windows.Forms.Label()
         Me.editmaterial = New System.Windows.Forms.Label()
         Me.editapprover = New System.Windows.Forms.Label()
+        Me.DisplayBox = New System.Windows.Forms.PictureBox()
         CType(Me.DisplayBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'DisplayBox
-        '
-        Me.DisplayBox.Image = CType(resources.GetObject("DisplayBox.Image"), System.Drawing.Image)
-        Me.DisplayBox.Location = New System.Drawing.Point(0, 0)
-        Me.DisplayBox.Name = "DisplayBox"
-        Me.DisplayBox.Size = New System.Drawing.Size(200, 177)
-        Me.DisplayBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.DisplayBox.TabIndex = 0
-        Me.DisplayBox.TabStop = False
         '
         'lblName
         '
@@ -55,7 +45,7 @@ Partial Class FileDisplay
         Me.lblName.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblName.Location = New System.Drawing.Point(25, 180)
         Me.lblName.Name = "lblName"
-        Me.lblName.Size = New System.Drawing.Size(56, 19)
+        Me.lblName.Size = New System.Drawing.Size(46, 16)
         Me.lblName.TabIndex = 1
         Me.lblName.Text = "Name:"
         '
@@ -65,7 +55,7 @@ Partial Class FileDisplay
         Me.lblCreator.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCreator.Location = New System.Drawing.Point(12, 199)
         Me.lblCreator.Name = "lblCreator"
-        Me.lblCreator.Size = New System.Drawing.Size(69, 19)
+        Me.lblCreator.Size = New System.Drawing.Size(54, 16)
         Me.lblCreator.TabIndex = 2
         Me.lblCreator.Text = "Creator:"
         '
@@ -75,7 +65,7 @@ Partial Class FileDisplay
         Me.lblHeight.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblHeight.Location = New System.Drawing.Point(21, 218)
         Me.lblHeight.Name = "lblHeight"
-        Me.lblHeight.Size = New System.Drawing.Size(60, 19)
+        Me.lblHeight.Size = New System.Drawing.Size(49, 16)
         Me.lblHeight.TabIndex = 3
         Me.lblHeight.Text = "Height:"
         '
@@ -85,7 +75,7 @@ Partial Class FileDisplay
         Me.lblWidth.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblWidth.Location = New System.Drawing.Point(24, 236)
         Me.lblWidth.Name = "lblWidth"
-        Me.lblWidth.Size = New System.Drawing.Size(57, 19)
+        Me.lblWidth.Size = New System.Drawing.Size(46, 16)
         Me.lblWidth.TabIndex = 4
         Me.lblWidth.Text = "Width:"
         '
@@ -95,7 +85,7 @@ Partial Class FileDisplay
         Me.lblMaterial.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMaterial.Location = New System.Drawing.Point(10, 255)
         Me.lblMaterial.Name = "lblMaterial"
-        Me.lblMaterial.Size = New System.Drawing.Size(71, 19)
+        Me.lblMaterial.Size = New System.Drawing.Size(58, 16)
         Me.lblMaterial.TabIndex = 5
         Me.lblMaterial.Text = "Material:"
         '
@@ -105,7 +95,7 @@ Partial Class FileDisplay
         Me.lblCutTime.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCutTime.Location = New System.Drawing.Point(1, 274)
         Me.lblCutTime.Name = "lblCutTime"
-        Me.lblCutTime.Size = New System.Drawing.Size(80, 19)
+        Me.lblCutTime.Size = New System.Drawing.Size(62, 16)
         Me.lblCutTime.TabIndex = 6
         Me.lblCutTime.Text = "Approver:"
         '
@@ -115,7 +105,7 @@ Partial Class FileDisplay
         Me.editname.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.editname.Location = New System.Drawing.Point(77, 180)
         Me.editname.Name = "editname"
-        Me.editname.Size = New System.Drawing.Size(33, 19)
+        Me.editname.Size = New System.Drawing.Size(30, 16)
         Me.editname.TabIndex = 7
         Me.editname.Text = "text"
         '
@@ -125,7 +115,7 @@ Partial Class FileDisplay
         Me.editcreator.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.editcreator.Location = New System.Drawing.Point(77, 199)
         Me.editcreator.Name = "editcreator"
-        Me.editcreator.Size = New System.Drawing.Size(33, 19)
+        Me.editcreator.Size = New System.Drawing.Size(30, 16)
         Me.editcreator.TabIndex = 8
         Me.editcreator.Text = "text"
         '
@@ -135,7 +125,7 @@ Partial Class FileDisplay
         Me.editheight.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.editheight.Location = New System.Drawing.Point(77, 218)
         Me.editheight.Name = "editheight"
-        Me.editheight.Size = New System.Drawing.Size(33, 19)
+        Me.editheight.Size = New System.Drawing.Size(30, 16)
         Me.editheight.TabIndex = 9
         Me.editheight.Text = "text"
         '
@@ -145,7 +135,7 @@ Partial Class FileDisplay
         Me.editwidth.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.editwidth.Location = New System.Drawing.Point(77, 236)
         Me.editwidth.Name = "editwidth"
-        Me.editwidth.Size = New System.Drawing.Size(33, 19)
+        Me.editwidth.Size = New System.Drawing.Size(30, 16)
         Me.editwidth.TabIndex = 10
         Me.editwidth.Text = "text"
         '
@@ -155,7 +145,7 @@ Partial Class FileDisplay
         Me.editmaterial.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.editmaterial.Location = New System.Drawing.Point(77, 255)
         Me.editmaterial.Name = "editmaterial"
-        Me.editmaterial.Size = New System.Drawing.Size(33, 19)
+        Me.editmaterial.Size = New System.Drawing.Size(30, 16)
         Me.editmaterial.TabIndex = 11
         Me.editmaterial.Text = "text"
         '
@@ -165,9 +155,20 @@ Partial Class FileDisplay
         Me.editapprover.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.editapprover.Location = New System.Drawing.Point(77, 274)
         Me.editapprover.Name = "editapprover"
-        Me.editapprover.Size = New System.Drawing.Size(33, 19)
+        Me.editapprover.Size = New System.Drawing.Size(30, 16)
         Me.editapprover.TabIndex = 12
         Me.editapprover.Text = "text"
+        '
+        'DisplayBox
+        '
+        Me.DisplayBox.Dock = System.Windows.Forms.DockStyle.Top
+        Me.DisplayBox.Image = CType(resources.GetObject("DisplayBox.Image"), System.Drawing.Image)
+        Me.DisplayBox.Location = New System.Drawing.Point(0, 0)
+        Me.DisplayBox.Name = "DisplayBox"
+        Me.DisplayBox.Size = New System.Drawing.Size(200, 177)
+        Me.DisplayBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.DisplayBox.TabIndex = 0
+        Me.DisplayBox.TabStop = False
         '
         'FileDisplay
         '
