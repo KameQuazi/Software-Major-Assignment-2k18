@@ -18,6 +18,8 @@ Public Class FileDisplay
         End Set
     End Property
 
+    Private Const NoneText = "*none*"
+
     ''' <summary>
     ''' Puts all the details from a template into the control
     ''' </summary>
@@ -25,22 +27,34 @@ Public Class FileDisplay
     Private Sub DisplayTemplate(template As LampTemplate)
         If template IsNot Nothing Then
             Dim dxf = template.BaseDrawing
-            lblName.Text = "Name: " & template.Name
-            lblCreator.Text = "Creator: Waxy by steve"
-            If template.PreviewImages IsNot Nothing Then
+
+            editname.Text = template.Name
+
+            If template.CreatorProfile IsNot Nothing Then
+                editcreator.Text = template.CreatorProfile.Username
+            Else
+                editcreator.Text = NoneText
+            End If
+
+            If template.ApproverProfile IsNot Nothing Then
+                editapprover.Text = template.CreatorProfile.Username
+            Else
+                editapprover.Text = NoneText
+            End If
+
+            If template.PreviewImages(0) IsNot Nothing Then
                 DisplayBox.Image = template.PreviewImages(0)
+            Else
+                DisplayBox.Image = My.Resources.no_preview_image
             End If
             'DisplayBox.Image = template.BaseDrawing.ToImage
 
-            lblWidth.Text = "Width: " & dxf.Width
-            lblMaterial.Text = "Material: " & template.Material & " thiccness: " & template.MaterialThickness
-            lblCutTime.Text = "Time to Cut: ?? Min"
-        Else
-            lblName.Text = "Name: *None*"
-            lblCreator.Text = "Creator: *None*"
-            lblWidth.Text = "Width: *None*"
-            lblMaterial.Text = "Material: *None*"
-            lblCutTime.Text = "Time to Cut: *None*"
+            editwidth.Text = dxf.Width
+            editheight.Text = dxf.Height
+            editmaterial.Text = template.Material
+
+            '" thiccness: " & template.MaterialThickness
+
         End If
     End Sub
 

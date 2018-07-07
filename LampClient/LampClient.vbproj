@@ -437,6 +437,9 @@
   <ItemGroup>
     <None Include="Resources\loading.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\no_preview_image.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>
