@@ -34,9 +34,9 @@ Partial Class DebugForm
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Button10 = New System.Windows.Forms.Button()
         Me.Button11 = New System.Windows.Forms.Button()
-        Me.ToolBar1 = New LampClient.ToolBar()
         Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
         Me.Button12 = New System.Windows.Forms.Button()
+        Me.ToolBar1 = New LampClient.ToolBar()
         Me.SuspendLayout()
         '
         'Button1
@@ -109,7 +109,7 @@ Partial Class DebugForm
         '
         Me.Button7.BackColor = System.Drawing.Color.White
         Me.Button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button7.Location = New System.Drawing.Point(178, 615)
+        Me.Button7.Location = New System.Drawing.Point(168, 615)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(151, 36)
         Me.Button7.TabIndex = 6
@@ -131,9 +131,9 @@ Partial Class DebugForm
         '
         Me.Button9.BackColor = System.Drawing.Color.White
         Me.Button9.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button9.Location = New System.Drawing.Point(350, 615)
+        Me.Button9.Location = New System.Drawing.Point(325, 615)
         Me.Button9.Name = "Button9"
-        Me.Button9.Size = New System.Drawing.Size(75, 36)
+        Me.Button9.Size = New System.Drawing.Size(100, 36)
         Me.Button9.TabIndex = 9
         Me.Button9.Text = "Test2"
         Me.Button9.UseVisualStyleBackColor = False
@@ -142,7 +142,7 @@ Partial Class DebugForm
         '
         Me.TextBox1.Location = New System.Drawing.Point(325, 587)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox1.Size = New System.Drawing.Size(100, 22)
         Me.TextBox1.TabIndex = 10
         '
         'Button10
@@ -167,26 +167,13 @@ Partial Class DebugForm
         Me.Button11.Text = "Home"
         Me.Button11.UseVisualStyleBackColor = False
         '
-        'ToolBar1
-        '
-        Me.ToolBar1.BackColor = System.Drawing.Color.Fuchsia
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
-        Me.ToolBar1.MyOrdersEnabled = True
-        Me.ToolBar1.MyTrophyEnabled = True
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
-        Me.ToolBar1.TabIndex = 15
-        '
         'DynamicFormCreation1
         '
         Me.DynamicFormCreation1.AutoScroll = True
         Me.DynamicFormCreation1.BackColor = System.Drawing.Color.White
         Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.DynamicFormCreation1.Location = New System.Drawing.Point(480, 160)
-        Me.DynamicFormCreation1.Margin = New System.Windows.Forms.Padding(4)
+        Me.DynamicFormCreation1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
         Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(0, 0, 17, 0)
         Me.DynamicFormCreation1.Size = New System.Drawing.Size(684, 480)
@@ -203,13 +190,26 @@ Partial Class DebugForm
         Me.Button12.Text = "Test Refpoints"
         Me.Button12.UseVisualStyleBackColor = False
         '
+        'ToolBar1
+        '
+        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolBar1.HomeEnabled = True
+        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
+        Me.ToolBar1.MyOrdersEnabled = True
+        Me.ToolBar1.MyTrophyEnabled = True
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.NewOrderEnabled = True
+        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
+        Me.ToolBar1.TabIndex = 17
+        '
         'DebugForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(1232, 703)
-        Me.Controls.Add(Me.Button12)
         Me.Controls.Add(Me.ToolBar1)
+        Me.Controls.Add(Me.Button12)
         Me.Controls.Add(Me.Button11)
         Me.Controls.Add(Me.DynamicFormCreation1)
         Me.Controls.Add(Me.Button10)
@@ -224,6 +224,7 @@ Partial Class DebugForm
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
         Me.Name = "DebugForm"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "DebugForm"
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -243,6 +244,6 @@ Partial Class DebugForm
     Friend WithEvents Button10 As Button
     Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
     Friend WithEvents Button11 As Button
-    Friend WithEvents ToolBar1 As ToolBar
     Friend WithEvents Button12 As Button
+    Friend WithEvents ToolBar1 As ToolBar
 End Class

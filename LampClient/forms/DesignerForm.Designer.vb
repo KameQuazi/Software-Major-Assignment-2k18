@@ -53,7 +53,7 @@ Partial Class DesignerForm
         Me.OpenFileBtn.BackColor = System.Drawing.Color.White
         Me.OpenFileBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.OpenFileBtn.Location = New System.Drawing.Point(115, 163)
-        Me.OpenFileBtn.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.OpenFileBtn.Margin = New System.Windows.Forms.Padding(4)
         Me.OpenFileBtn.Name = "OpenFileBtn"
         Me.OpenFileBtn.Size = New System.Drawing.Size(100, 28)
         Me.OpenFileBtn.TabIndex = 0
@@ -71,7 +71,7 @@ Partial Class DesignerForm
         Me.SaveFileBtn.Enabled = False
         Me.SaveFileBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.SaveFileBtn.Location = New System.Drawing.Point(115, 199)
-        Me.SaveFileBtn.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SaveFileBtn.Margin = New System.Windows.Forms.Padding(4)
         Me.SaveFileBtn.Name = "SaveFileBtn"
         Me.SaveFileBtn.Size = New System.Drawing.Size(100, 28)
         Me.SaveFileBtn.TabIndex = 1
@@ -126,7 +126,7 @@ Partial Class DesignerForm
         '
         'jsonOutput
         '
-        Me.jsonOutput.Location = New System.Drawing.Point(876, 364)
+        Me.jsonOutput.Location = New System.Drawing.Point(913, 343)
         Me.jsonOutput.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.jsonOutput.Name = "jsonOutput"
         Me.jsonOutput.Size = New System.Drawing.Size(204, 210)
@@ -138,7 +138,7 @@ Partial Class DesignerForm
         Me.rightButton.BackColor = System.Drawing.Color.White
         Me.rightButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.rightButton.Location = New System.Drawing.Point(1018, 258)
-        Me.rightButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.rightButton.Margin = New System.Windows.Forms.Padding(4)
         Me.rightButton.Name = "rightButton"
         Me.rightButton.Size = New System.Drawing.Size(100, 28)
         Me.rightButton.TabIndex = 12
@@ -150,7 +150,7 @@ Partial Class DesignerForm
         Me.downButton.BackColor = System.Drawing.Color.White
         Me.downButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.downButton.Location = New System.Drawing.Point(966, 294)
-        Me.downButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.downButton.Margin = New System.Windows.Forms.Padding(4)
         Me.downButton.Name = "downButton"
         Me.downButton.Size = New System.Drawing.Size(100, 28)
         Me.downButton.TabIndex = 13
@@ -162,7 +162,7 @@ Partial Class DesignerForm
         Me.leftButton.BackColor = System.Drawing.Color.White
         Me.leftButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.leftButton.Location = New System.Drawing.Point(910, 258)
-        Me.leftButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.leftButton.Margin = New System.Windows.Forms.Padding(4)
         Me.leftButton.Name = "leftButton"
         Me.leftButton.Size = New System.Drawing.Size(100, 28)
         Me.leftButton.TabIndex = 14
@@ -174,7 +174,7 @@ Partial Class DesignerForm
         Me.upButton.BackColor = System.Drawing.Color.White
         Me.upButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.upButton.Location = New System.Drawing.Point(966, 222)
-        Me.upButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.upButton.Margin = New System.Windows.Forms.Padding(4)
         Me.upButton.Name = "upButton"
         Me.upButton.Size = New System.Drawing.Size(100, 28)
         Me.upButton.TabIndex = 15
@@ -195,7 +195,7 @@ Partial Class DesignerForm
         Me.Button1.BackColor = System.Drawing.Color.White
         Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Button1.Location = New System.Drawing.Point(115, 235)
-        Me.Button1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Button1.Margin = New System.Windows.Forms.Padding(4)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(100, 28)
         Me.Button1.TabIndex = 18
@@ -204,8 +204,9 @@ Partial Class DesignerForm
         '
         'TrackBar1
         '
+        Me.TrackBar1.BackColor = System.Drawing.Color.White
         Me.TrackBar1.Location = New System.Drawing.Point(892, 594)
-        Me.TrackBar1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TrackBar1.Margin = New System.Windows.Forms.Padding(4)
         Me.TrackBar1.Maximum = 30
         Me.TrackBar1.Minimum = 1
         Me.TrackBar1.Name = "TrackBar1"
@@ -216,8 +217,8 @@ Partial Class DesignerForm
         'ZoomLevelBox
         '
         Me.ZoomLevelBox.Enabled = False
-        Me.ZoomLevelBox.Location = New System.Drawing.Point(947, 648)
-        Me.ZoomLevelBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ZoomLevelBox.Location = New System.Drawing.Point(948, 628)
+        Me.ZoomLevelBox.Margin = New System.Windows.Forms.Padding(4)
         Me.ZoomLevelBox.Name = "ZoomLevelBox"
         Me.ZoomLevelBox.Size = New System.Drawing.Size(132, 22)
         Me.ZoomLevelBox.TabIndex = 20
@@ -228,7 +229,7 @@ Partial Class DesignerForm
         Me.DuplicateButton.BackColor = System.Drawing.Color.White
         Me.DuplicateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.DuplicateButton.Location = New System.Drawing.Point(140, 577)
-        Me.DuplicateButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DuplicateButton.Margin = New System.Windows.Forms.Padding(4)
         Me.DuplicateButton.Name = "DuplicateButton"
         Me.DuplicateButton.Size = New System.Drawing.Size(100, 28)
         Me.DuplicateButton.TabIndex = 21
@@ -285,9 +286,9 @@ Partial Class DesignerForm
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.SaveFileBtn)
         Me.Controls.Add(Me.OpenFileBtn)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "DesignerForm"
-        Me.Text = "Form1"
+        Me.Text = "Designer"
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
