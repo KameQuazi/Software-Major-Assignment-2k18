@@ -94,7 +94,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommonExtensions.vb" />
+    <Compile Include="user\CommonExtensions.vb" />
     <Compile Include="database\Database.vb" />
     <Compile Include="database\SqliteConnectionWrapper.vb" />
     <Compile Include="database\SqliteTransactionWrapper.vb" />

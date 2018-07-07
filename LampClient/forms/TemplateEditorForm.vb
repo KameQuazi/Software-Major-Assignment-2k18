@@ -30,6 +30,7 @@ Public Class TemplateEditorForm
         UpdateImagesFromTemplate()
         UpdateTagsFromTemplate()
         UpdateDxfFromTemplate()
+        UpdateDynFromTemplate()
     End Sub
 
     Private Sub UpdateTemplateFromAll()
@@ -50,6 +51,9 @@ Public Class TemplateEditorForm
                     UpdateTemplateFromImages()
                 Case NameOf(LampTemplate.BaseDrawing)
                     UpdateDxfFromTemplate()
+                Case NameOf(LampTemplate.DynamicTextList)
+                    UpdateDynFromTemplate()
+
 
                 ' text
                 Case NameOf(LampTemplate.Name)
@@ -88,6 +92,13 @@ Public Class TemplateEditorForm
             TagsBox.Items.Add(NormalizeTags(item))
         Next
 
+    End Sub
+
+    Private Sub UpdateDynFromTemplate()
+        Dynbox.Items.Clear()
+        For Each item In Template.DynamicTextList
+            Dynbox.Items.Add(item.ParameterName)
+        Next
     End Sub
 
     ''' <summary>
@@ -266,6 +277,22 @@ Public Class TemplateEditorForm
         End If
     End Sub
 
+    Private Sub AddDyn_Click(sender As Object, e As EventArgs) Handles adddyn.Click
+        Dim dialog As New LampInputBox("New Dyn", "Enter new Dyn")
+        If dialog.ShowDialog() = DialogResult.OK Then
+            Dim newDyn = NormalizeTags(dialog.InputText)
+
+            If Me.Template.DynamicTextList.Contains(New DynamicTextKey(newDyn, "bruh", New Point(0, 0))) Then
+                ' dont allow duplicates
+                MessageBox.Show("dyn must be unique ")
+            Else
+                ' add them to the tags in the template
+                Me.Template.DynamicTextList.Add(New DynamicTextKey(newDyn, "bruh", New Point(0, 0)))
+            End If
+        End If
+    End Sub
+
+
     Private Function NormalizeTags(text As String) As String
         Return New String(text.Where(Function(x) Not Char.IsWhiteSpace(x)).ToArray()).ToLower
     End Function
@@ -276,6 +303,26 @@ Public Class TemplateEditorForm
             ' an item is selected
             Dim selectedTag = NormalizeTags(TagsBox.SelectedItem.ToString)
             Me.Template.Tags.Remove(selectedTag)
+
+        End If
+    End Sub
+
+
+    Private Sub removedyn_Click(sender As Object, e As EventArgs) Handles RemoveDyn.Click
+        Dim selectedPosition = Dynbox.SelectedIndex
+        If selectedPosition <> -1 Then
+            ' an item is selected
+            Dim selectedParameterName = NormalizeTags(Dynbox.SelectedItem.ToString)
+            Dim toRemove As DynamicTextKey = Nothing
+            For Each item In Me.Template.DynamicTextList
+                If item.ParameterName = selectedParameterName Then
+                    toRemove = item
+                    Exit For
+                End If
+            Next
+            If toRemove IsNot Nothing Then
+                Me.Template.DynamicTextList.Remove(toRemove)
+            End If
 
         End If
     End Sub
@@ -305,4 +352,6 @@ Public Class TemplateEditorForm
     Private Sub NewGuidButton_Click(sender As Object, e As EventArgs) Handles NewGuidButton.Click
         Template.GUID = GetNewGuid()
     End Sub
+
+
 End Class

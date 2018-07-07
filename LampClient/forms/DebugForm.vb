@@ -71,7 +71,7 @@ Public Class DebugForm
     End Sub
 
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
-        Dim frm As New DynamicTextCreationForm
+        Dim frm As New DynamicTextCreationForm(LampTemplate.FromFile("../../../templates/ten.spf"))
 
         frm.ShowDialog()
     End Sub

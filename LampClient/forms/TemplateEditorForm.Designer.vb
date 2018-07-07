@@ -47,11 +47,13 @@ Partial Class TemplateEditorForm
         Me.Label3 = New System.Windows.Forms.Label()
         Me.LongDescription = New System.Windows.Forms.RichTextBox()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
         Me.GuidBox = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.NewGuidButton = New System.Windows.Forms.Button()
-        Me.ToolBar1 = New LampClient.ToolBar()
+        Me.RemoveDyn = New System.Windows.Forms.Button()
+        Me.adddyn = New System.Windows.Forms.Button()
+        Me.Dynbox = New System.Windows.Forms.ListBox()
+        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -331,25 +333,53 @@ Partial Class TemplateEditorForm
         Me.NewGuidButton.Text = "New guid"
         Me.NewGuidButton.UseVisualStyleBackColor = False
         '
-        'ToolBar1
+        'removedyn
         '
-        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(1, 0)
-        Me.ToolBar1.MyOrdersEnabled = True
-        Me.ToolBar1.MyTrophyEnabled = True
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
-        Me.ToolBar1.TabIndex = 25
+        Me.RemoveDyn.Location = New System.Drawing.Point(1079, 164)
+        Me.RemoveDyn.Name = "removedyn"
+        Me.RemoveDyn.Size = New System.Drawing.Size(113, 23)
+        Me.RemoveDyn.TabIndex = 27
+        Me.RemoveDyn.Text = "Remove Dyn"
+        Me.RemoveDyn.UseVisualStyleBackColor = True
+        '
+        'adddyn
+        '
+        Me.adddyn.Location = New System.Drawing.Point(998, 164)
+        Me.adddyn.Name = "adddyn"
+        Me.adddyn.Size = New System.Drawing.Size(75, 23)
+        Me.adddyn.TabIndex = 26
+        Me.adddyn.Text = "Add Dyn"
+        Me.adddyn.UseVisualStyleBackColor = True
+        '
+        'Dynbox
+        '
+        Me.Dynbox.FormattingEnabled = True
+        Me.Dynbox.Items.AddRange(New Object() {""})
+        Me.Dynbox.Location = New System.Drawing.Point(904, 12)
+        Me.Dynbox.Name = "Dynbox"
+        Me.Dynbox.Size = New System.Drawing.Size(322, 134)
+        Me.Dynbox.TabIndex = 25
+        '
+        'DxfViewerControl1
+        '
+        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
+        Me.DxfViewerControl1.Drawing = Nothing
+        Me.DxfViewerControl1.Location = New System.Drawing.Point(566, 197)
+        Me.DxfViewerControl1.Name = "DxfViewerControl1"
+        Me.DxfViewerControl1.Size = New System.Drawing.Size(342, 311)
+        Me.DxfViewerControl1.TabIndex = 12
+        Me.DxfViewerControl1.ZoomX = 1.0R
+        Me.DxfViewerControl1.ZoomY = 1.0R
         '
         'TemplateEditorForm
         '
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
-        Me.BackColor = System.Drawing.Color.Silver
-        Me.ClientSize = New System.Drawing.Size(1232, 703)
-        Me.Controls.Add(Me.ToolBar1)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(1221, 520)
+        Me.Controls.Add(Me.RemoveDyn)
+        Me.Controls.Add(Me.adddyn)
+        Me.Controls.Add(Me.Dynbox)
         Me.Controls.Add(Me.NewGuidButton)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.GuidBox)
@@ -373,9 +403,7 @@ Partial Class TemplateEditorForm
         Me.Controls.Add(Me.Preview3)
         Me.Controls.Add(Me.Preview2)
         Me.Controls.Add(Me.Preview1)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Name = "TemplateEditorForm"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "AddTemplate"
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).EndInit()
@@ -413,5 +441,7 @@ Partial Class TemplateEditorForm
     Friend WithEvents GuidBox As TextBox
     Friend WithEvents Label4 As Label
     Friend WithEvents NewGuidButton As Button
-    Friend WithEvents ToolBar1 As ToolBar
+    Friend WithEvents RemoveDyn As Button
+    Friend WithEvents adddyn As Button
+    Friend WithEvents Dynbox As ListBox
 End Class

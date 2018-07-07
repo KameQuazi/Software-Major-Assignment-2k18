@@ -10,7 +10,7 @@ Imports Newtonsoft.Json
 ''' </summary>
 <JsonObject(MemberSerialization.OptIn)>
 <DataContract>
-Public Structure DynamicTextKey
+Public Class DynamicTextKey
 
     ''' <summary>
     ''' name of the dynamic input: e.g. year, name, date etc
@@ -103,7 +103,14 @@ Public Structure DynamicTextKey
         ret = JsonConvert.SerializeObject(textList, Formatting.Indented)
         Return ret
     End Function
-End Structure
+
+    'tood!
+    'Protected Overrides Function GetHash()
+
+    'End Function
+
+
+End Class
 
 <DataContract>
 Public Enum InputType
