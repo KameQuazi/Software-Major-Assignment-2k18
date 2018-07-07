@@ -431,6 +431,9 @@
   <ItemGroup>
     <None Include="Resources\Logo w Circle.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>

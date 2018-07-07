@@ -1,6 +1,7 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.Collections.Specialized
 Imports System.ComponentModel
+Imports System.IO
 Imports System.Runtime.CompilerServices
 Imports System.Runtime.Serialization
 Imports Newtonsoft.Json
@@ -216,6 +217,32 @@ Public Class LampJob
                 RefreshCompleteDrawing()
         End Select
     End Sub
+
+#If DEBUG Then
+    Public Sub Save(path As String, Optional compress As Boolean = False)
+#Else
+    Public Sub Save(path As String, Optional compress as boolean = True)
+#End If
+        Dim formatting As Newtonsoft.Json.Formatting
+        If compress Then
+            formatting = Formatting.None
+        Else
+            formatting = Formatting.Indented
+        End If
+
+        Using fileStream As New StreamWriter(path)
+            fileStream.Write(ToJson(formatting))
+        End Using
+    End Sub
+
+    ''' <summary>
+    ''' Converts -> json format to be saved as a .spf
+    ''' </summary>
+    ''' <param name="formatting"></param>
+    ''' <returns></returns>
+    Public Function ToJson(Optional formatting As Formatting = Formatting.None) As String
+        Return JsonConvert.SerializeObject(Me, formatting)
+    End Function
 End Class
 
 
