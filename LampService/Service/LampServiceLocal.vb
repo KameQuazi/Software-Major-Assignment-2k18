@@ -863,7 +863,7 @@ Public Class LampServiceLocal
     End Function
 
 
-    Public Async Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of LampTemplateListWrapper) Implements ILampServiceBoth.GetTemplateListAsync
+    Public Async Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As Task(Of LampTemplateListWrapper) Implements ILampServiceBoth.GetTemplateListAsync
         Dim response As New LampTemplateListWrapper
         Try
             If limit <= 0 Or offset < 0 Then
@@ -895,7 +895,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            response.Templates = Await Database.GetMultipleTemplateAsync(tags, byUser, limit, offset, includeUnapproved)
+            response.Templates = Await Database.GetMultipleTemplateAsync(tags, byUser, limit, offset, includeUnapproved, orderBy)
             response.Status = LampStatus.OK
             Return response
 

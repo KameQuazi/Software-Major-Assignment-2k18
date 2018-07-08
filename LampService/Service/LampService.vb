@@ -927,7 +927,7 @@ Public Class LampService
 
     Public Const MAX_TEMPLATES_PER_REQUEST = 50
 
-    Public Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As LampTemplateListWrapper Implements ILampService.GetTemplateList
+    Public Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As LampTemplateListWrapper Implements ILampService.GetTemplateList
         Dim response As New LampTemplateListWrapper
         Try
             If limit <= 0 Or offset < 0 Then
@@ -959,44 +959,9 @@ Public Class LampService
                 Return response
             End If
 
-            response.Templates = Database.GetMultipleTemplate(tags, byUser, limit, offset, includeUnapproved)
+            response.Templates = Database.GetMultipleTemplate(tags, byUser, limit, offset, includeUnapproved, orderBy)
             response.Status = LampStatus.OK
             Return response
-
-        Catch ex As Exception
-            response.Status = LampStatus.InternalServerError
-            Log(ex)
-            Return response
-        End Try
-    End Function
-
-    Public Function GetUserTemplateList(credentials As LampCredentials, limit As Integer, offset As Integer) As LampTemplateListWrapper Implements ILampService.GetUserTemplateList
-        Dim response As New LampTemplateListWrapper
-        Try
-            If limit <= 0 Or offset < 0 Then
-                response.Status = LampStatus.InvalidParameters
-                Return response
-            End If
-
-            If limit > MAX_TEMPLATES_PER_REQUEST Then
-                response.Status = LampStatus.InvalidParameters
-                Return response
-            End If
-
-            Dim auth = Authenticate(credentials)
-            If auth.user Is Nothing Then
-                response.Status = auth.Status
-                Return response
-            End If
-            Dim user = auth.user
-
-            If Not HasGetUserTemplateList(user) Then
-                response.Status = LampStatus.NoAccess
-                Return response
-            End If
-
-            Throw New Exception()
-
 
         Catch ex As Exception
             response.Status = LampStatus.InternalServerError

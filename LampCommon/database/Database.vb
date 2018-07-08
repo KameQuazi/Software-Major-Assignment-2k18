@@ -1590,24 +1590,28 @@ Partial Public Class TemplateDatabase
 End Class
 
 Public Enum LampSort
-    DateTime
+    NoSort
 
+    SubmitDateAsc
+    SubmitDateDesc
+    TemplateNameAsc
+    TemplateNameDesc
 End Enum
 
 Public Class TemplateDatabase
-    Public Function GetMultipleTemplate(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
+    Public Function GetMultipleTemplate(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As List(Of LampTemplate)
         If tags Is Nothing OrElse tags.Count() = 0 Then
-            Return GetTemplateList(byUser, limit, offset, includeUnapproved)
+            Return GetTemplateList(byUser, limit, offset, includeUnapproved, orderBy)
         Else
-            Return SelectTemplateWithTags(tags, byUser, limit, offset, includeUnapproved)
+            Return SelectTemplateWithTags(tags, byUser, limit, offset, includeUnapproved, orderBy)
         End If
     End Function
 
-    Public Async Function GetMultipleTemplateAsync(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
+    Public Async Function GetMultipleTemplateAsync(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As Task(Of List(Of LampTemplate))
         If tags Is Nothing OrElse tags.Count() = 0 Then
-            Return Await GetTemplateListAsync(byUser, limit, offset, includeUnapproved).ConfigureAwait(False)
+            Return Await GetTemplateListAsync(byUser, limit, offset, includeUnapproved, orderBy).ConfigureAwait(False)
         Else
-            Return Await SelectTemplateWithTagsAsync(tags, byUser, limit, offset, includeUnapproved).ConfigureAwait(False)
+            Return Await SelectTemplateWithTagsAsync(tags, byUser, limit, offset, includeUnapproved, orderBy).ConfigureAwait(False)
         End If
     End Function
 
@@ -1618,7 +1622,7 @@ Public Class TemplateDatabase
     ''' <param name="offset"></param>
     ''' <param name="includeUnapproved"></param>
     ''' <returns></returns>
-    Private Function GetTemplateList(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
+    Private Function GetTemplateList(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As List(Of LampTemplate)
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingTemplates As New List(Of LampTemplate)
 
@@ -1637,11 +1641,11 @@ Public Class TemplateDatabase
                 userParameter += ")"
             End If
 
-
             Dim stringCommand = String.Format("SELECT guid FROM template WHERE {0} AND {1}
+                                            {2}
                                             LIMIT @limit
                                             OFFSET @offset",
-                                           approveText, userParameter)
+                                           approveText, userParameter, GetSqlFromSort(orderBy))
             command.CommandText = stringCommand
             command.Parameters.AddWithValue("@limit", limit)
             command.Parameters.AddWithValue("@offset", offset)
@@ -1663,13 +1667,13 @@ Public Class TemplateDatabase
     End Function
 
     ''' <summary>
-    ''' async version of <see cref="GetTemplateList(IEnumerable(Of String),Integer , Integer, Boolean)"></see>
+    ''' async version of <see cref="GetTemplateList(IEnumerable(Of String),Integer , Integer, Boolean, LampSort)"></see>
     ''' </summary>
     ''' <param name="limit"></param>
     ''' <param name="offset"></param>
     ''' <param name="includeUnapproved"></param>
     ''' <returns></returns>
-    Private Async Function GetTemplateListAsync(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
+    Private Async Function GetTemplateListAsync(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As Task(Of List(Of LampTemplate))
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingTemplates As New List(Of LampTemplate)
 
@@ -1689,9 +1693,10 @@ Public Class TemplateDatabase
             End If
 
             Dim stringCommand = String.Format("SELECT guid FROM template WHERE {0} AND {1}
+                                            {2}
                                             LIMIT @limit
                                             OFFSET @offset",
-                                           approveText, userParameter)
+                                           approveText, userParameter, GetSqlFromSort(orderBy))
             command.CommandText = stringCommand
             command.Parameters.AddWithValue("@limit", limit)
             command.Parameters.AddWithValue("@offset", offset)
@@ -1764,7 +1769,7 @@ Public Class TemplateDatabase
     ''' If no template is found, returns nothing
     ''' </summary>
     ''' <returns></returns>
-    Private Function SelectTemplateWithTags(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As List(Of LampTemplate)
+    Private Function SelectTemplateWithTags(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As List(Of LampTemplate)
         ' If the databse is open already, dont close it
 
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
@@ -1798,9 +1803,10 @@ Public Class TemplateDatabase
 
             Dim stringCommand = String.Format("Select tags.guid from tags
                                       WHERE {0} AND {1} AND {2}
+                                      {3}
                                       LIMIT @limit
                                       OFFSET @offset
-                                     ", tagParameters, approveText, userParameter)
+                                     ", tagParameters, approveText, userParameter, GetSqlFromSort(orderBy))
             ' find all templates w/
             command.CommandText = stringCommand
             For i = 0 To tags.Count - 1
@@ -1833,7 +1839,7 @@ Public Class TemplateDatabase
     ''' If no template is found, returns nothing
     ''' </summary>
     ''' <returns></returns>
-    Private Async Function SelectTemplateWithTagsAsync(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean) As Task(Of List(Of LampTemplate))
+    Private Async Function SelectTemplateWithTagsAsync(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As Task(Of List(Of LampTemplate))
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingTemplates As New List(Of LampTemplate)
 
@@ -1867,9 +1873,10 @@ Public Class TemplateDatabase
 
             Dim stringCommand = String.Format("Select tags.guid from tags
                                       WHERE {0} AND {1} AND {2}
+                                      {3}
                                       LIMIT @limit
                                       OFFSET @offset
-                                     ", tagString, approveText, userParameter)
+                                     ", tagString, approveText, userParameter, GetSqlFromSort(orderBy))
             ' find all templates w/
             command.CommandText = stringCommand
             For i = 0 To tags.Count - 1
@@ -2076,5 +2083,31 @@ Public Class DatabaseHelper
         Dim foo As New SQLiteParameter(type)
         foo.Value = data
         Return foo
+    End Function
+
+    Public Shared Function GetSqlFromSort(sort As LampSort) As String
+        Select Case sort
+            Case LampSort.SubmitDateAsc
+                Return "ORDER BY template.submitDate ASC"
+            Case LampSort.SubmitDateDesc
+                Return "ORDER BY template.submitDate DESC"
+
+            Case LampSort.TemplateNameAsc
+                Return "ORDER BY template.Name ASC"
+            Case LampSort.TemplateNameDesc
+                Return "ORDER BY template.Name DESC"
+            Case LampSort.NoSort
+                Return ""
+
+#If DEBUG Then
+            Case Else
+                Throw New ArgumentOutOfRangeException(NameOf(sort))
+#Else
+            Case Else
+                Return ""
+#End If
+
+
+        End Select
     End Function
 End Class

@@ -8,6 +8,8 @@ Public Class MyTemplatesForm
         MessageBox.Show("Could not update: " + status.ToString)
     End Sub
 
+    Public Property SortOrder As LampSort
+
     Private Async Function UpdateInterface() As Task
         Try
             ' check if the next page exists (offset - tempaltes-per-page)
@@ -16,7 +18,7 @@ Public Class MyTemplatesForm
             If offset - TEMPLATES_PER_PAGE >= 0 Then
                 Dim previousPage = Await CurrentSender.GetTemplateListAsync(CurrentUser.ToCredentials,
                                                         Nothing, New List(Of String) From {CurrentUser.UserId},
-                                                        TEMPLATES_PER_PAGE, offset - TEMPLATES_PER_PAGE, False)
+                                                        TEMPLATES_PER_PAGE, offset - TEMPLATES_PER_PAGE, False, SortOrder)
                 If previousPage.Status = LampStatus.OK Then
                     If previousPage.Templates.Count() > 0 Then
                         MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) btnPreviousPage.Enabled = True)
@@ -32,7 +34,7 @@ Public Class MyTemplatesForm
 
             Dim request = Await CurrentSender.GetTemplateListAsync(CurrentUser.ToCredentials,
                                                                Nothing, New List(Of String) From {CurrentUser.UserId},
-                                                               TEMPLATES_PER_PAGE, offset, False)
+                                                               TEMPLATES_PER_PAGE, offset, False, SortOrder)
 
             If request.Status <> LampStatus.OK Then
                 ShowError(request.Status)
@@ -46,7 +48,7 @@ Public Class MyTemplatesForm
             If offset + TEMPLATES_PER_PAGE >= 0 Then
                 Dim previousPage = Await CurrentSender.GetTemplateListAsync(CurrentUser.ToCredentials,
                                                             Nothing, New List(Of String) From {CurrentUser.UserId},
-                                                            TEMPLATES_PER_PAGE, offset + TEMPLATES_PER_PAGE, False)
+                                                            TEMPLATES_PER_PAGE, offset + TEMPLATES_PER_PAGE, False, SortOrder)
                 If previousPage.Status = LampStatus.OK Then
                     If previousPage.Templates.Count() > 0 Then
                         MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) btnNextPage.Enabled = True)

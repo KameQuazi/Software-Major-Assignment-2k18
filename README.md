@@ -32,7 +32,7 @@ many faults such as - Scaling issues
 						Images werent working(had to be added MANUALLY)
 
 TODO:
-help
+helpform
 update SetUsername in toolbar.vb
 order viewer (like file viewer, but for jobs)
 multiorderviewer (views multiple orders)
@@ -42,3 +42,5 @@ https://stackoverflow.com/questions/4608156/showing-the-second-form-exactly-on-t
 store username/password in my.settings if save password checkbox is checked
 fix close dialog box
 diff color scheme for each tab?
+admin tools (approve, remove templates)
+sort template list

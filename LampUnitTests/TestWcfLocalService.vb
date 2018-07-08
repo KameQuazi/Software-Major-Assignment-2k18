@@ -468,36 +468,64 @@ Public Class TestWcfLocalService
     <TestCategory("WcfService")>
     <TestCategory("WcfTemplate")>
     Public Sub TestGetTemplateList()
-        Dim response = Service.GetTemplateList(Nothing, Nothing, Nothing, 10, 0, False)
+
+
+        Dim response = Service.GetTemplateList(Nothing, Nothing, Nothing, 10, 0, False, LampSort.NoSort)
         Assert.AreEqual(LampStatus.InvalidParameters, response.Status)
 
-        response = Service.GetTemplateList(Admin.ToCredentials, Nothing, Nothing, 0, 0, False)
+        response = Service.GetTemplateList(Admin.ToCredentials, Nothing, Nothing, 0, 0, False, LampSort.NoSort)
         Assert.AreEqual(LampStatus.InvalidParameters, response.Status)
 
         ' add som approved templatess
-        For i = 0 To 20
-            Service.AddTemplate(Admin.ToCredentials, New LampTemplate)
+        For i = 1 To 20
+            Service.AddTemplate(Admin.ToCredentials, New LampTemplate())
+        Next i
+
+        For i = 1 To 10
+            Service.AddTemplate(Elevated1.ToCredentials, New LampTemplate())
+            Console.WriteLine(i)
         Next i
 
         ' standard cant access non approved templates
-        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 5, 0, True)
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 5, 0, True, LampSort.NoSort)
         Assert.AreEqual(LampStatus.NoAccess, response.Status)
         Assert.AreEqual(0, response.Templates.Count())
 
         ' standard can access approved templates
-        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 5, 0, False)
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 5, 0, False, LampSort.NoSort)
         Assert.AreEqual(LampStatus.OK, response.Status)
         Assert.AreEqual(5, response.Templates.Count())
 
         ' standard can also filter thru tags
-        response = Service.GetTemplateList(Standard1.ToCredentials, New List(Of String) From {"grape"}, Nothing, 10, 0, False)
+        response = Service.GetTemplateList(Standard1.ToCredentials, New List(Of String) From {"grape"}, Nothing, 10, 0, False, LampSort.NoSort)
         Assert.AreEqual(LampStatus.OK, response.Status)
         Assert.AreEqual(1, response.Templates.Count())
         AreEqual(ApprovedTemplate.GUID, response.Templates(0).GUID)
 
         ' cannot request more than 50 templates
-        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 51, 0, False)
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 51, 0, False, LampSort.NoSort)
         Assert.AreEqual(LampStatus.InvalidParameters, response.Status)
 
+        ' test user filtering
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, New List(Of String) From {Admin.UserId}, 50, 0, False, LampSort.NoSort)
+        Assert.AreEqual(LampStatus.OK, response.Status)
+        AreEqual(20, response.Templates.Count())
+
+        ' test user filtering 2
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, New List(Of String) From {Elevated1.UserId}, 20, 0, False, LampSort.NoSort)
+        Assert.AreEqual(LampStatus.OK, response.Status)
+        ' 10 
+        AreEqual(10, response.Templates.Count())
+
+        ' test sort order
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, New List(Of String) From {Admin.UserId}, 20, 0, False, LampSort.SubmitDateAsc)
+        AreEqual(LampStatus.OK, response.Status)
+        AreEqual(20, response.Templates.Count())
+        Dim prev = response.Templates(0)
+        For i = 1 To 19
+            Assert.IsTrue(response.Templates(i).SubmitDate >= prev.SubmitDate)
+            prev = response.Templates(i)
+        Next
     End Sub
+
 End Class

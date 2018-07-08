@@ -35,6 +35,8 @@ Public Class LampTemplateMetadata
         ret.IsComplete = IsComplete
         ret.ApproverProfile = ApproverProfile
         ret.CreatorProfile = CreatorProfile
+        ret.SubmitDate = SubmitDate
+        ret.IsComplete = IsComplete
         Return ret
     End Function
 
