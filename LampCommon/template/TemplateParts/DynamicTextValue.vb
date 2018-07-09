@@ -17,6 +17,18 @@ Public Class DynamicTextValue
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
 
+
+    ''' <summary>
+    ''' 
+    ''' 
+    ''' </summary>
+    ''' <param name="param">value of value </param>
+    Public Sub New(param As Object)
+        Me.Value = param
+
+
+    End Sub
+
     Private _value As Object
     ''' <summary>
     ''' The text to insert into the finished Template
