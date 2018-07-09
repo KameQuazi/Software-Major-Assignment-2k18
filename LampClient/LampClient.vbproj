@@ -116,6 +116,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="controls\AdminToolbar.Designer.vb">
+      <DependentUpon>AdminToolbar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\AdminToolbar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\DxfViewerControl.Designer.vb">
       <DependentUpon>DxfViewerControl.vb</DependentUpon>
     </Compile>
@@ -174,6 +180,12 @@
       <DependentUpon>AboutBox.vb</DependentUpon>
     </Compile>
     <Compile Include="forms\AboutBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\AdminForm.Designer.vb">
+      <DependentUpon>AdminForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\AdminForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\CloseBox.Designer.vb">
@@ -299,6 +311,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="controls\AdminToolbar.resx">
+      <DependentUpon>AdminToolbar.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\DxfViewerControl.resx">
       <DependentUpon>DxfViewerControl.vb</DependentUpon>
     </EmbeddedResource>
@@ -328,6 +343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\AboutBox.resx">
       <DependentUpon>AboutBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\AdminForm.resx">
+      <DependentUpon>AdminForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\CloseBox.resx">
       <DependentUpon>CloseBox.vb</DependentUpon>

@@ -1,6 +1,98 @@
 ﻿Imports System.ComponentModel
+Imports System.Runtime.CompilerServices
+Imports LampClient
+
+Public Module ToolbarUtilities
+    Public ReadOnly Property PreviousForms As New List(Of LampForm)
+
+    <Extension>
+    Public Sub AddPreviousForm(this As IToolbar, form As Form)
+        Select Case form.GetType()
+            Case GetType(HomeForm)
+                PreviousForms.Add(LampForm.HomeForm)
+            Case GetType(MyOrdersForm)
+                PreviousForms.Add(LampForm.MyOrdersForm)
+            Case GetType(MyTemplatesForm)
+                PreviousForms.Add(LampForm.MyTemplatesForm)
+            Case GetType(NewOrderForm)
+                PreviousForms.Add(LampForm.NewOrderForm)
+            Case GetType(TemplateSelectForm)
+                PreviousForms.Add(LampForm.TemplateSelectForm)
+            Case GetType(AdminForm)
+                PreviousForms.Add(LampForm.AdminForm)
+
+
+
+            Case Else
+                Throw New ArgumentOutOfRangeException(NameOf(form))
+        End Select
+    End Sub
+
+    ''' <summary>
+    ''' Pops and shows the last saved form
+    ''' assumes that at least 1 saved form exists
+    ''' </summary>
+    ''' <param name="this"></param>
+    <Extension>
+    Private Sub PopPreviousForm(this As IToolbar)
+        Dim last = PreviousForms(PreviousForms.Count - 1)
+        PreviousForms.RemoveAt(PreviousForms.Count - 1)
+        Select Case last
+            Case LampForm.HomeForm
+                HomeForm.Show()
+            Case LampForm.MyOrdersForm
+                MyOrdersForm.Show()
+            Case LampForm.MyTemplatesForm
+                MyTemplatesForm.Show()
+            Case LampForm.NewOrderForm
+                NewOrderForm.Show()
+            Case LampForm.TemplateSelectForm
+                TemplateSelectForm.Show()
+        End Select
+    End Sub
+
+    ''' <summary>
+    ''' Adds the previous form storage and opens the new form, then closes the previous form
+    ''' </summary>
+    ''' <param name="this"></param>
+    ''' <param name="previousForm"></param>
+    ''' <param name="newForm"></param>
+    <Extension>
+    Public Sub ShowNewForm(this As IToolbar, previousForm As Form, newForm As Form)
+        this.AddPreviousForm(previousForm)
+        newForm.Show()
+        previousForm.Close()
+    End Sub
+
+    ''' <summary>
+    ''' Closes the current form, then opens last closed form
+    ''' </summary>
+    ''' <param name="this"></param>
+    ''' <param name="currentForm"></param>
+    <Extension>
+    Public Sub ShowPreviousForm(this As IToolbar, currentForm As Form)
+        If Not this.HasSavedForms() Then
+            Throw New InvalidOperationException("No previous forms")
+        End If
+        this.PopPreviousForm()
+        currentForm.Close()
+    End Sub
+
+    <Extension>
+    Public Function HasSavedForms(this As IToolbar) As Boolean
+        Return PreviousForms.Count > 0
+    End Function
+End Module
+
+Public Interface IToolbar
+    Sub SetUsername(username As String)
+
+End Interface
 
 Public Class ToolBar
+    Implements IToolbar
+
+#Region "DesignerProperties"
     <Category("DisableButtons")>
     Public Property NewOrderEnabled As Boolean
         Get
@@ -42,7 +134,9 @@ Public Class ToolBar
     End Property
 
 
-    Public Sub SetUsername(username As String)
+#End Region
+
+    Public Sub SetUsername(username As String) Implements IToolbar.SetUsername
         Me.Username.Text = String.Format("Welcome {0}", username)
     End Sub
 
@@ -53,26 +147,7 @@ Public Class ToolBar
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub btnQY_Click(sender As Object, e As EventArgs)
-        Dim currentParent As Control = Me.Parent
-        Dim closed As Boolean = False
-
-        While currentParent IsNot Nothing
-            If currentParent.GetType().IsSubclassOf(GetType(Form)) Then
-                Dim parent As Form = DirectCast(currentParent, Form)
-                parent.Close()
-                closed = True
-                Exit While
-            End If
-
-            currentParent = currentParent.Parent
-        End While
-
-#If DEBUG Then
-        If Not closed Then
-            Throw New Exception("Control must be on top level (must not be in a panel etc)")
-        End If
-#End If
-
+        Me.ParentForm.Close()
     End Sub
 
     Private Sub btnLogOut_Click(sender As Object, e As EventArgs) Handles btnLogOut.Click
@@ -86,31 +161,19 @@ Public Class ToolBar
 
 
     Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
-        AddPreviousForm(ParentForm)
-        HomeForm.Show()
-
-        ParentForm.Close()
+        ShowNewForm(ParentForm, HomeForm)
     End Sub
 
     Private Sub btnNewOrder_Click(sender As Object, e As EventArgs) Handles btnNewOrder.Click
-        AddPreviousForm(ParentForm)
-        NewOrderForm.Show()
-
-        ParentForm.Close()
+        ShowNewForm(ParentForm, NewOrderForm)
     End Sub
 
     Private Sub btnDesigns_Click(sender As Object, e As EventArgs) Handles btnDesigns.Click
-        AddPreviousForm(ParentForm)
-        MyTemplatesForm.Show()
-
-        ParentForm.Close()
+        ShowNewForm(ParentForm, MyTemplatesForm)
     End Sub
 
     Private Sub btnOrders_Click(sender As Object, e As EventArgs) Handles btnOrders.Click
-        AddPreviousForm(ParentForm)
-        MyOrdersForm.Show()
-
-        ParentForm.Close()
+        ShowNewForm(ParentForm, MyOrdersForm)
     End Sub
 
     Private Sub btnHelp_Click(sender As Object, e As EventArgs) Handles btnHelp.Click
@@ -121,7 +184,7 @@ Public Class ToolBar
         AboutBox.ShowDialog()
     End Sub
 
-    Private Shared PreviousForms As New List(Of LampForm)
+
 
     ''' <summary>
     ''' Checks if previousform is set to disable/enable it
@@ -145,44 +208,17 @@ Public Class ToolBar
             Return
         End If
 
-        Dim last = PreviousForms(PreviousForms.Count - 1)
-        PreviousForms.RemoveAt(PreviousForms.Count - 1)
-        Select Case last
-            Case LampForm.HomeForm
-                HomeForm.Show()
-            Case LampForm.MyOrdersForm
-                MyOrdersForm.Show()
-            Case LampForm.MyTemplatesForm
-                MyTemplatesForm.Show()
-            Case LampForm.NewOrderForm
-                NewOrderForm.Show()
-            Case LampForm.TemplateSelectForm
-                TemplateSelectForm.Show()
-        End Select
-
-        ParentForm.Close()
+        ShowPreviousForm(ParentForm)
     End Sub
 
-    Private Sub AddPreviousForm(form As Form)
-        Select Case form.GetType()
-            Case GetType(HomeForm)
-                PreviousForms.Add(LampForm.HomeForm)
-            Case GetType(MyOrdersForm)
-                PreviousForms.Add(LampForm.MyOrdersForm)
-            Case GetType(MyTemplatesForm)
-                PreviousForms.Add(LampForm.MyTemplatesForm)
-            Case GetType(NewOrderForm)
-                PreviousForms.Add(LampForm.NewOrderForm)
-            Case GetType(TemplateSelectForm)
-                PreviousForms.Add(LampForm.TemplateSelectForm)
-        End Select
-    End Sub
+
 
     Private Sub btnQuit_Click(sender As Object, e As EventArgs) Handles btnQuit.Click
         If CloseBox.ShowDialog() = DialogResult.OK Then
             End
         End If
     End Sub
+
 End Class
 
 
@@ -192,5 +228,5 @@ Public Enum LampForm
     MyTemplatesForm
     NewOrderForm
     TemplateSelectForm
-
+    AdminForm
 End Enum

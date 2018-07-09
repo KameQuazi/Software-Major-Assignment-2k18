@@ -11,7 +11,7 @@
             InitalizeLibraries()
             LampLocalWcfClient.Local = New LampLocalWcfClient(New LampService.LampServiceLocal("templateDB.sqlite"))
             SetServiceEndpoint(LampLocalWcfClient.Local)
-
+            CurrentUser = Nothing
             Console.WriteLine("hewwo?")
         End Sub
     End Class

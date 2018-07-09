@@ -59,7 +59,7 @@ Partial Class MyTemplatesForm
         '
         'ToolBar1
         '
-        Me.ToolBar1.BackColor = System.Drawing.Color.Fuchsia
+        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
         Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Top
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.HomeEnabled = True

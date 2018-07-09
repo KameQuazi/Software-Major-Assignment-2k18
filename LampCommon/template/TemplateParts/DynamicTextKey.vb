@@ -107,6 +107,7 @@ Public Class DynamicTextKey
 
     Public Overrides Function GetHashCode() As Integer
         Dim hash = MyBase.GetHashCode()
+
         ' XOR operator + prime number
         hash = (hash * 397) Xor ParameterName.GetHashCode()
         hash = (hash * 397) Xor Description.GetHashCode()

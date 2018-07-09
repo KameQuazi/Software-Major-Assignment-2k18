@@ -8,7 +8,7 @@ Imports LampService
 
 
 Public Module OwO
-    Public Property CurrentUser As LampUser = New LampUser(GetNewGuid, UserPermission.Admin, "none@gmail.comg", "hewwwo", "password", "debugger")
+    Public Property CurrentUser As LampUser = New LampUser(GetNewGuid, UserPermission.Admin, "none@gmail.comg", "debugUser", "password", "debugger")
 
     Public Property CurrentSender As ILampServiceBoth
 
