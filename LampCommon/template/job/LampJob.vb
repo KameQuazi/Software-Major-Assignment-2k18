@@ -35,14 +35,14 @@ Public Class LampJob
     End Property
 
 
-    Private _dynamicTextDict As New ObservableCollection(Of DynamicTextDictionary)
+    Private _dynamicTextDict As ObservableCollection(Of DynamicTextDictionary)
     ''' <summary>
     ''' Where the dynamic stuff
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("dynamic_text_dictionary")>
     <DataMember>
-    Public Property DynamicTextDictionary As ObservableCollection(Of DynamicTextDictionary)
+    Public Property DynamicTextDictionaries As ObservableCollection(Of DynamicTextDictionary)
         Get
             Return _dynamicTextDict
         End Get
@@ -220,6 +220,9 @@ Public Class LampJob
         Me.Approver = approver
         Me.Approved = approved
         Me.SubmitDate = submitDate
+
+
+        Me.DynamicTextDictionaries = New ObservableCollection(Of DynamicTextDictionary)
     End Sub
 
     ''' <summary>

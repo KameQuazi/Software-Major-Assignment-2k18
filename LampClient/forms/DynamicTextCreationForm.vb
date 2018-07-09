@@ -58,10 +58,10 @@ Public Class DynamicTextCreationForm
 
             singleDT = DynamicFormCreation1.FlowLayoutPanel1.Controls.Item(index)
             For value As Integer = 0 To singleDT.GetValue.ToString.Split(",").Count
-                If newJob.DynamicTextDictionary.Count < value + 1 Then
-                    newJob.DynamicTextDictionary.Add(New DynamicTextDictionary)
+                If newJob.DynamicTextDictionaries.Count < value + 1 Then
+                    newJob.DynamicTextDictionaries.Add(New DynamicTextDictionary)
                 End If
-                newJob.DynamicTextDictionary(value).Add(Source.DynamicTextList.Item(value), New DynamicTextValue(singleDT.GetValue.ToString.Split(",").GetValue(value)))
+                newJob.DynamicTextDictionaries(value).Add(Source.DynamicTextList.Item(value), New DynamicTextValue(singleDT.GetValue.ToString.Split(",").GetValue(value)))
             Next
         Next
     End Sub
