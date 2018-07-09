@@ -22,8 +22,18 @@ Partial Class DynamicTextCreationForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.btnSubmit = New System.Windows.Forms.Button()
         Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
         Me.SuspendLayout()
+        '
+        'btnSubmit
+        '
+        Me.btnSubmit.Location = New System.Drawing.Point(443, 239)
+        Me.btnSubmit.Name = "btnSubmit"
+        Me.btnSubmit.Size = New System.Drawing.Size(75, 23)
+        Me.btnSubmit.TabIndex = 1
+        Me.btnSubmit.Text = "Submit"
+        Me.btnSubmit.UseVisualStyleBackColor = True
         '
         'DynamicFormCreation1
         '
@@ -39,6 +49,7 @@ Partial Class DynamicTextCreationForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1232, 703)
+        Me.Controls.Add(Me.btnSubmit)
         Me.Controls.Add(Me.DynamicFormCreation1)
         Me.Name = "DynamicTextCreationForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -48,4 +59,5 @@ Partial Class DynamicTextCreationForm
     End Sub
 
     Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
+    Friend WithEvents btnSubmit As Button
 End Class

@@ -35,7 +35,7 @@ Public Class LampJob
     End Property
 
 
-    Private _dynamicTextDict As ObservableCollection(Of DynamicTextDictionary)
+    Private _dynamicTextDict As New ObservableCollection(Of DynamicTextDictionary)
     ''' <summary>
     ''' Where the dynamic stuff
     ''' </summary>
