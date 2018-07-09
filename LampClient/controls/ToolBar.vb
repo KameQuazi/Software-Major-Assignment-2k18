@@ -82,6 +82,18 @@ Public Module ToolbarUtilities
     Public Function HasSavedForms(this As IToolbar) As Boolean
         Return PreviousForms.Count > 0
     End Function
+
+    <Extension>
+    Public Function Logout(this As IToolbar, parentForm As Form) As Boolean
+        If LogoutBox.ShowDialog() = DialogResult.OK Then
+            PreviousForms.Clear()
+            LoginForm.Show()
+
+            parentForm.Close()
+            Return True
+        End If
+        Return False
+    End Function
 End Module
 
 Public Interface IToolbar
@@ -151,12 +163,7 @@ Public Class ToolBar
     End Sub
 
     Private Sub btnLogOut_Click(sender As Object, e As EventArgs) Handles btnLogOut.Click
-        If LogoutBox.ShowDialog() = DialogResult.OK Then
-            PreviousForms.Clear()
-            LoginForm.Show()
-
-            ParentForm.Close()
-        End If
+        Logout(ParentForm)
     End Sub
 
 
@@ -177,7 +184,7 @@ Public Class ToolBar
     End Sub
 
     Private Sub btnHelp_Click(sender As Object, e As EventArgs) Handles btnHelp.Click
-        HelpForm.ShowDialog()
+        HelpBox.ShowDialog()
     End Sub
 
     Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click

@@ -36,14 +36,18 @@ Partial Class FileDisplay
         Me.editmaterial = New System.Windows.Forms.Label()
         Me.editapprover = New System.Windows.Forms.Label()
         Me.DisplayBox = New System.Windows.Forms.PictureBox()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         CType(Me.DisplayBox, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'lblName
         '
         Me.lblName.AutoSize = True
         Me.lblName.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblName.Location = New System.Drawing.Point(25, 180)
+        Me.lblName.Location = New System.Drawing.Point(19, 15)
         Me.lblName.Name = "lblName"
         Me.lblName.Size = New System.Drawing.Size(46, 16)
         Me.lblName.TabIndex = 1
@@ -53,7 +57,7 @@ Partial Class FileDisplay
         '
         Me.lblCreator.AutoSize = True
         Me.lblCreator.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCreator.Location = New System.Drawing.Point(12, 199)
+        Me.lblCreator.Location = New System.Drawing.Point(11, 79)
         Me.lblCreator.Name = "lblCreator"
         Me.lblCreator.Size = New System.Drawing.Size(54, 16)
         Me.lblCreator.TabIndex = 2
@@ -63,7 +67,7 @@ Partial Class FileDisplay
         '
         Me.lblHeight.AutoSize = True
         Me.lblHeight.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblHeight.Location = New System.Drawing.Point(21, 218)
+        Me.lblHeight.Location = New System.Drawing.Point(16, 47)
         Me.lblHeight.Name = "lblHeight"
         Me.lblHeight.Size = New System.Drawing.Size(49, 16)
         Me.lblHeight.TabIndex = 3
@@ -73,7 +77,7 @@ Partial Class FileDisplay
         '
         Me.lblWidth.AutoSize = True
         Me.lblWidth.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblWidth.Location = New System.Drawing.Point(24, 236)
+        Me.lblWidth.Location = New System.Drawing.Point(19, 31)
         Me.lblWidth.Name = "lblWidth"
         Me.lblWidth.Size = New System.Drawing.Size(46, 16)
         Me.lblWidth.TabIndex = 4
@@ -83,7 +87,7 @@ Partial Class FileDisplay
         '
         Me.lblMaterial.AutoSize = True
         Me.lblMaterial.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMaterial.Location = New System.Drawing.Point(10, 255)
+        Me.lblMaterial.Location = New System.Drawing.Point(7, 63)
         Me.lblMaterial.Name = "lblMaterial"
         Me.lblMaterial.Size = New System.Drawing.Size(58, 16)
         Me.lblMaterial.TabIndex = 5
@@ -93,7 +97,7 @@ Partial Class FileDisplay
         '
         Me.lblCutTime.AutoSize = True
         Me.lblCutTime.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCutTime.Location = New System.Drawing.Point(1, 274)
+        Me.lblCutTime.Location = New System.Drawing.Point(3, 95)
         Me.lblCutTime.Name = "lblCutTime"
         Me.lblCutTime.Size = New System.Drawing.Size(62, 16)
         Me.lblCutTime.TabIndex = 6
@@ -103,7 +107,7 @@ Partial Class FileDisplay
         '
         Me.editname.AutoSize = True
         Me.editname.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.editname.Location = New System.Drawing.Point(77, 180)
+        Me.editname.Location = New System.Drawing.Point(71, 15)
         Me.editname.Name = "editname"
         Me.editname.Size = New System.Drawing.Size(30, 16)
         Me.editname.TabIndex = 7
@@ -113,7 +117,7 @@ Partial Class FileDisplay
         '
         Me.editcreator.AutoSize = True
         Me.editcreator.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.editcreator.Location = New System.Drawing.Point(77, 199)
+        Me.editcreator.Location = New System.Drawing.Point(71, 79)
         Me.editcreator.Name = "editcreator"
         Me.editcreator.Size = New System.Drawing.Size(30, 16)
         Me.editcreator.TabIndex = 8
@@ -123,7 +127,7 @@ Partial Class FileDisplay
         '
         Me.editheight.AutoSize = True
         Me.editheight.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.editheight.Location = New System.Drawing.Point(77, 218)
+        Me.editheight.Location = New System.Drawing.Point(71, 47)
         Me.editheight.Name = "editheight"
         Me.editheight.Size = New System.Drawing.Size(30, 16)
         Me.editheight.TabIndex = 9
@@ -133,7 +137,7 @@ Partial Class FileDisplay
         '
         Me.editwidth.AutoSize = True
         Me.editwidth.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.editwidth.Location = New System.Drawing.Point(77, 236)
+        Me.editwidth.Location = New System.Drawing.Point(71, 31)
         Me.editwidth.Name = "editwidth"
         Me.editwidth.Size = New System.Drawing.Size(30, 16)
         Me.editwidth.TabIndex = 10
@@ -143,7 +147,7 @@ Partial Class FileDisplay
         '
         Me.editmaterial.AutoSize = True
         Me.editmaterial.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.editmaterial.Location = New System.Drawing.Point(77, 255)
+        Me.editmaterial.Location = New System.Drawing.Point(71, 63)
         Me.editmaterial.Name = "editmaterial"
         Me.editmaterial.Size = New System.Drawing.Size(30, 16)
         Me.editmaterial.TabIndex = 11
@@ -153,7 +157,7 @@ Partial Class FileDisplay
         '
         Me.editapprover.AutoSize = True
         Me.editapprover.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.editapprover.Location = New System.Drawing.Point(77, 274)
+        Me.editapprover.Location = New System.Drawing.Point(71, 95)
         Me.editapprover.Name = "editapprover"
         Me.editapprover.Size = New System.Drawing.Size(30, 16)
         Me.editapprover.TabIndex = 12
@@ -161,38 +165,63 @@ Partial Class FileDisplay
         '
         'DisplayBox
         '
-        Me.DisplayBox.Dock = System.Windows.Forms.DockStyle.Top
+        Me.DisplayBox.Dock = System.Windows.Forms.DockStyle.Fill
         Me.DisplayBox.Image = CType(resources.GetObject("DisplayBox.Image"), System.Drawing.Image)
-        Me.DisplayBox.Location = New System.Drawing.Point(0, 0)
+        Me.DisplayBox.Location = New System.Drawing.Point(3, 3)
         Me.DisplayBox.Name = "DisplayBox"
-        Me.DisplayBox.Size = New System.Drawing.Size(200, 177)
+        Me.DisplayBox.Size = New System.Drawing.Size(194, 144)
         Me.DisplayBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.DisplayBox.TabIndex = 0
         Me.DisplayBox.TabStop = False
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.ColumnCount = 1
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.DisplayBox, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.Panel1, 0, 1)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 2
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(200, 301)
+        Me.TableLayoutPanel1.TabIndex = 13
+        '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.lblName)
+        Me.Panel1.Controls.Add(Me.lblCreator)
+        Me.Panel1.Controls.Add(Me.lblHeight)
+        Me.Panel1.Controls.Add(Me.lblWidth)
+        Me.Panel1.Controls.Add(Me.lblMaterial)
+        Me.Panel1.Controls.Add(Me.lblCutTime)
+        Me.Panel1.Controls.Add(Me.editname)
+        Me.Panel1.Controls.Add(Me.editcreator)
+        Me.Panel1.Controls.Add(Me.editheight)
+        Me.Panel1.Controls.Add(Me.editwidth)
+        Me.Panel1.Controls.Add(Me.editmaterial)
+        Me.Panel1.Controls.Add(Me.editapprover)
+        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel1.Location = New System.Drawing.Point(3, 153)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(194, 145)
+        Me.Panel1.TabIndex = 1
         '
         'FileDisplay
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.White
-        Me.Controls.Add(Me.editapprover)
-        Me.Controls.Add(Me.editmaterial)
-        Me.Controls.Add(Me.editwidth)
-        Me.Controls.Add(Me.editheight)
-        Me.Controls.Add(Me.editcreator)
-        Me.Controls.Add(Me.editname)
-        Me.Controls.Add(Me.lblCutTime)
-        Me.Controls.Add(Me.lblMaterial)
-        Me.Controls.Add(Me.lblWidth)
-        Me.Controls.Add(Me.lblHeight)
-        Me.Controls.Add(Me.lblCreator)
-        Me.Controls.Add(Me.lblName)
-        Me.Controls.Add(Me.DisplayBox)
+        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "FileDisplay"
         Me.Size = New System.Drawing.Size(200, 301)
         CType(Me.DisplayBox, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 
@@ -209,4 +238,6 @@ Partial Class FileDisplay
     Friend WithEvents editwidth As Label
     Friend WithEvents editmaterial As Label
     Friend WithEvents editapprover As Label
+    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Friend WithEvents Panel1 As Panel
 End Class

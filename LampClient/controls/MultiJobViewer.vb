@@ -2,21 +2,22 @@
 Imports System.Collections.Specialized
 Imports LampCommon
 
-Public Class MultiTemplateViewer
-    Public ReadOnly Property Templates As ObservableCollection(Of LampTemplate)
+Public Class MultiJobViewer
+    Public ReadOnly Property Jobs As ObservableCollection(Of LampJob)
 
-    Public Overrides Property AutoScroll As Boolean
+    Private ReadOnly Property NewColumnStyle As ColumnStyle
         Get
-            Return GridPanel.AutoScroll
+            Return New ColumnStyle(SizeType.AutoSize)
         End Get
-        Set(value As Boolean)
-            GridPanel.AutoScroll = value
-        End Set
     End Property
 
+    Private ReadOnly Property NewRowStyle As RowStyle
+        Get
+            Return New RowStyle(SizeType.AutoSize)
+        End Get
+    End Property
 
-
-    Public Const Columns = 4
+    Public Const Columns = 1
 
 
     Sub New()
@@ -24,9 +25,11 @@ Public Class MultiTemplateViewer
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Templates = New ObservableCollection(Of LampTemplate)
-        AddHandler Templates.CollectionChanged, AddressOf UpdateViewers
-        Me.GridPanel.Padding = New Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0)
+        Jobs = New ObservableCollection(Of LampJob)
+        AddHandler Jobs.CollectionChanged, AddressOf UpdateViewers
+        Me.TableLayoutPanel1.Padding = New Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0)
+        Me.TableLayoutPanel1.ColumnCount = Columns
+
     End Sub
 
     Private Sub UpdateViewers(sender As Object, e As NotifyCollectionChangedEventArgs)
@@ -34,24 +37,19 @@ Public Class MultiTemplateViewer
             Return
         End If
         SuspendLayout()
-        GridPanel.Controls.Clear()
+        TableLayoutPanel1.Controls.Clear()
 
-        GridPanel.RowCount = 0
-        GridPanel.RowStyles.Clear()
-
-        Dim totalRows As Integer = Math.Ceiling(Templates.Count / Columns)
-
-        For i = 1 To totalRows
-            GridPanel.RowStyles.Add(New RowStyle(SizeType.Percent, 1 / totalRows))
-        Next
-        GridPanel.RowCount = totalRows
-
+        TableLayoutPanel1.RowCount = 0
+        TableLayoutPanel1.RowStyles.Clear()
 
         Dim count = 0
+        For Each job In Jobs
+            If count Mod Columns = 0 Then
+                TableLayoutPanel1.RowCount += 1
+                TableLayoutPanel1.RowStyles.Add(NewRowStyle)
+            End If
 
-        For Each template In Templates
-
-            GridPanel.Controls.Add(New FileDisplay() With {.Template = template, .Dock = DockStyle.Fill})
+            TableLayoutPanel1.Controls.Add(New JobDisplay() With {.Job = job, .Dock = DockStyle.Fill})
 
             count += 1
         Next
@@ -60,11 +58,11 @@ Public Class MultiTemplateViewer
     End Sub
 
     Friend Sub StopLoading()
-        LoadingPictureBox.Visible = False
+        'LoadingPictureBox.Visible = False
     End Sub
 
     Friend Sub ShowLoading()
-        LoadingPictureBox.Visible = True
+        'LoadingPictureBox.Visible = True
     End Sub
 
     Private _suspend As Boolean = False
@@ -89,8 +87,5 @@ Public Class MultiTemplateViewer
             Return baseParams
         End Get
     End Property
-
-
-
 
 End Class

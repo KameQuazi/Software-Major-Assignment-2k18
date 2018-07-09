@@ -81,4 +81,8 @@ Public Class FileDisplay
         ' Add any initialization after the InitializeComponent() call.
         Template = LampTemplate.Empty
     End Sub
+
+    Private Sub lblName_Click(sender As Object, e As EventArgs) Handles lblName.Click
+
+    End Sub
 End Class

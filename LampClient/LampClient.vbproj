@@ -115,6 +115,27 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminForms\AdminHelp.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminForms\ApproveTemplateForm.Designer.vb">
+      <DependentUpon>ApproveTemplateForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AdminForms\ApproveTemplateForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminForms\ViewEditJobsForm.Designer.vb">
+      <DependentUpon>ViewEditJobsForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AdminForms\ViewEditJobsForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminForms\ViewEditTemplateForm.Designer.vb">
+      <DependentUpon>ViewEditTemplateForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AdminForms\ViewEditTemplateForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="controls\AdminToolbar.Designer.vb">
       <DependentUpon>AdminToolbar.vb</DependentUpon>
@@ -144,6 +165,12 @@
       <DependentUpon>JobDisplay.vb</DependentUpon>
     </Compile>
     <Compile Include="controls\JobDisplay.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\MultiJobViewer.Designer.vb">
+      <DependentUpon>MultiJobViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\MultiJobViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="controls\MultiTemplateViewer.Designer.vb">
@@ -176,22 +203,52 @@
     <Compile Include="controls\ToolBar.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="forms\AboutBox.designer.vb">
+    <Compile Include="DebugForms\DebugOptions.Designer.vb">
+      <DependentUpon>DebugOptions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DebugForms\DebugOptions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugForms\DebugRefpoints.Designer.vb">
+      <DependentUpon>DebugRefpoints.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DebugForms\DebugRefpoints.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugForms\DesignerForm.Designer.vb">
+      <DependentUpon>DesignerForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DebugForms\DesignerForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugForms\DynamicTextCreationForm.Designer.vb">
+      <DependentUpon>DynamicTextCreationForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DebugForms\DynamicTextCreationForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogBoxes\AboutBox.designer.vb">
       <DependentUpon>AboutBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\AboutBox.vb">
+    <Compile Include="DialogBoxes\AboutBox.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\AdminForm.Designer.vb">
+    <Compile Include="AdminForms\AdminForm.Designer.vb">
       <DependentUpon>AdminForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\AdminForm.vb">
+    <Compile Include="AdminForms\AdminForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\CloseBox.Designer.vb">
+    <Compile Include="DialogBoxes\CloseBox.Designer.vb">
       <DependentUpon>CloseBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\CloseBox.vb">
+    <Compile Include="DialogBoxes\CloseBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogBoxes\LampInputBox.Designer.vb">
+      <DependentUpon>LampInputBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DialogBoxes\LampInputBox.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\NewOrderForm.Designer.vb">
@@ -200,46 +257,22 @@
     <Compile Include="forms\NewOrderForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\DBViewer.Designer.vb">
+    <Compile Include="DebugForms\DBViewer.Designer.vb">
       <DependentUpon>DBViewer.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\DBViewer.vb">
+    <Compile Include="DebugForms\DBViewer.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\DebugForm.Designer.vb">
+    <Compile Include="DebugForms\DebugForm.Designer.vb">
       <DependentUpon>DebugForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\DebugForm.vb">
+    <Compile Include="DebugForms\DebugForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\DebugOptions.Designer.vb">
-      <DependentUpon>DebugOptions.vb</DependentUpon>
+    <Compile Include="DialogBoxes\HelpBox.Designer.vb">
+      <DependentUpon>HelpBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\DebugOptions.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="forms\DebugRefpoints.Designer.vb">
-      <DependentUpon>DebugRefpoints.vb</DependentUpon>
-    </Compile>
-    <Compile Include="forms\DebugRefpoints.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="forms\DesignerForm.Designer.vb">
-      <DependentUpon>DesignerForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="forms\DesignerForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="forms\DynamicTextCreationForm.Designer.vb">
-      <DependentUpon>DynamicTextCreationForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="forms\DynamicTextCreationForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="forms\HelpForm.Designer.vb">
-      <DependentUpon>HelpForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="forms\HelpForm.vb">
+    <Compile Include="DialogBoxes\HelpBox.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\HomeForm.Designer.vb">
@@ -248,22 +281,16 @@
     <Compile Include="forms\HomeForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\LampInputBox.Designer.vb">
-      <DependentUpon>LampInputBox.vb</DependentUpon>
-    </Compile>
-    <Compile Include="forms\LampInputBox.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="forms\LoginForm.designer.vb">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </Compile>
     <Compile Include="forms\LoginForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\LogoutBox.Designer.vb">
+    <Compile Include="DialogBoxes\LogoutBox.Designer.vb">
       <DependentUpon>LogoutBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\LogoutBox.vb">
+    <Compile Include="DialogBoxes\LogoutBox.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\MyOrdersForm.Designer.vb">
@@ -326,6 +353,9 @@
     <EmbeddedResource Include="controls\JobDisplay.resx">
       <DependentUpon>JobDisplay.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="controls\MultiJobViewer.resx">
+      <DependentUpon>MultiJobViewer.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\MultiTemplateViewer.resx">
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
     </EmbeddedResource>
@@ -341,49 +371,49 @@
     <EmbeddedResource Include="controls\ToolBar.resx">
       <DependentUpon>ToolBar.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\AboutBox.resx">
+    <EmbeddedResource Include="DebugForms\DebugOptions.resx">
+      <DependentUpon>DebugOptions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugForms\DebugRefpoints.resx">
+      <DependentUpon>DebugRefpoints.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugForms\DesignerForm.resx">
+      <DependentUpon>DesignerForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebugForms\DynamicTextCreationForm.resx">
+      <DependentUpon>DynamicTextCreationForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogBoxes\AboutBox.resx">
       <DependentUpon>AboutBox.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\AdminForm.resx">
+    <EmbeddedResource Include="AdminForms\AdminForm.resx">
       <DependentUpon>AdminForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\CloseBox.resx">
+    <EmbeddedResource Include="DialogBoxes\CloseBox.resx">
       <DependentUpon>CloseBox.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\HelpForm.resx">
-      <DependentUpon>HelpForm.vb</DependentUpon>
+    <EmbeddedResource Include="DialogBoxes\HelpBox.resx">
+      <DependentUpon>HelpBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogBoxes\LampInputBox.resx">
+      <DependentUpon>LampInputBox.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\NewOrderForm.resx">
       <DependentUpon>NewOrderForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\DBViewer.resx">
+    <EmbeddedResource Include="DebugForms\DBViewer.resx">
       <DependentUpon>DBViewer.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\DebugForm.resx">
+    <EmbeddedResource Include="DebugForms\DebugForm.resx">
       <DependentUpon>DebugForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="forms\DebugOptions.resx">
-      <DependentUpon>DebugOptions.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="forms\DebugRefpoints.resx">
-      <DependentUpon>DebugRefpoints.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="forms\DesignerForm.resx">
-      <DependentUpon>DesignerForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="forms\DynamicTextCreationForm.resx">
-      <DependentUpon>DynamicTextCreationForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\HomeForm.resx">
       <DependentUpon>HomeForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\LampInputBox.resx">
-      <DependentUpon>LampInputBox.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="forms\LoginForm.resx">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\LogoutBox.resx">
+    <EmbeddedResource Include="DialogBoxes\LogoutBox.resx">
       <DependentUpon>LogoutBox.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\MyOrdersForm.resx">

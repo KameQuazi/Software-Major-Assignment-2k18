@@ -40,9 +40,12 @@ Public Class MyTemplatesForm
                 ShowError(request.Status)
                 Return
             End If
+
+            MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.Suspend())
             For Each item In request.Templates
                 MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Add(item))
             Next
+            MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.EndSuspend())
 
             ' check if the next page exists
             If offset + TEMPLATES_PER_PAGE >= 0 Then
@@ -111,5 +114,7 @@ Public Class MyTemplatesForm
         LoadComplete()
     End Sub
 
+    Private Sub MultiTemplateViewer1_Load(sender As Object, e As EventArgs) Handles MultiTemplateViewer1.Load
 
+    End Sub
 End Class
