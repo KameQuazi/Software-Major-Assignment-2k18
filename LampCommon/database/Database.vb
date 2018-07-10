@@ -358,6 +358,8 @@ Partial Public Class TemplateDatabase
         FillDebugDatabase()
         Return True
     End Function
+
+
 End Class
 
 
@@ -1615,6 +1617,86 @@ Public Class TemplateDatabase
         End If
     End Function
 
+    Public Function GetMultipleJob(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampSort) As List(Of LampJob)
+        Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
+            Dim matchingJobs As New List(Of LampJob)
+
+            Dim userParameter = "1"
+            If byUser.Count <> 0 Then
+                userParameter = "jobs.submitterId in ("
+                For i = 0 To byUser.Count() - 1
+                    userParameter += ("@user" + i.ToString())
+                Next
+
+                userParameter += ")"
+            End If
+
+            Dim stringCommand = String.Format("SELECT jobId FROM jobs WHERE {0} 
+                                            {1}
+                                            LIMIT @limit
+                                            OFFSET @offset",
+                                            userParameter, GetJobSqlFromSort(orderBy))
+            command.CommandText = stringCommand
+
+            command.Parameters.AddWithValue("@limit", limit)
+            command.Parameters.AddWithValue("@offset", offset)
+
+            For i = 0 To byUser.Count() - 1
+                command.Parameters.AddWithValue("@user" + i.ToString(), byUser(i))
+            Next
+
+            Using sqlite_reader = command.ExecuteReader()
+                While sqlite_reader.Read()
+                    Dim guid = sqlite_reader.GetString(sqlite_reader.GetOrdinal("jobId"))
+                    matchingJobs.Add(SelectJob(guid))
+                End While
+
+            End Using
+
+            Return matchingJobs
+        End Using
+    End Function
+
+    Public Async Function GetMultipleJobAsync(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampSort) As Task(Of List(Of LampJob))
+        Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
+            Dim matchingJobs As New List(Of LampJob)
+
+            Dim userParameter = "1"
+            If byUser.Count <> 0 Then
+                userParameter = "jobs.submitterId in ("
+                For i = 0 To byUser.Count() - 1
+                    userParameter += ("@user" + i.ToString())
+                Next
+
+                userParameter += ")"
+            End If
+
+            Dim stringCommand = String.Format("SELECT jobId FROM jobs WHERE {0} 
+                                            {1}
+                                            LIMIT @limit
+                                            OFFSET @offset",
+                                            userParameter, GetJobSqlFromSort(orderBy))
+            command.CommandText = stringCommand
+
+            command.Parameters.AddWithValue("@limit", limit)
+            command.Parameters.AddWithValue("@offset", offset)
+
+            For i = 0 To byUser.Count() - 1
+                command.Parameters.AddWithValue("@user" + i.ToString(), byUser(i))
+            Next
+
+            Using sqlite_reader = Await command.ExecuteReaderAsync().ConfigureAwait(False)
+                While Await sqlite_reader.ReadAsync().ConfigureAwait(False)
+                    Dim guid = sqlite_reader.GetString(sqlite_reader.GetOrdinal("jobId"))
+                    matchingJobs.Add(Await SelectJobAsync(guid).ConfigureAwait(False))
+                End While
+
+            End Using
+
+            Return matchingJobs
+        End Using
+    End Function
+
     ''' <summary>
     ''' Gets a list of templates without tag filtering
     ''' </summary>
@@ -1645,7 +1727,7 @@ Public Class TemplateDatabase
                                             {2}
                                             LIMIT @limit
                                             OFFSET @offset",
-                                           approveText, userParameter, GetSqlFromSort(orderBy))
+                                           approveText, userParameter, GetTemplateSqlFromSort(orderBy))
             command.CommandText = stringCommand
             command.Parameters.AddWithValue("@limit", limit)
             command.Parameters.AddWithValue("@offset", offset)
@@ -1696,7 +1778,7 @@ Public Class TemplateDatabase
                                             {2}
                                             LIMIT @limit
                                             OFFSET @offset",
-                                           approveText, userParameter, GetSqlFromSort(orderBy))
+                                           approveText, userParameter, GetTemplateSqlFromSort(orderBy))
             command.CommandText = stringCommand
             command.Parameters.AddWithValue("@limit", limit)
             command.Parameters.AddWithValue("@offset", offset)
@@ -1806,7 +1888,7 @@ Public Class TemplateDatabase
                                       {3}
                                       LIMIT @limit
                                       OFFSET @offset
-                                     ", tagParameters, approveText, userParameter, GetSqlFromSort(orderBy))
+                                     ", tagParameters, approveText, userParameter, GetTemplateSqlFromSort(orderBy))
             ' find all templates w/
             command.CommandText = stringCommand
             For i = 0 To tags.Count - 1
@@ -1876,7 +1958,7 @@ Public Class TemplateDatabase
                                       {3}
                                       LIMIT @limit
                                       OFFSET @offset
-                                     ", tagString, approveText, userParameter, GetSqlFromSort(orderBy))
+                                     ", tagString, approveText, userParameter, GetTemplateSqlFromSort(orderBy))
             ' find all templates w/
             command.CommandText = stringCommand
             For i = 0 To tags.Count - 1
@@ -2069,8 +2151,9 @@ Public Class DatabaseHelper
         If binary Is Nothing Then
             Return Nothing
         End If
-        Dim stream As New MemoryStream(binary)
-        Return Image.FromStream(stream)
+        Using stream As New MemoryStream(binary)
+            Return Image.FromStream(stream)
+        End Using
     End Function
 
     ''' <summary>
@@ -2085,7 +2168,7 @@ Public Class DatabaseHelper
         Return foo
     End Function
 
-    Public Shared Function GetSqlFromSort(sort As LampSort) As String
+    Public Shared Function GetTemplateSqlFromSort(sort As LampSort) As String
         Select Case sort
             Case LampSort.SubmitDateAsc
                 Return "ORDER BY template.submitDate ASC"
@@ -2108,6 +2191,29 @@ Public Class DatabaseHelper
 #End If
 
 
+        End Select
+    End Function
+
+    Public Shared Function GetJobSqlFromSort(sort As LampSort) As String
+        Select Case sort
+            Case LampSort.SubmitDateAsc
+                Return "ORDER BY jobs.submitDate ASC"
+            Case LampSort.SubmitDateDesc
+                Return "ORDER BY jobs.submitDate DESC"
+
+            Case LampSort.TemplateNameAsc, LampSort.TemplateNameAsc
+                Throw New ArgumentOutOfRangeException(NameOf(sort))
+
+            Case LampSort.NoSort
+                Return ""
+
+#If DEBUG Then
+            Case Else
+                Throw New ArgumentOutOfRangeException(NameOf(sort))
+#Else
+            Case Else
+                Return ""
+#End If
         End Select
     End Function
 End Class

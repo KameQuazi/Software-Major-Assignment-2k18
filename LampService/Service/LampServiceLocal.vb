@@ -895,7 +895,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            response.Templates = Await Database.GetMultipleTemplateAsync(tags, byUser, limit, offset, includeUnapproved, orderBy)
+            response.Templates = Await Database.GetMultipleTemplateAsync(tags, byUser, limit, offset, includeUnapproved, orderBy).ConfigureAwait(False)
             response.Status = LampStatus.OK
             Return response
 
@@ -907,4 +907,45 @@ Public Class LampServiceLocal
     End Function
 
 
+    Public Async Function GetJobListAsync(credentials As LampCredentials, byUser As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampSort) As Task(Of LampJobListWrapper) Implements ILampServiceBoth.GetJobListAsync
+        Dim response As New LampJobListWrapper
+        'todo
+
+        Try
+            If limit <= 0 Or offset < 0 Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            If limit > MAX_JOBS_PER_REQUEST Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            If byUser Is Nothing Then
+                byUser = New List(Of String)
+            End If
+
+            Dim auth = Await AuthenticateAsync(credentials).ConfigureAwait(False)
+            If auth.user Is Nothing Then
+                response.Status = auth.Status
+                Return response
+            End If
+            Dim user = auth.user
+
+            If Not HasGetJobListPerms(user, byUser) Then
+                response.Status = LampStatus.NoAccess
+                Return response
+            End If
+
+            response.Templates = Await Database.GetMultipleJobAsync(byUser, limit, offset, orderBy).ConfigureAwait(False)
+            response.Status = LampStatus.OK
+            Return response
+
+        Catch ex As Exception
+            response.Status = LampStatus.InternalServerError
+            Log(ex)
+            Return response
+        End Try
+    End Function
 End Class

@@ -287,3 +287,8 @@ Public Class LampJobWrapper
     Public Job As LampJob
     Public Status As LampStatus
 End Class
+
+Public Class LampJobListWrapper
+    Public Status As LampStatus
+    Public Templates As New List(Of LampJob)
+End Class

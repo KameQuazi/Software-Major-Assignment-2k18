@@ -131,7 +131,7 @@ Partial Class DesignerForm
         Me.jsonOutput.Name = "jsonOutput"
         Me.jsonOutput.Size = New System.Drawing.Size(204, 210)
         Me.jsonOutput.TabIndex = 11
-        Me.jsonOutput.Text = "serialized her"
+        Me.jsonOutput.Text = "serialized here"
         '
         'rightButton
         '

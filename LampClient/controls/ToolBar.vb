@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.Runtime.CompilerServices
 Imports LampClient
+Imports LampCommon
 
 Public Module ToolbarUtilities
     Public ReadOnly Property PreviousForms As New List(Of LampForm)
@@ -205,6 +206,11 @@ Public Class ToolBar
             btnBack.Enabled = True
         End If
         SetUsername(CurrentUser.Username)
+        ' dont have permission to 
+        If CurrentUser.PermissionLevel <= UserPermission.Standard Then
+            MyOrdersEnabled = False
+            NewOrderEnabled = False
+        End If
     End Sub
 
     Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click

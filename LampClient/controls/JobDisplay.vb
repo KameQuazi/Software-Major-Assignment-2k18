@@ -25,6 +25,7 @@ Public Class JobDisplay
             SubmitProfileDisplay.Profile = Job.Submitter
             ApproveProfileDisplay.Profile = Job.Approver
             dynamicTextViewer.Source = Job.Template
+            FileDisplay1.Template = Job.Template
         End If
     End Sub
 

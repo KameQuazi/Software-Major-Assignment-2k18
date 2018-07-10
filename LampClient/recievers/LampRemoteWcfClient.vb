@@ -199,6 +199,14 @@ Public Class LampRemoteWcfClient
         Return Channel.GetTemplateListAsync(credentials, tags, byUser, limit, offset, includeUnapproved, orderBy)
     End Function
 
+    Public Function GetJobList(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampSort) As LampJobListWrapper Implements ILampService.GetJobList
+        Return Channel.GetJobList(credentials, byUsers, limit, offset, orderBy)
+    End Function
+
+    Public Function GetJobListAsync(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampSort) As Task(Of LampJobListWrapper) Implements ILampServiceAsync.GetJobListAsync
+        Return Channel.GetJobListAsync(credentials, byUsers, limit, offset, orderBy)
+    End Function
+
 
 #End Region
 End Class

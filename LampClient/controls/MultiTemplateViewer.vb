@@ -15,9 +15,27 @@ Public Class MultiTemplateViewer
     End Property
 
 
+    Private _columns As Integer = 4
+    Public Property Columns As Integer
+        Get
+            Return _columns
+        End Get
+        Set(value As Integer)
+            _columns = value
+            UpdateViewers(Nothing, Nothing)
+        End Set
+    End Property
 
-    Public Const Columns = 4
-
+    Private _rows As Integer = 2
+    Public Property Rows As Integer
+        Get
+            Return _rows
+        End Get
+        Set(value As Integer)
+            _rows = value
+            UpdateViewers(Nothing, Nothing)
+        End Set
+    End Property
 
     Sub New()
         ' This call is required by the designer.
@@ -38,23 +56,28 @@ Public Class MultiTemplateViewer
 
         GridPanel.RowCount = 0
         GridPanel.RowStyles.Clear()
-
-        Dim totalRows As Integer = Math.Ceiling(Templates.Count / Columns)
-
-        For i = 1 To totalRows
-            GridPanel.RowStyles.Add(New RowStyle(SizeType.Percent, 1 / totalRows))
+        For i = 1 To Rows
+            GridPanel.RowStyles.Add(New RowStyle(SizeType.Percent, 1 / Rows))
         Next
-        GridPanel.RowCount = totalRows
+        GridPanel.RowCount = Rows
 
-
-        Dim count = 0
-
-        For Each template In Templates
-
-            GridPanel.Controls.Add(New FileDisplay() With {.Template = template, .Dock = DockStyle.Fill})
-
-            count += 1
+        GridPanel.ColumnCount = Columns
+        GridPanel.ColumnStyles.Clear()
+        For i = 1 To Columns
+            GridPanel.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 1 / Columns))
         Next
+
+        If Templates.Count > 0 Then
+
+            For Each template In Templates
+                GridPanel.Controls.Add(New FileDisplay() With {.Template = template, .Dock = DockStyle.Fill})
+            Next
+            lblNoTemplates.Visible = False
+        Else
+            lblNoTemplates.Visible = True
+        End If
+
+
 
         ResumeLayout()
     End Sub

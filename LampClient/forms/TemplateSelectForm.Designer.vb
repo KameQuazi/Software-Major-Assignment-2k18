@@ -22,123 +22,63 @@ Partial Class TemplateSelectForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.btnNext = New System.Windows.Forms.Button()
-        Me.btnPrev = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.cmbSort = New System.Windows.Forms.ComboBox()
-        Me.lblSort = New System.Windows.Forms.Label()
-        Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
-        Me.ToolBar1 = New LampClient.ToolBar()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.ServiceTemplateViewer1 = New LampClient.ServiceTemplateViewer()
+        Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
-        'btnNext
+        'TableLayoutPanel1
         '
-        Me.btnNext.Location = New System.Drawing.Point(867, 710)
-        Me.btnNext.Name = "btnNext"
-        Me.btnNext.Size = New System.Drawing.Size(42, 25)
-        Me.btnNext.TabIndex = 4
-        Me.btnNext.Text = "->"
-        Me.btnNext.UseVisualStyleBackColor = True
+        Me.TableLayoutPanel1.ColumnCount = 1
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.ServiceTemplateViewer1, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.ComboBox1, 0, 0)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 3
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(1232, 703)
+        Me.TableLayoutPanel1.TabIndex = 20
         '
-        'btnPrev
+        'ComboBox1
         '
-        Me.btnPrev.Location = New System.Drawing.Point(819, 710)
-        Me.btnPrev.Name = "btnPrev"
-        Me.btnPrev.Size = New System.Drawing.Size(42, 25)
-        Me.btnPrev.TabIndex = 5
-        Me.btnPrev.Text = "<-"
-        Me.btnPrev.UseVisualStyleBackColor = True
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Items.AddRange(New Object() {"Submit Time Ascending", "Submit Time Descending", "Name Ascending", "Name Descending"})
+        Me.ComboBox1.Location = New System.Drawing.Point(3, 3)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(121, 22)
+        Me.ComboBox1.TabIndex = 1
         '
-        'Label1
+        'ServiceTemplateViewer1
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(827, 735)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(29, 14)
-        Me.Label1.TabIndex = 6
-        Me.Label1.Text = "Prev"
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(875, 735)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(28, 14)
-        Me.Label2.TabIndex = 7
-        Me.Label2.Text = "next"
-        '
-        'cmbSort
-        '
-        Me.cmbSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbSort.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmbSort.FormattingEnabled = True
-        Me.cmbSort.Items.AddRange(New Object() {"Creator (Alphabetical)", "Date Created", "Height (Ascending)", "Height (Descending)", "Material", "Name (Alphabetical)", "Width (Ascending)", "Width (Descending)"})
-        Me.cmbSort.Location = New System.Drawing.Point(788, 96)
-        Me.cmbSort.Name = "cmbSort"
-        Me.cmbSort.Size = New System.Drawing.Size(188, 26)
-        Me.cmbSort.Sorted = True
-        Me.cmbSort.TabIndex = 17
-        '
-        'lblSort
-        '
-        Me.lblSort.AutoSize = True
-        Me.lblSort.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSort.Location = New System.Drawing.Point(722, 99)
-        Me.lblSort.Name = "lblSort"
-        Me.lblSort.Size = New System.Drawing.Size(63, 18)
-        Me.lblSort.TabIndex = 13
-        Me.lblSort.Text = "Sort By:"
-        '
-        'MultiTemplateViewer1
-        '
-        Me.MultiTemplateViewer1.Location = New System.Drawing.Point(80, 143)
-        Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
-        Me.MultiTemplateViewer1.Size = New System.Drawing.Size(873, 561)
-        Me.MultiTemplateViewer1.TabIndex = 19
-        '
-        'ToolBar1
-        '
-        Me.ToolBar1.BackColor = System.Drawing.Color.Fuchsia
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(22, 0)
-        Me.ToolBar1.MyOrdersEnabled = True
-        Me.ToolBar1.MyTrophyEnabled = True
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
-        Me.ToolBar1.TabIndex = 20
+        Me.ServiceTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ServiceTemplateViewer1.Location = New System.Drawing.Point(3, 139)
+        Me.ServiceTemplateViewer1.Name = "ServiceTemplateViewer1"
+        Me.ServiceTemplateViewer1.Offset = 0
+        Me.ServiceTemplateViewer1.Size = New System.Drawing.Size(1226, 540)
+        Me.ServiceTemplateViewer1.SortOrder = LampCommon.LampSort.SubmitDateAsc
+        Me.ServiceTemplateViewer1.TabIndex = 0
         '
         'TemplateSelectForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(1248, 742)
-        Me.Controls.Add(Me.ToolBar1)
-        Me.Controls.Add(Me.MultiTemplateViewer1)
-        Me.Controls.Add(Me.lblSort)
-        Me.Controls.Add(Me.cmbSort)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.btnPrev)
-        Me.Controls.Add(Me.btnNext)
+        Me.ClientSize = New System.Drawing.Size(1232, 703)
+        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "TemplateSelectForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Viewer"
+        Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
-    Friend WithEvents btnNext As Button
-    Friend WithEvents btnPrev As Button
-    Friend WithEvents Label1 As Label
-    Friend WithEvents Label2 As Label
-    Friend WithEvents cmbSort As ComboBox
-    Friend WithEvents lblSort As Label
-    Friend WithEvents MultiTemplateViewer1 As MultiTemplateViewer
-    Friend WithEvents ToolBar1 As ToolBar
+    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Friend WithEvents ServiceTemplateViewer1 As ServiceTemplateViewer
+    Friend WithEvents ComboBox1 As ComboBox
 End Class

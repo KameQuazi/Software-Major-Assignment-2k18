@@ -48,6 +48,7 @@ Public Module CommonExtensions
         If this.InvokeRequired Then
             this.Invoke(action, New Object() {this})
         Else
+
             action(this)
         End If
     End Sub

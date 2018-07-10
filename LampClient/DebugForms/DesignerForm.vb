@@ -43,7 +43,9 @@ Public Class DesignerForm
         ' since the GUID is a unique constraint, it will simply exit the function
         ' as if a return was placed there
         ' I've moved the stuff to the sub new underneath
-
+        If Drawing IsNot Nothing Then
+            jsonOutput.Text = Drawing.ToDxfString
+        End If
 
     End Sub
 

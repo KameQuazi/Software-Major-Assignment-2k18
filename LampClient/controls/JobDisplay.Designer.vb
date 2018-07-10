@@ -26,14 +26,14 @@ Partial Class JobDisplay
         Dim LampDxfDocument1 As LampCommon.LampDxfDocument = New LampCommon.LampDxfDocument()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(JobDisplay))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.FileDisplay1 = New LampClient.FileDisplay()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.SubmitProfileDisplay = New LampClient.ProfileDisplay()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.ApproveProfileDisplay = New LampClient.ProfileDisplay()
-        Me.FileDisplay1 = New LampClient.FileDisplay()
         Me.btnDynamicText = New System.Windows.Forms.Button()
+        Me.ApproveProfileDisplay = New LampClient.ProfileDisplay()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -57,68 +57,14 @@ Partial Class JobDisplay
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(961, 304)
         Me.TableLayoutPanel1.TabIndex = 0
         '
-        'Panel1
-        '
-        Me.Panel1.Controls.Add(Me.SubmitProfileDisplay)
-        Me.Panel1.Controls.Add(Me.Label1)
-        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel1.Location = New System.Drawing.Point(3, 3)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(314, 298)
-        Me.Panel1.TabIndex = 1
-        '
-        'SubmitProfileDisplay
-        '
-        Me.SubmitProfileDisplay.Location = New System.Drawing.Point(-3, 68)
-        Me.SubmitProfileDisplay.Name = "SubmitProfileDisplay"
-        Me.SubmitProfileDisplay.Profile = Nothing
-        Me.SubmitProfileDisplay.Size = New System.Drawing.Size(337, 150)
-        Me.SubmitProfileDisplay.TabIndex = 1
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(17, 25)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(51, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Submitter"
-        '
-        'Panel2
-        '
-        Me.Panel2.Controls.Add(Me.btnDynamicText)
-        Me.Panel2.Controls.Add(Me.Label2)
-        Me.Panel2.Controls.Add(Me.ApproveProfileDisplay)
-        Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel2.Location = New System.Drawing.Point(323, 3)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(314, 298)
-        Me.Panel2.TabIndex = 2
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(37, 25)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(50, 13)
-        Me.Label2.TabIndex = 2
-        Me.Label2.Text = "Approver"
-        '
-        'ApproveProfileDisplay
-        '
-        Me.ApproveProfileDisplay.Location = New System.Drawing.Point(0, 68)
-        Me.ApproveProfileDisplay.Name = "ApproveProfileDisplay"
-        Me.ApproveProfileDisplay.Profile = Nothing
-        Me.ApproveProfileDisplay.Size = New System.Drawing.Size(337, 150)
-        Me.ApproveProfileDisplay.TabIndex = 2
-        '
         'FileDisplay1
         '
         Me.FileDisplay1.BackColor = System.Drawing.Color.White
+        Me.FileDisplay1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FileDisplay1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FileDisplay1.Location = New System.Drawing.Point(643, 3)
         Me.FileDisplay1.Name = "FileDisplay1"
-        Me.FileDisplay1.Size = New System.Drawing.Size(187, 270)
+        Me.FileDisplay1.Size = New System.Drawing.Size(315, 298)
         Me.FileDisplay1.TabIndex = 3
         LampTemplate1.ApproverProfile = Nothing
         LampDxfDocument1.SerializedDrawing = resources.GetString("LampDxfDocument1.SerializedDrawing")
@@ -136,14 +82,74 @@ Partial Class JobDisplay
         LampTemplate1.SubmitDate = Nothing
         Me.FileDisplay1.Template = LampTemplate1
         '
-        'Button1
+        'Panel1
         '
-        Me.btnDynamicText.Location = New System.Drawing.Point(60, 246)
-        Me.btnDynamicText.Name = "Button1"
-        Me.btnDynamicText.Size = New System.Drawing.Size(171, 23)
+        Me.Panel1.Controls.Add(Me.SubmitProfileDisplay)
+        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel1.Location = New System.Drawing.Point(3, 3)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(314, 298)
+        Me.Panel1.TabIndex = 1
+        '
+        'SubmitProfileDisplay
+        '
+        Me.SubmitProfileDisplay.Dock = System.Windows.Forms.DockStyle.Top
+        Me.SubmitProfileDisplay.Location = New System.Drawing.Point(0, 13)
+        Me.SubmitProfileDisplay.Name = "SubmitProfileDisplay"
+        Me.SubmitProfileDisplay.Profile = Nothing
+        Me.SubmitProfileDisplay.Size = New System.Drawing.Size(314, 150)
+        Me.SubmitProfileDisplay.TabIndex = 1
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Label1.Location = New System.Drawing.Point(0, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(51, 13)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "Submitter"
+        '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.btnDynamicText)
+        Me.Panel2.Controls.Add(Me.ApproveProfileDisplay)
+        Me.Panel2.Controls.Add(Me.Label2)
+        Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel2.Location = New System.Drawing.Point(323, 3)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(314, 298)
+        Me.Panel2.TabIndex = 2
+        '
+        'btnDynamicText
+        '
+        Me.btnDynamicText.Dock = System.Windows.Forms.DockStyle.Top
+        Me.btnDynamicText.Location = New System.Drawing.Point(0, 163)
+        Me.btnDynamicText.Name = "btnDynamicText"
+        Me.btnDynamicText.Size = New System.Drawing.Size(314, 23)
         Me.btnDynamicText.TabIndex = 3
         Me.btnDynamicText.Text = "Show parameters"
         Me.btnDynamicText.UseVisualStyleBackColor = True
+        '
+        'ApproveProfileDisplay
+        '
+        Me.ApproveProfileDisplay.Dock = System.Windows.Forms.DockStyle.Top
+        Me.ApproveProfileDisplay.Location = New System.Drawing.Point(0, 13)
+        Me.ApproveProfileDisplay.Name = "ApproveProfileDisplay"
+        Me.ApproveProfileDisplay.Profile = Nothing
+        Me.ApproveProfileDisplay.Size = New System.Drawing.Size(314, 150)
+        Me.ApproveProfileDisplay.TabIndex = 2
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Label2.Location = New System.Drawing.Point(0, 0)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(50, 13)
+        Me.Label2.TabIndex = 2
+        Me.Label2.Text = "Approver"
         '
         'JobDisplay
         '

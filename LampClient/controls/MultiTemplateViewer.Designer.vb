@@ -24,6 +24,7 @@ Partial Class MultiTemplateViewer
     Private Sub InitializeComponent()
         Me.GridPanel = New System.Windows.Forms.TableLayoutPanel()
         Me.LoadingPictureBox = New System.Windows.Forms.PictureBox()
+        Me.lblNoTemplates = New System.Windows.Forms.Label()
         CType(Me.LoadingPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -55,11 +56,23 @@ Partial Class MultiTemplateViewer
         Me.LoadingPictureBox.TabStop = False
         Me.LoadingPictureBox.Visible = False
         '
+        'lblNoTemplates
+        '
+        Me.lblNoTemplates.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lblNoTemplates.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblNoTemplates.Location = New System.Drawing.Point(0, 0)
+        Me.lblNoTemplates.Name = "lblNoTemplates"
+        Me.lblNoTemplates.Size = New System.Drawing.Size(800, 600)
+        Me.lblNoTemplates.TabIndex = 0
+        Me.lblNoTemplates.Text = "No Templates Found"
+        Me.lblNoTemplates.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'MultiTemplateViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.LoadingPictureBox)
+        Me.Controls.Add(Me.lblNoTemplates)
         Me.Controls.Add(Me.GridPanel)
         Me.DoubleBuffered = True
         Me.Name = "MultiTemplateViewer"
@@ -71,4 +84,5 @@ Partial Class MultiTemplateViewer
 
     Friend WithEvents GridPanel As TableLayoutPanel
     Friend WithEvents LoadingPictureBox As PictureBox
+    Friend WithEvents lblNoTemplates As Label
 End Class

@@ -22,4 +22,10 @@
     Private Sub ToolBar1_Load(sender As Object, e As EventArgs)
 
     End Sub
+
+
+    Private Sub DxfViewerControl1_Click(sender As Object, e As EventArgs) Handles DxfViewerControl1.Click
+        TemplateSelectForm.ShowDialog()
+
+    End Sub
 End Class

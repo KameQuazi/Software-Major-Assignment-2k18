@@ -17,7 +17,27 @@ Public Class MultiJobViewer
         End Get
     End Property
 
-    Public Const Columns = 1
+    Private _columns As Integer = 1
+    Public Property Columns As Integer
+        Get
+            Return _columns
+        End Get
+        Set(value As Integer)
+            _columns = value
+            UpdateViewers(Nothing, Nothing)
+        End Set
+    End Property
+
+    Private _rows As Integer = 5
+    Public Property Rows As Integer
+        Get
+            Return _rows
+        End Get
+        Set(value As Integer)
+            _rows = value
+            UpdateViewers(Nothing, Nothing)
+        End Set
+    End Property
 
 
     Sub New()
@@ -41,28 +61,34 @@ Public Class MultiJobViewer
 
         TableLayoutPanel1.RowCount = 0
         TableLayoutPanel1.RowStyles.Clear()
+        For i = 1 To Rows
+            TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 1 / Rows))
+        Next
+        TableLayoutPanel1.RowCount = Rows
 
-        Dim count = 0
+        TableLayoutPanel1.ColumnCount = Columns
+        TableLayoutPanel1.ColumnStyles.Clear()
+        For i = 1 To Columns
+            TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 1 / Columns))
+        Next
+
+
+
         For Each job In Jobs
-            If count Mod Columns = 0 Then
-                TableLayoutPanel1.RowCount += 1
-                TableLayoutPanel1.RowStyles.Add(NewRowStyle)
-            End If
 
             TableLayoutPanel1.Controls.Add(New JobDisplay() With {.Job = job, .Dock = DockStyle.Fill})
 
-            count += 1
         Next
 
         ResumeLayout()
     End Sub
 
     Friend Sub StopLoading()
-        'LoadingPictureBox.Visible = False
+        LoadingPictureBox.Visible = False
     End Sub
 
     Friend Sub ShowLoading()
-        'LoadingPictureBox.Visible = True
+        LoadingPictureBox.Visible = True
     End Sub
 
     Private _suspend As Boolean = False

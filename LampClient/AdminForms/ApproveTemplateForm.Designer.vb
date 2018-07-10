@@ -22,8 +22,16 @@ Partial Class ApproveTemplateForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        components = New System.ComponentModel.Container
+        Me.SuspendLayout()
+        '
+        'ApproveTemplateForm
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(1232, 703)
+        Me.Name = "ApproveTemplateForm"
         Me.Text = "ApproveTemplateForm"
+        Me.ResumeLayout(False)
+
     End Sub
 End Class

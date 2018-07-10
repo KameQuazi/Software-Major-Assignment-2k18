@@ -191,6 +191,12 @@
     <Compile Include="controls\ProfileViewControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="controls\ServiceTemplateViewer.Designer.vb">
+      <DependentUpon>ServiceTemplateViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\ServiceTemplateViewer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\SingleDynamicTExt.Designer.vb">
       <DependentUpon>SingleDynamicText.vb</DependentUpon>
     </Compile>
@@ -338,6 +344,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AdminForms\ApproveTemplateForm.resx">
+      <DependentUpon>ApproveTemplateForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdminForms\ViewEditJobsForm.resx">
+      <DependentUpon>ViewEditJobsForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdminForms\ViewEditTemplateForm.resx">
+      <DependentUpon>ViewEditTemplateForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\AdminToolbar.resx">
       <DependentUpon>AdminToolbar.vb</DependentUpon>
     </EmbeddedResource>
@@ -364,6 +379,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="controls\ProfileViewControl.resx">
       <DependentUpon>ProfileViewControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\ServiceTemplateViewer.resx">
+      <DependentUpon>ServiceTemplateViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\SingleDynamicTExt.resx">
       <DependentUpon>SingleDynamicText.vb</DependentUpon>

@@ -8,7 +8,7 @@ Public Class TemplateSelectForm
 
     Private tags As List(Of String) ' lower case
 
-    Private Sub MultiTemplateViewer1_Load(sender As Object, e As EventArgs) Handles MultiTemplateViewer1.Load
+    Private Sub MultiTemplateViewer1_Load(sender As Object, e As EventArgs) 
 
     End Sub
 

@@ -10,9 +10,10 @@ Imports LampService
 Public Class LampService
     Implements ILampService
 
-#Region "crap"
+
     Public Property Database As TemplateDatabase
 
+#Region "Constructors"
     Sub New()
         Database = New TemplateDatabase(Configuration.ConfigurationManager.AppSettings("databasePath"))
     End Sub
@@ -970,8 +971,58 @@ Public Class LampService
         End Try
     End Function
 
+    Public Const MAX_JOBS_PER_REQUEST = 50
 
+    Public Function GetJobList(credentials As LampCredentials, byUser As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampSort) As LampJobListWrapper Implements ILampService.GetJobList
+        Dim response As New LampJobListWrapper
+        'todo
 
+        Try
+
+            If limit <= 0 Or offset < 0 Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            If limit > MAX_JOBS_PER_REQUEST Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            ' blacklist template name sort on jobs
+            Select Case orderBy
+                Case LampSort.TemplateNameAsc, LampSort.TemplateNameDesc
+                    response.Status = LampStatus.InvalidParameters
+                    Return response
+
+            End Select
+
+            If byUser Is Nothing Then
+                byUser = New List(Of String)
+            End If
+
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response.Status = auth.Status
+                Return response
+            End If
+            Dim user = auth.user
+
+            If Not HasGetJobListPerms(user, byUser) Then
+                response.Status = LampStatus.NoAccess
+                Return response
+            End If
+
+            response.Templates = Database.GetMultipleJob(byUser, limit, offset, orderBy)
+            response.Status = LampStatus.OK
+            Return response
+
+        Catch ex As Exception
+            response.Status = LampStatus.InternalServerError
+            Log(ex)
+            Return response
+        End Try
+    End Function
 
 
 #End Region
@@ -1114,7 +1165,22 @@ Public Class LampService
 
 
 
+    Public Function HasGetJobListPerms(user As LampUser, byUser As IEnumerable(Of String))
+        If user.PermissionLevel >= UserPermission.Admin Then
+            Return True
+        End If
+        ' only allow elevated to view own jobs
+        If user.PermissionLevel >= UserPermission.Elevated Then
+            For Each item In byUser
+                If item <> user.UserId Then
+                    Return False
+                End If
+            Next
+            Return True
+        End If
+        Return False
 
+    End Function
 
 
 
