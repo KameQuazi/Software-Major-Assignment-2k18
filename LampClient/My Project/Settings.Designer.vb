@@ -101,6 +101,17 @@ Namespace My
                 Me("SortSidebarHidden") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+        Public Property SortSettings() As Global.LampCommon.SortSettings
+            Get
+                Return CType(Me("SortSettings"),Global.LampCommon.SortSettings)
+            End Get
+            Set
+                Me("SortSettings") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

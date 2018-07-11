@@ -56,11 +56,7 @@ Public Class ServiceSortableTemplateViewer
 
     End Sub
 
-    Private Sub TemplateSelect_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'CurrentSender.RequestTemplates(CurrentUser, tags)
-        LoadHiddenFromSettings()
-        ComboBox1.SelectedIndex = 0
-    End Sub
+
 
     Sub New()
 
@@ -74,16 +70,17 @@ Public Class ServiceSortableTemplateViewer
 
 
 
+    Private finishedLoading As Boolean = False
 
-    Private Sub ServiceTemplateViewer1_Load(sender As Object, e As EventArgs)
+    Private Sub ServiceTemplateViewer1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ComboBox1.SelectedIndex = 0
+        ' finished load
+        finishedLoading = True
+        LoadSettings()
     End Sub
 
 
 
-    Private Sub LoadHiddenFromSettings()
-        Me.SidebarHidden = My.Settings.SortSidebarHidden
-    End Sub
 
 
 
@@ -93,12 +90,37 @@ Public Class ServiceSortableTemplateViewer
 
     Private Sub btnHideShowSort_Click(sender As Object, e As EventArgs) Handles btnHideShowSort.Click
         ToggleSidebar()
-        My.Settings.SortSidebarHidden = SidebarHidden
+        WriteSettings()
     End Sub
 
     Private Sub TemplateSelectForm_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
         Me.SplitContainer1.SplitterDistance = Me.Width / 5 * 4
     End Sub
+
+    Private _sortOrder As LampSort
+    Public Property SortOrder As LampSort
+        Get
+            Return _sortOrder
+        End Get
+        Set(value As LampSort)
+            Select Case value
+                Case LampSort.SubmitDateAsc
+                    rdbtnAsc.Checked = True
+                    ComboBox1.SelectedItem = "Submit Date"
+                Case LampSort.SubmitDateDesc
+                    rdbtnDesc.Checked = True
+                    ComboBox1.SelectedItem = "Submit Date"
+                Case LampSort.TemplateNameAsc
+                    rdbtnAsc.Checked = True
+                    ComboBox1.SelectedItem = "Name"
+                Case LampSort.TemplateNameDesc
+                    rdbtnDesc.Checked = True
+                    ComboBox1.SelectedItem = "Name"
+            End Select
+            _sortOrder = value
+
+        End Set
+    End Property
 
     Private Sub radioButtonClicked(sender As Object, e As EventArgs) Handles rdbtnAsc.CheckedChanged, rdbtnDesc.CheckedChanged, ComboBox1.SelectedIndexChanged
         Select Case ComboBox1.SelectedItem
@@ -115,9 +137,20 @@ Public Class ServiceSortableTemplateViewer
                     ServiceTemplateViewer1.SortOrder = LampSort.TemplateNameDesc
                 End If
         End Select
-
+        WriteSettings()
     End Sub
 
+    Public Sub WriteSettings()
+        If finishedLoading Then
+            My.Settings.SortSettings = New SortSettings(SidebarHidden, ServiceTemplateViewer1.SortOrder)
+        End If
+    End Sub
+
+
+    Private Sub LoadSettings()
+        Me.SidebarHidden = My.Settings.SortSettings.SortHidden
+        Me.SortOrder = My.Settings.SortSettings.SortType
+    End Sub
 
 End Class
 

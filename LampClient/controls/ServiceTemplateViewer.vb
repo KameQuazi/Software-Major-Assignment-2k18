@@ -39,9 +39,6 @@ Public Class ServiceTemplateViewer
         Try
             SyncLock CurrentSender
                 ' check if the next page exists (offset - tempaltes-per-page)
-                Console.WriteLine(MultiTemplateViewer1.IsHandleCreated)
-                MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Clear())
-
                 If Offset - TEMPLATES_PER_PAGE >= 0 Then
                     Dim previousPage = CurrentSender.GetTemplateList(CurrentUser.ToCredentials,
                                                         Nothing, New List(Of String) From {CurrentUser.UserId},
@@ -70,7 +67,10 @@ Public Class ServiceTemplateViewer
                     Return
                 End If
 
+                ' actually aadd the templates
                 MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.Suspend())
+                MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Clear())
+
                 For Each item In request.Templates
                     MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Add(item))
                 Next

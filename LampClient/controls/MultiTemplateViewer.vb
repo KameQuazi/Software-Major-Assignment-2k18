@@ -11,6 +11,7 @@ Public Class MultiTemplateViewer
     Public ReadOnly DefaultTemplateMargin As New Padding(12, 12, 12, 12)
 
     Public ReadOnly Property Templates As ObservableCollection(Of LampTemplate)
+        
 
 
 
@@ -75,6 +76,7 @@ Public Class MultiTemplateViewer
         If _suspend Then
             Return
         End If
+
         SuspendLayout()
         For Each item As FileDisplay In GridPanel.Controls
             RemoveHandler item.Click, AddressOf HandleTemplateClicked

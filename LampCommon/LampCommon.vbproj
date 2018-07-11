@@ -95,6 +95,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SortSettings.vb" />
     <Compile Include="user\CommonExtensions.vb" />
     <Compile Include="database\Database.vb" />
     <Compile Include="database\SqliteConnectionWrapper.vb" />

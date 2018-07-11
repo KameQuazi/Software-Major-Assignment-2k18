@@ -2176,9 +2176,9 @@ Public Class DatabaseHelper
                 Return "ORDER BY template.submitDate DESC"
 
             Case LampSort.TemplateNameAsc
-                Return "ORDER BY template.Name ASC"
+                Return "ORDER BY template.Name COLLATE NOCASE ASC"
             Case LampSort.TemplateNameDesc
-                Return "ORDER BY template.Name DESC"
+                Return "ORDER BY template.Name COLLATE NOCASE DESC"
             Case LampSort.NoSort
                 Return ""
 
