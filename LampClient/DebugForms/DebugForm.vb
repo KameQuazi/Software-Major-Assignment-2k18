@@ -52,7 +52,7 @@ Public Class DebugForm
 
     End Sub
 
-    Private Async Sub Test2()
+    Private Sub Test2()
 
 
     End Sub

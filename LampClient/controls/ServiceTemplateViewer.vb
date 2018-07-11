@@ -1,6 +1,13 @@
 ﻿Imports LampCommon
 
 Public Class ServiceTemplateViewer
+    Public Event TemplateClick(sender As Object, e As TemplateClickedEventArgs)
+
+    Private Sub MultiTemplateViewer1_TemplateClick(sender As Object, e As TemplateClickedEventArgs) Handles MultiTemplateViewer1.TemplateClick
+        RaiseEvent TemplateClick(Me, e)
+        ' just bubble the event
+    End Sub
+
     Private _sortOrder As LampSort = LampSort.SubmitDateAsc
     Public Property SortOrder As LampSort
         Get
@@ -17,6 +24,15 @@ Public Class ServiceTemplateViewer
     Private Const TEMPLATES_PER_PAGE = 8
 
     Public Property Offset = 0
+
+    Public Property MouseOverHighlight As Boolean
+        Get
+            Return MultiTemplateViewer1.MouseOverHighlight
+        End Get
+        Set(value As Boolean)
+            MultiTemplateViewer1.MouseOverHighlight = value
+        End Set
+    End Property
 
 
     Private Sub UpdateInterfaceLocking()

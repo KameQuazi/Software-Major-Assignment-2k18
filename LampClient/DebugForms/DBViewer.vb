@@ -48,5 +48,12 @@ Public Class DBViewer
         Next
         sqlite_conn.Open()
         sqlite_conn.Close()
-    End Sub
+    End Sub
+
+
+    Private Sub btnUpdate_MouseLeave(sender As Object, e As EventArgs) Handles btnUpdate.MouseLeave
+
+    End Sub
+
+
 End Class

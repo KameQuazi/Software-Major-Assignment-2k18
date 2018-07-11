@@ -1,9 +1,18 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.Collections.Specialized
+Imports LampClient
 Imports LampCommon
 
+
+
 Public Class MultiTemplateViewer
+    Public Event TemplateClick(sender As Object, e As TemplateClickedEventArgs)
+
+    Public ReadOnly DefaultTemplateMargin As New Padding(12, 12, 12, 12)
+
     Public ReadOnly Property Templates As ObservableCollection(Of LampTemplate)
+
+
 
     Public Overrides Property AutoScroll As Boolean
         Get
@@ -37,6 +46,8 @@ Public Class MultiTemplateViewer
         End Set
     End Property
 
+    Public Property MouseOverHighlight As Boolean = False
+
     Sub New()
         ' This call is required by the designer.
         InitializeComponent()
@@ -47,11 +58,28 @@ Public Class MultiTemplateViewer
         Me.GridPanel.Padding = New Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0)
     End Sub
 
+
+    Private Sub HandleTemplateClicked(sender As Object, e As EventArgs)
+        Dim item As FileDisplay = sender
+        HandleTemplateClicked(New TemplateClickedEventArgs() With {
+                              .Index = GridPanel.Controls.IndexOf(item),
+                              .Template = item.Template})
+    End Sub
+
+    Public Sub HandleTemplateClicked(args As TemplateClickedEventArgs)
+        RaiseEvent TemplateClick(Me, args)
+    End Sub
+
+
     Private Sub UpdateViewers(sender As Object, e As NotifyCollectionChangedEventArgs)
         If _suspend Then
             Return
         End If
         SuspendLayout()
+        For Each item As FileDisplay In GridPanel.Controls
+            RemoveHandler item.Click, AddressOf HandleTemplateClicked
+        Next
+
         GridPanel.Controls.Clear()
 
         GridPanel.RowCount = 0
@@ -70,7 +98,16 @@ Public Class MultiTemplateViewer
         If Templates.Count > 0 Then
 
             For Each template In Templates
-                GridPanel.Controls.Add(New FileDisplay() With {.Template = template, .Dock = DockStyle.Fill})
+                Dim newViewer As New FileDisplay() With {
+                                       .Template = template,
+                                       .Dock = DockStyle.Fill,
+                                       .MouseOverHighlight = Me.MouseOverHighlight,
+                                       .Margin = DefaultTemplateMargin
+                                       }
+                AddHandler newViewer.Click, AddressOf HandleTemplateClicked
+
+
+                GridPanel.Controls.Add(newViewer)
             Next
             lblNoTemplates.Visible = False
         Else
@@ -91,6 +128,7 @@ Public Class MultiTemplateViewer
     End Sub
 
     Private _suspend As Boolean = False
+
     Public Sub Suspend()
         _suspend = True
     End Sub
@@ -114,6 +152,11 @@ Public Class MultiTemplateViewer
     End Property
 
 
+End Class
 
+Public Class TemplateClickedEventArgs
+    Inherits EventArgs
+    Public Property Index As Integer = -1
+    Public Property Template As LampTemplate
 
 End Class

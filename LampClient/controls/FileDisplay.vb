@@ -47,8 +47,9 @@ Public Class FileDisplay
             DisplayBox.Image = My.Resources.no_preview_image
         End If
 
-        editwidth.Text = dxf.Width
-        editheight.Text = dxf.Height
+        ' TO decimal places
+        editwidth.Text = dxf.Width.ToString("0.00")
+        editheight.Text = dxf.Height.ToString("0.00")
         editmaterial.Text = template.Material
 
         '" thiccness: " & template.MaterialThickness
@@ -57,22 +58,12 @@ Public Class FileDisplay
 
 
 
-    Private Sub FileDisplay_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-    End Sub
-
-    Private Sub DisplayBox_Click(sender As Object, e As EventArgs) Handles DisplayBox.Click
-        If Me.Enabled And Template IsNot Nothing Then
-            ' Oepn up the single template Viewer
-            Dim singleViewer As New TemplateEditorForm()
-            singleViewer.Template = Me.Template
-            singleViewer.ShowDialog()
-            Me.Template = singleViewer.Template
-        End If
-    End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs)
         Me.Visible = False
     End Sub
+
+
 
     Sub New()
         ' This call is required by the designer.
@@ -80,9 +71,47 @@ Public Class FileDisplay
 
         ' Add any initialization after the InitializeComponent() call.
         Template = LampTemplate.Empty
+        AddBubblingEvent(Me.Controls)
     End Sub
 
-    Private Sub lblName_Click(sender As Object, e As EventArgs) Handles lblName.Click
+    Private Sub RaiseClickEvent(sender As Object, e As EventArgs)
+        Me.OnClick(e)
+    End Sub
+
+    ''' <summary>
+    ''' Recusively add click handler -> 
+    ''' </summary>
+    ''' <param name="controls"></param>
+    Private Sub AddBubblingEvent(controls As ICollection)
+
+        For Each control As Control In controls
+            AddHandler control.Click, AddressOf RaiseClickEvent
+            AddBubblingEvent(control.Controls)
+        Next
+    End Sub
+
+
+    Public Property MouseOverHighlight As Boolean = False
+
+    Public Property HighLightColor As Color = Color.AliceBlue
+
+    Private _mouseEntered As Boolean = False
+
+    Private Sub FileDisplay_MouseEnter(sender As Object, e As EventArgs) Handles MyBase.MouseEnter
+        _mouseEntered = True
+        If MouseOverHighlight Then
+            Me.BackColor = HighLightColor
+        End If
+    End Sub
+
+    Private Sub FileDisplay_MouseLeave(sender As Object, e As EventArgs) Handles MyBase.MouseLeave
+        _mouseEntered = False
+        If MouseOverHighlight Then
+            Me.BackColor = Color.White
+        End If
+    End Sub
+
+    Private Sub editapprover_Click(sender As Object, e As EventArgs) Handles editapprover.Click
 
     End Sub
 End Class

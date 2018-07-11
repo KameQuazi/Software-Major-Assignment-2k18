@@ -191,6 +191,12 @@
     <Compile Include="controls\ProfileViewControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="controls\ServiceSortableTemplateViewer.Designer.vb">
+      <DependentUpon>ServiceSortableTemplateViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\ServiceSortableTemplateViewer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\ServiceTemplateViewer.Designer.vb">
       <DependentUpon>ServiceTemplateViewer.vb</DependentUpon>
     </Compile>
@@ -379,6 +385,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="controls\ProfileViewControl.resx">
       <DependentUpon>ProfileViewControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\ServiceSortableTemplateViewer.resx">
+      <DependentUpon>ServiceSortableTemplateViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\ServiceTemplateViewer.resx">
       <DependentUpon>ServiceTemplateViewer.vb</DependentUpon>

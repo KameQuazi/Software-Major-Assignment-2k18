@@ -31,6 +31,7 @@ Partial Class MultiTemplateViewer
         'GridPanel
         '
         Me.GridPanel.AutoScroll = True
+        Me.GridPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
         Me.GridPanel.ColumnCount = 4
         Me.GridPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.GridPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))

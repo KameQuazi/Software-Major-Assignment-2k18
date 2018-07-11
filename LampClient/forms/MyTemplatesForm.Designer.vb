@@ -24,7 +24,7 @@ Partial Class MyTemplatesForm
     Private Sub InitializeComponent()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.ToolBar1 = New LampClient.ToolBar()
-        Me.ServiceTemplateViewer1 = New LampClient.ServiceTemplateViewer()
+        Me.ServiceSortableTemplateViewer1 = New LampClient.ServiceSortableTemplateViewer()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -33,7 +33,7 @@ Partial Class MyTemplatesForm
         Me.TableLayoutPanel1.ColumnCount = 1
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.ToolBar1, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.ServiceTemplateViewer1, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.ServiceSortableTemplateViewer1, 0, 1)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
@@ -58,15 +58,15 @@ Partial Class MyTemplatesForm
         Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
         Me.ToolBar1.TabIndex = 8
         '
-        'ServiceTemplateViewer1
+        'ServiceSortableTemplateViewer1
         '
-        Me.ServiceTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ServiceTemplateViewer1.Location = New System.Drawing.Point(3, 108)
-        Me.ServiceTemplateViewer1.Name = "ServiceTemplateViewer1"
-        Me.ServiceTemplateViewer1.Offset = 0
-        Me.ServiceTemplateViewer1.Size = New System.Drawing.Size(1226, 592)
-        Me.ServiceTemplateViewer1.SortOrder = LampCommon.LampSort.SubmitDateAsc
-        Me.ServiceTemplateViewer1.TabIndex = 9
+        Me.ServiceSortableTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ServiceSortableTemplateViewer1.Location = New System.Drawing.Point(3, 108)
+        Me.ServiceSortableTemplateViewer1.Name = "ServiceSortableTemplateViewer1"
+        Me.ServiceSortableTemplateViewer1.SidebarHidden = False
+        Me.ServiceSortableTemplateViewer1.Size = New System.Drawing.Size(1226, 592)
+        Me.ServiceSortableTemplateViewer1.TabIndex = 9
+        Me.ServiceSortableTemplateViewer1.TitleText = "Choose Template"
         '
         'MyTemplatesForm
         '
@@ -83,5 +83,5 @@ Partial Class MyTemplatesForm
     End Sub
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents ToolBar1 As ToolBar
-    Friend WithEvents ServiceTemplateViewer1 As ServiceTemplateViewer
+    Friend WithEvents ServiceSortableTemplateViewer1 As ServiceSortableTemplateViewer
 End Class
