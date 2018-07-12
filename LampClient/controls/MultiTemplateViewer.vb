@@ -122,10 +122,11 @@ Public Class MultiTemplateViewer
     End Sub
 
     Friend Sub StopLoading()
-        LoadingPictureBox.Visible = False
+        TableLayoutPanel1.Visible = False
     End Sub
 
     Friend Sub ShowLoading()
+        TableLayoutPanel1.Visible = True
         LoadingPictureBox.Visible = True
     End Sub
 
