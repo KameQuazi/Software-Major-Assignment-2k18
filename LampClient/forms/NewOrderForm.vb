@@ -37,7 +37,7 @@ Public Class NewOrderForm
 
 
     Private Sub DxfViewerControl1_Click(sender As Object, e As EventArgs) Handles DxfViewerControl1.Click
-        Using dialog As New TemplateSelectBox ' g
+        Using dialog As New TemplateSelectBox ' 
             If dialog.ShowDialog() = DialogResult.OK Then
                 CurrentTemplate = dialog.SelectedTemplate
             End If

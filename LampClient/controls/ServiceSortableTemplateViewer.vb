@@ -11,6 +11,21 @@ Public Class ServiceSortableTemplateViewer
         ' just bubble the event
     End Sub
 
+    Private _justMyTemplates As Boolean
+    ''' <summary>
+    ''' true = just mine, false = all publically available
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property JustMyTemplates As Boolean
+        Get
+            Return _justMyTemplates
+        End Get
+        Set(value As Boolean)
+            _justMyTemplates = value
+            ServiceTemplateViewer1.JustMyTemplates = value
+        End Set
+    End Property
+
 
     Public Property TitleText As String
         Get
@@ -153,6 +168,19 @@ Public Class ServiceSortableTemplateViewer
             Me.SortOrder = My.Settings.SortSettings.SortType
         End If
     End Sub
+
+    Private Sub btnUserFilter_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles rdbtnPublic.CheckedChanged, rdbtnMe.CheckedChanged
+        If rdbtnPublic.Checked Then
+            JustMyTemplates = False
+        Else
+            JustMyTemplates = True
+        End If
+    End Sub
+
 
 End Class
 

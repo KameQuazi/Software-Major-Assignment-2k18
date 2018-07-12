@@ -92,7 +92,7 @@ Partial Class ToolBar
         Me.btnDesigns.Name = "btnDesigns"
         Me.btnDesigns.Size = New System.Drawing.Size(92, 98)
         Me.btnDesigns.TabIndex = 48
-        Me.btnDesigns.Text = "My Trophy Designs"
+        Me.btnDesigns.Text = "View Templates"
         Me.btnDesigns.UseVisualStyleBackColor = False
         '
         'Username

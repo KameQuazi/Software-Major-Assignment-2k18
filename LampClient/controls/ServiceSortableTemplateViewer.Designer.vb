@@ -24,7 +24,6 @@ Partial Class ServiceSortableTemplateViewer
     Private Sub InitializeComponent()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.ServiceTemplateViewer1 = New LampClient.ServiceTemplateViewer()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.btnHideShowSort = New System.Windows.Forms.Button()
@@ -36,6 +35,11 @@ Partial Class ServiceSortableTemplateViewer
         Me.FlowLayoutPanel2 = New System.Windows.Forms.FlowLayoutPanel()
         Me.rdbtnAsc = New System.Windows.Forms.RadioButton()
         Me.rdbtnDesc = New System.Windows.Forms.RadioButton()
+        Me.FlowLayoutPanel3 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.lblUserFilter = New System.Windows.Forms.Label()
+        Me.rdbtnPublic = New System.Windows.Forms.RadioButton()
+        Me.rdbtnMe = New System.Windows.Forms.RadioButton()
+        Me.ServiceTemplateViewer1 = New LampClient.ServiceTemplateViewer()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -46,6 +50,7 @@ Partial Class ServiceSortableTemplateViewer
         Me.TableLayoutPanel3.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.FlowLayoutPanel2.SuspendLayout()
+        Me.FlowLayoutPanel3.SuspendLayout()
         Me.SuspendLayout()
         '
         'SplitContainer1
@@ -81,17 +86,6 @@ Partial Class ServiceSortableTemplateViewer
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1271, 553)
         Me.TableLayoutPanel1.TabIndex = 20
-        '
-        'ServiceTemplateViewer1
-        '
-        Me.ServiceTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ServiceTemplateViewer1.Location = New System.Drawing.Point(3, 58)
-        Me.ServiceTemplateViewer1.MouseOverHighlight = True
-        Me.ServiceTemplateViewer1.Name = "ServiceTemplateViewer1"
-        Me.ServiceTemplateViewer1.Offset = 0
-        Me.ServiceTemplateViewer1.Size = New System.Drawing.Size(1265, 492)
-        Me.ServiceTemplateViewer1.SortOrder = LampCommon.LampSort.SubmitDateAsc
-        Me.ServiceTemplateViewer1.TabIndex = 0
         '
         'TableLayoutPanel2
         '
@@ -146,6 +140,7 @@ Partial Class ServiceSortableTemplateViewer
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel3.Controls.Add(Me.FlowLayoutPanel1, 0, 0)
         Me.TableLayoutPanel3.Controls.Add(Me.FlowLayoutPanel2, 0, 1)
+        Me.TableLayoutPanel3.Controls.Add(Me.FlowLayoutPanel3, 0, 2)
         Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel3.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
@@ -186,8 +181,8 @@ Partial Class ServiceSortableTemplateViewer
         Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox1.FormattingEnabled = True
         Me.ComboBox1.Items.AddRange(New Object() {"Submit Date", "Name"})
-        Me.ComboBox1.Location = New System.Drawing.Point(68, 0)
-        Me.ComboBox1.Margin = New System.Windows.Forms.Padding(8, 0, 8, 0)
+        Me.ComboBox1.Location = New System.Drawing.Point(68, 8)
+        Me.ComboBox1.Margin = New System.Windows.Forms.Padding(8)
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(153, 21)
         Me.ComboBox1.TabIndex = 7
@@ -205,7 +200,8 @@ Partial Class ServiceSortableTemplateViewer
         '
         Me.rdbtnAsc.AutoSize = True
         Me.rdbtnAsc.Checked = True
-        Me.rdbtnAsc.Location = New System.Drawing.Point(3, 3)
+        Me.rdbtnAsc.Location = New System.Drawing.Point(8, 8)
+        Me.rdbtnAsc.Margin = New System.Windows.Forms.Padding(8)
         Me.rdbtnAsc.Name = "rdbtnAsc"
         Me.rdbtnAsc.Size = New System.Drawing.Size(43, 17)
         Me.rdbtnAsc.TabIndex = 0
@@ -216,12 +212,70 @@ Partial Class ServiceSortableTemplateViewer
         'rdbtnDesc
         '
         Me.rdbtnDesc.AutoSize = True
-        Me.rdbtnDesc.Location = New System.Drawing.Point(52, 3)
+        Me.rdbtnDesc.Location = New System.Drawing.Point(67, 8)
+        Me.rdbtnDesc.Margin = New System.Windows.Forms.Padding(8)
         Me.rdbtnDesc.Name = "rdbtnDesc"
         Me.rdbtnDesc.Size = New System.Drawing.Size(50, 17)
         Me.rdbtnDesc.TabIndex = 1
         Me.rdbtnDesc.Text = "Desc"
         Me.rdbtnDesc.UseVisualStyleBackColor = True
+        '
+        'FlowLayoutPanel3
+        '
+        Me.FlowLayoutPanel3.Controls.Add(Me.lblUserFilter)
+        Me.FlowLayoutPanel3.Controls.Add(Me.rdbtnPublic)
+        Me.FlowLayoutPanel3.Controls.Add(Me.rdbtnMe)
+        Me.FlowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FlowLayoutPanel3.Location = New System.Drawing.Point(3, 113)
+        Me.FlowLayoutPanel3.Name = "FlowLayoutPanel3"
+        Me.FlowLayoutPanel3.Size = New System.Drawing.Size(215, 49)
+        Me.FlowLayoutPanel3.TabIndex = 7
+        '
+        'lblUserFilter
+        '
+        Me.lblUserFilter.AutoSize = True
+        Me.lblUserFilter.Location = New System.Drawing.Point(8, 8)
+        Me.lblUserFilter.Margin = New System.Windows.Forms.Padding(8)
+        Me.lblUserFilter.Name = "lblUserFilter"
+        Me.lblUserFilter.Size = New System.Drawing.Size(44, 13)
+        Me.lblUserFilter.TabIndex = 0
+        Me.lblUserFilter.Text = "Creator:"
+        '
+        'rdbtnPublic
+        '
+        Me.rdbtnPublic.AutoSize = True
+        Me.rdbtnPublic.Checked = True
+        Me.rdbtnPublic.Location = New System.Drawing.Point(68, 8)
+        Me.rdbtnPublic.Margin = New System.Windows.Forms.Padding(8)
+        Me.rdbtnPublic.Name = "rdbtnPublic"
+        Me.rdbtnPublic.Size = New System.Drawing.Size(36, 17)
+        Me.rdbtnPublic.TabIndex = 1
+        Me.rdbtnPublic.TabStop = True
+        Me.rdbtnPublic.Text = "All"
+        Me.rdbtnPublic.UseVisualStyleBackColor = True
+        '
+        'rdbMe
+        '
+        Me.rdbtnMe.AutoSize = True
+        Me.rdbtnMe.Location = New System.Drawing.Point(120, 8)
+        Me.rdbtnMe.Margin = New System.Windows.Forms.Padding(8)
+        Me.rdbtnMe.Name = "rdbMe"
+        Me.rdbtnMe.Size = New System.Drawing.Size(40, 17)
+        Me.rdbtnMe.TabIndex = 2
+        Me.rdbtnMe.Text = "Me"
+        Me.rdbtnMe.UseVisualStyleBackColor = True
+        '
+        'ServiceTemplateViewer1
+        '
+        Me.ServiceTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ServiceTemplateViewer1.JustMyTemplates = False
+        Me.ServiceTemplateViewer1.Location = New System.Drawing.Point(3, 58)
+        Me.ServiceTemplateViewer1.MouseOverHighlight = True
+        Me.ServiceTemplateViewer1.Name = "ServiceTemplateViewer1"
+        Me.ServiceTemplateViewer1.Offset = 0
+        Me.ServiceTemplateViewer1.Size = New System.Drawing.Size(1265, 492)
+        Me.ServiceTemplateViewer1.SortOrder = LampCommon.LampSort.SubmitDateAsc
+        Me.ServiceTemplateViewer1.TabIndex = 0
         '
         'ServiceSortableTemplateViewer
         '
@@ -242,6 +296,8 @@ Partial Class ServiceSortableTemplateViewer
         Me.FlowLayoutPanel1.PerformLayout()
         Me.FlowLayoutPanel2.ResumeLayout(False)
         Me.FlowLayoutPanel2.PerformLayout()
+        Me.FlowLayoutPanel3.ResumeLayout(False)
+        Me.FlowLayoutPanel3.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -260,4 +316,8 @@ Partial Class ServiceSortableTemplateViewer
     Friend WithEvents FlowLayoutPanel2 As FlowLayoutPanel
     Friend WithEvents rdbtnAsc As RadioButton
     Friend WithEvents rdbtnDesc As RadioButton
+    Friend WithEvents FlowLayoutPanel3 As FlowLayoutPanel
+    Friend WithEvents lblUserFilter As Label
+    Friend WithEvents rdbtnPublic As RadioButton
+    Friend WithEvents rdbtnMe As RadioButton
 End Class

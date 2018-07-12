@@ -67,7 +67,7 @@ Partial Class MyTemplatesForm
         Me.ServiceSortableTemplateViewer1.Size = New System.Drawing.Size(1226, 592)
         Me.ServiceSortableTemplateViewer1.SortOrder = LampCommon.LampSort.NoSort
         Me.ServiceSortableTemplateViewer1.TabIndex = 9
-        Me.ServiceSortableTemplateViewer1.TitleText = "My Templates"
+        Me.ServiceSortableTemplateViewer1.TitleText = "View Templates"
         '
         'MyTemplatesForm
         '

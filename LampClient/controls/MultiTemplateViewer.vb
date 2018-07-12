@@ -57,7 +57,7 @@ Public Class MultiTemplateViewer
         ' Add any initialization after the InitializeComponent() call.
         Templates = New ObservableCollection(Of LampTemplate)
         AddHandler Templates.CollectionChanged, AddressOf UpdateViewers
-        Me.GridPanel.Padding = New Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0)
+        ' Me.GridPanel.Padding = New Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0)
     End Sub
 
 
