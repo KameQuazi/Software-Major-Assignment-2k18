@@ -148,8 +148,10 @@ Public Class ServiceSortableTemplateViewer
 
 
     Private Sub LoadSettings()
-        Me.SidebarHidden = My.Settings.SortSettings.SortHidden
-        Me.SortOrder = My.Settings.SortSettings.SortType
+        If My.Settings.SortSettings IsNot Nothing Then
+            Me.SidebarHidden = My.Settings.SortSettings.SortHidden
+            Me.SortOrder = My.Settings.SortSettings.SortType
+        End If
     End Sub
 
 End Class
