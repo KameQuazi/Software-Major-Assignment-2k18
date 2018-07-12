@@ -60,9 +60,12 @@ Partial Class JobDisplay
         'FileDisplay1
         '
         Me.FileDisplay1.BackColor = System.Drawing.Color.White
+        Me.FileDisplay1.Cursor = System.Windows.Forms.Cursors.Hand
         Me.FileDisplay1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FileDisplay1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FileDisplay1.HighLightColor = System.Drawing.Color.AliceBlue
         Me.FileDisplay1.Location = New System.Drawing.Point(643, 3)
+        Me.FileDisplay1.MouseOverHighlight = False
         Me.FileDisplay1.Name = "FileDisplay1"
         Me.FileDisplay1.Size = New System.Drawing.Size(315, 298)
         Me.FileDisplay1.TabIndex = 3

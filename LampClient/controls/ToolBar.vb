@@ -17,7 +17,7 @@ Public Module ToolbarUtilities
                 PreviousForms.Add(LampForm.MyTemplatesForm)
             Case GetType(NewOrderForm)
                 PreviousForms.Add(LampForm.NewOrderForm)
-            Case GetType(TemplateSelectForm)
+            Case GetType(TemplateSelectBox)
                 PreviousForms.Add(LampForm.TemplateSelectForm)
             Case GetType(AdminForm)
                 PreviousForms.Add(LampForm.AdminForm)
@@ -48,7 +48,7 @@ Public Module ToolbarUtilities
             Case LampForm.NewOrderForm
                 NewOrderForm.Show()
             Case LampForm.TemplateSelectForm
-                TemplateSelectForm.Show()
+                TemplateSelectBox.Show()
         End Select
     End Sub
 

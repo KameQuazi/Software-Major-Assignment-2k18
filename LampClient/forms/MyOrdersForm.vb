@@ -2,7 +2,7 @@
 
 Public Class MyOrdersForm
     Private offset = 0
-    Private Const JOBS_PER_PAGE = 4
+    Private Const JOBS_PER_PAGE = 3
 
     Private Sub ShowError(status As LampStatus)
         MessageBox.Show("Could not update: " + status.ToString)
@@ -81,6 +81,14 @@ Public Class MyOrdersForm
 #End If
         End Try
     End Function
+
+    Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        MultiJobViewer1.Rows = JOBS_PER_PAGE
+    End Sub
 
     Private Sub MyTemplatesForm_Load(sender As Object, e As EventArgs) Handles MyBase.Shown
         NewThreadUpdateInterface()

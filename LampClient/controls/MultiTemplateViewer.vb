@@ -6,12 +6,13 @@ Imports LampCommon
 
 
 Public Class MultiTemplateViewer
+
     Public Event TemplateClick(sender As Object, e As TemplateClickedEventArgs)
 
     Public ReadOnly DefaultTemplateMargin As New Padding(12, 12, 12, 12)
 
     Public ReadOnly Property Templates As ObservableCollection(Of LampTemplate)
-        
+
 
 
 

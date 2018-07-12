@@ -35,7 +35,7 @@ Public Class DebugForm
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        Dim x = New TemplateSelectForm()
+        Dim x = New TemplateSelectBox()
         x.Show()
 
     End Sub
