@@ -27,7 +27,6 @@ Partial Class AdminToolbar
         Me.Logo = New System.Windows.Forms.PictureBox()
         Me.btnQuit = New System.Windows.Forms.Button()
         Me.btnHome = New System.Windows.Forms.Button()
-        Me.btnViewEditTemplate = New System.Windows.Forms.Button()
         Me.Username = New System.Windows.Forms.Label()
         Me.btnApproveTemplates = New System.Windows.Forms.Button()
         Me.btnLogOut = New System.Windows.Forms.Button()
@@ -35,6 +34,7 @@ Partial Class AdminToolbar
         Me.btnAbout = New System.Windows.Forms.Button()
         Me.btnBack = New System.Windows.Forms.Button()
         Me.btnHelp = New System.Windows.Forms.Button()
+        Me.btnManageUsers = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.Logo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -53,14 +53,14 @@ Partial Class AdminToolbar
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8.333333!))
+        Me.TableLayoutPanel1.Controls.Add(Me.btnManageUsers, 3, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Logo, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.btnQuit, 10, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.btnHome, 1, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.btnViewEditTemplate, 2, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Username, 6, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.btnApproveTemplates, 4, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.btnApproveTemplates, 1, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.btnLogOut, 5, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.btnViewEditJobs, 3, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.btnViewEditJobs, 2, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.btnAbout, 9, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.btnBack, 7, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.btnHelp, 8, 0)
@@ -111,20 +111,6 @@ Partial Class AdminToolbar
         Me.btnHome.Text = "Home"
         Me.btnHome.UseVisualStyleBackColor = False
         '
-        'btnViewEditTemplate
-        '
-        Me.btnViewEditTemplate.BackColor = System.Drawing.Color.White
-        Me.btnViewEditTemplate.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnViewEditTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnViewEditTemplate.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnViewEditTemplate.Location = New System.Drawing.Point(209, 5)
-        Me.btnViewEditTemplate.Margin = New System.Windows.Forms.Padding(5)
-        Me.btnViewEditTemplate.Name = "btnViewEditTemplate"
-        Me.btnViewEditTemplate.Size = New System.Drawing.Size(92, 98)
-        Me.btnViewEditTemplate.TabIndex = 51
-        Me.btnViewEditTemplate.Text = "View/Edit Templates"
-        Me.btnViewEditTemplate.UseVisualStyleBackColor = False
-        '
         'Username
         '
         Me.Username.AutoSize = True
@@ -145,7 +131,7 @@ Partial Class AdminToolbar
         Me.btnApproveTemplates.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnApproveTemplates.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnApproveTemplates.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnApproveTemplates.Location = New System.Drawing.Point(413, 5)
+        Me.btnApproveTemplates.Location = New System.Drawing.Point(209, 5)
         Me.btnApproveTemplates.Margin = New System.Windows.Forms.Padding(5)
         Me.btnApproveTemplates.Name = "btnApproveTemplates"
         Me.btnApproveTemplates.Size = New System.Drawing.Size(92, 98)
@@ -223,6 +209,20 @@ Partial Class AdminToolbar
         Me.btnHelp.Text = "Help"
         Me.btnHelp.UseVisualStyleBackColor = False
         '
+        'btnEditUsers
+        '
+        Me.btnManageUsers.BackColor = System.Drawing.Color.White
+        Me.btnManageUsers.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnManageUsers.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnManageUsers.Font = New System.Drawing.Font("Arial", 12.25!)
+        Me.btnManageUsers.Location = New System.Drawing.Point(413, 5)
+        Me.btnManageUsers.Margin = New System.Windows.Forms.Padding(5)
+        Me.btnManageUsers.Name = "btnEditUsers"
+        Me.btnManageUsers.Size = New System.Drawing.Size(92, 98)
+        Me.btnManageUsers.TabIndex = 53
+        Me.btnManageUsers.Text = "Manage Users"
+        Me.btnManageUsers.UseVisualStyleBackColor = False
+        '
         'AdminToolbar
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -242,7 +242,6 @@ Partial Class AdminToolbar
     Friend WithEvents Logo As PictureBox
     Friend WithEvents btnQuit As Button
     Friend WithEvents btnHome As Button
-    Friend WithEvents btnViewEditTemplate As Button
     Friend WithEvents Username As Label
     Friend WithEvents btnApproveTemplates As Button
     Friend WithEvents btnLogOut As Button
@@ -250,4 +249,5 @@ Partial Class AdminToolbar
     Friend WithEvents btnAbout As Button
     Friend WithEvents btnBack As Button
     Friend WithEvents btnHelp As Button
+    Friend WithEvents btnManageUsers As Button
 End Class

@@ -25,6 +25,7 @@ Public Class ServiceSortableTemplateViewer
             ServiceTemplateViewer1.JustMyTemplates = value
             If JustMyTemplates Then
                 rdbtnMe.Checked = True
+                rdbtnAllApproved.Checked = True
             Else
                 rdbtnPublic.Checked = True
             End If
@@ -39,7 +40,6 @@ Public Class ServiceSortableTemplateViewer
             ServiceTemplateViewer1.ApprovedType = value
         End Set
     End Property
-
 
     Public Property TitleText As String
         Get
@@ -106,6 +106,7 @@ Public Class ServiceSortableTemplateViewer
         ' finished load
         finishedLoading = True
         LoadSettings()
+        ValidateApprovedCheckboxes()
     End Sub
 
 
@@ -176,6 +177,10 @@ Public Class ServiceSortableTemplateViewer
         End If
     End Sub
 
+    Public Sub UpdateContents()
+        ServiceTemplateViewer1.UpdateContents()
+    End Sub
+
 
     Private Sub LoadSettings()
         Try
@@ -193,13 +198,39 @@ Public Class ServiceSortableTemplateViewer
 
     End Sub
 
+    Private Sub ValidateApprovedCheckboxes()
+        If CurrentUser.PermissionLevel < UserPermission.Elevated And JustMyTemplates = False Then
+            ' disable unapproved editing
+            rdbtnNoApproved.Enabled = False
+            rdbtnAllApproved.Enabled = False
+            rdbtnYesApproved.Checked = True
+        Else
+            rdbtnNoApproved.Enabled = True
+            rdbtnAllApproved.Enabled = True
+        End If
+    End Sub
+
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles rdbtnPublic.CheckedChanged, rdbtnMe.CheckedChanged
         If rdbtnPublic.Checked Then
             JustMyTemplates = False
         Else
             JustMyTemplates = True
         End If
+
+        ValidateApprovedCheckboxes()
         WriteSettings()
+    End Sub
+
+    Private Sub ApprovedChanged(sender As Object, e As EventArgs) Handles rdbtnAllApproved.CheckedChanged, rdbtnNoApproved.CheckedChanged, rdbtnYesApproved.CheckedChanged
+        ValidateApprovedCheckboxes()
+        If rdbtnAllApproved.Checked Then
+            ApprovedType = LampApprove.All
+        ElseIf rdbtnYesApproved.Checked Then
+            ApprovedType = LampApprove.Approved
+        ElseIf rdbtnNoApproved.Checked Then
+            ApprovedType = LampApprove.Unapproved
+        End If
+
     End Sub
 
 

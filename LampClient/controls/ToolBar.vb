@@ -28,6 +28,8 @@ Public Module ToolbarUtilities
                 PreviousForms.Add(LampForm.ViewEditTemplateForm)
             Case GetType(ApproveTemplateForm)
                 PreviousForms.Add(LampForm.ApproveTemplateForm)
+            Case GetType(ManageUsersForm)
+                PreviousForms.Add(LampForm.ManageUsersForm)
 
 
 
@@ -274,4 +276,5 @@ Public Enum LampForm
     ViewEditJobsForm
     ViewEditTemplateForm
     ApproveTemplateForm
+    ManageUsersForm
 End Enum

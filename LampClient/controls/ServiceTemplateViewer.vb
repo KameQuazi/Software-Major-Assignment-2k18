@@ -56,9 +56,22 @@ Public Class ServiceTemplateViewer
         End Set
     End Property
 
-    Public Property ApprovedType As LampApprove = LampApprove.All
+    Private _approvedType As LampApprove = LampApprove.Approved
+    Public Property ApprovedType As LampApprove
+        Get
+            Return _approvedType
+        End Get
+        Set(value As LampApprove)
+            _approvedType = value
+            If IsHandleCreated Then
+                UpdateContents()
+            End If
+        End Set
+    End Property
 
-
+    Public Sub UpdateContents()
+        NewThreadUpdateInterface()
+    End Sub
 
     Private Sub UpdateInterfaceLocking()
         Try

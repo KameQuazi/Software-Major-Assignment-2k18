@@ -121,7 +121,7 @@ Public Class LampServiceLocal
             End If
 
 
-            Await Database.SetTemplateAsync(newTemplate, user.UserId, user.UserId).ConfigureAwait(False)
+            Await Database.SetTemplateAsync(newTemplate, user.UserId).ConfigureAwait(False)
             response = LampStatus.OK
             Return response
 
@@ -890,7 +890,7 @@ Public Class LampServiceLocal
             End If
             Dim user = auth.user
 
-            If Not HasGetTemplateListPerms(user, approveStatus) Then
+            If Not HasGetTemplateListPerms(user, approveStatus, byUser) Then
                 response.Status = LampStatus.NoAccess
                 Return response
             End If

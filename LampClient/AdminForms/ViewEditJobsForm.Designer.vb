@@ -57,6 +57,7 @@ Partial Class ViewEditJobsForm
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Name = "ViewEditJobsForm"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "ViewEditJobsForm"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)

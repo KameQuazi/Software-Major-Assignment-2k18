@@ -113,6 +113,7 @@ Public Class LampService
 
     End Function
 
+
     Public Function EditTemplate(credentials As LampCredentials, newTemplate As LampTemplate) As LampStatus Implements ILampService.EditTemplate
         Dim response As LampStatus
 
@@ -143,8 +144,7 @@ Public Class LampService
             End If
 
 
-
-            Database.SetTemplate(newTemplate, user.UserId, user.UserId)
+            Database.SetTemplate(newTemplate, user.UserId)
             response = LampStatus.OK
             Return response
 
@@ -955,7 +955,7 @@ Public Class LampService
             End If
             Dim user = auth.user
 
-            If Not HasGetTemplateListPerms(user, approveStatus) Then
+            If Not HasGetTemplateListPerms(user, approveStatus, byUser) Then
                 response.Status = LampStatus.NoAccess
                 Return response
             End If
@@ -1034,9 +1034,19 @@ Public Class LampService
         Return user.PermissionLevel >= UserPermission.Standard
     End Function
 
-    Public Function HasGetTemplateListPerms(user As LampUser, approveStatus As LampApprove) As Boolean
-        If approveStatus <> LampApprove.Approved And user.PermissionLevel < UserPermission.Elevated Then
-            Return False
+    Public Function HasGetTemplateListPerms(user As LampUser, approveStatus As LampApprove, byUser As IEnumerable(Of String)) As Boolean
+        ' deny if standard user tries to get unapproved templates from other users
+        If user.PermissionLevel < UserPermission.Elevated Then
+            Dim notUser As Boolean = False
+            For Each item In byUser
+                If item <> user.UserId Then
+                    notUser = True
+                    Exit For
+                End If
+            Next
+            If notUser Then
+                Return False
+            End If
         End If
         Return user.PermissionLevel >= UserPermission.Standard
     End Function

@@ -60,24 +60,26 @@ Partial Class ViewTemplatesForm
         '
         'ServiceSortableTemplateViewer1
         '
+        Me.ServiceSortableTemplateViewer1.ApprovedType = LampCommon.LampApprove.All
         Me.ServiceSortableTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ServiceSortableTemplateViewer1.JustMyTemplates = False
         Me.ServiceSortableTemplateViewer1.Location = New System.Drawing.Point(3, 108)
         Me.ServiceSortableTemplateViewer1.Name = "ServiceSortableTemplateViewer1"
         Me.ServiceSortableTemplateViewer1.SidebarHidden = False
         Me.ServiceSortableTemplateViewer1.Size = New System.Drawing.Size(1226, 592)
         Me.ServiceSortableTemplateViewer1.SortOrder = LampCommon.LampSort.NoSort
         Me.ServiceSortableTemplateViewer1.TabIndex = 9
-        Me.ServiceSortableTemplateViewer1.TitleText = "View Templates"
+        Me.ServiceSortableTemplateViewer1.TitleText = "View/Edit Templates"
         '
-        'MyTemplatesForm
+        'ViewTemplatesForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.TableLayoutPanel1)
-        Me.Name = "MyTemplatesForm"
+        Me.Name = "ViewTemplatesForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "MyTemplatesForm"
+        Me.Text = "View/Edit Templates - LAMP"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 

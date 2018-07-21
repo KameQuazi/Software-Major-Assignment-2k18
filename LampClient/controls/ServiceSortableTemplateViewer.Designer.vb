@@ -24,6 +24,7 @@ Partial Class ServiceSortableTemplateViewer
     Private Sub InitializeComponent()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.ServiceTemplateViewer1 = New LampClient.ServiceTemplateViewer()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.btnHideShowSort = New System.Windows.Forms.Button()
@@ -39,7 +40,11 @@ Partial Class ServiceSortableTemplateViewer
         Me.lblUserFilter = New System.Windows.Forms.Label()
         Me.rdbtnPublic = New System.Windows.Forms.RadioButton()
         Me.rdbtnMe = New System.Windows.Forms.RadioButton()
-        Me.ServiceTemplateViewer1 = New LampClient.ServiceTemplateViewer()
+        Me.FlowLayoutPanel4 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.lblApprove = New System.Windows.Forms.Label()
+        Me.rdbtnAllApproved = New System.Windows.Forms.RadioButton()
+        Me.rdbtnYesApproved = New System.Windows.Forms.RadioButton()
+        Me.rdbtnNoApproved = New System.Windows.Forms.RadioButton()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -51,6 +56,7 @@ Partial Class ServiceSortableTemplateViewer
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.FlowLayoutPanel2.SuspendLayout()
         Me.FlowLayoutPanel3.SuspendLayout()
+        Me.FlowLayoutPanel4.SuspendLayout()
         Me.SuspendLayout()
         '
         'SplitContainer1
@@ -86,6 +92,19 @@ Partial Class ServiceSortableTemplateViewer
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1271, 553)
         Me.TableLayoutPanel1.TabIndex = 20
+        '
+        'ServiceTemplateViewer1
+        '
+        Me.ServiceTemplateViewer1.ApprovedType = LampCommon.LampApprove.All
+        Me.ServiceTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ServiceTemplateViewer1.JustMyTemplates = False
+        Me.ServiceTemplateViewer1.Location = New System.Drawing.Point(3, 58)
+        Me.ServiceTemplateViewer1.MouseOverHighlight = True
+        Me.ServiceTemplateViewer1.Name = "ServiceTemplateViewer1"
+        Me.ServiceTemplateViewer1.Offset = 0
+        Me.ServiceTemplateViewer1.Size = New System.Drawing.Size(1265, 492)
+        Me.ServiceTemplateViewer1.SortOrder = LampCommon.LampSort.SubmitDateAsc
+        Me.ServiceTemplateViewer1.TabIndex = 0
         '
         'TableLayoutPanel2
         '
@@ -138,6 +157,7 @@ Partial Class ServiceSortableTemplateViewer
         Me.TableLayoutPanel3.ColumnCount = 1
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.Controls.Add(Me.FlowLayoutPanel4, 0, 3)
         Me.TableLayoutPanel3.Controls.Add(Me.FlowLayoutPanel1, 0, 0)
         Me.TableLayoutPanel3.Controls.Add(Me.FlowLayoutPanel2, 0, 1)
         Me.TableLayoutPanel3.Controls.Add(Me.FlowLayoutPanel3, 0, 2)
@@ -150,6 +170,34 @@ Partial Class ServiceSortableTemplateViewer
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel3.Size = New System.Drawing.Size(221, 553)
         Me.TableLayoutPanel3.TabIndex = 3
         '
@@ -254,28 +302,73 @@ Partial Class ServiceSortableTemplateViewer
         Me.rdbtnPublic.Text = "All"
         Me.rdbtnPublic.UseVisualStyleBackColor = True
         '
-        'rdbMe
+        'rdbtnMe
         '
         Me.rdbtnMe.AutoSize = True
         Me.rdbtnMe.Location = New System.Drawing.Point(120, 8)
         Me.rdbtnMe.Margin = New System.Windows.Forms.Padding(8)
-        Me.rdbtnMe.Name = "rdbMe"
+        Me.rdbtnMe.Name = "rdbtnMe"
         Me.rdbtnMe.Size = New System.Drawing.Size(40, 17)
         Me.rdbtnMe.TabIndex = 2
         Me.rdbtnMe.Text = "Me"
         Me.rdbtnMe.UseVisualStyleBackColor = True
         '
-        'ServiceTemplateViewer1
+        'FlowLayoutPanel4
         '
-        Me.ServiceTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ServiceTemplateViewer1.JustMyTemplates = False
-        Me.ServiceTemplateViewer1.Location = New System.Drawing.Point(3, 58)
-        Me.ServiceTemplateViewer1.MouseOverHighlight = True
-        Me.ServiceTemplateViewer1.Name = "ServiceTemplateViewer1"
-        Me.ServiceTemplateViewer1.Offset = 0
-        Me.ServiceTemplateViewer1.Size = New System.Drawing.Size(1265, 492)
-        Me.ServiceTemplateViewer1.SortOrder = LampCommon.LampSort.SubmitDateAsc
-        Me.ServiceTemplateViewer1.TabIndex = 0
+        Me.FlowLayoutPanel4.Controls.Add(Me.lblApprove)
+        Me.FlowLayoutPanel4.Controls.Add(Me.rdbtnAllApproved)
+        Me.FlowLayoutPanel4.Controls.Add(Me.rdbtnYesApproved)
+        Me.FlowLayoutPanel4.Controls.Add(Me.rdbtnNoApproved)
+        Me.FlowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FlowLayoutPanel4.Location = New System.Drawing.Point(3, 168)
+        Me.FlowLayoutPanel4.Name = "FlowLayoutPanel4"
+        Me.FlowLayoutPanel4.Size = New System.Drawing.Size(215, 49)
+        Me.FlowLayoutPanel4.TabIndex = 8
+        '
+        'lblApprove
+        '
+        Me.lblApprove.AutoSize = True
+        Me.lblApprove.Location = New System.Drawing.Point(8, 8)
+        Me.lblApprove.Margin = New System.Windows.Forms.Padding(8)
+        Me.lblApprove.Name = "lblApprove"
+        Me.lblApprove.Size = New System.Drawing.Size(56, 13)
+        Me.lblApprove.TabIndex = 0
+        Me.lblApprove.Text = "Approved:"
+        '
+        'rdbtnAllApproved
+        '
+        Me.rdbtnAllApproved.AutoSize = True
+        Me.rdbtnAllApproved.Checked = True
+        Me.rdbtnAllApproved.Location = New System.Drawing.Point(72, 8)
+        Me.rdbtnAllApproved.Margin = New System.Windows.Forms.Padding(0, 8, 0, 8)
+        Me.rdbtnAllApproved.Name = "rdbtnAllApproved"
+        Me.rdbtnAllApproved.Size = New System.Drawing.Size(36, 17)
+        Me.rdbtnAllApproved.TabIndex = 1
+        Me.rdbtnAllApproved.TabStop = True
+        Me.rdbtnAllApproved.Text = "All"
+        Me.rdbtnAllApproved.UseVisualStyleBackColor = True
+        '
+        'rdbtnYesApproved
+        '
+        Me.rdbtnYesApproved.AutoSize = True
+        Me.rdbtnYesApproved.Location = New System.Drawing.Point(116, 8)
+        Me.rdbtnYesApproved.Margin = New System.Windows.Forms.Padding(8)
+        Me.rdbtnYesApproved.Name = "rdbtnYesApproved"
+        Me.rdbtnYesApproved.Size = New System.Drawing.Size(43, 17)
+        Me.rdbtnYesApproved.TabIndex = 2
+        Me.rdbtnYesApproved.Text = "Yes"
+        Me.rdbtnYesApproved.UseVisualStyleBackColor = True
+        '
+        'rdbtnNoApproved
+        '
+        Me.rdbtnNoApproved.AutoSize = True
+        Me.rdbtnNoApproved.Location = New System.Drawing.Point(167, 8)
+        Me.rdbtnNoApproved.Margin = New System.Windows.Forms.Padding(0, 8, 0, 8)
+        Me.rdbtnNoApproved.Name = "rdbtnNoApproved"
+        Me.rdbtnNoApproved.Size = New System.Drawing.Size(39, 17)
+        Me.rdbtnNoApproved.TabIndex = 3
+        Me.rdbtnNoApproved.Text = "No"
+        Me.rdbtnNoApproved.UseVisualStyleBackColor = True
         '
         'ServiceSortableTemplateViewer
         '
@@ -298,6 +391,8 @@ Partial Class ServiceSortableTemplateViewer
         Me.FlowLayoutPanel2.PerformLayout()
         Me.FlowLayoutPanel3.ResumeLayout(False)
         Me.FlowLayoutPanel3.PerformLayout()
+        Me.FlowLayoutPanel4.ResumeLayout(False)
+        Me.FlowLayoutPanel4.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -320,4 +415,9 @@ Partial Class ServiceSortableTemplateViewer
     Friend WithEvents lblUserFilter As Label
     Friend WithEvents rdbtnPublic As RadioButton
     Friend WithEvents rdbtnMe As RadioButton
+    Friend WithEvents FlowLayoutPanel4 As FlowLayoutPanel
+    Friend WithEvents lblApprove As Label
+    Friend WithEvents rdbtnAllApproved As RadioButton
+    Friend WithEvents rdbtnYesApproved As RadioButton
+    Friend WithEvents rdbtnNoApproved As RadioButton
 End Class

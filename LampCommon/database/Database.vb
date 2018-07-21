@@ -1073,6 +1073,8 @@ Partial Public Class TemplateDatabase
                         SetImages(template.GUID, template.PreviewImages, trans)
                     End If
 
+                    ' clear tags if any exist
+                    RemoveTags(template.GUID, trans)
                     If template.Tags.Count > 0 Then
                         SetTags(template.GUID, template.Tags, trans)
                     End If
@@ -1106,6 +1108,7 @@ Partial Public Class TemplateDatabase
                         Await SetImagesAsync(template.GUID, template.PreviewImages, trans).ConfigureAwait(False)
                     End If
 
+                    Await RemoveTagsAsync(template.GUID, trans).ConfigureAwait(False)
                     If template.Tags.Count > 0 Then
                         Await SetTagsAsync(template.GUID, template.Tags, trans).ConfigureAwait(False)
                     End If
@@ -2086,11 +2089,14 @@ Public Class TemplateDatabase
         Dim max As New LampUser(GetNewGuid(), UserPermission.Admin, "maxywartonyjonesy@gmail.com", "waxy", "memes", "steve by birth!")
         Await db.SetUserAsync(max).ConfigureAwait(False)
 
-        Dim shovel = New LampUser(GetNewGuid(), UserPermission.Admin, "qshoveyl@gmail.com", "shourov", "shovel101", "Knot Jack")
+        Dim shovel = New LampUser(GetNewGuid(), UserPermission.Admin, "qshoveyl@gmail.com", "shourov", "shovel101", "not jack")
         Await db.SetUserAsync(shovel).ConfigureAwait(False)
 
         Dim jack = New LampUser(GetNewGuid(), UserPermission.Admin, "jackywathyy123@gmail.com", "moji", "snack time", "shovel tool")
         Await db.SetUserAsync(jack).ConfigureAwait(False)
+
+        Dim standard = New LampUser(GetNewGuid(), UserPermission.Standard, "example@google.com", "standard", "1234", "examply gy")
+        Await db.SetUserAsync(standard).ConfigureAwait(False)
 
         ' add new templates 
         For Each spfName As String In ExampleSpfFiles

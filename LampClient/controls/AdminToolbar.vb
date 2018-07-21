@@ -20,8 +20,8 @@ Public Class AdminToolbar
         SetUsername(CurrentUser.Username)
     End Sub
 
-    Private Sub btnViewEditTemplate_Click(sender As Object, e As EventArgs) Handles btnViewEditTemplate.Click
-        ShowNewForm(ParentForm, ViewEditTemplateForm)
+    Private Sub btnManageUsers_Click(sender As Object, e As EventArgs) Handles btnManageUsers.Click
+        ShowNewForm(ParentForm, ManageUsersForm)
     End Sub
 
     Private Sub btnViewEditJobs_Click(sender As Object, e As EventArgs) Handles btnViewEditJobs.Click
@@ -31,6 +31,8 @@ Public Class AdminToolbar
     Private Sub btnApproveTemplates_Click(sender As Object, e As EventArgs) Handles btnApproveTemplates.Click
         ShowNewForm(ParentForm, ApproveTemplateForm)
     End Sub
+
+
 
     Private Sub btnLogOut_Click(sender As Object, e As EventArgs) Handles btnLogOut.Click
         Logout(ParentForm)
@@ -54,4 +56,6 @@ Public Class AdminToolbar
     Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
         AboutBox.ShowDialog()
     End Sub
+
+
 End Class

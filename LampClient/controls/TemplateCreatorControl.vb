@@ -5,7 +5,7 @@ Public Class TemplateCreatorControl
     Public Shared ReadOnly Property DefaultMaterials As New List(Of String)
 
 #Region "Properties"
-    Private _template As LampTemplate
+
 
     Private _readonly As Boolean
     Public Property [ReadOnly] As Boolean
@@ -48,11 +48,13 @@ Public Class TemplateCreatorControl
         End If
     End Sub
 
+    Private _template As LampTemplate
 
     ''' <summary>
     ''' Determines the template 
     ''' </summary>
     ''' <returns></returns>
+    <[ReadOnly](True)>
     Public Property Template As LampTemplate
         Get
             Return _template
@@ -403,9 +405,8 @@ Public Class TemplateCreatorControl
     End Sub
 
 
+    Public Event SubmitSuccessful(sender As Object, e As SubmitEventArgs)
 
-
-    Public Property CloseWhenSubmitted As Boolean = True
 
     Private Async Sub btnSubmitTemplate_Click(sender As Object, e As EventArgs) Handles btnSubmitTemplate.Click
         If Not CheckPossibleErrors() Then
@@ -417,9 +418,9 @@ Public Class TemplateCreatorControl
             Select Case response
                 Case LampStatus.OK
                     MessageBox.Show("Submitted Successfully")
-                    If CloseWhenSubmitted Then
-                        ShowPreviousForm(Nothing, ParentForm)
-                    End If
+
+                    RaiseEvent SubmitSuccessful(Me, New SubmitEventArgs(Template))
+
 
                 Case LampStatus.InvalidUsernameOrPassword
                     ShowLoginError(Me.ParentForm)
@@ -434,9 +435,9 @@ Public Class TemplateCreatorControl
             Select Case response
                 Case LampStatus.OK
                     MessageBox.Show("Editted Successfully")
-                    If CloseWhenSubmitted Then
-                        ShowPreviousForm(Nothing, ParentForm)
-                    End If
+
+                    RaiseEvent SubmitSuccessful(Me, New SubmitEventArgs(Template))
+
 
                 Case LampStatus.InvalidUsernameOrPassword
                     ShowLoginError(Me.ParentForm)
@@ -496,13 +497,19 @@ Public Class TemplateCreatorControl
     End Sub
 
     Private Function ValidateThickness() As Boolean
-        Dim correct = Double.TryParse(TboxThickness.Text, New Double)
-        If correct Then
-            ErrorProviderThickness.SetError(TboxThickness, "")
-        Else
+        Dim value As Double = -1
+        Dim parsible = Double.TryParse(TboxThickness.Text, value)
+        If Not parsible Then
             ErrorProviderThickness.SetError(TboxThickness, "Please Enter an number")
+            Return False
+        ElseIf value <= 0 Then
+            ErrorProviderThickness.SetError(TboxThickness, "Number must be greater than 0")
+            Return False
+        Else
+            ErrorProviderThickness.SetError(TboxThickness, "")
+            Return True
         End If
-        Return correct
+
     End Function
 
     Private Function ValidateName() As Boolean
@@ -551,5 +558,16 @@ Public Class TemplateCreatorControl
 
     End Sub
 
+
+End Class
+
+
+Public Class SubmitEventArgs
+    Inherits EventArgs
+    Public Property Template As LampTemplate
+    Sub New(template As LampTemplate)
+        MyBase.New()
+        Me.Template = template
+    End Sub
 
 End Class

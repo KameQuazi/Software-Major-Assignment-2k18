@@ -36,7 +36,7 @@ Public Class FileDisplay
         End If
 
         If template.ApproverProfile IsNot Nothing Then
-            editapprover.Text = template.CreatorProfile.Username
+            editapprover.Text = template.ApproverProfile.Username
         Else
             editapprover.Text = NoneText
         End If
