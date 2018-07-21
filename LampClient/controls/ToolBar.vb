@@ -11,21 +11,31 @@ Public Module ToolbarUtilities
         Select Case form.GetType()
             Case GetType(HomeForm)
                 PreviousForms.Add(LampForm.HomeForm)
-            Case GetType(MyOrdersForm)
-                PreviousForms.Add(LampForm.MyOrdersForm)
-            Case GetType(MyTemplatesForm)
-                PreviousForms.Add(LampForm.MyTemplatesForm)
+            Case GetType(ViewOrdersForm)
+                PreviousForms.Add(LampForm.ViewOrdersForm)
+            Case GetType(ViewTemplatesForm)
+                PreviousForms.Add(LampForm.ViewTemplatesForm)
             Case GetType(NewOrderForm)
                 PreviousForms.Add(LampForm.NewOrderForm)
-            Case GetType(TemplateSelectBox)
-                PreviousForms.Add(LampForm.TemplateSelectForm)
+
             Case GetType(AdminForm)
                 PreviousForms.Add(LampForm.AdminForm)
+            Case GetType(NewTemplateForm)
+                PreviousForms.Add(LampForm.NewTemplateForm)
+            Case GetType(ViewEditJobsForm)
+                PreviousForms.Add(LampForm.ViewEditJobsForm)
+            Case GetType(ViewEditTemplateForm)
+                PreviousForms.Add(LampForm.ViewEditTemplateForm)
+            Case GetType(ApproveTemplateForm)
+                PreviousForms.Add(LampForm.ApproveTemplateForm)
 
 
 
+
+#If DEBUG Then
             Case Else
-                Throw New ArgumentOutOfRangeException(NameOf(form))
+                Throw New ArgumentOutOfRangeException(form.GetType().ToString)
+#End If
         End Select
     End Sub
 
@@ -41,14 +51,26 @@ Public Module ToolbarUtilities
         Select Case last
             Case LampForm.HomeForm
                 HomeForm.Show()
-            Case LampForm.MyOrdersForm
-                MyOrdersForm.Show()
-            Case LampForm.MyTemplatesForm
-                MyTemplatesForm.Show()
+            Case LampForm.ViewOrdersForm
+                ViewOrdersForm.Show()
+            Case LampForm.ViewTemplatesForm
+                ViewTemplatesForm.Show()
             Case LampForm.NewOrderForm
                 NewOrderForm.Show()
-            Case LampForm.TemplateSelectForm
-                TemplateSelectBox.Show()
+
+            Case LampForm.AdminForm
+                AdminForm.Show()
+            Case LampForm.NewTemplateForm
+                NewTemplateForm.Show()
+            Case LampForm.ViewEditJobsForm
+                ViewEditJobsForm.Show()
+            Case LampForm.ViewEditTemplateForm
+                ViewEditTemplateForm.Show()
+
+#If DEBUG Then
+            Case Else
+                Throw New ArgumentOutOfRangeException(last.GetType.ToString())
+#End If
         End Select
     End Sub
 
@@ -177,11 +199,15 @@ Public Class ToolBar
     End Sub
 
     Private Sub btnDesigns_Click(sender As Object, e As EventArgs) Handles btnDesigns.Click
-        ShowNewForm(ParentForm, MyTemplatesForm)
+        ShowNewForm(ParentForm, ViewTemplatesForm)
     End Sub
 
     Private Sub btnOrders_Click(sender As Object, e As EventArgs) Handles btnOrders.Click
-        ShowNewForm(ParentForm, MyOrdersForm)
+        ShowNewForm(ParentForm, ViewOrdersForm)
+    End Sub
+
+    Private Sub btnNewTemplate_Click(sender As Object, e As EventArgs) Handles btnNewTemplate.Click
+        ShowNewForm(ParentForm, NewTemplateForm)
     End Sub
 
     Private Sub btnHelp_Click(sender As Object, e As EventArgs) Handles btnHelp.Click
@@ -191,6 +217,7 @@ Public Class ToolBar
     Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
         AboutBox.ShowDialog()
     End Sub
+
 
 
 
@@ -232,14 +259,19 @@ Public Class ToolBar
         End If
     End Sub
 
+
 End Class
 
 
 Public Enum LampForm
     HomeForm
-    MyOrdersForm
-    MyTemplatesForm
+    ViewOrdersForm
+    ViewTemplatesForm
     NewOrderForm
     TemplateSelectForm
     AdminForm
+    NewTemplateForm
+    ViewEditJobsForm
+    ViewEditTemplateForm
+    ApproveTemplateForm
 End Enum

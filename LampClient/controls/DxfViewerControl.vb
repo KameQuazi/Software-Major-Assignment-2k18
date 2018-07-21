@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports LampCommon
 
+<DefaultEvent("Click")>
 Public Class DxfViewerControl
     Implements INotifyPropertyChanged
 

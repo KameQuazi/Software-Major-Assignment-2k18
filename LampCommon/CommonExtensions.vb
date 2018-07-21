@@ -44,17 +44,24 @@ Public Module CommonExtensions
     End Function
 
     <System.Runtime.CompilerServices.Extension>
-    Public Sub InvokeEx(this As ISynchronizeInvoke, action As Action(Of ISynchronizeInvoke))
-        If this.InvokeRequired Then
-            this.Invoke(action, New Object() {this})
-        Else
-            action(this)
-        End If
+    Public Sub SafeInvokeEx(this As ISynchronizeInvoke, action As Action(Of ISynchronizeInvoke), Optional Handler As Action(Of Exception) = Nothing)
+        Try
+            If this.InvokeRequired Then
+                this.Invoke(action, New Object() {this})
+            Else
+
+                action(this)
+            End If
+        Catch e As Exception
+            If Handler IsNot Nothing Then
+                Handler(e)
+            End If
+        End Try
     End Sub
-
-
 
     Public Function GetNewGuid() As String
         Return Guid.NewGuid().ToString()
     End Function
+
+
 End Module

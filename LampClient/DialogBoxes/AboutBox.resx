@@ -253,6 +253,10 @@ to design, edit, and laser cut school trophies.
 Created by:
 Jack Jiang
 Shourov Quazi
-Max Wharton-Jones</value>
+Max Wharton-Jones
+
+NOTE: This program uses the .netDxf library, licenced under LGPL.
+It can be found here https://github.com/haplokuon/netDxf
+</value>
   </data>
 </root>

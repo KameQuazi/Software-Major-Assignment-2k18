@@ -77,6 +77,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -96,7 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SortSettings.vb" />
-    <Compile Include="user\CommonExtensions.vb" />
+    <Compile Include="CommonExtensions.vb" />
     <Compile Include="database\Database.vb" />
     <Compile Include="database\SqliteConnectionWrapper.vb" />
     <Compile Include="database\SqliteTransactionWrapper.vb" />

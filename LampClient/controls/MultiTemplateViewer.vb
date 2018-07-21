@@ -14,7 +14,18 @@ Public Class MultiTemplateViewer
     Public ReadOnly Property Templates As ObservableCollection(Of LampTemplate)
 
 
-
+    Private _templateCursor As Cursor = Windows.Forms.Cursors.Hand
+    Public Property TemplateCursor As Cursor
+        Get
+            Return _templateCursor
+        End Get
+        Set(value As Cursor)
+            _templateCursor = value
+            For Each item As FileDisplay In GridPanel.Controls
+                item.Cursor = value
+            Next
+        End Set
+    End Property
 
     Public Overrides Property AutoScroll As Boolean
         Get
@@ -105,7 +116,8 @@ Public Class MultiTemplateViewer
                                        .Template = template,
                                        .Dock = DockStyle.Fill,
                                        .MouseOverHighlight = Me.MouseOverHighlight,
-                                       .Margin = DefaultTemplateMargin
+                                       .Margin = DefaultTemplateMargin,
+                                       .Cursor = TemplateCursor
                                        }
                 AddHandler newViewer.Click, AddressOf HandleTemplateClicked
 

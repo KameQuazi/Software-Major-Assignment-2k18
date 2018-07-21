@@ -1,6 +1,7 @@
 ﻿Imports LampCommon
 
 Public Class ServiceTemplateViewer
+
     Public Event TemplateClick(sender As Object, e As TemplateClickedEventArgs)
 
     Private Sub MultiTemplateViewer1_TemplateClick(sender As Object, e As TemplateClickedEventArgs) Handles MultiTemplateViewer1.TemplateClick
@@ -55,6 +56,9 @@ Public Class ServiceTemplateViewer
         End Set
     End Property
 
+    Public Property ApprovedType As LampApprove = LampApprove.All
+
+
 
     Private Sub UpdateInterfaceLocking()
         Try
@@ -63,25 +67,25 @@ Public Class ServiceTemplateViewer
                 If Offset - TEMPLATES_PER_PAGE >= 0 Then
                     Dim previousPage = CurrentSender.GetTemplateList(CurrentUser.ToCredentials,
                                                         Nothing, GetFilteredUserList,
-                                                        TEMPLATES_PER_PAGE, Offset - TEMPLATES_PER_PAGE, False, SortOrder)
+                                                        TEMPLATES_PER_PAGE, Offset - TEMPLATES_PER_PAGE, ApprovedType, SortOrder)
                     If previousPage.Status = LampStatus.OK Then
                         If previousPage.Templates.Count() > 0 Then
-                            Me.InvokeEx(Sub(control As ServiceTemplateViewer) control.btnPreviousPage.Enabled = True)
+                            Me.SafeInvokeEx(Sub(control As ServiceTemplateViewer) control.btnPreviousPage.Enabled = True)
                         Else
-                            Me.InvokeEx(Sub(control As ServiceTemplateViewer) control.btnPreviousPage.Enabled = False)
+                            Me.SafeInvokeEx(Sub(control As ServiceTemplateViewer) control.btnPreviousPage.Enabled = False)
                         End If
                     Else
                         ShowError(previousPage.Status)
                         Return
                     End If
                 Else
-                    Me.InvokeEx(Sub(control As ServiceTemplateViewer) control.btnPreviousPage.Enabled = False)
+                    Me.SafeInvokeEx(Sub(control As ServiceTemplateViewer) control.btnPreviousPage.Enabled = False)
                 End If
 
 
                 Dim request = CurrentSender.GetTemplateList(CurrentUser.ToCredentials,
                                                                Nothing, GetFilteredUserList,
-                                                               TEMPLATES_PER_PAGE, Offset, False, SortOrder)
+                                                               TEMPLATES_PER_PAGE, Offset, ApprovedType, SortOrder)
 
                 If request.Status <> LampStatus.OK Then
                     ShowError(request.Status)
@@ -89,24 +93,24 @@ Public Class ServiceTemplateViewer
                 End If
 
                 ' actually aadd the templates
-                MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.Suspend())
-                MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Clear())
+                MultiTemplateViewer1.SafeInvokeEx(Sub(control As MultiTemplateViewer) control.Suspend())
+                MultiTemplateViewer1.SafeInvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Clear())
 
                 For Each item In request.Templates
-                    MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Add(item))
+                    MultiTemplateViewer1.SafeInvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Add(item))
                 Next
-                MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.EndSuspend())
+                MultiTemplateViewer1.SafeInvokeEx(Sub(control As MultiTemplateViewer) control.EndSuspend())
 
                 ' check if the next page exists
                 If Offset + TEMPLATES_PER_PAGE >= 0 Then
                     Dim previousPage = CurrentSender.GetTemplateList(CurrentUser.ToCredentials,
                                                             Nothing, GetFilteredUserList,
-                                                            TEMPLATES_PER_PAGE, Offset + TEMPLATES_PER_PAGE, False, SortOrder)
+                                                            TEMPLATES_PER_PAGE, Offset + TEMPLATES_PER_PAGE, ApprovedType, SortOrder)
                     If previousPage.Status = LampStatus.OK Then
                         If previousPage.Templates.Count() > 0 Then
-                            Me.InvokeEx(Sub(control As ServiceTemplateViewer) control.btnNextPage.Enabled = True)
+                            Me.SafeInvokeEx(Sub(control As ServiceTemplateViewer) control.btnNextPage.Enabled = True)
                         Else
-                            Me.InvokeEx(Sub(control As ServiceTemplateViewer) control.btnNextPage.Enabled = False)
+                            Me.SafeInvokeEx(Sub(control As ServiceTemplateViewer) control.btnNextPage.Enabled = False)
                         End If
                     Else
                         ShowError(previousPage.Status)
@@ -134,11 +138,11 @@ Public Class ServiceTemplateViewer
             Dim newTask = New Task(AddressOf UpdateInterfaceLocking)
 
             newTask.ContinueWith(Sub(x)
-                                     MultiTemplateViewer1.InvokeEx(Sub(control As MultiTemplateViewer) control.StopLoading())
+                                     MultiTemplateViewer1.SafeInvokeEx(Sub(control As MultiTemplateViewer) control.StopLoading())
                                  End Sub, TaskContinuationOptions.NotOnFaulted)
             newTask.Start()
 
-        Catch e As ObjectDisposedException
+        Catch e As Exception ' an aggregate exception will be thrown instead of ObjectDisposedException
             ' if the form gets closed b4 request is finish, it will crash
             ' we just want to catch it
 #If DEBUG Then

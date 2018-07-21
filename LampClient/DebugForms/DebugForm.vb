@@ -58,7 +58,7 @@ Public Class DebugForm
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
-        Dim x As New TemplateEditorForm
+        Dim x As New NewTemplateForm
         x.ShowDialog()
     End Sub
 

@@ -171,7 +171,7 @@ Public Interface ILampService
     Function GetJobList(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampSort) As LampJobListWrapper
 
     <OperationContract>
-    Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As LampTemplateListWrapper
+    Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampSort) As LampTemplateListWrapper
 
 End Interface
 
@@ -241,7 +241,7 @@ Public Interface ILampServiceAsync
     Function RemoveJobAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus)
 
     <OperationContract>
-    Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As Task(Of LampTemplateListWrapper)
+    Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampSort) As Task(Of LampTemplateListWrapper)
 
     <OperationContract>
     Function GetJobListAsync(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampSort) As Task(Of LampJobListWrapper)

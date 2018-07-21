@@ -14,6 +14,9 @@ Public Class DesignerForm
         End Set
     End Property
 
+    Public Property [Readonly] As Boolean
+
+
 
     Private Sub OpenFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
 
@@ -181,6 +184,11 @@ Public Class DesignerForm
 
     Private Sub DesignerForm_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
         Console.WriteLine("hewww-wo?")
+    End Sub
+
+    Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
+        Me.DialogResult = DialogResult.OK
+        Me.Close()
     End Sub
 End Class
 

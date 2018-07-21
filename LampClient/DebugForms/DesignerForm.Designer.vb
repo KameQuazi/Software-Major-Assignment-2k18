@@ -44,7 +44,7 @@ Partial Class DesignerForm
         Me.ZoomLevelBox = New System.Windows.Forms.TextBox()
         Me.DuplicateButton = New System.Windows.Forms.Button()
         Me.DesignerScreen1 = New LampClient.DxfViewerControl()
-        Me.ToolBar1 = New LampClient.ToolBar()
+        Me.Button2 = New System.Windows.Forms.Button()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -249,25 +249,24 @@ Partial Class DesignerForm
         Me.DesignerScreen1.ZoomX = 1.0R
         Me.DesignerScreen1.ZoomY = 1.0R
         '
-        'ToolBar1
+        'Button2
         '
-        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(1, 0)
-        Me.ToolBar1.MyOrdersEnabled = True
-        Me.ToolBar1.MyTrophyEnabled = True
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
-        Me.ToolBar1.TabIndex = 22
+        Me.Button2.BackColor = System.Drawing.Color.White
+        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button2.Location = New System.Drawing.Point(39, 646)
+        Me.Button2.Margin = New System.Windows.Forms.Padding(4)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(100, 28)
+        Me.Button2.TabIndex = 22
+        Me.Button2.Text = "OK"
+        Me.Button2.UseVisualStyleBackColor = False
         '
         'DesignerForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(1232, 703)
-        Me.Controls.Add(Me.ToolBar1)
+        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.DuplicateButton)
         Me.Controls.Add(Me.ZoomLevelBox)
         Me.Controls.Add(Me.TrackBar1)
@@ -317,5 +316,5 @@ Partial Class DesignerForm
     Friend WithEvents TrackBar1 As TrackBar
     Friend WithEvents ZoomLevelBox As TextBox
     Friend WithEvents DuplicateButton As Button
-    Friend WithEvents ToolBar1 As ToolBar
+    Friend WithEvents Button2 As Button
 End Class

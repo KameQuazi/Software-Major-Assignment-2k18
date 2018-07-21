@@ -32,6 +32,14 @@ Public Module OwO
         ' put folder in DLL path
     End Sub
 
+    Public Sub ShowLoginError(parentForm As Form)
+        MessageBox.Show("Login Expired: please login again")
+        Logout(Nothing, parentForm)
+    End Sub
+
+    Public Sub ShowError([error] As LampStatus)
+        MessageBox.Show("An error occurred:", [error].ToString)
+    End Sub
 
 
 

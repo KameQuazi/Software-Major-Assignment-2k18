@@ -1,6 +1,6 @@
 ﻿Imports LampCommon
 
-Public Class MyOrdersForm
+Public Class ViewOrdersForm
     Private offset = 0
     Private Const JOBS_PER_PAGE = 3
 
@@ -22,7 +22,7 @@ Public Class MyOrdersForm
     Private Async Function UpdateInterface() As Task
         Try
             ' check if the next page exists (offset - tempaltes-per-page)
-            MultiJobViewer1.InvokeEx(Sub(control As MultiJobViewer) control.Jobs.Clear())
+            MultiJobViewer1.SafeInvokeEx(Sub(control As MultiJobViewer) control.Jobs.Clear())
 
             If offset - JOBS_PER_PAGE >= 0 Then
                 Dim previousPage = Await CurrentSender.GetJobListAsync(CurrentUser.ToCredentials,
@@ -30,9 +30,9 @@ Public Class MyOrdersForm
                                                         JOBS_PER_PAGE, offset - JOBS_PER_PAGE, SortOrder)
                 If previousPage.Status = LampStatus.OK Then
                     If previousPage.Templates.Count() > 0 Then
-                        Me.InvokeEx(Sub(form As MyOrdersForm) form.btnPreviousPage.Enabled = True)
+                        Me.SafeInvokeEx(Sub(form As ViewOrdersForm) form.btnPreviousPage.Enabled = True)
                     Else
-                        Me.InvokeEx(Sub(form As MyOrdersForm) form.btnPreviousPage.Enabled = False)
+                        Me.SafeInvokeEx(Sub(form As ViewOrdersForm) form.btnPreviousPage.Enabled = False)
                     End If
                 Else
                     ShowError(previousPage.Status)
@@ -50,11 +50,11 @@ Public Class MyOrdersForm
                 Return
             End If
 
-            MultiJobViewer1.InvokeEx(Sub(control As MultiJobViewer) control.Suspend())
+            MultiJobViewer1.SafeInvokeEx(Sub(control As MultiJobViewer) control.Suspend())
             For Each item In request.Templates
-                MultiJobViewer1.InvokeEx(Sub(control As MultiJobViewer) control.Jobs.Add(item))
+                MultiJobViewer1.SafeInvokeEx(Sub(control As MultiJobViewer) control.Jobs.Add(item))
             Next
-            MultiJobViewer1.InvokeEx(Sub(control As MultiJobViewer) control.EndSuspend())
+            MultiJobViewer1.SafeInvokeEx(Sub(control As MultiJobViewer) control.EndSuspend())
 
             ' check if the next page exists
             If offset + JOBS_PER_PAGE >= 0 Then
@@ -63,9 +63,9 @@ Public Class MyOrdersForm
                                                         JOBS_PER_PAGE, offset + JOBS_PER_PAGE, SortOrder)
                 If previousPage.Status = LampStatus.OK Then
                     If previousPage.Templates.Count() > 0 Then
-                        Me.InvokeEx(Sub(form As MyOrdersForm) form.btnNextPage.Enabled = True)
+                        Me.SafeInvokeEx(Sub(form As ViewOrdersForm) form.btnNextPage.Enabled = True)
                     Else
-                        Me.InvokeEx(Sub(form As MyOrdersForm) form.btnNextPage.Enabled = False)
+                        Me.SafeInvokeEx(Sub(form As ViewOrdersForm) form.btnNextPage.Enabled = False)
                     End If
                 Else
                     ShowError(previousPage.Status)
@@ -109,7 +109,7 @@ Public Class MyOrdersForm
                                    End Sub)
 
             newTask.ContinueWith(Sub(x)
-                                     MultiJobViewer1.InvokeEx(Sub(control As MultiJobViewer) control.StopLoading())
+                                     MultiJobViewer1.SafeInvokeEx(Sub(control As MultiJobViewer) control.StopLoading())
                                  End Sub, TaskContinuationOptions.NotOnFaulted)
             newTask.Start()
 

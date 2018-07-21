@@ -1600,20 +1600,26 @@ Public Enum LampSort
     TemplateNameDesc
 End Enum
 
+Public Enum LampApprove
+    All
+    Unapproved
+    Approved
+End Enum
+
 Public Class TemplateDatabase
-    Public Function GetMultipleTemplate(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As List(Of LampTemplate)
+    Public Function GetMultipleTemplate(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampSort) As List(Of LampTemplate)
         If tags Is Nothing OrElse tags.Count() = 0 Then
-            Return GetTemplateList(byUser, limit, offset, includeUnapproved, orderBy)
+            Return GetTemplateList(byUser, limit, offset, approveStatus, orderBy)
         Else
-            Return SelectTemplateWithTags(tags, byUser, limit, offset, includeUnapproved, orderBy)
+            Return SelectTemplateWithTags(tags, byUser, limit, offset, approveStatus, orderBy)
         End If
     End Function
 
-    Public Async Function GetMultipleTemplateAsync(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As Task(Of List(Of LampTemplate))
+    Public Async Function GetMultipleTemplateAsync(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampSort) As Task(Of List(Of LampTemplate))
         If tags Is Nothing OrElse tags.Count() = 0 Then
-            Return Await GetTemplateListAsync(byUser, limit, offset, includeUnapproved, orderBy).ConfigureAwait(False)
+            Return Await GetTemplateListAsync(byUser, limit, offset, approveStatus, orderBy).ConfigureAwait(False)
         Else
-            Return Await SelectTemplateWithTagsAsync(tags, byUser, limit, offset, includeUnapproved, orderBy).ConfigureAwait(False)
+            Return Await SelectTemplateWithTagsAsync(tags, byUser, limit, offset, approveStatus, orderBy).ConfigureAwait(False)
         End If
     End Function
 
@@ -1702,16 +1708,24 @@ Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="limit"></param>
     ''' <param name="offset"></param>
-    ''' <param name="includeUnapproved"></param>
+    ''' <param name="approveStatus"></param>
     ''' <returns></returns>
-    Private Function GetTemplateList(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As List(Of LampTemplate)
+    Private Function GetTemplateList(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampSort) As List(Of LampTemplate)
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingTemplates As New List(Of LampTemplate)
 
             Dim approveText = "1"
-            If includeUnapproved = False Then
-                approveText = "approverId is not null"
-            End If
+            Select Case approveStatus
+                Case LampApprove.Approved
+                    approveText = "approverId is not null"
+                Case LampApprove.Unapproved
+                    approveText = "approverId is null"
+                Case LampApprove.All
+                Case Else
+                    Throw New ArgumentOutOfRangeException(NameOf(approveStatus))
+            End Select
+
+
 
             Dim userParameter = "1"
             If byUser.Count <> 0 Then
@@ -1749,20 +1763,26 @@ Public Class TemplateDatabase
     End Function
 
     ''' <summary>
-    ''' async version of <see cref="GetTemplateList(IEnumerable(Of String),Integer , Integer, Boolean, LampSort)"></see>
+    ''' async version of <see cref="GetTemplateList(IEnumerable(Of String),Integer , Integer, LampApprove, LampSort)"></see>
     ''' </summary>
     ''' <param name="limit"></param>
     ''' <param name="offset"></param>
-    ''' <param name="includeUnapproved"></param>
+    ''' <param name="approveStatus"></param>
     ''' <returns></returns>
-    Private Async Function GetTemplateListAsync(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As Task(Of List(Of LampTemplate))
+    Private Async Function GetTemplateListAsync(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampSort) As Task(Of List(Of LampTemplate))
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingTemplates As New List(Of LampTemplate)
 
             Dim approveText = "1"
-            If includeUnapproved = False Then
-                approveText = "approverId is not null"
-            End If
+            Select Case approveStatus
+                Case LampApprove.Approved
+                    approveText = "approverId is not null"
+                Case LampApprove.Unapproved
+                    approveText = "approverId is null"
+                Case LampApprove.All
+                Case Else
+                    Throw New ArgumentOutOfRangeException(NameOf(approveStatus))
+            End Select
 
             Dim userParameter = "1"
             If byUser.Count <> 0 Then
@@ -1851,7 +1871,7 @@ Public Class TemplateDatabase
     ''' If no template is found, returns nothing
     ''' </summary>
     ''' <returns></returns>
-    Private Function SelectTemplateWithTags(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As List(Of LampTemplate)
+    Private Function SelectTemplateWithTags(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampSort) As List(Of LampTemplate)
         ' If the databse is open already, dont close it
 
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
@@ -1879,9 +1899,16 @@ Public Class TemplateDatabase
 
 
             Dim approveText = "1"
-            If includeUnapproved = False Then
-                approveText = "(SELECT 1 from template WHERE template.guid = tags.guid and approverId is not null)"
-            End If
+            Select Case approveStatus
+                Case LampApprove.Approved
+                    approveText = "(SELECT 1 from template WHERE template.guid = tags.guid and approverId is not null)"
+                Case LampApprove.Unapproved
+                    approveText = "(SELECT 1 from template WHERE template.guid = tags.guid and approverId is null)"
+                Case LampApprove.All
+
+                Case Else
+                    Throw New ArgumentOutOfRangeException(NameOf(approveStatus))
+            End Select
 
             Dim stringCommand = String.Format("Select tags.guid from tags
                                       WHERE {0} AND {1} AND {2}
@@ -1921,7 +1948,7 @@ Public Class TemplateDatabase
     ''' If no template is found, returns nothing
     ''' </summary>
     ''' <returns></returns>
-    Private Async Function SelectTemplateWithTagsAsync(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As Task(Of List(Of LampTemplate))
+    Private Async Function SelectTemplateWithTagsAsync(tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampSort) As Task(Of List(Of LampTemplate))
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingTemplates As New List(Of LampTemplate)
 
@@ -1949,9 +1976,16 @@ Public Class TemplateDatabase
 
 
             Dim approveText = "1"
-            If includeUnapproved = False Then
-                approveText = "(SELECT 1 from template WHERE template.guid = tags.guid and approverId is not null)"
-            End If
+            Select Case approveStatus
+                Case LampApprove.Approved
+                    approveText = "(SELECT 1 from template WHERE template.guid = tags.guid and approverId is not null)"
+                Case LampApprove.Unapproved
+                    approveText = "(SELECT 1 from template WHERE template.guid = tags.guid and approverId is null)"
+                Case LampApprove.All
+
+                Case Else
+                    Throw New ArgumentOutOfRangeException(NameOf(approveStatus))
+            End Select
 
             Dim stringCommand = String.Format("Select tags.guid from tags
                                       WHERE {0} AND {1} AND {2}

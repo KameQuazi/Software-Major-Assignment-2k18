@@ -77,6 +77,10 @@
       <HintPath>..\packages\netDXF.2.0.2\lib\net45\netDxf.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -209,6 +213,12 @@
     <Compile Include="controls\SingleDynamicText.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="controls\TemplateCreatorControl.Designer.vb">
+      <DependentUpon>TemplateCreatorControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\TemplateCreatorControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\ToolBar.Designer.vb">
       <DependentUpon>ToolBar.vb</DependentUpon>
     </Compile>
@@ -257,6 +267,12 @@
     <Compile Include="DialogBoxes\CloseBox.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DialogBoxes\EditTemplateDialog.Designer.vb">
+      <DependentUpon>EditTemplateDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DialogBoxes\EditTemplateDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DialogBoxes\LampInputBox.Designer.vb">
       <DependentUpon>LampInputBox.vb</DependentUpon>
     </Compile>
@@ -267,6 +283,18 @@
       <DependentUpon>LampUserFilter.vb</DependentUpon>
     </Compile>
     <Compile Include="DialogBoxes\LampUserFilter.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogBoxes\TemplateApproveBox.Designer.vb">
+      <DependentUpon>TemplateApproveBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DialogBoxes\TemplateApproveBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogBoxes\UseTemplateBox.Designer.vb">
+      <DependentUpon>UseTemplateBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DialogBoxes\UseTemplateBox.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\NewOrderForm.Designer.vb">
@@ -311,22 +339,22 @@
     <Compile Include="DialogBoxes\LogoutBox.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\MyOrdersForm.Designer.vb">
-      <DependentUpon>MyOrdersForm.vb</DependentUpon>
+    <Compile Include="forms\ViewOrdersForm.Designer.vb">
+      <DependentUpon>ViewOrdersForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\MyOrdersForm.vb">
+    <Compile Include="forms\ViewOrdersForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\MyTemplatesForm.Designer.vb">
-      <DependentUpon>MyTemplatesForm.vb</DependentUpon>
+    <Compile Include="forms\ViewTemplatesForm.Designer.vb">
+      <DependentUpon>ViewTemplatesForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\MyTemplatesForm.vb">
+    <Compile Include="forms\ViewTemplatesForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="forms\TemplateEditorForm.Designer.vb">
-      <DependentUpon>TemplateEditorForm.vb</DependentUpon>
+    <Compile Include="forms\NewTemplateForm.Designer.vb">
+      <DependentUpon>NewTemplateForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="forms\TemplateEditorForm.vb">
+    <Compile Include="forms\NewTemplateForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DialogBoxes\TemplateSelectBox.Designer.vb">
@@ -401,6 +429,9 @@
     <EmbeddedResource Include="controls\SingleDynamicTExt.resx">
       <DependentUpon>SingleDynamicText.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="controls\TemplateCreatorControl.resx">
+      <DependentUpon>TemplateCreatorControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\ToolBar.resx">
       <DependentUpon>ToolBar.vb</DependentUpon>
     </EmbeddedResource>
@@ -425,6 +456,9 @@
     <EmbeddedResource Include="DialogBoxes\CloseBox.resx">
       <DependentUpon>CloseBox.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DialogBoxes\EditTemplateDialog.resx">
+      <DependentUpon>EditTemplateDialog.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DialogBoxes\HelpBox.resx">
       <DependentUpon>HelpBox.vb</DependentUpon>
     </EmbeddedResource>
@@ -433,6 +467,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DialogBoxes\LampUserFilter.resx">
       <DependentUpon>LampUserFilter.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogBoxes\TemplateApproveBox.resx">
+      <DependentUpon>TemplateApproveBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogBoxes\UseTemplateBox.resx">
+      <DependentUpon>UseTemplateBox.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\NewOrderForm.resx">
       <DependentUpon>NewOrderForm.vb</DependentUpon>
@@ -452,14 +492,14 @@
     <EmbeddedResource Include="DialogBoxes\LogoutBox.resx">
       <DependentUpon>LogoutBox.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\MyOrdersForm.resx">
-      <DependentUpon>MyOrdersForm.vb</DependentUpon>
+    <EmbeddedResource Include="forms\ViewOrdersForm.resx">
+      <DependentUpon>ViewOrdersForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\MyTemplatesForm.resx">
-      <DependentUpon>MyTemplatesForm.vb</DependentUpon>
+    <EmbeddedResource Include="forms\ViewTemplatesForm.resx">
+      <DependentUpon>ViewTemplatesForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\TemplateEditorForm.resx">
-      <DependentUpon>TemplateEditorForm.vb</DependentUpon>
+    <EmbeddedResource Include="forms\NewTemplateForm.resx">
+      <DependentUpon>NewTemplateForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DialogBoxes\TemplateSelectBox.resx">
       <DependentUpon>TemplateSelectBox.vb</DependentUpon>
@@ -472,6 +512,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="DefaultMaterials.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

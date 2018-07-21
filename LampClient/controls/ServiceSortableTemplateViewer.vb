@@ -23,6 +23,20 @@ Public Class ServiceSortableTemplateViewer
         Set(value As Boolean)
             _justMyTemplates = value
             ServiceTemplateViewer1.JustMyTemplates = value
+            If JustMyTemplates Then
+                rdbtnMe.Checked = True
+            Else
+                rdbtnPublic.Checked = True
+            End If
+        End Set
+    End Property
+
+    Public Property ApprovedType As LampApprove
+        Get
+            Return ServiceTemplateViewer1.ApprovedType
+        End Get
+        Set(value As LampApprove)
+            ServiceTemplateViewer1.ApprovedType = value
         End Set
     End Property
 
@@ -131,6 +145,7 @@ Public Class ServiceSortableTemplateViewer
                 Case LampSort.TemplateNameDesc
                     rdbtnDesc.Checked = True
                     ComboBox1.SelectedItem = "Name"
+
             End Select
             _sortOrder = value
 
@@ -157,16 +172,21 @@ Public Class ServiceSortableTemplateViewer
 
     Public Sub WriteSettings()
         If finishedLoading Then
-            My.Settings.SortSettings = New SortSettings(SidebarHidden, ServiceTemplateViewer1.SortOrder)
+            My.Settings.SortSettings = New SortSettings(SidebarHidden, ServiceTemplateViewer1.SortOrder, JustMyTemplates)
         End If
     End Sub
 
 
     Private Sub LoadSettings()
-        If My.Settings.SortSettings IsNot Nothing Then
-            Me.SidebarHidden = My.Settings.SortSettings.SortHidden
-            Me.SortOrder = My.Settings.SortSettings.SortType
-        End If
+        Try
+            If My.Settings.SortSettings IsNot Nothing Then
+                Me.SidebarHidden = My.Settings.SortSettings.SortHidden
+                Me.SortOrder = My.Settings.SortSettings.SortType
+                Me.JustMyTemplates = My.Settings.SortSettings.ByMe
+            End If
+        Catch e As Exception
+            MessageBox.Show("Cannot load user settings")
+        End Try
     End Sub
 
     Private Sub btnUserFilter_Click(sender As Object, e As EventArgs)
@@ -179,6 +199,7 @@ Public Class ServiceSortableTemplateViewer
         Else
             JustMyTemplates = True
         End If
+        WriteSettings()
     End Sub
 
 

@@ -201,6 +201,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_C46C6C1A56324B368454FBDCEE28C0A4"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_DBC9CDF4BAB5A172F5CABB0B363198C0"
         "OwnerKey" = "8:_275B06489BB44DE8884280165CDF0AD3"
         "MsmSig" = "8:_UNDEFINED"
@@ -256,7 +262,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_3EBD475A208CDD750FDFD0487F76A1CF"
+        "OwnerKey" = "8:_C3A7F0F2B1E9292DEE0A1448542A84DB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -274,6 +280,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3EBD475A208CDD750FDFD0487F76A1CF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_FD13C36BD953CBD2B0C0B98816663AA3"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -281,12 +293,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_E04F83EA6A0E4DD1ABEAB467F23B8F76"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C3A7F0F2B1E9292DEE0A1448542A84DB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -749,6 +755,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C46C6C1A56324B368454FBDCEE28C0A4"
+            {
+            "SourcePath" = "8:..\\LampClient\\DefaultMaterials.json"
+            "TargetName" = "8:DefaultMaterials.json"
+            "Tag" = "8:"
+            "Folder" = "8:_6034AAD4B1E34C528DF6103E5D7C56D0"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DBC9CDF4BAB5A172F5CABB0B363198C0"
