@@ -26,7 +26,7 @@ Partial Class JobDisplay
         Dim LampDxfDocument1 As LampCommon.LampDxfDocument = New LampCommon.LampDxfDocument()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(JobDisplay))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.FileDisplay1 = New LampClient.FileDisplay()
+        Me.FileDisplay1 = New LampClient.TemplateDisplay()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.SubmitProfileDisplay = New LampClient.ProfileDisplay()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -177,6 +177,6 @@ Partial Class JobDisplay
     Friend WithEvents Panel2 As Panel
     Friend WithEvents Label2 As Label
     Friend WithEvents ApproveProfileDisplay As ProfileDisplay
-    Friend WithEvents FileDisplay1 As FileDisplay
+    Friend WithEvents FileDisplay1 As TemplateDisplay
     Friend WithEvents btnDynamicText As Button
 End Class

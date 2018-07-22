@@ -1,21 +1,13 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.Collections.Specialized
+Imports System.ComponentModel
 Imports LampCommon
 
+<DefaultEvent("JobClick")>
 Public Class MultiJobViewer
+    Public Event JobClick(sender As Object, e As JobClickedEventArgs)
+
     Public ReadOnly Property Jobs As ObservableCollection(Of LampJob)
-
-    Private ReadOnly Property NewColumnStyle As ColumnStyle
-        Get
-            Return New ColumnStyle(SizeType.AutoSize)
-        End Get
-    End Property
-
-    Private ReadOnly Property NewRowStyle As RowStyle
-        Get
-            Return New RowStyle(SizeType.AutoSize)
-        End Get
-    End Property
 
     Private _columns As Integer = 1
     Public Property Columns As Integer
@@ -28,7 +20,7 @@ Public Class MultiJobViewer
         End Set
     End Property
 
-    Private _rows As Integer = 5
+    Private _rows As Integer = 3
     Public Property Rows As Integer
         Get
             Return _rows
@@ -40,6 +32,20 @@ Public Class MultiJobViewer
     End Property
 
 
+    Private _jobCursor As Cursor = Windows.Forms.Cursors.Hand
+    Public Property JobCursor As Cursor
+        Get
+            Return _jobCursor
+        End Get
+        Set(value As Cursor)
+            _jobCursor = value
+            For Each item As TemplateDisplay In TableLayoutPanel1.Controls
+                item.Cursor = value
+            Next
+        End Set
+    End Property
+
+
     Sub New()
         ' This call is required by the designer.
         InitializeComponent()
@@ -47,8 +53,6 @@ Public Class MultiJobViewer
         ' Add any initialization after the InitializeComponent() call.
         Jobs = New ObservableCollection(Of LampJob)
         AddHandler Jobs.CollectionChanged, AddressOf UpdateViewers
-        Me.TableLayoutPanel1.Padding = New Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0)
-        Me.TableLayoutPanel1.ColumnCount = Columns
 
     End Sub
 
@@ -72,22 +76,41 @@ Public Class MultiJobViewer
             TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 1 / Columns))
         Next
 
+        If Jobs.Count > 0 Then
 
 
-        For Each job In Jobs
+            For Each job In Jobs
+                Dim newViewer As New JobDisplay() With {
+                    .Job = job,
+                    .Dock = DockStyle.Fill
+                }
+                AddHandler newViewer.Click, AddressOf HandleJobClicked
 
-            TableLayoutPanel1.Controls.Add(New JobDisplay() With {.Job = job, .Dock = DockStyle.Fill})
+                TableLayoutPanel1.Controls.Add(newViewer)
 
-        Next
-
+            Next
+            lblNoTemplates.Visible = False
+        Else
+            lblNoTemplates.Visible = True
+        End If
         ResumeLayout()
     End Sub
 
+    Private Sub HandleJobClicked(sender As Object, e As EventArgs)
+        Dim item As JobDisplay = sender
+        HandleJobClicked(New JobClickedEventArgs(item.Job))
+    End Sub
+
+    Public Sub HandleJobClicked(args As JobClickedEventArgs)
+        RaiseEvent JobClick(Me, args)
+    End Sub
+
     Friend Sub StopLoading()
-        LoadingPictureBox.Visible = False
+        TableLayoutPanel2.Visible = False
     End Sub
 
     Friend Sub ShowLoading()
+        TableLayoutPanel2.Visible = True
         LoadingPictureBox.Visible = True
     End Sub
 
@@ -114,4 +137,13 @@ Public Class MultiJobViewer
         End Get
     End Property
 
+End Class
+
+Public Class JobClickedEventArgs
+    Inherits EventArgs
+    Public Property Job As LampJob
+
+    Public Sub New(job As LampJob)
+        Me.Job = job
+    End Sub
 End Class

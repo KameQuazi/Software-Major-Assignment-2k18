@@ -97,7 +97,7 @@ Public Class LampService
                 Return response
             End If
 
-            If Database.SelectTemplateMetadata(template.GUID) IsNot Nothing Then
+            If Database.SelectTemplateData(template.GUID) IsNot Nothing Then
                 response = LampStatus.GuidConflict
                 Return response
             End If
@@ -481,7 +481,7 @@ Public Class LampService
 
             Dim user = auth.user
 
-            If Database.SelectTemplateMetadata(template.GUID) IsNot Nothing Then
+            If Database.SelectTemplateData(template.GUID) IsNot Nothing Then
                 response = LampStatus.GuidConflict
                 Return response
             End If
@@ -814,7 +814,7 @@ Public Class LampService
                 Return response
             End If
 
-            If Database.SelectTemplateMetadata(job.Template.GUID) Is Nothing Then ' check if exists
+            If Database.SelectTemplateData(job.Template.GUID) Is Nothing Then ' check if exists
                 response = LampStatus.NoTemplateFound
                 Return response
             End If
@@ -862,7 +862,7 @@ Public Class LampService
                 Return response
             End If
 
-            If Database.SelectTemplateMetadata(job.Template.GUID) Is Nothing Then ' check if exists
+            If Database.SelectTemplateData(job.Template.GUID) Is Nothing Then ' check if exists
                 response = LampStatus.NoTemplateFound
                 Return response
             End If

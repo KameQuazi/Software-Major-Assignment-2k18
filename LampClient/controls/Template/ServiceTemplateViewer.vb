@@ -17,7 +17,7 @@ Public Class ServiceTemplateViewer
         Set(value As LampSort)
             _sortOrder = value
             If IsHandleCreated Then
-                NewThreadUpdateInterface()
+                UpdateContents()
             End If
         End Set
     End Property
@@ -30,7 +30,7 @@ Public Class ServiceTemplateViewer
         Set(value As Boolean)
             _justMyTemplates = value
             If IsHandleCreated Then
-                NewThreadUpdateInterface()
+                UpdateContents()
             End If
         End Set
     End Property
@@ -164,6 +164,7 @@ Public Class ServiceTemplateViewer
 #End If
         End Try
     End Sub
+
     Private Sub ShowError(status As LampStatus)
         MessageBox.Show("Could not update: " + status.ToString)
     End Sub
@@ -172,17 +173,18 @@ Public Class ServiceTemplateViewer
         Offset -= TEMPLATES_PER_PAGE
         btnNextPage.Enabled = False
         btnPreviousPage.Enabled = False
-        NewThreadUpdateInterface()
+        UpdateContents()
     End Sub
 
     Private Sub btnNextPage_Click(sender As Object, e As EventArgs) Handles btnNextPage.Click
         Offset += TEMPLATES_PER_PAGE
         btnNextPage.Enabled = False
         btnPreviousPage.Enabled = False
-        NewThreadUpdateInterface()
+        UpdateContents()
     End Sub
 
     Private Sub ServiceTemplateViewer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        NewThreadUpdateInterface()
+        UpdateContents()
     End Sub
+
 End Class

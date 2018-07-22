@@ -75,7 +75,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            If Await Database.SelectTemplateMetadataAsync(template.GUID).ConfigureAwait(False) IsNot Nothing Then
+            If Await Database.SelectTemplateDataAsync(template.GUID).ConfigureAwait(False) IsNot Nothing Then
                 response = LampStatus.GuidConflict
                 Return response
             End If
@@ -421,7 +421,7 @@ Public Class LampServiceLocal
 
 
                 If HasAddUnapprovedTemplatePerms(user, template) Then
-                    If Await Database.SelectTemplateMetadataAsync(template.GUID) Is Nothing Then
+                    If Await Database.SelectTemplateDataAsync(template.GUID) Is Nothing Then
                         Database.SetTemplate(template, user.UserId) ' no approver
                         response = LampStatus.OK
                     Else
@@ -706,7 +706,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            If Await Database.SelectTemplateMetadataAsync(job.Template.GUID).ConfigureAwait(False) Is Nothing Then ' check if exists
+            If Await Database.SelectTemplateDataAsync(job.Template.GUID).ConfigureAwait(False) Is Nothing Then ' check if exists
                 response = LampStatus.NoTemplateFound
                 Return response
             End If
@@ -751,7 +751,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            If Await Database.SelectTemplateMetadataAsync(job.Template.GUID).ConfigureAwait(False) Is Nothing Then
+            If Await Database.SelectTemplateDataAsync(job.Template.GUID).ConfigureAwait(False) Is Nothing Then
                 ' no template found
                 response = LampStatus.NoTemplateFound
                 Return response

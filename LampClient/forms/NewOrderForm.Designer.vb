@@ -28,13 +28,13 @@ Partial Class NewOrderForm
         Me.grpParameters = New System.Windows.Forms.GroupBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Button2 = New System.Windows.Forms.Button()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnNext = New System.Windows.Forms.Button()
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.ToolBar1 = New LampClient.ToolBar()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.ToolBar1 = New LampClient.ToolBar()
         Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
         Me.grpParameters.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -65,7 +65,7 @@ Partial Class NewOrderForm
         '
         Me.grpParameters.Controls.Add(Me.Label1)
         Me.grpParameters.Controls.Add(Me.Button2)
-        Me.grpParameters.Controls.Add(Me.Button1)
+        Me.grpParameters.Controls.Add(Me.btnNext)
         Me.grpParameters.Controls.Add(Me.chkYear)
         Me.grpParameters.Controls.Add(Me.TextBox1)
         Me.grpParameters.Controls.Add(Me.txtPrefix)
@@ -102,15 +102,15 @@ Partial Class NewOrderForm
         '
         'Button1
         '
-        Me.Button1.BackColor = System.Drawing.Color.White
-        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.8!)
-        Me.Button1.Location = New System.Drawing.Point(416, 519)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(129, 44)
-        Me.Button1.TabIndex = 38
-        Me.Button1.Text = "Next"
-        Me.Button1.UseVisualStyleBackColor = False
+        Me.btnNext.BackColor = System.Drawing.Color.White
+        Me.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnNext.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.8!)
+        Me.btnNext.Location = New System.Drawing.Point(416, 519)
+        Me.btnNext.Name = "Button1"
+        Me.btnNext.Size = New System.Drawing.Size(129, 44)
+        Me.btnNext.TabIndex = 38
+        Me.btnNext.Text = "Next"
+        Me.btnNext.UseVisualStyleBackColor = False
         '
         'chkYear
         '
@@ -148,6 +148,20 @@ Partial Class NewOrderForm
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1232, 703)
         Me.TableLayoutPanel1.TabIndex = 38
         '
+        'ToolBar1
+        '
+        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolBar1.HomeEnabled = True
+        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
+        Me.ToolBar1.MyOrdersEnabled = True
+        Me.ToolBar1.MyTrophyEnabled = True
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.NewOrderEnabled = False
+        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
+        Me.ToolBar1.TabIndex = 37
+        '
         'TableLayoutPanel2
         '
         Me.TableLayoutPanel2.ColumnCount = 2
@@ -172,20 +186,6 @@ Partial Class NewOrderForm
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(607, 586)
         Me.Panel1.TabIndex = 37
-        '
-        'ToolBar1
-        '
-        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
-        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
-        Me.ToolBar1.MyOrdersEnabled = True
-        Me.ToolBar1.MyTrophyEnabled = True
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = False
-        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
-        Me.ToolBar1.TabIndex = 37
         '
         'DxfViewerControl1
         '
@@ -227,7 +227,7 @@ Partial Class NewOrderForm
     Friend WithEvents chkYear As CheckBox
     Friend WithEvents Label1 As Label
     Friend WithEvents ToolBar1 As ToolBar
-    Friend WithEvents Button1 As Button
+    Friend WithEvents btnNext As Button
     Friend WithEvents DxfViewerControl1 As DxfViewerControl
     Friend WithEvents Button2 As Button
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel

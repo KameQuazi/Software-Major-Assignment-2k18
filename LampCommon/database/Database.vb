@@ -1,10 +1,13 @@
-﻿Imports System.Data.SQLite
+﻿Imports System.Data.Common
+Imports System.Data.SQLite
 Imports System.Drawing
 Imports System.IO
+Imports System.Runtime.CompilerServices
 Imports System.Text
 Imports LampCommon
 Imports LampCommon.DatabaseHelper
 
+' constructor and instance variables
 ''' <summary>
 ''' Template database
 ''' Split into multiple parts
@@ -126,13 +129,14 @@ Partial Public Class TemplateDatabase
             command.CommandText = "CREATE TABLE if not exists jobs (
                                   jobId Text PRIMARY KEY Not Null,
                                   templateId Text Not NULL,
+                                  completeDrawingId TEXT not NULL,
                                   submitterId Text Not NULL,
                                   approverId Text,
-                                  approved integer Not Null default 0,
                                   submitDate Text Not null,
 
                                   FOREIGN KEY(submitterId) REFERENCES users(UserId),
-                                  FOREIGN KEY(approverId) REFERENCES users(UserId)
+                                  FOREIGN KEY(approverId) REFERENCES users(UserId),
+                                  FOREIGN KEY(completeDrawingId) REFERENCES dxf(GUID)
                                   ) WITHOUT rowId;"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
@@ -229,13 +233,14 @@ Partial Public Class TemplateDatabase
             command.CommandText = "CREATE TABLE if not exists jobs (
                                   jobId Text PRMARY KEY Not Null,
                                   templateId Text Not NULL,
+                                  completeDrawingId TEXT not NULL,
                                   submitterId Text Not NULL,
                                   approverId Text,
-                                  approved integer Not Null default 0,
                                   submitDate Text Not null,
 
                                   FOREIGN KEY(submitterId) REFERENCES users(UserId),
-                                  FOREIGN KEY(approverId) REFERENCES users(UserId)
+                                  FOREIGN KEY(approverId) REFERENCES users(UserId),
+                                  FOREIGN KEY(completeDrawingId) REFERENCES dxf(GUID)
                                   ) WITHOUT rowId;"
             tasks.Add(command.ExecuteNonQueryAsync())
 
@@ -275,10 +280,14 @@ Partial Public Class TemplateDatabase
                                    DROP INDEX if exists tags_tagname_guid;"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
-            command.CommandText = "DROP TABLE If exists jobs"
+            command.CommandText = "DROP TABLE If exists template;"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
-            command.CommandText = "DROP TABLE If exists template"
+
+            command.CommandText = "DROP TABLE If exists jobs;"
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
+
+            command.CommandText = "DROP TABLE If exists users;"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
             Dim allSuccess = results.All(Function(x) x = True)
@@ -315,10 +324,13 @@ Partial Public Class TemplateDatabase
 
             tasks.Add(command.ExecuteNonQueryAsync())
 
+            command.CommandText = "DROP TABLE If exists template"
+            tasks.Add(command.ExecuteNonQueryAsync())
+
             command.CommandText = "DROP TABLE If exists jobs"
             tasks.Add(command.ExecuteNonQueryAsync())
 
-            command.CommandText = "DROP TABLE If exists template"
+            command.CommandText = "DROP TABLE If exists users;"
             tasks.Add(command.ExecuteNonQueryAsync())
 
             Dim results = Await Task.WhenAll(tasks).ConfigureAwait(False)
@@ -363,7 +375,8 @@ Partial Public Class TemplateDatabase
 End Class
 
 
-' Manipulate templates in the db
+
+' Manipulate templates and dxf
 Partial Public Class TemplateDatabase
     ''' <summary>
     ''' Gets a dxf. Returns nothing if not found
@@ -495,7 +508,7 @@ Partial Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="guid"></param>
     ''' <returns></returns>
-    Public Function SelectTemplateMetadata(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As LampTemplateMetadata
+    Public Function SelectTemplateData(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As LampTemplateMetadata
         Dim metadata As LampTemplateMetadata = Nothing
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
             command.CommandText = "Select 
@@ -540,7 +553,7 @@ Partial Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="guid"></param>
     ''' <returns></returns>
-    Public Async Function SelectTemplateMetadataAsync(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of LampTemplateMetadata)
+    Public Async Function SelectTemplateDataAsync(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of LampTemplateMetadata)
         Dim metadata As LampTemplateMetadata = Nothing
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
             command.CommandText = "Select 
@@ -987,7 +1000,7 @@ Partial Public Class TemplateDatabase
     Public Function SelectTemplate(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As LampTemplate
         guid = guid.ToLower()
         Using conn = Connection.OpenConnection()
-            Dim data = SelectTemplateMetadata(guid, trans)
+            Dim data = SelectTemplateData(guid, trans)
             Dim template As LampTemplate = If(data IsNot Nothing, data.ToLampTemplate, Nothing)
 
             If template IsNot Nothing Then
@@ -1024,7 +1037,7 @@ Partial Public Class TemplateDatabase
     Public Async Function SelectTemplateAsync(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of LampTemplate)
         guid = guid.ToLower()
         Using conn = Connection.OpenConnection()
-            Dim data = Await SelectTemplateMetadataAsync(guid, trans).ConfigureAwait(False)
+            Dim data = Await SelectTemplateDataAsync(guid, trans).ConfigureAwait(False)
             Dim template As LampTemplate = If(data IsNot Nothing, data.ToLampTemplate, Nothing)
 
             If template IsNot Nothing Then
@@ -1187,7 +1200,6 @@ Partial Public Class TemplateDatabase
     End Function
 
 End Class
-
 
 ' implementation of users
 Partial Public Class TemplateDatabase
@@ -1424,17 +1436,21 @@ Partial Public Class TemplateDatabase
             Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
         End Using
     End Function
+End Class
+
+' jobs
+Partial Class TemplateDatabase
 
     ''' <summary>
     ''' </summary>
     ''' <returns></returns>
     Public Function SelectJob(jobId As String, Optional trans As SqliteTransactionWrapper = Nothing) As LampJob
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            command.CommandText = "Select templateId, submitterId, approverId, approved, submitDate from jobs 
+            command.CommandText = "Select templateId, submitterId, completeDrawingId, approverId, submitDate from jobs 
                                           WHERE jobId = @jobId"
             command.Parameters.AddWithValue("@jobId", jobId)
 
-            Using reader = command.ExecuteReader()
+            Using reader As SQLiteDataReader = command.ExecuteReader()
                 Dim job As LampJob = Nothing
                 If reader.Read() Then
                     Dim templateId = reader.GetString(reader.GetOrdinal("templateId"))
@@ -1457,11 +1473,11 @@ Partial Public Class TemplateDatabase
                         approverP = SelectUser(approverId, trans).ToProfile
                     End If
 
+                    Dim completedDrawing = SelectDxf(reader.GetString(reader.GetOrdinal("completeDrawingId")))
 
-                    Dim approved = reader.GetBoolean(reader.GetOrdinal("approved"))
                     Dim submitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
 
-                    job = New LampJob(template, submitterP, approverP, approved, submitDate)
+                    job = New LampJob(template, submitterP, approverP, submitDate, completedDrawing)
                 End If
                 Return job
             End Using
@@ -1473,7 +1489,7 @@ Partial Public Class TemplateDatabase
     ''' <returns></returns>
     Public Async Function SelectJobAsync(jobId As String, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of LampJob)
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            command.CommandText = "Select templateId, submitterId, approverId, approved, submitDate from jobs 
+            command.CommandText = "Select templateId, submitterId, completeDrawingId, approverId, submitDate from jobs 
                                           WHERE jobId = @jobId"
             command.Parameters.AddWithValue("@jobId", jobId)
 
@@ -1482,7 +1498,7 @@ Partial Public Class TemplateDatabase
                 If Await reader.ReadAsync().ConfigureAwait(False) Then
 
                     Dim templateId = reader.GetString(reader.GetOrdinal("templateId"))
-                    Dim template = SelectTemplate(templateId)
+                    Dim template = Await SelectTemplateAsync(templateId).ConfigureAwait(False)
 
                     Dim submitterId = reader.GetString(reader.GetOrdinal("submitterId"))
 
@@ -1494,7 +1510,7 @@ Partial Public Class TemplateDatabase
                     ' TODO combine in 1 sql statement
                     Dim submitterP As LampProfile = Nothing
                     If submitterId IsNot Nothing Then
-                        submitterP = (Await SelectUserAsync(submitterId, trans)).ToProfile
+                        submitterP = (Await SelectUserAsync(submitterId, trans).ConfigureAwait(False)).ToProfile
                     End If
 
                     Dim approverP As LampProfile = Nothing
@@ -1502,11 +1518,11 @@ Partial Public Class TemplateDatabase
                         approverP = (Await SelectUserAsync(approverId, trans).ConfigureAwait(False)).ToProfile
                     End If
 
+                    Dim completedDrawing = Await SelectDxfAsync(reader.GetString(reader.GetOrdinal("completeDrawingId"))).ConfigureAwait(False)
 
-                    Dim approved = reader.GetBoolean(reader.GetOrdinal("approved"))
                     Dim submitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
 
-                    job = New LampJob(template, submitterP, approverP, approved, submitDate)
+                    job = New LampJob(template, submitterP, approverP, submitDate, completedDrawing)
                 End If
 
                 Return job
@@ -1517,52 +1533,82 @@ Partial Public Class TemplateDatabase
     ''' <summary>
     ''' Adds a job to the database, returns false if not inserted or not template in db
     ''' </summary>
-    Public Function SetJob(job As LampJob, Optional trans As SqliteTransactionWrapper = Nothing) As Boolean
-        Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            Dim fromDb = SelectTemplateAsync(job.Template.GUID)
+    Public Function SetJob(job As LampJob, Optional optTrans As SqliteTransactionWrapper = Nothing) As Boolean
+        Using conn = Connection.OpenConnection, trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Transaction.LockTransaction), command = Connection.GetCommand(optTrans)
+            Dim fromDb = SelectTemplateAsync(job.Template.GUID, optTrans)
             If fromDb Is Nothing Then ' add check for 2 templates equal
                 Return False
             End If
 
-            command.CommandText = "INSERT OR REPLACE INTO jobs
-                    (jobId, templateId, submitterId, approverId, approved, submitDate)
+            ' attempt to insert the completed drawing
+            ' set the dxf
+            If SetDxf(job.JobId, job.CompletedDrawing, optTrans) Then
+
+                ' now set the job
+
+                command.CommandText = "INSERT OR REPLACE INTO jobs
+                    (jobId, templateId, completeDrawingId, submitterId, approverId, submitDate)
                     VALUES
-                    (@jobId, @templateId, @submitterId, @approverId, @approved, DATETIME('now'));"
+                    (@jobId, @templateId, @completeDrawingId, @submitterId, @approverId, DATETIME('now'));"
 
 
-            command.Parameters.AddWithValue("@jobId", job.JobId)
-            command.Parameters.AddWithValue("@templateId", job.Template.GUID)
-            command.Parameters.AddWithValue("@submitterId", job.SubmitId)
-            command.Parameters.AddWithValue("@approverId", job.ApproverId)
-            command.Parameters.AddWithValue("@approved", job.Approved)
+                command.Parameters.AddWithValue("@jobId", job.JobId)
+                command.Parameters.AddWithValue("@templateId", job.Template.GUID)
+                command.Parameters.AddWithValue("@submitterId", job.SubmitId)
+                command.Parameters.AddWithValue("@approverId", job.ApproverId)
+                command.Parameters.AddWithValue("@completeDrawingId", job.JobId)
 
-            Return Convert.ToBoolean(command.ExecuteNonQuery())
+                If Convert.ToBoolean(command.ExecuteNonQuery()) Then
+                    If optTrans Is Nothing Then
+                        trans.Commit()
+                    End If
+                    Return True
+                End If
+            End If
+
+            Return False
+
         End Using
     End Function
 
     ''' <summary>
     ''' Adds a job to the database, returns false if not inserted or no template in db
     ''' </summary>
-    Public Async Function SetJobAsync(job As LampJob, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
-        Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            Dim fromDb = Await SelectTemplateMetadataAsync(job.Template.GUID).ConfigureAwait(False)
-            If fromDb Is Nothing Then ' add check for 2 template equal TODO
+    Public Async Function SetJobAsync(job As LampJob, Optional optTrans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection, trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync), command = Connection.GetCommand(optTrans)
+            Dim fromDb = Await SelectTemplateAsync(job.Template.GUID, optTrans).ConfigureAwait(False)
+            If fromDb Is Nothing Then ' add check for 2 templates equal
                 Return False
             End If
 
-            command.CommandText = "INSERT OR REPLACE INTO jobs
-                    (jobId, templateId, submitterId, approverId, approved, submitDate)
+            ' attempt to insert the completed drawing
+            ' set the dxf
+            If Await SetDxfAsync(job.JobId, job.CompletedDrawing, optTrans).ConfigureAwait(False) Then
+
+                ' now set the job
+
+                command.CommandText = "INSERT OR REPLACE INTO jobs
+                    (jobId, templateId, completeDrawingId, submitterId, approverId, submitDate)
                     VALUES
-                    (@jobId, @templateId, @submitterId, @approverId, @approved, DATETIME('now'));"
+                    (@jobId, @templateId, @completeDrawingId, @submitterId,  @approverId, DATETIME('now'));"
 
 
-            command.Parameters.AddWithValue("@jobId", job.JobId)
-            command.Parameters.AddWithValue("@templateId", job.Template.GUID)
-            command.Parameters.AddWithValue("@submitterId", job.SubmitId)
-            command.Parameters.AddWithValue("@approverId", job.ApproverId)
-            command.Parameters.AddWithValue("@approved", job.Approved)
+                command.Parameters.AddWithValue("@jobId", job.JobId)
+                command.Parameters.AddWithValue("@templateId", job.Template.GUID)
+                command.Parameters.AddWithValue("@submitterId", job.SubmitId)
+                command.Parameters.AddWithValue("@approverId", job.ApproverId)
+                command.Parameters.AddWithValue("@completeDrawingId", job.JobId)
 
-            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
+                If Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False)) Then
+                    If optTrans Is Nothing Then
+                        trans.Commit()
+                    End If
+                    Return True
+                End If
+            End If
+
+            Return False
+
         End Using
     End Function
 
@@ -1571,12 +1617,21 @@ Partial Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="jobId"></param>
     ''' <returns></returns>
-    Public Function RemoveJob(jobId As String, Optional trans As SqliteTransactionWrapper = Nothing) As Boolean
-        Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            command.CommandText = "DELETE from jobs WHERE jobId = @jobId"
-            command.Parameters.AddWithValue("@jobId", jobId)
-            Return command.ExecuteNonQuery()
+    Public Function RemoveJob(jobId As String, Optional optTrans As SqliteTransactionWrapper = Nothing) As Boolean
+        Using conn = Connection.OpenConnection, trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Transaction.LockTransaction), Command = Connection.GetCommand(trans)
+            If RemoveDxf(jobId, optTrans) Then
+                Command.CommandText = "DELETE from jobs WHERE jobId = @jobId"
+                Command.Parameters.AddWithValue("@jobId", jobId)
+
+                If Command.ExecuteNonQuery() Then
+                    If optTrans Is Nothing Then
+                        trans.Commit()
+                    End If
+                    Return True
+                End If
+            End If
         End Using
+        Return False
     End Function
 
     ''' <summary>
@@ -1584,12 +1639,20 @@ Partial Public Class TemplateDatabase
     ''' </summary>
     ''' <param name="jobId"></param>
     ''' <returns></returns>
-    Public Async Function RemoveJobAsync(jobId As String, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
-        Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            command.CommandText = "DELETE from jobs WHERE jobId = @jobId"
-            command.Parameters.AddWithValue("@jobId", jobId)
-            Return Await command.ExecuteNonQueryAsync().ConfigureAwait(False)
+    Public Async Function RemoveJobAsync(jobId As String, Optional optTrans As SqliteTransactionWrapper = Nothing) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection, trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync), command = Connection.GetCommand(trans)
+            If Await RemoveDxfAsync(jobId, optTrans) Then
+                command.CommandText = "DELETE from jobs WHERE jobId = @jobId"
+                command.Parameters.AddWithValue("@jobId", jobId)
+                If Await command.ExecuteNonQueryAsync().ConfigureAwait(False) Then
+                    If optTrans Is Nothing Then
+                        trans.Commit()
+                    End If
+                    Return True
+                End If
+            End If
         End Using
+        Return False
     End Function
 
 End Class
@@ -2257,3 +2320,4 @@ Public Class DatabaseHelper
         End Select
     End Function
 End Class
+

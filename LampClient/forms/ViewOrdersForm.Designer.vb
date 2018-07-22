@@ -26,13 +26,9 @@ Partial Class ViewOrdersForm
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.ToolBar1 = New LampClient.ToolBar()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.btnPreviousPage = New System.Windows.Forms.Button()
-        Me.btnNextPage = New System.Windows.Forms.Button()
-        Me.MultiJobViewer1 = New LampClient.MultiJobViewer()
+        Me.ServiceJobViewer1 = New LampClient.ServiceJobViewer()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
-        Me.FlowLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -69,64 +65,28 @@ Partial Class ViewOrdersForm
         '
         Me.TableLayoutPanel2.ColumnCount = 1
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel2.Controls.Add(Me.FlowLayoutPanel1, 0, 1)
-        Me.TableLayoutPanel2.Controls.Add(Me.MultiJobViewer1, 0, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.ServiceJobViewer1, 0, 0)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(3, 108)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
-        Me.TableLayoutPanel2.RowCount = 2
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+        Me.TableLayoutPanel2.RowCount = 1
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(1226, 592)
         Me.TableLayoutPanel2.TabIndex = 1
         '
-        'FlowLayoutPanel1
+        'ServiceJobViewer1
         '
-        Me.FlowLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.FlowLayoutPanel1.Controls.Add(Me.btnPreviousPage)
-        Me.FlowLayoutPanel1.Controls.Add(Me.btnNextPage)
-        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(1023, 541)
-        Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(200, 42)
-        Me.FlowLayoutPanel1.TabIndex = 7
+        Me.ServiceJobViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ServiceJobViewer1.JustMyJobs = False
+        Me.ServiceJobViewer1.Location = New System.Drawing.Point(3, 3)
+        Me.ServiceJobViewer1.Name = "ServiceJobViewer1"
+        Me.ServiceJobViewer1.Offset = 0
+        Me.ServiceJobViewer1.Size = New System.Drawing.Size(1220, 586)
+        Me.ServiceJobViewer1.SortOrder = LampCommon.LampSort.NoSort
+        Me.ServiceJobViewer1.TabIndex = 8
         '
-        'btnPreviousPage
-        '
-        Me.btnPreviousPage.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnPreviousPage.Enabled = False
-        Me.btnPreviousPage.Location = New System.Drawing.Point(3, 3)
-        Me.btnPreviousPage.Name = "btnPreviousPage"
-        Me.btnPreviousPage.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.btnPreviousPage.Size = New System.Drawing.Size(75, 23)
-        Me.btnPreviousPage.TabIndex = 6
-        Me.btnPreviousPage.Text = "<-"
-        Me.btnPreviousPage.UseVisualStyleBackColor = True
-        '
-        'btnNextPage
-        '
-        Me.btnNextPage.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnNextPage.Enabled = False
-        Me.btnNextPage.Location = New System.Drawing.Point(84, 3)
-        Me.btnNextPage.Name = "btnNextPage"
-        Me.btnNextPage.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.btnNextPage.Size = New System.Drawing.Size(75, 23)
-        Me.btnNextPage.TabIndex = 4
-        Me.btnNextPage.Text = "->"
-        Me.btnNextPage.UseVisualStyleBackColor = True
-        '
-        'MultiJobViewer1
-        '
-        Me.MultiJobViewer1.Columns = 1
-        Me.MultiJobViewer1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.MultiJobViewer1.Location = New System.Drawing.Point(3, 3)
-        Me.MultiJobViewer1.Name = "MultiJobViewer1"
-        Me.MultiJobViewer1.Rows = 4
-        Me.MultiJobViewer1.Size = New System.Drawing.Size(1220, 526)
-        Me.MultiJobViewer1.TabIndex = 1
-        '
-        'MyOrdersForm
+        'ViewOrdersForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Silver
@@ -134,21 +94,17 @@ Partial Class ViewOrdersForm
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(4)
-        Me.Name = "MyOrdersForm"
+        Me.Name = "ViewOrdersForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "MyOrdersForm"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
-        Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
 
     Friend WithEvents ToolBar1 As ToolBar
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
-    Friend WithEvents MultiJobViewer1 As MultiJobViewer
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
-    Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
-    Friend WithEvents btnPreviousPage As Button
-    Friend WithEvents btnNextPage As Button
+    Friend WithEvents ServiceJobViewer1 As ServiceJobViewer
 End Class

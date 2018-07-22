@@ -1,6 +1,6 @@
 ﻿Imports LampCommon
 
-Public Class FileDisplay
+Public Class TemplateDisplay
 
     Private _template As LampTemplate
 

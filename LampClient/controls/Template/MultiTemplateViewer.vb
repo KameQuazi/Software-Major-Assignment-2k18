@@ -1,10 +1,11 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.Collections.Specialized
+Imports System.ComponentModel
 Imports LampClient
 Imports LampCommon
 
 
-
+<DefaultEvent("TemplateClick")>
 Public Class MultiTemplateViewer
 
     Public Event TemplateClick(sender As Object, e As TemplateClickedEventArgs)
@@ -21,7 +22,7 @@ Public Class MultiTemplateViewer
         End Get
         Set(value As Cursor)
             _templateCursor = value
-            For Each item As FileDisplay In GridPanel.Controls
+            For Each item As TemplateDisplay In GridPanel.Controls
                 item.Cursor = value
             Next
         End Set
@@ -73,7 +74,7 @@ Public Class MultiTemplateViewer
 
 
     Private Sub HandleTemplateClicked(sender As Object, e As EventArgs)
-        Dim item As FileDisplay = sender
+        Dim item As TemplateDisplay = sender
         HandleTemplateClicked(New TemplateClickedEventArgs() With {
                               .Index = GridPanel.Controls.IndexOf(item),
                               .Template = item.Template})
@@ -90,7 +91,7 @@ Public Class MultiTemplateViewer
         End If
 
         SuspendLayout()
-        For Each item As FileDisplay In GridPanel.Controls
+        For Each item As TemplateDisplay In GridPanel.Controls
             RemoveHandler item.Click, AddressOf HandleTemplateClicked
         Next
 
@@ -112,7 +113,7 @@ Public Class MultiTemplateViewer
         If Templates.Count > 0 Then
 
             For Each template In Templates
-                Dim newViewer As New FileDisplay() With {
+                Dim newViewer As New TemplateDisplay() With {
                                        .Template = template,
                                        .Dock = DockStyle.Fill,
                                        .MouseOverHighlight = Me.MouseOverHighlight,

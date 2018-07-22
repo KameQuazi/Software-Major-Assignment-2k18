@@ -34,7 +34,6 @@ Partial Class DebugForm
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Button10 = New System.Windows.Forms.Button()
         Me.Button11 = New System.Windows.Forms.Button()
-        Me.ToolBar1 = New LampClient.ToolBar()
         Me.Button12 = New System.Windows.Forms.Button()
         Me.JobDisplay1 = New LampClient.JobDisplay()
         Me.SuspendLayout()
@@ -142,7 +141,7 @@ Partial Class DebugForm
         '
         Me.TextBox1.Location = New System.Drawing.Point(325, 587)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 22)
+        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
         Me.TextBox1.TabIndex = 10
         '
         'Button10
@@ -166,19 +165,6 @@ Partial Class DebugForm
         Me.Button11.TabIndex = 14
         Me.Button11.Text = "Home"
         Me.Button11.UseVisualStyleBackColor = False
-        '
-        'ToolBar1
-        '
-        Me.ToolBar1.BackColor = System.Drawing.Color.Fuchsia
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
-        Me.ToolBar1.MyOrdersEnabled = True
-        Me.ToolBar1.MyTrophyEnabled = True
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
-        Me.ToolBar1.TabIndex = 15
         '
         'Button12
         '
@@ -206,7 +192,6 @@ Partial Class DebugForm
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.JobDisplay1)
         Me.Controls.Add(Me.Button12)
-        Me.Controls.Add(Me.ToolBar1)
         Me.Controls.Add(Me.Button11)
         Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.TextBox1)
@@ -239,7 +224,6 @@ Partial Class DebugForm
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Button10 As Button
     Friend WithEvents Button11 As Button
-    Friend WithEvents ToolBar1 As ToolBar
     Friend WithEvents Button12 As Button
     Friend WithEvents JobDisplay1 As JobDisplay
 End Class

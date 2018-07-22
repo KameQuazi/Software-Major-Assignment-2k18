@@ -89,10 +89,12 @@ Partial Class ServiceTemplateViewer
         Me.MultiTemplateViewer1.Columns = 4
         Me.MultiTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.MultiTemplateViewer1.Location = New System.Drawing.Point(3, 3)
+        Me.MultiTemplateViewer1.MouseOverHighlight = False
         Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
         Me.MultiTemplateViewer1.Rows = 2
         Me.MultiTemplateViewer1.Size = New System.Drawing.Size(851, 513)
         Me.MultiTemplateViewer1.TabIndex = 1
+        Me.MultiTemplateViewer1.TemplateCursor = System.Windows.Forms.Cursors.Hand
         '
         'ServiceTemplateViewer
         '
