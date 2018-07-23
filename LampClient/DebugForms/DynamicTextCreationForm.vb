@@ -47,7 +47,7 @@ Public Class DynamicTextCreationForm
     End Sub
 
     Private Sub DynamicTextCreationForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        newJob = New LampJob(Source, New LampProfile("", "", "", New UserPermission()))
+        ' newJob = New LampJob(Source, New LampProfile("", "", "", New UserPermission()))
     End Sub
 
     Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmit.Click

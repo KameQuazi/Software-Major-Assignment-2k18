@@ -214,14 +214,31 @@ Public Class LampJob
         End Get
     End Property
 
+    Private _summary As String
+    ''' <summary>
+    ''' a brief summary of job
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("summary")>
+    <DataMember>
+    Public Property Summary As String
+        Get
+            Return _summary
+        End Get
+        Set(value As String)
+            _summary = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
     ''' <summary>
     ''' default constructor for when job needs to be sent to db from client
     ''' will auto-generate the drawing
     ''' </summary>
     ''' <param name="template"></param>
     ''' <param name="submitter"></param>
-    Sub New(template As LampTemplate, submitter As LampProfile, Optional autoGenerate As Boolean = True)
-        Me.New(template, submitter, Nothing, DateTime.Now)
+    Sub New(template As LampTemplate, submitter As LampProfile, summary As String, Optional autoGenerate As Boolean = True)
+        Me.New(template, submitter, Nothing, summary, DateTime.Now)
         If autoGenerate Then
             RefreshCompleteDrawing()
         End If
@@ -235,7 +252,7 @@ Public Class LampJob
     ''' <param name="approver"></param>
     ''' <param name="submitDate"></param>
     ''' <param name="CompleteDrawing"></param>
-    Sub New(template As LampTemplate, submitter As LampProfile, approver As LampProfile, submitDate As Date?, Optional CompleteDrawing As LampDxfDocument = Nothing)
+    Sub New(template As LampTemplate, submitter As LampProfile, approver As LampProfile, summary As String, submitDate As Date?, Optional CompleteDrawing As LampDxfDocument = Nothing)
 
         If template Is Nothing Then
             Throw New ArgumentNullException(NameOf(template))
@@ -246,6 +263,7 @@ Public Class LampJob
         Me.Approver = approver
         Me.SubmitDate = submitDate
         Me.CompletedDrawing = CompletedDrawing
+        Me.Summary = summary
 
         Me.DynamicTextDictionaries = New ObservableCollection(Of DynamicTextDictionary)
     End Sub

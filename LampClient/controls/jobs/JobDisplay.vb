@@ -23,9 +23,10 @@ Public Class JobDisplay
     Private Sub DisplayJob()
         If Job IsNot Nothing Then
             SubmitProfileDisplay.Profile = Job.Submitter
-            ApproveProfileDisplay.Profile = Job.Approver
+            ' ApproveProfileDisplay.Profile = Job.Approver
             dynamicTextViewer.Source = Job.Template
             FileDisplay1.Template = Job.Template
+            RichTextBox1.Text = Job.Summary
         End If
     End Sub
 

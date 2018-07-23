@@ -45,7 +45,7 @@ Public Class NewOrderForm
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnNext.Click
-        Dim response = CurrentSender.AddJob(CurrentUser.ToCredentials, New LampJob(Me.CurrentTemplate, CurrentUser.ToProfile))
+        Dim response = CurrentSender.AddJob(CurrentUser.ToCredentials, New LampJob(Me.CurrentTemplate, CurrentUser.ToProfile, "hello summary"))
         Select Case response
             Case LampStatus.OK
                 MessageBox.Show("Successfully added job")

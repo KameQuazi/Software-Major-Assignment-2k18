@@ -132,6 +132,7 @@ Partial Public Class TemplateDatabase
                                   completeDrawingId TEXT not NULL,
                                   submitterId Text Not NULL,
                                   approverId Text,
+                                  summary Text Not null,
                                   submitDate Text Not null,
 
                                   FOREIGN KEY(submitterId) REFERENCES users(UserId),
@@ -236,6 +237,7 @@ Partial Public Class TemplateDatabase
                                   completeDrawingId TEXT not NULL,
                                   submitterId Text Not NULL,
                                   approverId Text,
+                                  summary Text Not null,
                                   submitDate Text Not null,
 
                                   FOREIGN KEY(submitterId) REFERENCES users(UserId),
@@ -1446,7 +1448,7 @@ Partial Class TemplateDatabase
     ''' <returns></returns>
     Public Function SelectJob(jobId As String, Optional trans As SqliteTransactionWrapper = Nothing) As LampJob
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            command.CommandText = "Select templateId, submitterId, completeDrawingId, approverId, submitDate from jobs 
+            command.CommandText = "Select templateId, submitterId, completeDrawingId, approverId, summary, submitDate from jobs 
                                           WHERE jobId = @jobId"
             command.Parameters.AddWithValue("@jobId", jobId)
 
@@ -1477,7 +1479,9 @@ Partial Class TemplateDatabase
 
                     Dim submitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
 
-                    job = New LampJob(template, submitterP, approverP, submitDate, completedDrawing)
+                    Dim summary = reader.GetString(reader.GetOrdinal("summary"))
+
+                    job = New LampJob(template, submitterP, approverP, summary, submitDate, completedDrawing)
                 End If
                 Return job
             End Using
@@ -1489,7 +1493,7 @@ Partial Class TemplateDatabase
     ''' <returns></returns>
     Public Async Function SelectJobAsync(jobId As String, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of LampJob)
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
-            command.CommandText = "Select templateId, submitterId, completeDrawingId, approverId, submitDate from jobs 
+            command.CommandText = "Select templateId, submitterId, completeDrawingId, approverId, summary, submitDate from jobs 
                                           WHERE jobId = @jobId"
             command.Parameters.AddWithValue("@jobId", jobId)
 
@@ -1521,8 +1525,8 @@ Partial Class TemplateDatabase
                     Dim completedDrawing = Await SelectDxfAsync(reader.GetString(reader.GetOrdinal("completeDrawingId"))).ConfigureAwait(False)
 
                     Dim submitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
-
-                    job = New LampJob(template, submitterP, approverP, submitDate, completedDrawing)
+                    Dim summary = reader.GetString(reader.GetOrdinal("summary"))
+                    job = New LampJob(template, submitterP, approverP, summary, submitDate, completedDrawing)
                 End If
 
                 Return job
@@ -1547,15 +1551,16 @@ Partial Class TemplateDatabase
                 ' now set the job
 
                 command.CommandText = "INSERT OR REPLACE INTO jobs
-                    (jobId, templateId, completeDrawingId, submitterId, approverId, submitDate)
+                    (jobId, templateId, completeDrawingId, submitterId, approverId, summary, submitDate)
                     VALUES
-                    (@jobId, @templateId, @completeDrawingId, @submitterId, @approverId, DATETIME('now'));"
+                    (@jobId, @templateId, @completeDrawingId, @submitterId, @approverId, @summary, DATETIME('now'));"
 
 
                 command.Parameters.AddWithValue("@jobId", job.JobId)
                 command.Parameters.AddWithValue("@templateId", job.Template.GUID)
                 command.Parameters.AddWithValue("@submitterId", job.SubmitId)
                 command.Parameters.AddWithValue("@approverId", job.ApproverId)
+                command.Parameters.AddWithValue("@summary", job.Summary)
                 command.Parameters.AddWithValue("@completeDrawingId", job.JobId)
 
                 If Convert.ToBoolean(command.ExecuteNonQuery()) Then
@@ -1588,15 +1593,16 @@ Partial Class TemplateDatabase
                 ' now set the job
 
                 command.CommandText = "INSERT OR REPLACE INTO jobs
-                    (jobId, templateId, completeDrawingId, submitterId, approverId, submitDate)
+                    (jobId, templateId, completeDrawingId, submitterId, approverId, summary, submitDate)
                     VALUES
-                    (@jobId, @templateId, @completeDrawingId, @submitterId,  @approverId, DATETIME('now'));"
+                    (@jobId, @templateId, @completeDrawingId, @submitterId,  @approverId, @summary, DATETIME('now'));"
 
 
                 command.Parameters.AddWithValue("@jobId", job.JobId)
                 command.Parameters.AddWithValue("@templateId", job.Template.GUID)
                 command.Parameters.AddWithValue("@submitterId", job.SubmitId)
                 command.Parameters.AddWithValue("@approverId", job.ApproverId)
+                command.Parameters.AddWithValue("@summary", job.Summary)
                 command.Parameters.AddWithValue("@completeDrawingId", job.JobId)
 
                 If Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False)) Then
@@ -2131,10 +2137,10 @@ Public Class TemplateDatabase
         Dim templates = db.GetAllTemplate
 
         ' add jobs
-        Dim job As New LampJob(templates(0), max.ToProfile)
+        Dim job As New LampJob(templates(0), max.ToProfile, "job description")
         db.SetJob(job)
 
-        job = New LampJob(templates(1), shovel.ToProfile)
+        job = New LampJob(templates(1), shovel.ToProfile, "please cut these trophies")
         db.SetJob(job)
     End Sub
 
@@ -2174,10 +2180,10 @@ Public Class TemplateDatabase
         Dim templates = Await db.GetAllTemplateAsync.ConfigureAwait(False)
 
         ' add jobs
-        Dim job As New LampJob(templates(0), max.ToProfile)
+        Dim job As New LampJob(templates(0), max.ToProfile, "job description")
         Await db.SetJobAsync(job).ConfigureAwait(False)
 
-        job = New LampJob(templates(1), shovel.ToProfile)
+        job = New LampJob(templates(1), shovel.ToProfile, "please cut these trophies")
         Await db.SetJobAsync(job).ConfigureAwait(False)
     End Function
 
