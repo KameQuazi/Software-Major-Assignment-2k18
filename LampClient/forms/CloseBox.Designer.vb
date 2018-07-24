@@ -57,10 +57,10 @@ Partial Class CloseBox
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.8!)
-        Me.Label1.Location = New System.Drawing.Point(53, 52)
+        Me.Label1.Location = New System.Drawing.Point(90, 52)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(376, 31)
+        Me.Label1.Size = New System.Drawing.Size(302, 26)
         Me.Label1.TabIndex = 2
         Me.Label1.Text = "are you sure you want to quit?"
         '
@@ -68,10 +68,10 @@ Partial Class CloseBox
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.8!)
-        Me.Label2.Location = New System.Drawing.Point(110, 103)
+        Me.Label2.Location = New System.Drawing.Point(147, 103)
         Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(263, 25)
+        Me.Label2.Size = New System.Drawing.Size(210, 20)
         Me.Label2.TabIndex = 3
         Me.Label2.Text = "any unsaved work will be lost"
         '

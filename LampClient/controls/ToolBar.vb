@@ -198,6 +198,18 @@ Public Class ToolBar
             btnBack.Enabled = True
         End If
         SetUsername(CurrentUser.Username)
+        'tooltips
+        ' this handles all buttons on the toolbar on all forms
+        Tooltip1.SetToolTip(Me.btnHome, "go back to start screen")
+        Tooltip1.SetToolTip(Me.btnDesigns, "view your designs")
+        Tooltip1.SetToolTip(Me.btnAbout, "about this software")
+        Tooltip1.SetToolTip(Me.btnBack, "go back to the previous page")
+        Tooltip1.SetToolTip(Me.btnHelp, "open program help")
+        Tooltip1.SetToolTip(Me.btnNewOrder, "order a trophy")
+        Tooltip1.SetToolTip(Me.btnLogOut, "log out of your LAMP account")
+        Tooltip1.SetToolTip(Me.btnOrders, "view your current orders")
+        Tooltip1.SetToolTip(Me.btnQuit, "close the program")
+
     End Sub
 
     Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
@@ -218,7 +230,6 @@ Public Class ToolBar
             End
         End If
     End Sub
-
 End Class
 
 

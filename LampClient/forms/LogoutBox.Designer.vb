@@ -22,6 +22,7 @@ Partial Class LogoutBox
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(LogoutBox))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
@@ -38,7 +39,7 @@ Partial Class LogoutBox
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(128, 158)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(140, 173)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -75,9 +76,9 @@ Partial Class LogoutBox
         '
         Me.lblLogout.AutoSize = True
         Me.lblLogout.Font = New System.Drawing.Font("Arial", 14.0!)
-        Me.lblLogout.Location = New System.Drawing.Point(27, 60)
+        Me.lblLogout.Location = New System.Drawing.Point(81, 60)
         Me.lblLogout.Name = "lblLogout"
-        Me.lblLogout.Size = New System.Drawing.Size(373, 27)
+        Me.lblLogout.Size = New System.Drawing.Size(289, 22)
         Me.lblLogout.TabIndex = 1
         Me.lblLogout.Text = "Are you sure you want to log out?"
         '
@@ -85,9 +86,9 @@ Partial Class LogoutBox
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Arial", 9.0!)
-        Me.Label1.Location = New System.Drawing.Point(74, 99)
+        Me.Label1.Location = New System.Drawing.Point(108, 99)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(278, 17)
+        Me.Label1.Size = New System.Drawing.Size(235, 15)
         Me.Label1.TabIndex = 2
         Me.Label1.Text = "(You will be redirected to the login screen)"
         '
@@ -95,14 +96,15 @@ Partial Class LogoutBox
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
-        Me.BackColor = System.Drawing.Color.White
+        Me.BackColor = System.Drawing.Color.Silver
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(426, 205)
+        Me.ClientSize = New System.Drawing.Size(450, 220)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.lblLogout)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "LogoutBox"
