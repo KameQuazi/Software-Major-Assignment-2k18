@@ -75,6 +75,6 @@ Public Class LoginForm
     End Sub
 
     Private Sub btnCreate_Click(sender As Object, e As EventArgs) Handles btnCreate.Click
-
+        frmCreateAcc.Show()
     End Sub
 End Class

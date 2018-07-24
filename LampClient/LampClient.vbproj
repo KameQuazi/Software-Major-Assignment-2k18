@@ -194,6 +194,12 @@
     <Compile Include="forms\CloseBox.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="forms\frmCreateAcc.Designer.vb">
+      <DependentUpon>frmCreateAcc.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\frmCreateAcc.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="forms\NewOrderForm.Designer.vb">
       <DependentUpon>NewOrderForm.vb</DependentUpon>
     </Compile>
@@ -349,6 +355,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\CloseBox.resx">
       <DependentUpon>CloseBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\frmCreateAcc.resx">
+      <DependentUpon>frmCreateAcc.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\HelpForm.resx">
       <DependentUpon>HelpForm.vb</DependentUpon>
