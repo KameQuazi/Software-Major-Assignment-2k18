@@ -1793,6 +1793,7 @@ Public Class TemplateDatabase
                 Case LampApprove.Unapproved
                     approveText = "approverId is null"
                 Case LampApprove.All
+
                 Case Else
                     Throw New ArgumentOutOfRangeException(NameOf(approveStatus))
             End Select

@@ -941,6 +941,14 @@ Public Class LampService
                 Return response
             End If
 
+            Select Case approveStatus
+                Case LampApprove.All, LampApprove.Approved, LampApprove.Unapproved
+                    ' allow
+                Case Else
+                    response.Status = LampStatus.InvalidParameters
+                    Return response
+            End Select
+
             If tags Is Nothing Then
                 tags = New List(Of String)
             End If
@@ -1035,8 +1043,16 @@ Public Class LampService
     End Function
 
     Public Function HasGetTemplateListPerms(user As LampUser, approveStatus As LampApprove, byUser As IEnumerable(Of String)) As Boolean
-        ' deny if standard user tries to get unapproved templates from other users
+        ' allow anyone to access approved
+        If approveStatus = LampApprove.Approved And user.PermissionLevel >= UserPermission.Standard Then
+            Return True
+        End If
+
+        '  deny if standard user tries to get unapproved templates from other users
         If user.PermissionLevel < UserPermission.Elevated Then
+            If byUser.Count() = 0 Then
+                Return false 
+            End If
             Dim notUser As Boolean = False
             For Each item In byUser
                 If item <> user.UserId Then

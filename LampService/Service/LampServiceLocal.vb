@@ -876,6 +876,14 @@ Public Class LampServiceLocal
                 Return response
             End If
 
+            Select Case approveStatus
+                Case LampApprove.All, LampApprove.Approved, LampApprove.Unapproved
+                    ' allow
+                Case Else
+                    response.Status = LampStatus.InvalidParameters
+                    Return response
+            End Select
+
             If tags Is Nothing Then
                 tags = New List(Of String)
             End If
