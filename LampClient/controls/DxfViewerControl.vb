@@ -1,9 +1,24 @@
 ﻿Imports System.ComponentModel
 Imports LampCommon
+Imports netDxf
 
-<DefaultEvent("Click")>
+
+
+<DefaultEvent("MouseClickAbsolute")>
 Public Class DxfViewerControl
     Implements INotifyPropertyChanged
+    Public Event MouseClickAbsolute(sender As Object, args As MouseClickAbsoluteEventArgs)
+    Public Event MouseMoveAbsolute(sender As Object, args As MouseMoveAbsoluteEventArgs)
+
+    Private Sub Handle_Click(sender As Object, e As MouseEventArgs) Handles Me.MouseClick
+        'Console.WriteLine("x: " + e.X.ToString + "y: " + e.Y.ToString)
+        RaiseEvent MouseClickAbsolute(Me, New MouseClickAbsoluteEventArgs(LampDxfHelper.GdiToCartesian(Center, Width, Height, e.Location, 1 / ZoomX, 1 / ZoomY)))
+    End Sub
+
+    Private Sub Handle_Move(sender As Object, e As MouseEventArgs) Handles Me.MouseMove
+        RaiseEvent MouseMoveAbsolute(Me, New MouseMoveAbsoluteEventArgs(LampDxfHelper.GdiToCartesian(Center, Width, Height, e.Location, 1 / ZoomX, 1 / ZoomY)))
+    End Sub
+
 
     Public Property BackgroundColorBrush As Brush = New SolidBrush(Color.LimeGreen)
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
@@ -109,4 +124,22 @@ Public Class DxfViewerControl
 
 
 
+End Class
+
+Public Class MouseClickAbsoluteEventArgs
+    Inherits EventArgs
+    Public Property Location As Vector3
+    Public Sub New(location As Vector3)
+        MyBase.New()
+        Me.Location = location
+    End Sub
+End Class
+
+Public Class MouseMoveAbsoluteEventArgs
+    Inherits EventArgs
+    Public Property Location As Vector3
+    Public Sub New(location As Vector3)
+        MyBase.New()
+        Me.Location = location
+    End Sub
 End Class

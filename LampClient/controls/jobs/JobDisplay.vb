@@ -1,4 +1,5 @@
-﻿Imports LampCommon
+﻿Imports System.ComponentModel
+Imports LampCommon
 
 Public Class JobDisplay
 
@@ -20,17 +21,30 @@ Public Class JobDisplay
         End Set
     End Property
 
+    <DefaultValue("True")>
+    Private _readonly As Boolean
+    Public Property [Readonly] As Boolean
+        Get
+            Return _readonly
+        End Get
+        Set(value As Boolean)
+            _readonly = value
+            tboxSummary.ReadOnly = True
+        End Set
+    End Property
+
     Private Sub DisplayJob()
         If Job IsNot Nothing Then
-            SubmitProfileDisplay.Profile = Job.Submitter
+            'SubmitProfileDisplay.Profile = Job.Submitter
             ' ApproveProfileDisplay.Profile = Job.Approver
             dynamicTextViewer.Source = Job.Template
             FileDisplay1.Template = Job.Template
-            RichTextBox1.Text = Job.Summary
+            tboxSummary.Text = Job.Summary
         End If
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnDynamicText.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs)
         dynamicTextViewer.ShowDialog()
     End Sub
+
 End Class

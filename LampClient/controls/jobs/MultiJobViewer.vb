@@ -105,11 +105,12 @@ Public Class MultiJobViewer
         RaiseEvent JobClick(Me, args)
     End Sub
 
-    Friend Sub StopLoading()
+    Public Sub StopLoading()
         TableLayoutPanel2.Visible = False
     End Sub
 
-    Friend Sub ShowLoading()
+
+    Public Sub ShowLoading()
         TableLayoutPanel2.Visible = True
         LoadingPictureBox.Visible = True
     End Sub

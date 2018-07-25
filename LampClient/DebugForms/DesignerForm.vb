@@ -1,6 +1,8 @@
 ﻿Imports System.Drawing.Imaging
 Imports LampCommon.LampDxfHelper
 Imports LampCommon
+Imports netDxf
+Imports netDxf.Entities
 
 Public Class DesignerForm
     Private _drawing As LampDxfDocument
@@ -189,6 +191,34 @@ Public Class DesignerForm
     Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
         Me.DialogResult = DialogResult.OK
         Me.Close()
+    End Sub
+
+    Dim firstPoint As Vector3?
+
+    Dim previousLine As Line
+
+    Private Sub DesignerScreen1_LocationMoved(sender As Object, e As MouseMoveAbsoluteEventArgs) Handles DesignerScreen1.MouseMoveAbsolute
+        ' assume line tool
+        If firstPoint IsNot Nothing Then
+
+            If previousLine IsNot Nothing Then
+                ' delete the previous line and add new line
+                Drawing.RemoveEntity(previousLine)
+                previousLine = Drawing.AddLine(firstPoint, e.Location)
+            Else
+                previousLine = Drawing.AddLine(firstPoint, e.Location)
+            End If
+        End If
+    End Sub
+
+    Private Sub DesignerScreen1_LocationClicked(sender As Object, e As MouseClickAbsoluteEventArgs) Handles DesignerScreen1.MouseClickAbsolute
+        If firstPoint Is Nothing Then
+            firstPoint = e.Location
+        Else
+            ' commit the line and firstpoint
+            firstPoint = Nothing
+            previousLine = Nothing
+        End If
     End Sub
 End Class
 

@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class ServiceSortableTemplateViewer
+Partial Class ServiceSortableJobViewer
     Inherits System.Windows.Forms.UserControl
 
     'UserControl overrides dispose to clean up the component list.
@@ -24,7 +24,6 @@ Partial Class ServiceSortableTemplateViewer
     Private Sub InitializeComponent()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.ServiceTemplateViewer1 = New LampClient.ServiceTemplateViewer()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.btnHideShowSort = New System.Windows.Forms.Button()
@@ -45,6 +44,7 @@ Partial Class ServiceSortableTemplateViewer
         Me.lblUserFilter = New System.Windows.Forms.Label()
         Me.rdbtnPublic = New System.Windows.Forms.RadioButton()
         Me.rdbtnMe = New System.Windows.Forms.RadioButton()
+        Me.ServiceJobViewer1 = New LampClient.ServiceJobViewer()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -76,14 +76,14 @@ Partial Class ServiceSortableTemplateViewer
         Me.SplitContainer1.Panel2.Controls.Add(Me.TableLayoutPanel3)
         Me.SplitContainer1.Size = New System.Drawing.Size(1500, 555)
         Me.SplitContainer1.SplitterDistance = 1273
-        Me.SplitContainer1.TabIndex = 4
+        Me.SplitContainer1.TabIndex = 5
         '
         'TableLayoutPanel1
         '
         Me.TableLayoutPanel1.ColumnCount = 1
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.ServiceTemplateViewer1, 0, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.TableLayoutPanel2, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.ServiceJobViewer1, 0, 1)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
@@ -92,19 +92,6 @@ Partial Class ServiceSortableTemplateViewer
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1271, 553)
         Me.TableLayoutPanel1.TabIndex = 20
-        '
-        'ServiceTemplateViewer1
-        '
-        Me.ServiceTemplateViewer1.ApprovedType = LampCommon.LampApprove.All
-        Me.ServiceTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ServiceTemplateViewer1.JustMyTemplates = False
-        Me.ServiceTemplateViewer1.Location = New System.Drawing.Point(3, 58)
-        Me.ServiceTemplateViewer1.MouseOverHighlight = True
-        Me.ServiceTemplateViewer1.Name = "ServiceTemplateViewer1"
-        Me.ServiceTemplateViewer1.Offset = 0
-        Me.ServiceTemplateViewer1.Size = New System.Drawing.Size(1265, 492)
-        Me.ServiceTemplateViewer1.SortOrder = LampCommon.LampSort.SubmitDateAsc
-        Me.ServiceTemplateViewer1.TabIndex = 0
         '
         'TableLayoutPanel2
         '
@@ -149,7 +136,7 @@ Partial Class ServiceSortableTemplateViewer
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Size = New System.Drawing.Size(1259, 43)
         Me.lblTitle.TabIndex = 1
-        Me.lblTitle.Text = "Choose Template"
+        Me.lblTitle.Text = "Choose Job"
         Me.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'TableLayoutPanel3
@@ -370,12 +357,23 @@ Partial Class ServiceSortableTemplateViewer
         Me.rdbtnMe.Text = "Me"
         Me.rdbtnMe.UseVisualStyleBackColor = True
         '
-        'ServiceSortableTemplateViewer
+        'ServiceJobViewer1
+        '
+        Me.ServiceJobViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ServiceJobViewer1.JustMyJobs = True
+        Me.ServiceJobViewer1.Location = New System.Drawing.Point(3, 58)
+        Me.ServiceJobViewer1.Name = "ServiceJobViewer1"
+        Me.ServiceJobViewer1.Offset = 0
+        Me.ServiceJobViewer1.Size = New System.Drawing.Size(1265, 492)
+        Me.ServiceJobViewer1.SortOrder = LampCommon.LampSort.NoSort
+        Me.ServiceJobViewer1.TabIndex = 2
+        '
+        'ServiceSortableJobViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.SplitContainer1)
-        Me.Name = "ServiceSortableTemplateViewer"
+        Me.Name = "ServiceSortableJobViewer"
         Me.Size = New System.Drawing.Size(1500, 555)
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel2.ResumeLayout(False)
@@ -399,12 +397,16 @@ Partial Class ServiceSortableTemplateViewer
 
     Friend WithEvents SplitContainer1 As SplitContainer
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
-    Friend WithEvents ServiceTemplateViewer1 As ServiceTemplateViewer
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
     Friend WithEvents Panel1 As Panel
     Friend WithEvents btnHideShowSort As Button
     Friend WithEvents lblTitle As Label
     Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
+    Friend WithEvents FlowLayoutPanel4 As FlowLayoutPanel
+    Friend WithEvents lblApprove As Label
+    Friend WithEvents rdbtnAllApproved As RadioButton
+    Friend WithEvents rdbtnYesApproved As RadioButton
+    Friend WithEvents rdbtnNoApproved As RadioButton
     Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
     Friend WithEvents lblSortTitle As Label
     Friend WithEvents ComboBox1 As ComboBox
@@ -415,9 +417,5 @@ Partial Class ServiceSortableTemplateViewer
     Friend WithEvents lblUserFilter As Label
     Friend WithEvents rdbtnPublic As RadioButton
     Friend WithEvents rdbtnMe As RadioButton
-    Friend WithEvents FlowLayoutPanel4 As FlowLayoutPanel
-    Friend WithEvents lblApprove As Label
-    Friend WithEvents rdbtnAllApproved As RadioButton
-    Friend WithEvents rdbtnYesApproved As RadioButton
-    Friend WithEvents rdbtnNoApproved As RadioButton
+    Friend WithEvents ServiceJobViewer1 As ServiceJobViewer
 End Class

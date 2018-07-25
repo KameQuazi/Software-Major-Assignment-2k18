@@ -236,6 +236,7 @@ Public Class LampDxfDocument
         Return arc
     End Function
 
+
     ''' <summary>
     ''' Adds a line between two coordinates. Shorthand for AddLine(New line(...))
     ''' </summary>
@@ -391,6 +392,16 @@ Public Class LampDxfDocument
         End If
         NotifyPropertyChanged(NameOf(Drawing))
     End Sub
+
+
+    Public Sub RemoveEntity(entity As EntityObject, Optional recalculate As Boolean = True)
+        Drawing.RemoveEntity(entity)
+        If recalculate = True Then
+            RecalculateBounds()
+        End If
+        NotifyPropertyChanged(NameOf(Drawing))
+    End Sub
+
 
     Public Overrides Function ToString() As String
         Return String.Format("CustomDxfDrawing: {0}", _drawing)
@@ -857,8 +868,15 @@ Public Class LampDxfHelper
 
 
 
-    Public Shared Function GdiToCartesian(center As PointF, width As Double, height As Double, location As PointF) As PointF
-        Throw New Exception("TODO")
+    Public Shared Function GdiToCartesian(center As PointF, width As Double, height As Double, location As PointF, Optional pixelsPerX As Double = 1, Optional pixelsPerY As Double = 1) As Vector3
+        ' transform from the location in the screen, in the drawing
+        ' to a cartesian point in 
+        Dim ret As New Vector3(pixelsPerX * (location.X + center.X - width / 2),
+                               pixelsPerY * (center.Y + height / 2 - location.Y),
+                               0)
+
+        ' inverse of CartesianToGdi
+        Return ret
     End Function
 
     Public Shared Function Transform(point As PointF, x As Single, y As Single) As PointF
