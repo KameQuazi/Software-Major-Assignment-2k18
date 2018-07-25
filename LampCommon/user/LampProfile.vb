@@ -85,10 +85,10 @@ Public Class LampProfile
     ''' <param name="username"></param>
     ''' <param name="name"></param>
     ''' <param name="userid"></param>
-    Sub New(username As String, name As String, userid As String, permssionLevel As UserPermission)
+    Sub New(username As String, name As String, userid As String, permissionLevel As UserPermission)
         Me.Username = username
         Me.Name = name
         Me.UserId = userid
-        Me.PermissionLevel = PermissionLevel
+        Me.PermissionLevel = permissionLevel
     End Sub
 End Class

@@ -192,7 +192,7 @@ Public Class LampTemplateMetadata
     <IgnoreDataMember>
     Public ReadOnly Property CreatorId As String
         Get
-            Return If(CreatorProfile IsNot Nothing, CreatorProfile.UserId, Nothing)
+            Return CreatorProfile?.UserId
         End Get
     End Property
 

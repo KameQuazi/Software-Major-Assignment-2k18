@@ -10,9 +10,10 @@ Imports LampService
 Public Class LampService
     Implements ILampService
 
-#Region "crap"
+
     Public Property Database As TemplateDatabase
 
+#Region "Constructors"
     Sub New()
         Database = New TemplateDatabase(Configuration.ConfigurationManager.AppSettings("databasePath"))
     End Sub
@@ -96,7 +97,7 @@ Public Class LampService
                 Return response
             End If
 
-            If Database.SelectTemplateMetadata(template.GUID) IsNot Nothing Then
+            If Database.SelectTemplateData(template.GUID) IsNot Nothing Then
                 response = LampStatus.GuidConflict
                 Return response
             End If
@@ -111,6 +112,7 @@ Public Class LampService
         End Try
 
     End Function
+
 
     Public Function EditTemplate(credentials As LampCredentials, newTemplate As LampTemplate) As LampStatus Implements ILampService.EditTemplate
         Dim response As LampStatus
@@ -142,8 +144,7 @@ Public Class LampService
             End If
 
 
-
-            Database.SetTemplate(newTemplate, user.UserId, user.UserId)
+            Database.SetTemplate(newTemplate, user.UserId)
             response = LampStatus.OK
             Return response
 
@@ -480,7 +481,7 @@ Public Class LampService
 
             Dim user = auth.user
 
-            If Database.SelectTemplateMetadata(template.GUID) IsNot Nothing Then
+            If Database.SelectTemplateData(template.GUID) IsNot Nothing Then
                 response = LampStatus.GuidConflict
                 Return response
             End If
@@ -813,7 +814,7 @@ Public Class LampService
                 Return response
             End If
 
-            If Database.SelectTemplateMetadata(job.Template.GUID) Is Nothing Then ' check if exists
+            If Database.SelectTemplateData(job.Template.GUID) Is Nothing Then ' check if exists
                 response = LampStatus.NoTemplateFound
                 Return response
             End If
@@ -861,7 +862,7 @@ Public Class LampService
                 Return response
             End If
 
-            If Database.SelectTemplateMetadata(job.Template.GUID) Is Nothing Then ' check if exists
+            If Database.SelectTemplateData(job.Template.GUID) Is Nothing Then ' check if exists
                 response = LampStatus.NoTemplateFound
                 Return response
             End If
@@ -927,7 +928,7 @@ Public Class LampService
 
     Public Const MAX_TEMPLATES_PER_REQUEST = 50
 
-    Public Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As LampTemplateListWrapper Implements ILampService.GetTemplateList
+    Public Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampSort) As LampTemplateListWrapper Implements ILampService.GetTemplateList
         Dim response As New LampTemplateListWrapper
         Try
             If limit <= 0 Or offset < 0 Then
@@ -939,6 +940,14 @@ Public Class LampService
                 response.Status = LampStatus.InvalidParameters
                 Return response
             End If
+
+            Select Case approveStatus
+                Case LampApprove.All, LampApprove.Approved, LampApprove.Unapproved
+                    ' allow
+                Case Else
+                    response.Status = LampStatus.InvalidParameters
+                    Return response
+            End Select
 
             If tags Is Nothing Then
                 tags = New List(Of String)
@@ -954,12 +963,65 @@ Public Class LampService
             End If
             Dim user = auth.user
 
-            If Not HasGetTemplateListPerms(user, includeUnapproved) Then
+            If Not HasGetTemplateListPerms(user, approveStatus, byUser) Then
                 response.Status = LampStatus.NoAccess
                 Return response
             End If
 
-            response.Templates = Database.GetMultipleTemplate(tags, byUser, limit, offset, includeUnapproved, orderBy)
+            response.Templates = Database.GetMultipleTemplate(tags, byUser, limit, offset, approveStatus, orderBy)
+            response.Status = LampStatus.OK
+            Return response
+
+        Catch ex As Exception
+            response.Status = LampStatus.InternalServerError
+            Log(ex)
+            Return response
+        End Try
+    End Function
+
+    Public Const MAX_JOBS_PER_REQUEST = 50
+
+    Public Function GetJobList(credentials As LampCredentials, byUser As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampSort) As LampJobListWrapper Implements ILampService.GetJobList
+        Dim response As New LampJobListWrapper
+        'todo
+
+        Try
+
+            If limit <= 0 Or offset < 0 Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            If limit > MAX_JOBS_PER_REQUEST Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            ' blacklist template name sort on jobs
+            Select Case orderBy
+                Case LampSort.TemplateNameAsc, LampSort.TemplateNameDesc
+                    response.Status = LampStatus.InvalidParameters
+                    Return response
+
+            End Select
+
+            If byUser Is Nothing Then
+                byUser = New List(Of String)
+            End If
+
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response.Status = auth.Status
+                Return response
+            End If
+            Dim user = auth.user
+
+            If Not HasGetJobListPerms(user, byUser) Then
+                response.Status = LampStatus.NoAccess
+                Return response
+            End If
+
+            response.Templates = Database.GetMultipleJob(byUser, limit, offset, orderBy)
             response.Status = LampStatus.OK
             Return response
 
@@ -971,9 +1033,6 @@ Public Class LampService
     End Function
 
 
-
-
-
 #End Region
 
 
@@ -983,9 +1042,27 @@ Public Class LampService
         Return user.PermissionLevel >= UserPermission.Standard
     End Function
 
-    Public Function HasGetTemplateListPerms(user As LampUser, includeUnapproved As Boolean) As Boolean
-        If includeUnapproved And user.PermissionLevel < UserPermission.Elevated Then
-            Return False
+    Public Function HasGetTemplateListPerms(user As LampUser, approveStatus As LampApprove, byUser As IEnumerable(Of String)) As Boolean
+        ' allow anyone to access approved
+        If approveStatus = LampApprove.Approved And user.PermissionLevel >= UserPermission.Standard Then
+            Return True
+        End If
+
+        '  deny if standard user tries to get unapproved templates from other users
+        If user.PermissionLevel < UserPermission.Elevated Then
+            If byUser.Count() = 0 Then
+                Return false 
+            End If
+            Dim notUser As Boolean = False
+            For Each item In byUser
+                If item <> user.UserId Then
+                    notUser = True
+                    Exit For
+                End If
+            Next
+            If notUser Then
+                Return False
+            End If
         End If
         Return user.PermissionLevel >= UserPermission.Standard
     End Function
@@ -1042,14 +1119,14 @@ Public Class LampService
     End Function
 
     Public Function HasAddUnapprovedTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
-        If user.UserId >= UserPermission.Standard Then
+        If user.PermissionLevel >= UserPermission.Standard Then
             Return True
         End If
         Return False
     End Function
 
     Public Function HasEditUnapprovedTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
-        If user.UserId >= UserPermission.Elevated OrElse user.UserId = template.CreatorId Then
+        If user.PermissionLevel >= UserPermission.Elevated OrElse user.UserId = template.CreatorId Then
             Return True
         End If
         Return False
@@ -1114,7 +1191,22 @@ Public Class LampService
 
 
 
+    Public Function HasGetJobListPerms(user As LampUser, byUser As IEnumerable(Of String))
+        If user.PermissionLevel >= UserPermission.Admin Then
+            Return True
+        End If
+        ' only allow elevated to view own jobs
+        If user.PermissionLevel >= UserPermission.Elevated Then
+            For Each item In byUser
+                If item <> user.UserId Then
+                    Return False
+                End If
+            Next
+            Return True
+        End If
+        Return False
 
+    End Function
 
 
 

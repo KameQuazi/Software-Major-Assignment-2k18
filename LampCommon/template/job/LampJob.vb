@@ -146,7 +146,11 @@ Public Class LampJob
         NotifyPropertyChanged(NameOf(Approver))
     End Sub
 
-    Public Property Approved As Boolean
+    Public ReadOnly Property Approved As Boolean
+        Get
+            Return Approver IsNot Nothing
+        End Get
+    End Property
 
     Public Property SubmitDate As Date?
 
@@ -154,6 +158,8 @@ Public Class LampJob
     ''' The completed drawing, w/ all the templates laid out appropriately
     ''' Not serialized, as it can be generated using _template when deserialized
     ''' </summary>
+    <JsonProperty("completed_drawing", Order:=1000)>
+    <DataMember>
     Public Property CompletedDrawing As LampDxfDocument
 
     Private _insertionLocations As New ObservableCollection(Of LampDxfInsertLocation)
@@ -208,8 +214,45 @@ Public Class LampJob
         End Get
     End Property
 
+    Private _summary As String
+    ''' <summary>
+    ''' a brief summary of job
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("summary")>
+    <DataMember>
+    Public Property Summary As String
+        Get
+            Return _summary
+        End Get
+        Set(value As String)
+            _summary = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
 
-    Sub New(template As LampTemplate, submitter As LampProfile, Optional approver As LampProfile = Nothing, Optional approved As Boolean = False, Optional submitDate As Date? = Nothing)
+    ''' <summary>
+    ''' default constructor for when job needs to be sent to db from client
+    ''' will auto-generate the drawing
+    ''' </summary>
+    ''' <param name="template"></param>
+    ''' <param name="submitter"></param>
+    Sub New(template As LampTemplate, submitter As LampProfile, summary As String, Optional autoGenerate As Boolean = True)
+        Me.New(template, submitter, Nothing, summary, DateTime.Now)
+        If autoGenerate Then
+            RefreshCompleteDrawing()
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' constructor for a complete lampJob
+    ''' </summary>
+    ''' <param name="template"></param>
+    ''' <param name="submitter"></param>
+    ''' <param name="approver"></param>
+    ''' <param name="submitDate"></param>
+    ''' <param name="CompleteDrawing"></param>
+    Sub New(template As LampTemplate, submitter As LampProfile, approver As LampProfile, summary As String, submitDate As Date?, Optional CompleteDrawing As LampDxfDocument = Nothing)
 
         If template Is Nothing Then
             Throw New ArgumentNullException(NameOf(template))
@@ -218,9 +261,9 @@ Public Class LampJob
         Me.Template = template
         Me.Submitter = submitter
         Me.Approver = approver
-        Me.Approved = approved
         Me.SubmitDate = submitDate
-
+        Me.CompletedDrawing = CompletedDrawing
+        Me.Summary = summary
 
         Me.DynamicTextDictionaries = New ObservableCollection(Of DynamicTextDictionary)
     End Sub
@@ -239,7 +282,7 @@ Public Class LampJob
     End Sub
 
 
-    Public Sub AddInsertionPoint(point As LampDxfInsertLocation, Optional refresh As Boolean = True)
+    Public Sub AddInsertionPoint(point As LampDxfInsertLocation, Optional refresh As Boolean = False)
         InsertionLocations.Add(point)
 
         If refresh Then
@@ -286,4 +329,9 @@ End Class
 Public Class LampJobWrapper
     Public Job As LampJob
     Public Status As LampStatus
+End Class
+
+Public Class LampJobListWrapper
+    Public Status As LampStatus
+    Public Templates As New List(Of LampJob)
 End Class

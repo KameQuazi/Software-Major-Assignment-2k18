@@ -30,6 +30,7 @@ Public Class LampDxfDocument
 
     Public ReadOnly Property DefaultFont As New FontFamily("Arial")
 
+    <[ReadOnly](True)>
     <DataMember>
     Public Property SerializedDrawing As String
         Get
@@ -124,6 +125,10 @@ Public Class LampDxfDocument
     End Function
 
     Public Shared Function FromStringToDxfDocument(dxf As String) As DxfDocument
+        If dxf Is Nothing OrElse dxf = "" Then
+            Return Nothing
+        End If
+
         Using stream As New MemoryStream(Encoding.UTF8.GetBytes(dxf))
             Return DxfDocument.Load(stream)
         End Using

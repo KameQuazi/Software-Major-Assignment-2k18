@@ -2,7 +2,7 @@
 
 Public Class HomeForm
     Private Sub btnNewOrder_Click(sender As Object, e As EventArgs)
-        TemplateSelectForm.Show()
+        TemplateSelectBox.Show()
     End Sub
 
     Private Sub btnAbout_Click(sender As Object, e As EventArgs)

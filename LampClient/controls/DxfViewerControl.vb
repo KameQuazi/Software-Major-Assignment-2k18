@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports LampCommon
 
+<DefaultEvent("Click")>
 Public Class DxfViewerControl
     Implements INotifyPropertyChanged
 
@@ -36,6 +37,9 @@ Public Class DxfViewerControl
         Set(value As LampDxfDocument)
             If _drawing IsNot Nothing Then
                 RemoveHandler _drawing.PropertyChanged, AddressOf SourceChanged
+            End If
+
+            If value IsNot Nothing Then
                 AddHandler value.PropertyChanged, AddressOf SourceChanged
             End If
             _drawing = value

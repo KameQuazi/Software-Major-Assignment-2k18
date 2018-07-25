@@ -75,7 +75,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            If Await Database.SelectTemplateMetadataAsync(template.GUID).ConfigureAwait(False) IsNot Nothing Then
+            If Await Database.SelectTemplateDataAsync(template.GUID).ConfigureAwait(False) IsNot Nothing Then
                 response = LampStatus.GuidConflict
                 Return response
             End If
@@ -121,7 +121,7 @@ Public Class LampServiceLocal
             End If
 
 
-            Await Database.SetTemplateAsync(newTemplate, user.UserId, user.UserId).ConfigureAwait(False)
+            Await Database.SetTemplateAsync(newTemplate, user.UserId).ConfigureAwait(False)
             response = LampStatus.OK
             Return response
 
@@ -421,7 +421,7 @@ Public Class LampServiceLocal
 
 
                 If HasAddUnapprovedTemplatePerms(user, template) Then
-                    If Await Database.SelectTemplateMetadataAsync(template.GUID) Is Nothing Then
+                    If Await Database.SelectTemplateDataAsync(template.GUID) Is Nothing Then
                         Database.SetTemplate(template, user.UserId) ' no approver
                         response = LampStatus.OK
                     Else
@@ -706,7 +706,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            If Await Database.SelectTemplateMetadataAsync(job.Template.GUID).ConfigureAwait(False) Is Nothing Then ' check if exists
+            If Await Database.SelectTemplateDataAsync(job.Template.GUID).ConfigureAwait(False) Is Nothing Then ' check if exists
                 response = LampStatus.NoTemplateFound
                 Return response
             End If
@@ -751,7 +751,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            If Await Database.SelectTemplateMetadataAsync(job.Template.GUID).ConfigureAwait(False) Is Nothing Then
+            If Await Database.SelectTemplateDataAsync(job.Template.GUID).ConfigureAwait(False) Is Nothing Then
                 ' no template found
                 response = LampStatus.NoTemplateFound
                 Return response
@@ -863,7 +863,7 @@ Public Class LampServiceLocal
     End Function
 
 
-    Public Async Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, includeUnapproved As Boolean, orderBy As LampSort) As Task(Of LampTemplateListWrapper) Implements ILampServiceBoth.GetTemplateListAsync
+    Public Async Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampSort) As Task(Of LampTemplateListWrapper) Implements ILampServiceBoth.GetTemplateListAsync
         Dim response As New LampTemplateListWrapper
         Try
             If limit <= 0 Or offset < 0 Then
@@ -875,6 +875,14 @@ Public Class LampServiceLocal
                 response.Status = LampStatus.InvalidOperation
                 Return response
             End If
+
+            Select Case approveStatus
+                Case LampApprove.All, LampApprove.Approved, LampApprove.Unapproved
+                    ' allow
+                Case Else
+                    response.Status = LampStatus.InvalidParameters
+                    Return response
+            End Select
 
             If tags Is Nothing Then
                 tags = New List(Of String)
@@ -890,12 +898,12 @@ Public Class LampServiceLocal
             End If
             Dim user = auth.user
 
-            If Not HasGetTemplateListPerms(user, includeUnapproved) Then
+            If Not HasGetTemplateListPerms(user, approveStatus, byUser) Then
                 response.Status = LampStatus.NoAccess
                 Return response
             End If
 
-            response.Templates = Await Database.GetMultipleTemplateAsync(tags, byUser, limit, offset, includeUnapproved, orderBy)
+            response.Templates = Await Database.GetMultipleTemplateAsync(tags, byUser, limit, offset, approveStatus, orderBy).ConfigureAwait(False)
             response.Status = LampStatus.OK
             Return response
 
@@ -907,4 +915,45 @@ Public Class LampServiceLocal
     End Function
 
 
+    Public Async Function GetJobListAsync(credentials As LampCredentials, byUser As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampSort) As Task(Of LampJobListWrapper) Implements ILampServiceBoth.GetJobListAsync
+        Dim response As New LampJobListWrapper
+        'todo
+
+        Try
+            If limit <= 0 Or offset < 0 Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            If limit > MAX_JOBS_PER_REQUEST Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            If byUser Is Nothing Then
+                byUser = New List(Of String)
+            End If
+
+            Dim auth = Await AuthenticateAsync(credentials).ConfigureAwait(False)
+            If auth.user Is Nothing Then
+                response.Status = auth.Status
+                Return response
+            End If
+            Dim user = auth.user
+
+            If Not HasGetJobListPerms(user, byUser) Then
+                response.Status = LampStatus.NoAccess
+                Return response
+            End If
+
+            response.Templates = Await Database.GetMultipleJobAsync(byUser, limit, offset, orderBy).ConfigureAwait(False)
+            response.Status = LampStatus.OK
+            Return response
+
+        Catch ex As Exception
+            response.Status = LampStatus.InternalServerError
+            Log(ex)
+            Return response
+        End Try
+    End Function
 End Class
