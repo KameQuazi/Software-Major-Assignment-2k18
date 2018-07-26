@@ -160,7 +160,7 @@ Public Class LampJob
     ''' </summary>
     <JsonProperty("completed_drawing", Order:=1000)>
     <DataMember>
-    Public Property CompletedDrawing As LampDxfDocument
+    Public Property CompletedDrawing As New List(Of LampDxfDocument)
 
     Private _insertionLocations As New ObservableCollection(Of LampDxfInsertLocation)
     ''' <summary>
