@@ -22,7 +22,7 @@ Partial Class ViewTemplatesForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-	Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ViewTemplateForm))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ViewTemplatesForm))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.ToolBar1 = New LampClient.ToolBar()
         Me.ServiceSortableTemplateViewer1 = New LampClient.ServiceSortableTemplateViewer()

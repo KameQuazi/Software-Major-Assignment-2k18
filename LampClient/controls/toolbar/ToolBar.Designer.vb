@@ -23,6 +23,7 @@ Partial Class ToolBar
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ToolBar))
+        Me.components = New System.ComponentModel.Container()
         Me.btnNewOrder = New System.Windows.Forms.Button()
         Me.btnHelp = New System.Windows.Forms.Button()
         Me.btnOrders = New System.Windows.Forms.Button()
@@ -269,4 +270,5 @@ Partial Class ToolBar
     Friend WithEvents btnBack As Button
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents btnNewTemplate As Button
+    Friend WithEvents Tooltip1 As ToolTip
 End Class

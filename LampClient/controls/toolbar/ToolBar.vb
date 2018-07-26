@@ -177,6 +177,15 @@ Public Class ToolBar
         Me.Username.Text = String.Format("Welcome {0}", username)
     End Sub
 
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+
+    End Sub
+
 
     ''' <summary>
     ''' Closes the first form that is a parent of control
