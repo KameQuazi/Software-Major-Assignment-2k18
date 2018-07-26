@@ -46,11 +46,6 @@ Public Class DynamicFormCreation
         Me.Padding = New Padding(0, 0, SystemInformation.VerticalScrollBarWidth, 0)
     End Sub
 
-    Private Sub DynamicFormCreation_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-    End Sub
 
-    Private Sub FlowLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles FlowLayoutPanel1.Paint
-
-    End Sub
 End Class

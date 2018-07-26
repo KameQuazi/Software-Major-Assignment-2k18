@@ -97,10 +97,21 @@ Public Class DxfViewerControl
         If Me.DesignMode Then
             Me.Drawing = New LampDxfDocument()
         End If
+        Me.DoubleBuffered = True
 
         ' Add any initialization after the InitializeComponent() call.
         UpdateView()
     End Sub
+
+    Protected Overrides ReadOnly Property CreateParams As CreateParams
+        Get
+
+            Dim handleParam = MyBase.CreateParams
+            handleParam.ExStyle = handleParam.ExStyle Or &H2000000 '  // WS_EX_COMPOSITED       
+            Return handleParam
+        End Get
+    End Property
+
 
     Public Sub UpdateView()
         Me.Invalidate()
@@ -119,6 +130,7 @@ Public Class DxfViewerControl
 
     Private Sub DesignerScreen_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
         UpdateView()
+
     End Sub
 
 

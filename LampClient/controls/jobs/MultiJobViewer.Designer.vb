@@ -22,6 +22,7 @@ Partial Class MultiJobViewer
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MultiJobViewer))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.LoadingPictureBox = New System.Windows.Forms.PictureBox()
@@ -51,7 +52,7 @@ Partial Class MultiJobViewer
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.TableLayoutPanel2.Controls.Add(Me.LoadingPictureBox, 1, 1)
+        Me.TableLayoutPanel2.Controls.Add(Me.LoadingPictureBox, 0, 0)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
@@ -64,11 +65,13 @@ Partial Class MultiJobViewer
         '
         'LoadingPictureBox
         '
+        Me.TableLayoutPanel2.SetColumnSpan(Me.LoadingPictureBox, 3)
         Me.LoadingPictureBox.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.LoadingPictureBox.Image = Global.LampClient.My.Resources.Resources.loading1
-        Me.LoadingPictureBox.Location = New System.Drawing.Point(269, 203)
+        Me.LoadingPictureBox.Image = CType(resources.GetObject("LoadingPictureBox.Image"), System.Drawing.Image)
+        Me.LoadingPictureBox.Location = New System.Drawing.Point(3, 3)
         Me.LoadingPictureBox.Name = "LoadingPictureBox"
-        Me.LoadingPictureBox.Size = New System.Drawing.Size(260, 194)
+        Me.TableLayoutPanel2.SetRowSpan(Me.LoadingPictureBox, 3)
+        Me.LoadingPictureBox.Size = New System.Drawing.Size(794, 594)
         Me.LoadingPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.LoadingPictureBox.TabIndex = 1
         Me.LoadingPictureBox.TabStop = False

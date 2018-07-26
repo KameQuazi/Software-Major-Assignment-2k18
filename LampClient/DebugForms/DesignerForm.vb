@@ -180,7 +180,11 @@ Public Class DesignerForm
         End If
     End Sub
 
-    Private Sub DesignerForm_KeyDown(sender As Object, e As KeyEventArgs)
+    Private Sub DesignerForm_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+        If e.KeyCode = Keys.Escape Then
+            ' revert the item being drawing right now
+
+        End If
 
     End Sub
 
@@ -193,33 +197,76 @@ Public Class DesignerForm
         Me.Close()
     End Sub
 
-    Dim firstPoint As Vector3?
+    Dim firstPoint As Vector3
 
-    Dim previousLine As Line
+    Dim previousEntity As EntityObject
+    Public Property CurrentTool As LampTool = LampTool.Circle
+
+    Private currentState As DrawingState = DrawingState.None
+
+
 
     Private Sub DesignerScreen1_LocationMoved(sender As Object, e As MouseMoveAbsoluteEventArgs) Handles DesignerScreen1.MouseMoveAbsolute
-        ' assume line tool
-        If firstPoint IsNot Nothing Then
 
-            If previousLine IsNot Nothing Then
-                ' delete the previous line and add new line
-                Drawing.RemoveEntity(previousLine)
-                previousLine = Drawing.AddLine(firstPoint, e.Location)
-            Else
-                previousLine = Drawing.AddLine(firstPoint, e.Location)
-            End If
-        End If
+        Select Case CurrentTool
+            Case LampTool.Nothing
+                If currentState = DrawingState.Start Then
+
+                    If previousEntity IsNot Nothing Then
+                        ' delete the previous line and add new line
+                        Drawing.RemoveEntity(previousEntity)
+                        previousEntity = Drawing.AddLine(firstPoint, e.Location)
+                    Else
+                        previousEntity = Drawing.AddLine(firstPoint, e.Location)
+                    End If
+                End If
+
+            Case LampTool.Circle
+                If currentState = DrawingState.Start Then
+                    If previousEntity IsNot Nothing Then
+                        Drawing.RemoveEntity(previousEntity)
+                        previousEntity = Drawing.AddCircle(firstPoint, DistanceTwoPoints(firstPoint, e.Location))
+                    Else
+                        previousEntity = Drawing.AddCircle(firstPoint, DistanceTwoPoints(firstPoint, e.Location))
+                    End If
+                End If
+
+        End Select
+
     End Sub
 
     Private Sub DesignerScreen1_LocationClicked(sender As Object, e As MouseClickAbsoluteEventArgs) Handles DesignerScreen1.MouseClickAbsolute
-        If firstPoint Is Nothing Then
+        If currentState = DrawingState.None Then
             firstPoint = e.Location
-        Else
+            currentState = DrawingState.Start
+        ElseIf currentState = DrawingState.Start Then
             ' commit the line and firstpoint
             firstPoint = Nothing
-            previousLine = Nothing
+            previousEntity = Nothing
+            currentState = DrawingState.None
         End If
     End Sub
 End Class
 
 
+Public Enum LampTool
+    [Nothing]
+    Line
+    Circle
+    Arc
+
+End Enum
+
+
+
+Public Module owo1
+    Public Function DistanceTwoPoints(first As Vector3, second As Vector3)
+        Return Math.Sqrt((first.X - second.X) ^ 2 + (first.Y - second.Y) ^ 2)
+    End Function
+End Module
+
+Public Enum DrawingState
+    None = 0
+    Start = 1
+
+End Enum

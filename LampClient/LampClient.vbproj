@@ -159,6 +159,12 @@
     <Compile Include="controls\jobs\ServiceSortableJobViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="controls\template\EditDynamicText.Designer.vb">
+      <DependentUpon>EditDynamicText.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\template\EditDynamicText.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\toolbar\AdminToolbar.Designer.vb">
       <DependentUpon>AdminToolbar.vb</DependentUpon>
     </Compile>
@@ -432,6 +438,9 @@
     <EmbeddedResource Include="controls\jobs\ServiceSortableJobViewer.resx">
       <DependentUpon>ServiceSortableJobViewer.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="controls\template\EditDynamicText.resx">
+      <DependentUpon>EditDynamicText.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\toolbar\AdminToolbar.resx">
       <DependentUpon>AdminToolbar.vb</DependentUpon>
     </EmbeddedResource>
@@ -611,13 +620,13 @@
     <None Include="Resources\loading.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\no_preview_image.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\loading.gif" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\no_preview_image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

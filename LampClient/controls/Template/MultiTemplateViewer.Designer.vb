@@ -22,6 +22,7 @@ Partial Class MultiTemplateViewer
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MultiTemplateViewer))
         Me.GridPanel = New System.Windows.Forms.TableLayoutPanel()
         Me.lblNoTemplates = New System.Windows.Forms.Label()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
@@ -64,7 +65,7 @@ Partial Class MultiTemplateViewer
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.TableLayoutPanel1.Controls.Add(Me.LoadingPictureBox, 1, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.LoadingPictureBox, 0, 0)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
@@ -72,16 +73,19 @@ Partial Class MultiTemplateViewer
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(800, 600)
         Me.TableLayoutPanel1.TabIndex = 0
         '
         'LoadingPictureBox
         '
+        Me.TableLayoutPanel1.SetColumnSpan(Me.LoadingPictureBox, 3)
         Me.LoadingPictureBox.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.LoadingPictureBox.Image = Global.LampClient.My.Resources.Resources.loading1
-        Me.LoadingPictureBox.Location = New System.Drawing.Point(269, 202)
+        Me.LoadingPictureBox.Image = CType(resources.GetObject("LoadingPictureBox.Image"), System.Drawing.Image)
+        Me.LoadingPictureBox.Location = New System.Drawing.Point(3, 3)
         Me.LoadingPictureBox.Name = "LoadingPictureBox"
-        Me.LoadingPictureBox.Size = New System.Drawing.Size(260, 193)
+        Me.TableLayoutPanel1.SetRowSpan(Me.LoadingPictureBox, 3)
+        Me.LoadingPictureBox.Size = New System.Drawing.Size(794, 594)
         Me.LoadingPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.LoadingPictureBox.TabIndex = 1
         Me.LoadingPictureBox.TabStop = False
