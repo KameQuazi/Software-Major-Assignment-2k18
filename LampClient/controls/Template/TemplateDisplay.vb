@@ -18,6 +18,10 @@ Public Class TemplateDisplay
         End Set
     End Property
 
+    Private Function ShouldSerializeTemplate() As Boolean
+        Return False
+    End Function
+
     Private Const NoneText = "*none*"
 
     ''' <summary>

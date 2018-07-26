@@ -141,6 +141,24 @@ Public Class ServiceTemplateViewer
 
         End Try
     End Sub
+    Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        If Me.DesignMode Then
+            Me.StopLoading()
+        End If
+    End Sub
+
+    Public Sub StopLoading()
+        Me.MultiTemplateViewer1.StopLoading()
+    End Sub
+
+    Public Sub StartLoading()
+        Me.MultiTemplateViewer1.ShowLoading()
+    End Sub
 
     Private Sub NewThreadUpdateInterface()
         btnNextPage.Enabled = False

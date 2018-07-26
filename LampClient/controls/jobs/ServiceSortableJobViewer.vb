@@ -1,13 +1,11 @@
-﻿
-Imports System.Collections.ObjectModel
-Imports System.Collections.Specialized
+﻿Imports System.Collections.ObjectModel
 Imports LampCommon
 
-Public Class ServiceSortableTemplateViewer
-    Public Event TemplateClick(sender As Object, e As TemplateClickedEventArgs)
+Public Class ServiceSortableJobViewer
+    Public Event JobClick(sender As Object, e As JobClickedEventArgs)
 
-    Private Sub ServiceTemplateViewer1_TemplateClick(sender As Object, e As TemplateClickedEventArgs) Handles ServiceTemplateViewer1.TemplateClick
-        RaiseEvent TemplateClick(Me, e)
+    Private Sub ServiceTemplateViewer1_TemplateClick(sender As Object, e As JobClickedEventArgs) Handles ServiceJobViewer1.JobClick
+        RaiseEvent JobClick(Me, e)
         ' just bubble the event
     End Sub
 
@@ -16,14 +14,14 @@ Public Class ServiceSortableTemplateViewer
     ''' true = just mine, false = all publically available
     ''' </summary>
     ''' <returns></returns>
-    Public Property JustMyTemplates As Boolean
+    Public Property JustMyJobs As Boolean
         Get
             Return _justMyTemplates
         End Get
         Set(value As Boolean)
             _justMyTemplates = value
-            ServiceTemplateViewer1.JustMyTemplates = value
-            If JustMyTemplates Then
+            ServiceJobViewer1.JustMyJobs = value
+            If JustMyJobs Then
                 rdbtnMe.Checked = True
                 rdbtnAllApproved.Checked = True
             Else
@@ -34,10 +32,10 @@ Public Class ServiceSortableTemplateViewer
 
     Public Property ApprovedType As LampApprove
         Get
-            Return ServiceTemplateViewer1.ApprovedType
+            Return ServiceJobViewer1.ApprovedType
         End Get
         Set(value As LampApprove)
-            ServiceTemplateViewer1.ApprovedType = value
+            ServiceJobViewer1.ApprovedType = value
         End Set
     End Property
 
@@ -114,7 +112,7 @@ Public Class ServiceSortableTemplateViewer
 
 
 
-    Public Sub ToggleSidebar() 
+    Public Sub ToggleSidebar()
         SidebarHidden = Not SidebarHidden
     End Sub
 
@@ -157,15 +155,15 @@ Public Class ServiceSortableTemplateViewer
         Select Case ComboBox1.SelectedItem
             Case "Submit Date"
                 If rdbtnAsc.Checked Then
-                    ServiceTemplateViewer1.SortOrder = LampSort.SubmitDateAsc
+                    ServiceJobViewer1.SortOrder = LampSort.SubmitDateAsc
                 Else
-                    ServiceTemplateViewer1.SortOrder = LampSort.SubmitDateDesc
+                    ServiceJobViewer1.SortOrder = LampSort.SubmitDateDesc
                 End If
             Case "Name"
                 If rdbtnAsc.Checked Then
-                    ServiceTemplateViewer1.SortOrder = LampSort.TemplateNameAsc
+                    ServiceJobViewer1.SortOrder = LampSort.TemplateNameAsc
                 Else
-                    ServiceTemplateViewer1.SortOrder = LampSort.TemplateNameDesc
+                    ServiceJobViewer1.SortOrder = LampSort.TemplateNameDesc
                 End If
         End Select
         WriteSettings()
@@ -173,12 +171,12 @@ Public Class ServiceSortableTemplateViewer
 
     Public Sub WriteSettings()
         If finishedLoading Then
-            My.Settings.SortSettings = New SortSettings(SidebarHidden, ServiceTemplateViewer1.SortOrder, JustMyTemplates, ApprovedType)
+            My.Settings.SortSettings = New SortSettings(SidebarHidden, ServiceJobViewer1.SortOrder, JustMyJobs, ApprovedType)
         End If
     End Sub
 
     Public Sub UpdateContents()
-        ServiceTemplateViewer1.UpdateContents()
+        ServiceJobViewer1.UpdateContents()
     End Sub
 
 
@@ -187,7 +185,7 @@ Public Class ServiceSortableTemplateViewer
             If My.Settings.SortSettings IsNot Nothing Then
                 Me.SidebarHidden = My.Settings.SortSettings.SortHidden
                 Me.SortOrder = My.Settings.SortSettings.SortType
-                Me.JustMyTemplates = My.Settings.SortSettings.ByMe
+                Me.JustMyJobs = My.Settings.SortSettings.ByMe
             End If
         Catch e As Exception
             MessageBox.Show("Cannot load user settings")
@@ -199,7 +197,7 @@ Public Class ServiceSortableTemplateViewer
     End Sub
 
     Private Sub ValidateApprovedCheckboxes()
-        If CurrentUser.PermissionLevel < UserPermission.Elevated And JustMyTemplates = False Then
+        If CurrentUser.PermissionLevel < UserPermission.Elevated And JustMyJobs = False Then
             ' disable unapproved editing
             rdbtnNoApproved.Enabled = False
             rdbtnAllApproved.Enabled = False
@@ -212,9 +210,9 @@ Public Class ServiceSortableTemplateViewer
 
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles rdbtnPublic.CheckedChanged, rdbtnMe.CheckedChanged
         If rdbtnPublic.Checked Then
-            JustMyTemplates = False
+            JustMyJobs = False
         Else
-            JustMyTemplates = True
+            JustMyJobs = True
         End If
 
         ValidateApprovedCheckboxes()
@@ -233,6 +231,4 @@ Public Class ServiceSortableTemplateViewer
 
     End Sub
 
-
 End Class
-

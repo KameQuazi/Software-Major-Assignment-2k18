@@ -24,6 +24,7 @@ Partial Class ViewEditJobsForm
     Private Sub InitializeComponent()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.AdminToolbar1 = New LampClient.AdminToolbar()
+        Me.ServiceSortableJobViewer1 = New LampClient.ServiceSortableJobViewer()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -33,6 +34,7 @@ Partial Class ViewEditJobsForm
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.AdminToolbar1, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.ServiceSortableJobViewer1, 0, 1)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
@@ -45,10 +47,24 @@ Partial Class ViewEditJobsForm
         'AdminToolbar1
         '
         Me.AdminToolbar1.BackColor = System.Drawing.Color.LightSeaGreen
+        Me.AdminToolbar1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.AdminToolbar1.Location = New System.Drawing.Point(3, 3)
         Me.AdminToolbar1.Name = "AdminToolbar1"
         Me.AdminToolbar1.Size = New System.Drawing.Size(1226, 99)
         Me.AdminToolbar1.TabIndex = 0
+        '
+        'ServiceSortableJobViewer1
+        '
+        Me.ServiceSortableJobViewer1.ApprovedType = LampCommon.LampApprove.All
+        Me.ServiceSortableJobViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ServiceSortableJobViewer1.JustMyJobs = False
+        Me.ServiceSortableJobViewer1.Location = New System.Drawing.Point(3, 108)
+        Me.ServiceSortableJobViewer1.Name = "ServiceSortableJobViewer1"
+        Me.ServiceSortableJobViewer1.SidebarHidden = False
+        Me.ServiceSortableJobViewer1.Size = New System.Drawing.Size(1226, 592)
+        Me.ServiceSortableJobViewer1.SortOrder = LampCommon.LampSort.NoSort
+        Me.ServiceSortableJobViewer1.TabIndex = 1
+        Me.ServiceSortableJobViewer1.TitleText = "Choose Job"
         '
         'ViewEditJobsForm
         '
@@ -66,4 +82,5 @@ Partial Class ViewEditJobsForm
 
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents AdminToolbar1 As AdminToolbar
+    Friend WithEvents ServiceSortableJobViewer1 As ServiceSortableJobViewer
 End Class

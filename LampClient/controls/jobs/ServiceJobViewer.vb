@@ -23,7 +23,7 @@ Public Class ServiceJobViewer
         End Set
     End Property
 
-    Private Const JOBS_PER_PAGE = 3
+    Private Const JOBS_PER_PAGE = 2
 
     Public Property Offset = 0
 
@@ -38,6 +38,19 @@ Public Class ServiceJobViewer
         End Get
         Set(value As Boolean)
             _justMyJobs = value
+            If IsHandleCreated Then
+                UpdateContents()
+            End If
+        End Set
+    End Property
+
+    Private _approvedType As LampApprove = LampApprove.Approved
+    Public Property ApprovedType As LampApprove
+        Get
+            Return _ApprovedType
+        End Get
+        Set(value As LampApprove)
+            _ApprovedType = value
             If IsHandleCreated Then
                 UpdateContents()
             End If
@@ -120,6 +133,26 @@ Public Class ServiceJobViewer
 #End If
 
         End Try
+    End Sub
+
+    Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        MultiJobViewer1.Rows = JOBS_PER_PAGE
+        If Me.DesignMode Then
+            Me.StopLoading()
+        End If
+    End Sub
+
+    Public Sub StopLoading()
+        MultiJobViewer1.StopLoading()
+    End Sub
+
+    Public Sub StartLoading()
+        MultiJobViewer1.ShowLoading()
     End Sub
 
     Private Sub NewThreadUpdateInterface()

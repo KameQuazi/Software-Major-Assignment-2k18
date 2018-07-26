@@ -153,6 +153,12 @@
     <Compile Include="controls\jobs\JobCreatorControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="controls\jobs\ServiceSortableJobViewer.Designer.vb">
+      <DependentUpon>ServiceSortableJobViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\jobs\ServiceSortableJobViewer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\toolbar\AdminToolbar.Designer.vb">
       <DependentUpon>AdminToolbar.vb</DependentUpon>
     </Compile>
@@ -171,10 +177,10 @@
     <Compile Include="controls\DynamicFormCreation.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="controls\Template\TemplateDisplay.designer.vb">
+    <Compile Include="controls\template\TemplateDisplay.designer.vb">
       <DependentUpon>TemplateDisplay.vb</DependentUpon>
     </Compile>
-    <Compile Include="controls\Template\TemplateDisplay.vb">
+    <Compile Include="controls\template\TemplateDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="controls\jobs\JobDisplay.Designer.vb">
@@ -189,10 +195,10 @@
     <Compile Include="controls\jobs\MultiJobViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="controls\Template\MultiTemplateViewer.Designer.vb">
+    <Compile Include="controls\template\MultiTemplateViewer.Designer.vb">
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
     </Compile>
-    <Compile Include="controls\Template\MultiTemplateViewer.vb">
+    <Compile Include="controls\template\MultiTemplateViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="controls\user\ProfileDisplay.Designer.vb">
@@ -213,34 +219,40 @@
     <Compile Include="controls\jobs\ServiceJobViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="controls\Template\ServiceSortableTemplateViewer.Designer.vb">
+    <Compile Include="controls\template\ServiceSortableTemplateViewer.Designer.vb">
       <DependentUpon>ServiceSortableTemplateViewer.vb</DependentUpon>
     </Compile>
-    <Compile Include="controls\Template\ServiceSortableTemplateViewer.vb">
+    <Compile Include="controls\template\ServiceSortableTemplateViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="controls\Template\ServiceTemplateViewer.Designer.vb">
+    <Compile Include="controls\template\ServiceTemplateViewer.Designer.vb">
       <DependentUpon>ServiceTemplateViewer.vb</DependentUpon>
     </Compile>
-    <Compile Include="controls\Template\ServiceTemplateViewer.vb">
+    <Compile Include="controls\template\ServiceTemplateViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="controls\Template\SingleDynamicTExt.Designer.vb">
+    <Compile Include="controls\template\SingleDynamicTExt.Designer.vb">
       <DependentUpon>SingleDynamicText.vb</DependentUpon>
     </Compile>
-    <Compile Include="controls\Template\SingleDynamicText.vb">
+    <Compile Include="controls\template\SingleDynamicText.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="controls\Template\TemplateCreatorControl.Designer.vb">
+    <Compile Include="controls\template\TemplateCreatorControl.Designer.vb">
       <DependentUpon>TemplateCreatorControl.vb</DependentUpon>
     </Compile>
-    <Compile Include="controls\Template\TemplateCreatorControl.vb">
+    <Compile Include="controls\template\TemplateCreatorControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="controls\toolbar\ToolBar.Designer.vb">
       <DependentUpon>ToolBar.vb</DependentUpon>
     </Compile>
     <Compile Include="controls\toolbar\ToolBar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\user\SimpleProfileDisplay.Designer.vb">
+      <DependentUpon>SimpleProfileDisplay.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\user\SimpleProfileDisplay.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="DebugForms\DebugOptions.Designer.vb">
@@ -417,6 +429,9 @@
     <EmbeddedResource Include="controls\jobs\JobCreatorControl.resx">
       <DependentUpon>JobCreatorControl.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="controls\jobs\ServiceSortableJobViewer.resx">
+      <DependentUpon>ServiceSortableJobViewer.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\toolbar\AdminToolbar.resx">
       <DependentUpon>AdminToolbar.vb</DependentUpon>
     </EmbeddedResource>
@@ -426,7 +441,7 @@
     <EmbeddedResource Include="controls\DynamicFormCreation.resx">
       <DependentUpon>DynamicFormCreation.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="controls\Template\TemplateDisplay.resx">
+    <EmbeddedResource Include="controls\template\TemplateDisplay.resx">
       <DependentUpon>TemplateDisplay.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\jobs\JobDisplay.resx">
@@ -435,7 +450,7 @@
     <EmbeddedResource Include="controls\jobs\MultiJobViewer.resx">
       <DependentUpon>MultiJobViewer.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="controls\Template\MultiTemplateViewer.resx">
+    <EmbeddedResource Include="controls\template\MultiTemplateViewer.resx">
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\user\ProfileDisplay.resx">
@@ -447,20 +462,23 @@
     <EmbeddedResource Include="controls\jobs\ServiceJobViewer.resx">
       <DependentUpon>ServiceJobViewer.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="controls\Template\ServiceSortableTemplateViewer.resx">
+    <EmbeddedResource Include="controls\template\ServiceSortableTemplateViewer.resx">
       <DependentUpon>ServiceSortableTemplateViewer.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="controls\Template\ServiceTemplateViewer.resx">
+    <EmbeddedResource Include="controls\template\ServiceTemplateViewer.resx">
       <DependentUpon>ServiceTemplateViewer.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="controls\Template\SingleDynamicTExt.resx">
+    <EmbeddedResource Include="controls\template\SingleDynamicTExt.resx">
       <DependentUpon>SingleDynamicText.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="controls\Template\TemplateCreatorControl.resx">
+    <EmbeddedResource Include="controls\template\TemplateCreatorControl.resx">
       <DependentUpon>TemplateCreatorControl.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\toolbar\ToolBar.resx">
       <DependentUpon>ToolBar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\user\SimpleProfileDisplay.resx">
+      <DependentUpon>SimpleProfileDisplay.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DebugForms\DebugOptions.resx">
       <DependentUpon>DebugOptions.vb</DependentUpon>
