@@ -406,8 +406,9 @@ Partial Class TemplateEditorForm
         Me.Controls.Add(Me.Preview3)
         Me.Controls.Add(Me.Preview2)
         Me.Controls.Add(Me.Preview1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "TemplateEditorForm"
-        Me.Text = "AddTemplate"
+        Me.Text = "LAMP - Add Template"
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).EndInit()

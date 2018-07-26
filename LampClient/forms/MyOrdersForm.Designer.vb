@@ -49,7 +49,7 @@ Partial Class MyOrdersForm
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "MyOrdersForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "MyOrdersForm"
+        Me.Text = "LAMP - Orders"
         Me.ResumeLayout(False)
 
     End Sub

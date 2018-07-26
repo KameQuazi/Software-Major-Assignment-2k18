@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Label1.Text" xml:space="preserve">
-    <value>If you need help with the fuction of a specific tool or button,
+    <value>If you need help with the function of a specific tool or button,
 hold your mouse over it and it will give you some information
 about what it does. 
 

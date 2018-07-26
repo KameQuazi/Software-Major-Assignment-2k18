@@ -22,6 +22,7 @@ Partial Class MyTemplatesForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MyTemplatesForm))
         Me.btnNextPage = New System.Windows.Forms.Button()
         Me.btnPreviousPage = New System.Windows.Forms.Button()
         Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
@@ -80,9 +81,10 @@ Partial Class MyTemplatesForm
         Me.Controls.Add(Me.btnNextPage)
         Me.Controls.Add(Me.MultiTemplateViewer1)
         Me.Controls.Add(Me.ToolBar1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "MyTemplatesForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "MyTemplatesForm"
+        Me.Text = "LAMP - My Templates"
         Me.ResumeLayout(False)
 
     End Sub

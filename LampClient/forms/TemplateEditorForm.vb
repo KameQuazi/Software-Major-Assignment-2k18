@@ -353,5 +353,7 @@ Public Class TemplateEditorForm
         Template.GUID = GetNewGuid()
     End Sub
 
+    Private Sub ToolBar1_Load(sender As Object, e As EventArgs) Handles ToolBar1.Load
 
+    End Sub
 End Class

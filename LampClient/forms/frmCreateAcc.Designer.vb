@@ -235,9 +235,9 @@ Partial Class frmCreateAcc
         Me.required1.ForeColor = System.Drawing.Color.Red
         Me.required1.Location = New System.Drawing.Point(101, 56)
         Me.required1.Name = "required1"
-        Me.required1.Size = New System.Drawing.Size(53, 15)
+        Me.required1.Size = New System.Drawing.Size(58, 15)
         Me.required1.TabIndex = 30
-        Me.required1.Text = "required"
+        Me.required1.Text = "*required"
         Me.required1.Visible = False
         '
         'required2
@@ -247,9 +247,9 @@ Partial Class frmCreateAcc
         Me.required2.ForeColor = System.Drawing.Color.Red
         Me.required2.Location = New System.Drawing.Point(101, 93)
         Me.required2.Name = "required2"
-        Me.required2.Size = New System.Drawing.Size(53, 15)
+        Me.required2.Size = New System.Drawing.Size(58, 15)
         Me.required2.TabIndex = 31
-        Me.required2.Text = "required"
+        Me.required2.Text = "*required"
         Me.required2.Visible = False
         '
         'required3
@@ -259,9 +259,9 @@ Partial Class frmCreateAcc
         Me.required3.ForeColor = System.Drawing.Color.Red
         Me.required3.Location = New System.Drawing.Point(101, 130)
         Me.required3.Name = "required3"
-        Me.required3.Size = New System.Drawing.Size(53, 15)
+        Me.required3.Size = New System.Drawing.Size(58, 15)
         Me.required3.TabIndex = 32
-        Me.required3.Text = "required"
+        Me.required3.Text = "*required"
         Me.required3.Visible = False
         '
         'required4
@@ -271,9 +271,9 @@ Partial Class frmCreateAcc
         Me.required4.ForeColor = System.Drawing.Color.Red
         Me.required4.Location = New System.Drawing.Point(101, 204)
         Me.required4.Name = "required4"
-        Me.required4.Size = New System.Drawing.Size(53, 15)
+        Me.required4.Size = New System.Drawing.Size(58, 15)
         Me.required4.TabIndex = 33
-        Me.required4.Text = "required"
+        Me.required4.Text = "*required"
         Me.required4.Visible = False
         '
         'required5
@@ -283,9 +283,9 @@ Partial Class frmCreateAcc
         Me.required5.ForeColor = System.Drawing.Color.Red
         Me.required5.Location = New System.Drawing.Point(101, 241)
         Me.required5.Name = "required5"
-        Me.required5.Size = New System.Drawing.Size(53, 15)
+        Me.required5.Size = New System.Drawing.Size(58, 15)
         Me.required5.TabIndex = 34
-        Me.required5.Text = "required"
+        Me.required5.Text = "*required"
         Me.required5.Visible = False
         '
         'frmCreateAcc

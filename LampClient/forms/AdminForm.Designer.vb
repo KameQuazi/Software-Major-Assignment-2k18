@@ -22,6 +22,7 @@ Partial Class AdminForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AdminForm))
         Me.AdminToolbar1 = New LampClient.AdminToolbar()
         Me.SuspendLayout()
         '
@@ -40,9 +41,10 @@ Partial Class AdminForm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.AdminToolbar1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "AdminForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "AdminForm"
+        Me.Text = "LAMP - Admin Home"
         Me.ResumeLayout(False)
 
     End Sub
