@@ -68,6 +68,9 @@ Public Module ToolbarUtilities
                 ViewEditJobsForm.Show()
             Case LampForm.ViewEditTemplateForm
                 ViewEditTemplateForm.Show()
+            Case LampForm.ApproveTemplateForm
+                ApproveTemplateForm.Show()
+
 
 #If DEBUG Then
             Case Else
@@ -131,16 +134,6 @@ Public Class ToolBar
 
 #Region "DesignerProperties"
     <Category("DisableButtons")>
-    Public Property NewOrderEnabled As Boolean
-        Get
-            Return btnNewOrder.Enabled
-        End Get
-        Set(value As Boolean)
-            btnNewOrder.Enabled = value
-        End Set
-    End Property
-
-    <Category("DisableButtons")>
     Public Property HomeEnabled As Boolean
         Get
             Return btnHome.Enabled
@@ -151,7 +144,7 @@ Public Class ToolBar
     End Property
 
     <Category("DisableButtons")>
-    Public Property MyTrophyEnabled As Boolean
+    Public Property ViewTemplateEnabled As Boolean
         Get
             Return btnDesigns.Enabled
         End Get
@@ -161,7 +154,17 @@ Public Class ToolBar
     End Property
 
     <Category("DisableButtons")>
-    Public Property MyOrdersEnabled As Boolean
+    Public Property NewTemplateEnabled As Boolean
+        Get
+            Return btnNewTemplate.Enabled
+        End Get
+        Set(value As Boolean)
+            btnNewTemplate.Enabled = value
+        End Set
+    End Property
+
+    <Category("DisableButtons")>
+    Public Property ViewOrderEnabled As Boolean
         Get
             Return btnOrders.Enabled
         End Get
@@ -169,6 +172,22 @@ Public Class ToolBar
             btnOrders.Enabled = value
         End Set
     End Property
+
+    <Category("DisableButtons")>
+    Public Property NewOrderEnabled As Boolean
+        Get
+            Return btnNewOrder.Enabled
+        End Get
+        Set(value As Boolean)
+            btnNewOrder.Enabled = value
+        End Set
+    End Property
+
+
+
+
+
+
 
 
 #End Region
@@ -246,7 +265,7 @@ Public Class ToolBar
         SetUsername(CurrentUser.Username)
         ' dont have permission to 
         If CurrentUser.PermissionLevel <= UserPermission.Standard Then
-            MyOrdersEnabled = False
+            ViewOrderEnabled = False
             NewOrderEnabled = False
         End If
 		

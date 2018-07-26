@@ -32,9 +32,9 @@ Partial Class NewOrderForm
         Me.chkYear = New System.Windows.Forms.CheckBox()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.ToolBar1 = New LampClient.ToolBar()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.ToolBar1 = New LampClient.ToolBar()
         Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
         Me.grpParameters.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
@@ -100,13 +100,13 @@ Partial Class NewOrderForm
         Me.Button2.Text = "choose new design"
         Me.Button2.UseVisualStyleBackColor = False
         '
-        'Button1
+        'btnNext
         '
         Me.btnNext.BackColor = System.Drawing.Color.White
         Me.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnNext.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.8!)
         Me.btnNext.Location = New System.Drawing.Point(416, 519)
-        Me.btnNext.Name = "Button1"
+        Me.btnNext.Name = "btnNext"
         Me.btnNext.Size = New System.Drawing.Size(129, 44)
         Me.btnNext.TabIndex = 38
         Me.btnNext.Text = "Next"
@@ -148,20 +148,6 @@ Partial Class NewOrderForm
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1232, 703)
         Me.TableLayoutPanel1.TabIndex = 38
         '
-        'ToolBar1
-        '
-        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
-        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
-        Me.ToolBar1.MyOrdersEnabled = True
-        Me.ToolBar1.MyTrophyEnabled = True
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = False
-        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
-        Me.ToolBar1.TabIndex = 37
-        '
         'TableLayoutPanel2
         '
         Me.TableLayoutPanel2.ColumnCount = 2
@@ -186,6 +172,21 @@ Partial Class NewOrderForm
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(607, 586)
         Me.Panel1.TabIndex = 37
+        '
+        'ToolBar1
+        '
+        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolBar1.HomeEnabled = True
+        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.NewOrderEnabled = False
+        Me.ToolBar1.NewTemplateEnabled = True
+        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
+        Me.ToolBar1.TabIndex = 37
+        Me.ToolBar1.ViewOrderEnabled = False
+        Me.ToolBar1.ViewTemplateEnabled = True
         '
         'DxfViewerControl1
         '

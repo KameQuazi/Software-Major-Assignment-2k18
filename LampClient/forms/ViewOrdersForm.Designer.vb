@@ -54,12 +54,13 @@ Partial Class ViewOrdersForm
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.HomeEnabled = True
         Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
-        Me.ToolBar1.MyOrdersEnabled = False
-        Me.ToolBar1.MyTrophyEnabled = True
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.NewOrderEnabled = True
+        Me.ToolBar1.NewTemplateEnabled = True
         Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
         Me.ToolBar1.TabIndex = 0
+        Me.ToolBar1.ViewOrderEnabled = False
+        Me.ToolBar1.ViewTemplateEnabled = True
         '
         'TableLayoutPanel2
         '
@@ -77,6 +78,7 @@ Partial Class ViewOrdersForm
         '
         'ServiceJobViewer1
         '
+        Me.ServiceJobViewer1.ApprovedType = LampCommon.LampApprove.Approved
         Me.ServiceJobViewer1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ServiceJobViewer1.JustMyJobs = False
         Me.ServiceJobViewer1.Location = New System.Drawing.Point(3, 3)
@@ -96,7 +98,7 @@ Partial Class ViewOrdersForm
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "ViewOrdersForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "MyOrdersForm"
+        Me.Text = "LAMP - View/Edit Orders"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.ResumeLayout(False)

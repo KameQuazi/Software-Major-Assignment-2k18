@@ -58,8 +58,8 @@ Partial Class HomeForm
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.HomeEnabled = False
         Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
-        Me.ToolBar1.MyOrdersEnabled = True
-        Me.ToolBar1.MyTrophyEnabled = True
+        Me.ToolBar1.ViewOrderEnabled = True
+        Me.ToolBar1.ViewTemplateEnabled = True
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.NewOrderEnabled = True
         Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)

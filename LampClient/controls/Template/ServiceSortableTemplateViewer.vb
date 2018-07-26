@@ -204,6 +204,7 @@ Public Class ServiceSortableTemplateViewer
             rdbtnNoApproved.Enabled = False
             rdbtnAllApproved.Enabled = False
             rdbtnYesApproved.Checked = True
+            ApprovedType = LampApprove.Approved
         Else
             rdbtnNoApproved.Enabled = True
             rdbtnAllApproved.Enabled = True

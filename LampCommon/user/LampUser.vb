@@ -6,6 +6,12 @@ Imports LampCommon
 ''' </summary>
 <DataContract>
 Public Class LampUser
+    ''' <summary>
+    ''' a anonymous user
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared ReadOnly Property Guest As LampUser = New LampUser("", UserPermission.Guest, "", "", "", "")
+
     <DataMember>
     Public Property Email As String
 
