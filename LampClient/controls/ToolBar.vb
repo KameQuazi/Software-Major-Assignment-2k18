@@ -1,7 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Runtime.CompilerServices
 Imports LampClient
-Imports LampCommon
 
 Public Module ToolbarUtilities
     Public ReadOnly Property PreviousForms As New List(Of LampForm)
@@ -11,33 +10,21 @@ Public Module ToolbarUtilities
         Select Case form.GetType()
             Case GetType(HomeForm)
                 PreviousForms.Add(LampForm.HomeForm)
-            Case GetType(ViewOrdersForm)
-                PreviousForms.Add(LampForm.ViewOrdersForm)
-            Case GetType(ViewTemplatesForm)
-                PreviousForms.Add(LampForm.ViewTemplatesForm)
+            Case GetType(MyOrdersForm)
+                PreviousForms.Add(LampForm.MyOrdersForm)
+            Case GetType(MyTemplatesForm)
+                PreviousForms.Add(LampForm.MyTemplatesForm)
             Case GetType(NewOrderForm)
                 PreviousForms.Add(LampForm.NewOrderForm)
-
+            Case GetType(TemplateSelectForm)
+                PreviousForms.Add(LampForm.TemplateSelectForm)
             Case GetType(AdminForm)
                 PreviousForms.Add(LampForm.AdminForm)
-            Case GetType(NewTemplateForm)
-                PreviousForms.Add(LampForm.NewTemplateForm)
-            Case GetType(ViewEditJobsForm)
-                PreviousForms.Add(LampForm.ViewEditJobsForm)
-            Case GetType(ViewEditTemplateForm)
-                PreviousForms.Add(LampForm.ViewEditTemplateForm)
-            Case GetType(ApproveTemplateForm)
-                PreviousForms.Add(LampForm.ApproveTemplateForm)
-            Case GetType(ManageUsersForm)
-                PreviousForms.Add(LampForm.ManageUsersForm)
 
 
 
-
-#If DEBUG Then
             Case Else
-                Throw New ArgumentOutOfRangeException(form.GetType().ToString)
-#End If
+                Throw New ArgumentOutOfRangeException(NameOf(form))
         End Select
     End Sub
 
@@ -53,26 +40,14 @@ Public Module ToolbarUtilities
         Select Case last
             Case LampForm.HomeForm
                 HomeForm.Show()
-            Case LampForm.ViewOrdersForm
-                ViewOrdersForm.Show()
-            Case LampForm.ViewTemplatesForm
-                ViewTemplatesForm.Show()
+            Case LampForm.MyOrdersForm
+                MyOrdersForm.Show()
+            Case LampForm.MyTemplatesForm
+                MyTemplatesForm.Show()
             Case LampForm.NewOrderForm
                 NewOrderForm.Show()
-
-            Case LampForm.AdminForm
-                AdminForm.Show()
-            Case LampForm.NewTemplateForm
-                NewTemplateForm.Show()
-            Case LampForm.ViewEditJobsForm
-                ViewEditJobsForm.Show()
-            Case LampForm.ViewEditTemplateForm
-                ViewEditTemplateForm.Show()
-
-#If DEBUG Then
-            Case Else
-                Throw New ArgumentOutOfRangeException(last.GetType.ToString())
-#End If
+            Case LampForm.TemplateSelectForm
+                TemplateSelectForm.Show()
         End Select
     End Sub
 
@@ -106,18 +81,6 @@ Public Module ToolbarUtilities
     <Extension>
     Public Function HasSavedForms(this As IToolbar) As Boolean
         Return PreviousForms.Count > 0
-    End Function
-
-    <Extension>
-    Public Function Logout(this As IToolbar, parentForm As Form) As Boolean
-        If LogoutBox.ShowDialog() = DialogResult.OK Then
-            PreviousForms.Clear()
-            LoginForm.Show()
-
-            parentForm.Close()
-            Return True
-        End If
-        Return False
     End Function
 End Module
 
@@ -188,7 +151,12 @@ Public Class ToolBar
     End Sub
 
     Private Sub btnLogOut_Click(sender As Object, e As EventArgs) Handles btnLogOut.Click
-        Logout(ParentForm)
+        If LogoutBox.ShowDialog() = DialogResult.OK Then
+            PreviousForms.Clear()
+            LoginForm.Show()
+
+            ParentForm.Close()
+        End If
     End Sub
 
 
@@ -201,25 +169,20 @@ Public Class ToolBar
     End Sub
 
     Private Sub btnDesigns_Click(sender As Object, e As EventArgs) Handles btnDesigns.Click
-        ShowNewForm(ParentForm, ViewTemplatesForm)
+        ShowNewForm(ParentForm, MyTemplatesForm)
     End Sub
 
     Private Sub btnOrders_Click(sender As Object, e As EventArgs) Handles btnOrders.Click
-        ShowNewForm(ParentForm, ViewOrdersForm)
-    End Sub
-
-    Private Sub btnNewTemplate_Click(sender As Object, e As EventArgs) Handles btnNewTemplate.Click
-        ShowNewForm(ParentForm, NewTemplateForm)
+        ShowNewForm(ParentForm, MyOrdersForm)
     End Sub
 
     Private Sub btnHelp_Click(sender As Object, e As EventArgs) Handles btnHelp.Click
-        HelpBox.ShowDialog()
+        HelpForm.ShowDialog()
     End Sub
 
     Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
         AboutBox.ShowDialog()
     End Sub
-
 
 
 
@@ -235,13 +198,7 @@ Public Class ToolBar
             btnBack.Enabled = True
         End If
         SetUsername(CurrentUser.Username)
-        ' dont have permission to 
-        If CurrentUser.PermissionLevel <= UserPermission.Standard Then
-            MyOrdersEnabled = False
-            NewOrderEnabled = False
-        End If
-		
-		'tooltips
+        'tooltips
         ' this handles all buttons on the toolbar on all forms
         Tooltip1.SetToolTip(Me.btnHome, "go back to start screen")
         Tooltip1.SetToolTip(Me.btnDesigns, "view your designs")
@@ -252,6 +209,7 @@ Public Class ToolBar
         Tooltip1.SetToolTip(Me.btnLogOut, "log out of your LAMP account")
         Tooltip1.SetToolTip(Me.btnOrders, "view your current orders")
         Tooltip1.SetToolTip(Me.btnQuit, "close the program")
+
     End Sub
 
     Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
@@ -272,21 +230,14 @@ Public Class ToolBar
             End
         End If
     End Sub
-
-
 End Class
 
 
 Public Enum LampForm
     HomeForm
-    ViewOrdersForm
-    ViewTemplatesForm
+    MyOrdersForm
+    MyTemplatesForm
     NewOrderForm
     TemplateSelectForm
     AdminForm
-    NewTemplateForm
-    ViewEditJobsForm
-    ViewEditTemplateForm
-    ApproveTemplateForm
-    ManageUsersForm
 End Enum

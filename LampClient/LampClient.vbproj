@@ -66,6 +66,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|AnyCPU'">
     <OutputPath>bin\test\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Logo w Circle.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
@@ -303,6 +306,12 @@
     <Compile Include="DialogBoxes\CloseBox.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="forms\frmCreateAcc.Designer.vb">
+      <DependentUpon>frmCreateAcc.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\frmCreateAcc.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DialogBoxes\EditTemplateDialog.Designer.vb">
       <DependentUpon>EditTemplateDialog.vb</DependentUpon>
     </Compile>
@@ -513,6 +522,9 @@
     <EmbeddedResource Include="DialogBoxes\EditTemplateDialog.resx">
       <DependentUpon>EditTemplateDialog.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\frmCreateAcc.resx">
+      <DependentUpon>frmCreateAcc.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DialogBoxes\HelpBox.resx">
       <DependentUpon>HelpBox.vb</DependentUpon>
     </EmbeddedResource>
@@ -626,6 +638,9 @@
     <Folder Include="bin\Debug\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\error.png" />
+    <Content Include="Resources\no_job_preview_image.png" />
+    <Content Include="Resources\no_pending jobs.png" />
     <Content Include="Resources\no_preview_image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

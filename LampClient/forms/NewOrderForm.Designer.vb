@@ -211,7 +211,7 @@ Partial Class NewOrderForm
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "NewOrderForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Create New Job"
+        Me.Text = "LAMP - Create New Job"
         Me.grpParameters.ResumeLayout(False)
         Me.grpParameters.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)

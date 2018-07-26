@@ -22,6 +22,7 @@ Partial Class ViewTemplatesForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+	Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ViewTemplateForm))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.ToolBar1 = New LampClient.ToolBar()
         Me.ServiceSortableTemplateViewer1 = New LampClient.ServiceSortableTemplateViewer()
@@ -77,9 +78,10 @@ Partial Class ViewTemplatesForm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.TableLayoutPanel1)
+		Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon) 
         Me.Name = "ViewTemplatesForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "View/Edit Templates - LAMP"
+        Me.Text = "LAMP - View/Edit Templates"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 

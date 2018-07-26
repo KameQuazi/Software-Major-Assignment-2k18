@@ -36,6 +36,7 @@ Partial Class ToolBar
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.btnNewTemplate = New System.Windows.Forms.Button()
         Me.Logo = New System.Windows.Forms.PictureBox()
+		Me.Tooltip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.Logo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()

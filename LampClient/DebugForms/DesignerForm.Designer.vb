@@ -285,10 +285,11 @@ Partial Class DesignerForm
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.SaveFileBtn)
         Me.Controls.Add(Me.OpenFileBtn)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "DesignerForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Designer"
+        Me.Text = "LAMP - Designer"
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()

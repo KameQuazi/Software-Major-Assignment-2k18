@@ -22,6 +22,7 @@ Partial Class HelpBox
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+		Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(HelpBox)) 
         Me.btnHelp = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.btnClose = New System.Windows.Forms.Button()
@@ -41,25 +42,25 @@ Partial Class HelpBox
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.5!)
-        Me.Label1.Location = New System.Drawing.Point(8, 9)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(58, 20)
-        Me.Label1.TabIndex = 1
-        Me.Label1.Text = "Merge!"
+        Me.Label1.AutoSize = True 
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.5!) 
+        Me.Label1.Location = New System.Drawing.Point(8, 9) 
+        Me.Label1.Name = "Label1" 
+        Me.Label1.Size = New System.Drawing.Size(471, 180) 
+        Me.Label1.TabIndex = 1 
+        Me.Label1.Text = resources.GetString("Label1.Text") 
         '
         'btnClose
         '
-        Me.btnClose.BackColor = System.Drawing.Color.White
-        Me.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.25!)
-        Me.btnClose.Location = New System.Drawing.Point(366, 211)
-        Me.btnClose.Name = "btnClose"
-        Me.btnClose.Size = New System.Drawing.Size(106, 38)
-        Me.btnClose.TabIndex = 3
-        Me.btnClose.Text = "Close Help"
-        Me.btnClose.UseVisualStyleBackColor = False
+         Me.btnClose.BackColor = System.Drawing.Color.White 
+        Me.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat 
+        Me.btnClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.25!) 
+        Me.btnClose.Location = New System.Drawing.Point(366, 211) 
+        Me.btnClose.Name = "btnClose" 
+        Me.btnClose.Size = New System.Drawing.Size(106, 38) 
+        Me.btnClose.TabIndex = 3 
+        Me.btnClose.Text = "Close Help" 
+        Me.btnClose.UseVisualStyleBackColor = False 
         '
         'HelpBox
         '
@@ -69,6 +70,8 @@ Partial Class HelpBox
         Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.btnHelp)
+		Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon) 
+
         Me.Name = "HelpBox"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Help"
