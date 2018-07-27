@@ -420,12 +420,12 @@ Public Class TestWcfLocalService
         response = Service.AddJob(Elevated1.ToCredentials, job1)
         Assert.IsTrue(response = LampStatus.GuidConflict)
 
-        Service.Channel.Database.RemoveJob(job1.JobId)
+        Service.RemoveJob(Admin.ToCredentials, job1.JobId)
 
 
         ' elevated should be able to submit jobs
         response = Service.AddJob(Elevated2.ToCredentials, job1)
-        Assert.IsTrue(response = LampStatus.OK)
+        Assert.AreEqual(LampStatus.OK, response)
 
     End Sub
 

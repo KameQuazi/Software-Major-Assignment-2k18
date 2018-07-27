@@ -34,29 +34,6 @@ Public Class LampJob
         End Set
     End Property
 
-
-    Private _dynamicTextDict As ObservableCollection(Of DynamicTextDictionary)
-    ''' <summary>
-    ''' Where the dynamic stuff
-    ''' </summary>
-    ''' <returns></returns>
-    <JsonProperty("dynamic_text_dictionary")>
-    <DataMember>
-    Public Property DynamicTextDictionaries As ObservableCollection(Of DynamicTextDictionary)
-        Get
-            Return _dynamicTextDict
-        End Get
-        Private Set(value As ObservableCollection(Of DynamicTextDictionary))
-            If _dynamicTextDict IsNot Nothing Then
-                RemoveHandler _dynamicTextDict.CollectionChanged, AddressOf DynamicTextDictionary_PropertyChanged
-            End If
-            _dynamicTextDict = value
-
-            If _dynamicTextDict IsNot Nothing Then
-                AddHandler _dynamicTextDict.CollectionChanged, AddressOf DynamicTextDictionary_PropertyChanged
-            End If
-        End Set
-    End Property
     ''' <summary>
     ''' Handler for dynamic text changes
     ''' </summary>
@@ -160,22 +137,24 @@ Public Class LampJob
     ''' </summary>
     <JsonProperty("completed_drawing", Order:=1000)>
     <DataMember>
-    Public Property CompletedDrawing As New List(Of LampDxfDocument)
+    Public Property CompleteDrawings As New List(Of LampDxfDocument)
 
-    Private _insertionLocations As New ObservableCollection(Of LampDxfInsertLocation)
+
+    Private _insertionLocations As New ObservableCollection(Of LampMultipleInsertLocation)
     ''' <summary>
     ''' Where each individual trophy will be inserted (in cartesian form) on the competedDrawing
     ''' Contains rotation data, dynamic text data, everything required to rebuild the
     ''' completeddrawing
+    ''' each LampMultipleInsertLocation represents 1 page of cutter (1 page can have x number of insertion)
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("insertion_locations")>
     <DataMember>
-    Public Property InsertionLocations As ObservableCollection(Of LampDxfInsertLocation)
+    Public Property InsertionPages As ObservableCollection(Of LampMultipleInsertLocation)
         Get
             Return _insertionLocations
         End Get
-        Set(value As ObservableCollection(Of LampDxfInsertLocation))
+        Set(value As ObservableCollection(Of LampMultipleInsertLocation))
             If _insertionLocations IsNot Nothing Then
                 RemoveHandler _insertionLocations.CollectionChanged, AddressOf InsertionLocations_CollectionChanged
             End If
@@ -193,7 +172,7 @@ Public Class LampJob
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub InsertionLocations_CollectionChanged(sender As Object, e As NotifyCollectionChangedEventArgs)
-        NotifyPropertyChanged(NameOf(InsertionLocations))
+        NotifyPropertyChanged(NameOf(InsertionPages))
     End Sub
 
     Public ReadOnly Property SubmitId As String
@@ -231,17 +210,34 @@ Public Class LampJob
         End Set
     End Property
 
+    Public Property Pages As Integer
+        Get
+            Return InsertionPages.Count()
+        End Get
+        Set(value As Integer)
+            If value > InsertionPages.Count Then
+                ' add a few new pages
+                For i = 1 To value - InsertionPages.Count
+                    InsertionPages.Add(New LampMultipleInsertLocation)
+                Next
+            ElseIf value < InsertionPages.Count Then
+                ' remove some pages
+                For i = InsertionPages.Count - 1 To value Step -1
+                    InsertionPages.RemoveAt(i)
+                Next
+            End If
+        End Set
+    End Property
+
     ''' <summary>
     ''' default constructor for when job needs to be sent to db from client
     ''' will auto-generate the drawing
     ''' </summary>
     ''' <param name="template"></param>
     ''' <param name="submitter"></param>
-    Sub New(template As LampTemplate, submitter As LampProfile, summary As String, Optional autoGenerate As Boolean = True)
-        Me.New(template, submitter, Nothing, summary, DateTime.Now)
-        If autoGenerate Then
-            RefreshCompleteDrawing()
-        End If
+    Sub New(template As LampTemplate, submitter As LampProfile, summary As String)
+        Me.New(GetNewGuid, template, submitter, Nothing, summary, DateTime.Now)
+
     End Sub
 
     ''' <summary>
@@ -251,21 +247,22 @@ Public Class LampJob
     ''' <param name="submitter"></param>
     ''' <param name="approver"></param>
     ''' <param name="submitDate"></param>
-    ''' <param name="CompleteDrawing"></param>
-    Sub New(template As LampTemplate, submitter As LampProfile, approver As LampProfile, summary As String, submitDate As Date?, Optional CompleteDrawing As LampDxfDocument = Nothing)
+    ''' <param name="CompleteDrawings"></param>
+    Sub New(jobId As String, template As LampTemplate, submitter As LampProfile, approver As LampProfile, summary As String, submitDate As Date?, Optional CompleteDrawings As List(Of LampDxfDocument) = Nothing)
 
         If template Is Nothing Then
             Throw New ArgumentNullException(NameOf(template))
         End If
-        Me.JobId = System.Guid.NewGuid().ToString()
+        Me.JobId = jobId
         Me.Template = template
         Me.Submitter = submitter
         Me.Approver = approver
         Me.SubmitDate = submitDate
-        Me.CompletedDrawing = CompletedDrawing
+        If CompleteDrawings IsNot Nothing Then
+            Me.CompleteDrawings = CompleteDrawings
+        End If
         Me.Summary = summary
 
-        Me.DynamicTextDictionaries = New ObservableCollection(Of DynamicTextDictionary)
     End Sub
 
     ''' <summary>
@@ -274,16 +271,34 @@ Public Class LampJob
     ''' </summary>
     Public Sub RefreshCompleteDrawing()
         ' TODO!
-        CompletedDrawing = New LampDxfDocument()
+        CompleteDrawings.Clear()
 
-        For Each point As LampDxfInsertLocation In InsertionLocations
-            CompletedDrawing.InsertInto(Template.BaseDrawing, point)
+
+        For Each singleBoardInsert In InsertionPages
+            ' each drawing
+            Dim newDrawing As New LampDxfDocument
+
+            For Each invidualTemplate In singleBoardInsert
+                ' todo insert dyanmic text
+                Template.BaseDrawing.InsertInto(newDrawing, invidualTemplate)
+
+            Next
+
+            CompleteDrawings.Add(newDrawing)
         Next
     End Sub
 
 
-    Public Sub AddInsertionPoint(point As LampDxfInsertLocation, Optional refresh As Boolean = False)
-        InsertionLocations.Add(point)
+    Public Sub AddNewPage()
+        InsertionPages.Add(New LampMultipleInsertLocation)
+    End Sub
+
+    Public Sub AddInsertionPoint(point As LampSingleDxfInsertLocation, page As Integer, Optional refresh As Boolean = False)
+        If page >= InsertionPages.Count Then
+            Throw New ArgumentOutOfRangeException(NameOf(page))
+        End If
+
+        InsertionPages(page).Add(point)
 
         If refresh Then
             RefreshCompleteDrawing()

@@ -173,7 +173,7 @@ Public Class DesignerForm
                 Dim output = input.InputText.Split(" "c)
                 Dim x = Double.Parse(output(0))
                 Dim y = Double.Parse(output(1))
-                Drawing.InsertInto(Drawing, New LampDxfInsertLocation(New netDxf.Vector3(x, y, 0)))
+                Drawing.InsertInto(Drawing, New LampSingleDxfInsertLocation(New netDxf.Vector3(x, y, 0)))
             Catch ex As Exception
                 MessageBox.Show("invalid input: reason {" + ex.ToString + "}")
             End Try

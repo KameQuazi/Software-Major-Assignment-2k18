@@ -1,4 +1,5 @@
-﻿Imports System.ComponentModel
+﻿Imports System.Collections.ObjectModel
+Imports System.ComponentModel
 Imports System.Runtime.CompilerServices
 Imports System.Runtime.Serialization
 Imports netDxf
@@ -6,10 +7,11 @@ Imports Newtonsoft.Json
 
 ''' <summary>
 ''' The location where a template should be inserted into the board
+''' this encompasses 1 single template to insert
 ''' </summary>
 <JsonObject(MemberSerialization.OptIn)>
 <DataContract>
-Public Class LampDxfInsertLocation
+Public Class LampSingleDxfInsertLocation
     Implements INotifyPropertyChanged
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
@@ -48,14 +50,14 @@ Public Class LampDxfInsertLocation
     ''' <returns></returns>
     <JsonProperty("dynamicTextData")>
     <DataMember>
-    Public Property DynamicTextData As New DynamicTextDataStore
+    Public Property DynamicTextData As New DynamicTextDictionary
 
     Sub New(point As Vector3)
         Me.InsertPoint = point
     End Sub
 End Class
 
-Public Class DynamicTextDataStore
-    Inherits Dictionary(Of DynamicTextKey, DynamicTextValue)
-
+<DataContract>
+Public Class LampMultipleInsertLocation
+    Inherits ObservableCollection(Of LampSingleDxfInsertLocation)
 End Class

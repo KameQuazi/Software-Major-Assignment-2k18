@@ -45,10 +45,20 @@ Public Class NewOrderForm
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnNext.Click
-        Dim response = CurrentSender.AddJob(CurrentUser.ToCredentials, New LampJob(Me.CurrentTemplate, CurrentUser.ToProfile, "hello summary"))
+        Dim job = New LampJob(Me.CurrentTemplate, CurrentUser.ToProfile, "hello summary")
+        job.Pages = 3
+
+        For i = 0 To 2
+            job.AddInsertionPoint(New LampSingleDxfInsertLocation(New netDxf.Vector3(0, 0, 0)), i, True)
+
+        Next
+
+
+        Dim response = CurrentSender.AddJob(CurrentUser.ToCredentials, job)
         Select Case response
             Case LampStatus.OK
                 MessageBox.Show("Successfully added job")
+                ShowNewForm(Nothing, Me, HomeForm)
             Case Else
                 ShowError(response)
         End Select

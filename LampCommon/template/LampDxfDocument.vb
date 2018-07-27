@@ -30,6 +30,19 @@ Public Class LampDxfDocument
 
     Public ReadOnly Property DefaultFont As New FontFamily("Arial")
 
+    Private _guid As String = GetNewGuid()
+    <[ReadOnly](True)>
+    <DataMember>
+    Public Property GUID As String
+        Get
+            Return _guid
+        End Get
+        Set(value As String)
+            _guid = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
     <[ReadOnly](True)>
     <DataMember>
     Public Property SerializedDrawing As String
@@ -333,6 +346,10 @@ Public Class LampDxfDocument
         Return AddMText(New MText(text, ConvertPoint3(x, y), textHeight, width))
     End Function
 
+    Public Function AddMText(point As Vector3, text As String, textHeight As Double, width As Double, Optional tstyle As TextStyle = Nothing) As MText
+        Return AddMText(New MText(text, point, textHeight, width))
+    End Function
+
     Public Function AddMText(mtext As MText) As MText
         AddEntity(mtext)
         Return mtext
@@ -407,14 +424,7 @@ Public Class LampDxfDocument
         Return String.Format("CustomDxfDrawing: {0}", _drawing)
     End Function
 
-    ''' <summary>
-    ''' Inserts a lampdocument into this document at the insertionpoint given
-    ''' </summary>
-    ''' <param name="otherDrawing"></param>
-    ''' <param name="insertLocation"></param>
-    Public Sub InsertInto(otherDrawing As LampDxfDocument, insertLocation As LampDxfInsertLocation)
-        Dim offset = insertLocation.InsertPoint
-
+    Public Sub InsertInto(otherDrawing As LampDxfDocument, offset As Vector3, Optional notify As Boolean = True)
         For Each arc As Arc In Drawing.Arcs.ToArray()
             Dim newArc As Arc = arc.Clone()
             newArc.Center = Transform(newArc.Center, offset)
@@ -489,7 +499,30 @@ Public Class LampDxfDocument
             newRay.Origin = Transform(newRay.Origin, offset)
             otherDrawing.AddRay(newRay)
         Next
+        If notify Then
+            NotifyPropertyChanged(NameOf(Drawing))
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Inserts a lampdocument into this document at the insertionpoint given, with dynamicText
+    ''' </summary>
+    ''' <param name="otherDrawing"></param>
+    ''' <param name="insertLocation"></param>
+    Public Sub InsertInto(otherDrawing As LampDxfDocument, insertLocation As LampSingleDxfInsertLocation)
+        Dim offset = insertLocation.InsertPoint
+        InsertInto(otherDrawing, offset, False)
+        InsertDynamicText(otherDrawing, offset, insertLocation.DynamicTextData)
+
         NotifyPropertyChanged(NameOf(Drawing))
+    End Sub
+
+    Private Sub InsertDynamicText(otherDrawing As LampDxfDocument, offset As Vector3, textData As DynamicTextDictionary)
+        For Each text In textData
+            Dim key = text.Key
+            Dim value = text.Value
+            otherDrawing.AddMText(key.Location + offset, value.Value, key.TextHeight, key.TextWidth)
+        Next
     End Sub
 
     ''' <summary> 
@@ -499,13 +532,13 @@ Public Class LampDxfDocument
     ''' <param name="otherDrawing"></param> 
     ''' <param name="height"></param> 
     ''' <param name="width"></param> 
-    Public Function GenRefPoint(otherDrawing As LampTemplate, width As Integer, height As Integer, Optional number As Integer = -1, Optional offset As Double = 2) As List(Of LampDxfInsertLocation)
-        Dim newArray As New List(Of LampDxfInsertLocation)
+    Public Function GenRefPoint(otherDrawing As LampTemplate, width As Integer, height As Integer, Optional number As Integer = -1, Optional offset As Double = 2) As List(Of LampSingleDxfInsertLocation)
+        Dim newArray As New List(Of LampSingleDxfInsertLocation)
         Dim curx As Double = 0
         Dim cury As Double = 0
         While cury + otherDrawing.Height + offset < height
             While curx + otherDrawing.Length + offset < width
-                newArray.Add(New LampDxfInsertLocation(New netDxf.Vector3(curx, cury, 0)))
+                newArray.Add(New LampSingleDxfInsertLocation(New netDxf.Vector3(curx, cury, 0)))
                 curx += otherDrawing.Length + offset
             End While
             curx = 0

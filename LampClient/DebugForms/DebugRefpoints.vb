@@ -7,11 +7,11 @@ Public Class DebugRefpoints
         Dim randItem As New LampTemplate
         randItem.BaseDrawing = LampDxfDocument.FromFile("..\..\..\templates\ten.dxf")
 
-        Dim point As New LampDxfInsertLocation(New netDxf.Vector3(0, 0, 0))
+        Dim point As New LampSingleDxfInsertLocation(New netDxf.Vector3(0, 0, 0))
         randItem.Height = 193
         randItem.Length = 73
 
-        Dim listPoint As New List(Of LampDxfInsertLocation)
+        Dim listPoint As New List(Of LampSingleDxfInsertLocation)
 
         listPoint = test.GenRefPoint(randItem, 600, 400)
         For Each item In listPoint

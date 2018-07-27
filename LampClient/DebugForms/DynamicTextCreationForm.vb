@@ -26,7 +26,7 @@ Public Class DynamicTextCreationForm
         Next
 
         If DynamicFormCreation1.Source.Count() = 0 Then
-            DynamicFormCreation1.Source.Add(New DynamicTextKey("No parameters found", "No parameters are in this template", Nothing, InputType.None))
+            DynamicFormCreation1.Source.Add(New DynamicTextKey("No parameters found", "No parameters are in this template", New netDxf.Vector3, 0, 0, InputType.None, Nothing))
             btnSubmit.Enabled = False
         Else
             btnSubmit.Enabled = True
@@ -58,10 +58,11 @@ Public Class DynamicTextCreationForm
 
             singleDT = DynamicFormCreation1.FlowLayoutPanel1.Controls.Item(index)
             For value As Integer = 0 To singleDT.GetValue.ToString.Split(",").Count
-                If newJob.DynamicTextDictionaries.Count < value + 1 Then
-                    newJob.DynamicTextDictionaries.Add(New DynamicTextDictionary)
-                End If
-                newJob.DynamicTextDictionaries(value).Add(Source.DynamicTextList.Item(value), New DynamicTextValue(singleDT.GetValue.ToString.Split(",").GetValue(value)))
+                ' ??
+                'If newJob.DynamicTextDictionaries.Count < value + 1 Then
+                '    newJob.DynamicTextDictionaries.Add(New DynamicTextDictionary)
+                'End If
+                'newJob.DynamicTextDictionaries(value).Add(Source.DynamicTextList.Item(value), New DynamicTextValue(singleDT.GetValue.ToString.Split(",").GetValue(value)))
             Next
         Next
     End Sub

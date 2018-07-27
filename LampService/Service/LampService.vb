@@ -908,7 +908,8 @@ Public Class LampService
                 response = LampStatus.NoAccess
                 Return response
             End If
-            If Not job Is Nothing Then
+
+            If job Is Nothing Then
                 ' no job exists
                 response = LampStatus.DoesNotExist
                 Return response

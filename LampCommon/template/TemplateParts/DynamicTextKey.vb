@@ -2,6 +2,7 @@
 Imports System.Drawing
 Imports System.Runtime.CompilerServices
 Imports System.Runtime.Serialization
+Imports netDxf
 Imports Newtonsoft.Json
 
 
@@ -34,7 +35,7 @@ Public Class DynamicTextKey
     ''' <returns></returns>
     <JsonProperty("location")>
     <DataMember>
-    Public Property Location As Point
+    Public Property Location As Vector3
 
     ''' <summary>
     ''' The normal font to use
@@ -43,6 +44,22 @@ Public Class DynamicTextKey
     <JsonProperty("font")>
     <DataMember>
     Public Property Font As String
+
+    ''' <summary>
+    ''' text height
+    ''' </summary>
+    <JsonProperty("text_height")>
+    <DataMember>
+    Public Property TextHeight As Double
+
+    ''' <summary>
+    ''' max text width
+    ''' </summary>
+    ''' <returns></returns>
+    <JsonProperty("width")>
+    <DataMember>
+    Public Property TextWidth As Double
+
 
     ''' <summary>
     ''' if the user can override font
@@ -60,6 +77,8 @@ Public Class DynamicTextKey
     <DataMember>
     Public Property InputType As InputType
 
+
+
     Private Shared defaultFont As String = SystemFonts.DefaultFont.Name
 
     ''' <summary>
@@ -69,11 +88,13 @@ Public Class DynamicTextKey
     ''' <param name="description">description of parameter</param>
     ''' <param name="location">where it should be inserted, rel bottom left of the template</param>
     ''' <param name="font">font to use (for text)</param>
-    Public Sub New(parameterName As String, description As String, location As Point, Optional inputType As InputType = InputType.RichTextBox, Optional font As String = Nothing)
+    Public Sub New(parameterName As String, description As String, location As Vector3, textHeight As Double, textWidth As Double, Optional inputType As InputType = InputType.RichTextBox, Optional font As String = Nothing)
         Me.ParameterName = parameterName
         Me.Description = description
         Me.Location = location
         Me.InputType = inputType
+        Me.TextHeight = textHeight
+        Me.TextWidth = textWidth
         If font IsNot Nothing Then
             Me.Font = defaultFont
         Else
@@ -115,6 +136,8 @@ Public Class DynamicTextKey
         hash = (hash * 397) Xor Font.GetHashCode()
         hash = (hash * 397) Xor CanOverrideFont.GetHashCode()
         hash = (hash * 397) Xor InputType.GetHashCode()
+        hash = (hash * 397) Xor TextHeight.GetHashCode()
+        hash = (hash * 397) Xor TextWidth.GetHashCode()
         Return hash
     End Function
 
