@@ -13,6 +13,12 @@ Public Class LampService
 
     Public Property Database As TemplateDatabase
 
+    Public Const MAX_TEMPLATES_PER_REQUEST = 50
+
+    Public Const MAX_JOBS_PER_REQUEST = 50
+
+    Public Const MAX_USERS_PER_REQUEST = 50
+
 #Region "Constructors"
     Sub New()
         Database = New TemplateDatabase(Configuration.ConfigurationManager.AppSettings("databasePath"))
@@ -928,9 +934,9 @@ Public Class LampService
         Return Database.GetAllTemplate()
     End Function
 
-    Public Const MAX_TEMPLATES_PER_REQUEST = 50
 
-    Public Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampSort) As LampTemplateListWrapper Implements ILampService.GetTemplateList
+
+    Public Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampTemplateSort) As LampTemplateListWrapper Implements ILampService.GetTemplateList
         Dim response As New LampTemplateListWrapper
         Try
             If limit <= 0 Or offset < 0 Then
@@ -981,9 +987,8 @@ Public Class LampService
         End Try
     End Function
 
-    Public Const MAX_JOBS_PER_REQUEST = 50
 
-    Public Function GetJobList(credentials As LampCredentials, byUser As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampSort) As LampJobListWrapper Implements ILampService.GetJobList
+    Public Function GetJobList(credentials As LampCredentials, byUser As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampJobSort) As LampJobListWrapper Implements ILampService.GetJobList
         Dim response As New LampJobListWrapper
         'todo
 
@@ -999,13 +1004,6 @@ Public Class LampService
                 Return response
             End If
 
-            ' blacklist template name sort on jobs
-            Select Case orderBy
-                Case LampSort.TemplateNameAsc, LampSort.TemplateNameDesc
-                    response.Status = LampStatus.InvalidParameters
-                    Return response
-
-            End Select
 
             If byUser Is Nothing Then
                 byUser = New List(Of String)
@@ -1035,13 +1033,49 @@ Public Class LampService
     End Function
 
 
+
+    Public Function GetUserList(credentials As LampCredentials, limit As Integer, offset As Integer, orderBy As LampUserSort) As LampUserListWrapper Implements ILampService.GetUserList
+        Dim response As New LampUserListWrapper
+
+        Try
+            If limit <= 0 Or offset < 0 Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            If limit > MAX_USERS_PER_REQUEST Then
+                response.Status = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response.Status = auth.Status
+                Return response
+            End If
+            Dim user = auth.user
+
+            If Not HasGetUserList(user) Then
+                response.Status = LampStatus.NoAccess
+                Return response
+            End If
+
+            response.Users = Database.GetMultipleUser(limit, offset, orderBy)
+            response.Status = LampStatus.OK
+
+            Return response
+
+        Catch ex As Exception
+            response.Status = LampStatus.InternalServerError
+            Return response
+        End Try
+    End Function
 #End Region
 
 
 #Region "HasPermissions"
-
-    Public Function HasGetUserTemplateList(user As LampUser) As Boolean
-        Return user.PermissionLevel >= UserPermission.Standard
+    Public Function HasGetUserList(user As LampUser)
+        Return user IsNot Nothing AndAlso user.PermissionLevel >= UserPermission.Admin
     End Function
 
     Public Function HasGetTemplateListPerms(user As LampUser, approveStatus As LampApprove, byUser As IEnumerable(Of String)) As Boolean

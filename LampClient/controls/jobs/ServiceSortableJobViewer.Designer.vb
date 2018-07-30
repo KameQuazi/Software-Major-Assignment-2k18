@@ -272,7 +272,7 @@ Partial Class ServiceSortableJobViewer
         Me.ComboBox1.Dock = System.Windows.Forms.DockStyle.Left
         Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Items.AddRange(New Object() {"Submit Date", "Name"})
+        Me.ComboBox1.Items.AddRange(New Object() {"Submit Date", "Summary"})
         Me.ComboBox1.Location = New System.Drawing.Point(68, 8)
         Me.ComboBox1.Margin = New System.Windows.Forms.Padding(8)
         Me.ComboBox1.Name = "ComboBox1"
@@ -359,13 +359,14 @@ Partial Class ServiceSortableJobViewer
         '
         'ServiceJobViewer1
         '
+        Me.ServiceJobViewer1.ApprovedType = LampCommon.LampApprove.Approved
         Me.ServiceJobViewer1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ServiceJobViewer1.JustMyJobs = True
         Me.ServiceJobViewer1.Location = New System.Drawing.Point(3, 58)
         Me.ServiceJobViewer1.Name = "ServiceJobViewer1"
         Me.ServiceJobViewer1.Offset = 0
         Me.ServiceJobViewer1.Size = New System.Drawing.Size(1265, 492)
-        Me.ServiceJobViewer1.SortOrder = LampCommon.LampSort.NoSort
+        Me.ServiceJobViewer1.SortOrder = LampCommon.LampTemplateSort.NoSort
         Me.ServiceJobViewer1.TabIndex = 2
         '
         'ServiceSortableJobViewer

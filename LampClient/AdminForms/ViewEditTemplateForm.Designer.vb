@@ -61,7 +61,7 @@ Partial Class ViewEditTemplateForm
         Me.ServiceSortableTemplateViewer1.Name = "ServiceSortableTemplateViewer1"
         Me.ServiceSortableTemplateViewer1.SidebarHidden = False
         Me.ServiceSortableTemplateViewer1.Size = New System.Drawing.Size(1226, 592)
-        Me.ServiceSortableTemplateViewer1.SortOrder = LampCommon.LampSort.NoSort
+        Me.ServiceSortableTemplateViewer1.SortOrder = LampCommon.LampTemplateSort.NoSort
         Me.ServiceSortableTemplateViewer1.TabIndex = 1
         Me.ServiceSortableTemplateViewer1.TitleText = "Edit Template"
         '

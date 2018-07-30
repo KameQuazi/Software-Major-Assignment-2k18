@@ -125,25 +125,25 @@ Public Class ServiceSortableJobViewer
         Me.SplitContainer1.SplitterDistance = Me.Width / 5 * 4
     End Sub
 
-    Private _sortOrder As LampSort
-    Public Property SortOrder As LampSort
+    Private _sortOrder As LampJobSort
+    Public Property SortOrder As LampJobSort
         Get
             Return _sortOrder
         End Get
-        Set(value As LampSort)
+        Set(value As LampJobSort)
             Select Case value
-                Case LampSort.SubmitDateAsc
+                Case LampJobSort.SubmitDateAsc
                     rdbtnAsc.Checked = True
                     ComboBox1.SelectedItem = "Submit Date"
-                Case LampSort.SubmitDateDesc
+                Case LampJobSort.SubmitDateDesc
                     rdbtnDesc.Checked = True
                     ComboBox1.SelectedItem = "Submit Date"
-                Case LampSort.TemplateNameAsc
+                Case LampJobSort.JobSummaryAsc
                     rdbtnAsc.Checked = True
-                    ComboBox1.SelectedItem = "Name"
-                Case LampSort.TemplateNameDesc
+                    ComboBox1.SelectedItem = "Summary"
+                Case LampJobSort.JobSummaryDesc
                     rdbtnDesc.Checked = True
-                    ComboBox1.SelectedItem = "Name"
+                    ComboBox1.SelectedItem = "Summary"
 
             End Select
             _sortOrder = value
@@ -155,41 +155,42 @@ Public Class ServiceSortableJobViewer
         Select Case ComboBox1.SelectedItem
             Case "Submit Date"
                 If rdbtnAsc.Checked Then
-                    ServiceJobViewer1.SortOrder = LampSort.SubmitDateAsc
+                    ServiceJobViewer1.SortOrder = LampJobSort.SubmitDateAsc
                 Else
-                    ServiceJobViewer1.SortOrder = LampSort.SubmitDateDesc
+                    ServiceJobViewer1.SortOrder = LampJobSort.SubmitDateDesc
                 End If
-            Case "Name"
+            Case "Summary"
                 If rdbtnAsc.Checked Then
-                    ServiceJobViewer1.SortOrder = LampSort.TemplateNameAsc
+                    ServiceJobViewer1.SortOrder = LampJobSort.JobSummaryAsc
                 Else
-                    ServiceJobViewer1.SortOrder = LampSort.TemplateNameDesc
+                    ServiceJobViewer1.SortOrder = LampJobSort.JobSummaryDesc
                 End If
         End Select
         WriteSettings()
     End Sub
 
-    Public Sub WriteSettings()
-        If finishedLoading Then
-            My.Settings.SortSettings = New SortSettings(SidebarHidden, ServiceJobViewer1.SortOrder, JustMyJobs, ApprovedType)
-        End If
-    End Sub
 
     Public Sub UpdateContents()
         ServiceJobViewer1.UpdateContents()
     End Sub
 
+    Public Sub WriteSettings()
+        'If finishedLoading Then
+        '    My.Settings.SortSettings = New SortSettings(SidebarHidden, ServiceJobViewer1.SortOrder, JustMyJobs, ApprovedType)
+        'End If
+    End Sub
+
 
     Private Sub LoadSettings()
-        Try
-            If My.Settings.SortSettings IsNot Nothing Then
-                Me.SidebarHidden = My.Settings.SortSettings.SortHidden
-                Me.SortOrder = My.Settings.SortSettings.SortType
-                Me.JustMyJobs = My.Settings.SortSettings.ByMe
-            End If
-        Catch e As Exception
-            MessageBox.Show("Cannot load user settings")
-        End Try
+        'Try
+        '    If My.Settings.SortSettings IsNot Nothing Then
+        '        Me.SidebarHidden = My.Settings.SortSettings.SortHidden
+        '        Me.SortOrder = My.Settings.SortSettings.SortType
+        '        Me.JustMyJobs = My.Settings.SortSettings.ByMe
+        '    End If
+        'Catch e As Exception
+        '    MessageBox.Show("Cannot load user settings")
+        'End Try
     End Sub
 
     Private Sub btnUserFilter_Click(sender As Object, e As EventArgs)
@@ -232,3 +233,4 @@ Public Class ServiceSortableJobViewer
     End Sub
 
 End Class
+

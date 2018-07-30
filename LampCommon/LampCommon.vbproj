@@ -96,9 +96,14 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="database\DatabaseConstructorAndHelper.vb" />
+    <Compile Include="database\DatabaseTemplate.vb" />
+    <Compile Include="database\DatabaseUser.vb" />
+    <Compile Include="database\DatabaseJobs.vb" />
+    <Compile Include="database\SortEnums.vb" />
     <Compile Include="SortSettings.vb" />
     <Compile Include="CommonExtensions.vb" />
-    <Compile Include="database\Database.vb" />
+    <Compile Include="database\DatabaseMultiple.vb" />
     <Compile Include="database\SqliteConnectionWrapper.vb" />
     <Compile Include="database\SqliteTransactionWrapper.vb" />
     <Compile Include="LampVersion.vb" />

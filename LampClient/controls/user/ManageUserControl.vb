@@ -141,6 +141,14 @@ Public Class ManageUserControl
         DisableEdit()
         allowEdit = False
     End Sub
+
+    Private Sub ManageUserControl_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        DisableEdit()
+    End Sub
+
+    Private Sub TboxName_TextChanged(sender As Object, e As EventArgs) Handles TboxName.TextChanged
+        User.Name = TboxName.Text
+    End Sub
 End Class
 
 

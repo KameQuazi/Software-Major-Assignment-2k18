@@ -470,10 +470,10 @@ Public Class TestWcfLocalService
     Public Sub TestGetTemplateList()
 
 
-        Dim response = Service.GetTemplateList(Nothing, Nothing, Nothing, 10, 0, False, LampSort.NoSort)
+        Dim response = Service.GetTemplateList(Nothing, Nothing, Nothing, 10, 0, False, LampTemplateSort.NoSort)
         Assert.AreEqual(LampStatus.InvalidParameters, response.Status)
 
-        response = Service.GetTemplateList(Admin.ToCredentials, Nothing, Nothing, 0, 0, False, LampSort.NoSort)
+        response = Service.GetTemplateList(Admin.ToCredentials, Nothing, Nothing, 0, 0, False, LampTemplateSort.NoSort)
         Assert.AreEqual(LampStatus.InvalidParameters, response.Status)
 
         ' add som approved templatess
@@ -487,38 +487,38 @@ Public Class TestWcfLocalService
         Next i
 
         ' standard cant access non approved templates that dont belong to them
-        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 5, 0, LampApprove.Unapproved, LampSort.NoSort)
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 5, 0, LampApprove.Unapproved, LampTemplateSort.NoSort)
         Assert.AreEqual(LampStatus.NoAccess, response.Status)
         Assert.AreEqual(0, response.Templates.Count())
 
         ' standard can access approved templates
-        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 5, 0, LampApprove.Approved, LampSort.NoSort)
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 5, 0, LampApprove.Approved, LampTemplateSort.NoSort)
         Assert.AreEqual(LampStatus.OK, response.Status)
         Assert.AreEqual(5, response.Templates.Count())
 
         ' standard can also filter thru tags
-        response = Service.GetTemplateList(Standard1.ToCredentials, New List(Of String) From {"grape"}, Nothing, 10, 0, LampApprove.Approved, LampSort.NoSort)
+        response = Service.GetTemplateList(Standard1.ToCredentials, New List(Of String) From {"grape"}, Nothing, 10, 0, LampApprove.Approved, LampTemplateSort.NoSort)
         Assert.AreEqual(LampStatus.OK, response.Status)
         Assert.AreEqual(1, response.Templates.Count())
         AreEqual(ApprovedTemplate.GUID, response.Templates(0).GUID)
 
         ' cannot request more than 50 templates
-        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 51, 0, LampApprove.Approved, LampSort.NoSort)
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, Nothing, 51, 0, LampApprove.Approved, LampTemplateSort.NoSort)
         Assert.AreEqual(LampStatus.InvalidParameters, response.Status)
 
         ' test user filtering
-        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, New List(Of String) From {Admin.UserId}, 50, 0, LampApprove.Approved, LampSort.NoSort)
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, New List(Of String) From {Admin.UserId}, 50, 0, LampApprove.Approved, LampTemplateSort.NoSort)
         Assert.AreEqual(LampStatus.OK, response.Status)
         AreEqual(20, response.Templates.Count())
 
         ' test user filtering 2
-        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, New List(Of String) From {Elevated1.UserId}, 20, 0, LampApprove.Approved, LampSort.NoSort)
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, New List(Of String) From {Elevated1.UserId}, 20, 0, LampApprove.Approved, LampTemplateSort.NoSort)
         Assert.AreEqual(LampStatus.OK, response.Status)
         ' 10 
         AreEqual(10, response.Templates.Count())
 
         ' test sort order
-        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, New List(Of String) From {Admin.UserId}, 20, 0, LampApprove.Approved, LampSort.SubmitDateAsc)
+        response = Service.GetTemplateList(Standard1.ToCredentials, Nothing, New List(Of String) From {Admin.UserId}, 20, 0, LampApprove.Approved, LampTemplateSort.SubmitDateAsc)
         AreEqual(LampStatus.OK, response.Status)
         AreEqual(20, response.Templates.Count())
         Dim prev = response.Templates(0)

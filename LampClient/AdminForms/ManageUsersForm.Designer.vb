@@ -24,6 +24,7 @@ Partial Class ManageUsersForm
     Private Sub InitializeComponent()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.AdminToolbar1 = New LampClient.AdminToolbar()
+        Me.ServiceMultiUserViewer1 = New LampClient.ServiceUserViewer()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -33,6 +34,7 @@ Partial Class ManageUsersForm
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.AdminToolbar1, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.ServiceMultiUserViewer1, 0, 1)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
@@ -51,6 +53,16 @@ Partial Class ManageUsersForm
         Me.AdminToolbar1.Size = New System.Drawing.Size(1226, 99)
         Me.AdminToolbar1.TabIndex = 0
         '
+        'ServiceMultiUserViewer1
+        '
+        Me.ServiceMultiUserViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ServiceMultiUserViewer1.Location = New System.Drawing.Point(3, 108)
+        Me.ServiceMultiUserViewer1.Name = "ServiceMultiUserViewer1"
+        Me.ServiceMultiUserViewer1.Offset = 0
+        Me.ServiceMultiUserViewer1.Size = New System.Drawing.Size(1226, 592)
+        Me.ServiceMultiUserViewer1.SortOrder = LampCommon.LampUserSort.NameAsc
+        Me.ServiceMultiUserViewer1.TabIndex = 1
+        '
         'ManageUsersForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -67,4 +79,5 @@ Partial Class ManageUsersForm
 
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents AdminToolbar1 As AdminToolbar
+    Friend WithEvents ServiceMultiUserViewer1 As ServiceUserViewer
 End Class

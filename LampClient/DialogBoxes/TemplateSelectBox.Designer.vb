@@ -37,7 +37,7 @@ Partial Class TemplateSelectBox
         Me.ServiceSortableTemplateViewer1.Name = "ServiceSortableTemplateViewer1"
         Me.ServiceSortableTemplateViewer1.SidebarHidden = False
         Me.ServiceSortableTemplateViewer1.Size = New System.Drawing.Size(1226, 661)
-        Me.ServiceSortableTemplateViewer1.SortOrder = LampCommon.LampSort.NoSort
+        Me.ServiceSortableTemplateViewer1.SortOrder = LampCommon.LampTemplateSort.NoSort
         Me.ServiceSortableTemplateViewer1.TabIndex = 0
         Me.ServiceSortableTemplateViewer1.TitleText = "Choose a Template"
         '

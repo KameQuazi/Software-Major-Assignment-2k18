@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class ServiceMultiUserViewer
+Partial Class ServiceUserViewer
     Inherits System.Windows.Forms.UserControl
 
     'UserControl overrides dispose to clean up the component list.
@@ -59,7 +59,7 @@ Partial Class ServiceMultiUserViewer
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
         Me.TableLayoutPanel2.RowCount = 1
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(784, 36)
         Me.TableLayoutPanel2.TabIndex = 1
         '
@@ -95,12 +95,12 @@ Partial Class ServiceMultiUserViewer
         Me.MultiUserControl1.Size = New System.Drawing.Size(784, 470)
         Me.MultiUserControl1.TabIndex = 2
         '
-        'ServiceMultiUserViewer
+        'ServiceUserViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.TableLayoutPanel1)
-        Me.Name = "ServiceMultiUserViewer"
+        Me.Name = "ServiceUserViewer"
         Me.Size = New System.Drawing.Size(790, 518)
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)

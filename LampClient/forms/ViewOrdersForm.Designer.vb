@@ -85,7 +85,7 @@ Partial Class ViewOrdersForm
         Me.ServiceJobViewer1.Name = "ServiceJobViewer1"
         Me.ServiceJobViewer1.Offset = 0
         Me.ServiceJobViewer1.Size = New System.Drawing.Size(1220, 586)
-        Me.ServiceJobViewer1.SortOrder = LampCommon.LampSort.NoSort
+        Me.ServiceJobViewer1.SortOrder = LampCommon.LampTemplateSort.NoSort
         Me.ServiceJobViewer1.TabIndex = 8
         '
         'ViewOrdersForm

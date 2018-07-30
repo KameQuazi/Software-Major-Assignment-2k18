@@ -273,10 +273,10 @@
     <Compile Include="controls\toolbar\ToolBar.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="controls\user\ServiceMultiUserViewer.Designer.vb">
-      <DependentUpon>ServiceMultiUserViewer.vb</DependentUpon>
+    <Compile Include="controls\user\ServiceUserViewer.Designer.vb">
+      <DependentUpon>ServiceUserViewer.vb</DependentUpon>
     </Compile>
-    <Compile Include="controls\user\ServiceMultiUserViewer.vb">
+    <Compile Include="controls\user\ServiceUserViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="controls\user\SimpleProfileDisplay.Designer.vb">
@@ -355,12 +355,6 @@
       <DependentUpon>LampInputBox.vb</DependentUpon>
     </Compile>
     <Compile Include="DialogBoxes\LampInputBox.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DialogBoxes\LampUserFilter.Designer.vb">
-      <DependentUpon>LampUserFilter.vb</DependentUpon>
-    </Compile>
-    <Compile Include="DialogBoxes\LampUserFilter.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DialogBoxes\TemplateApproveBox.Designer.vb">
@@ -534,8 +528,8 @@
     <EmbeddedResource Include="controls\toolbar\ToolBar.resx">
       <DependentUpon>ToolBar.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="controls\user\ServiceMultiUserViewer.resx">
-      <DependentUpon>ServiceMultiUserViewer.vb</DependentUpon>
+    <EmbeddedResource Include="controls\user\ServiceUserViewer.resx">
+      <DependentUpon>ServiceUserViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\user\SimpleProfileDisplay.resx">
       <DependentUpon>SimpleProfileDisplay.vb</DependentUpon>
@@ -578,9 +572,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DialogBoxes\LampInputBox.resx">
       <DependentUpon>LampInputBox.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DialogBoxes\LampUserFilter.resx">
-      <DependentUpon>LampUserFilter.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DialogBoxes\TemplateApproveBox.resx">
       <DependentUpon>TemplateApproveBox.vb</DependentUpon>

@@ -10,12 +10,12 @@ Public Class ServiceJobViewer
     End Sub
 
 
-    Private _sortOrder As LampSort = LampSort.NoSort
-    Public Property SortOrder As LampSort
+    Private _sortOrder As LampTemplateSort = LampTemplateSort.NoSort
+    Public Property SortOrder As LampTemplateSort
         Get
             Return _sortOrder
         End Get
-        Set(value As LampSort)
+        Set(value As LampTemplateSort)
             _sortOrder = value
             If IsHandleCreated Then
                 UpdateContents()

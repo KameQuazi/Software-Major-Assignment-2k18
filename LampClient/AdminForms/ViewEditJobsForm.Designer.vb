@@ -62,7 +62,7 @@ Partial Class ViewEditJobsForm
         Me.ServiceSortableJobViewer1.Name = "ServiceSortableJobViewer1"
         Me.ServiceSortableJobViewer1.SidebarHidden = False
         Me.ServiceSortableJobViewer1.Size = New System.Drawing.Size(1226, 592)
-        Me.ServiceSortableJobViewer1.SortOrder = LampCommon.LampSort.NoSort
+        Me.ServiceSortableJobViewer1.SortOrder = LampCommon.LampTemplateSort.NoSort
         Me.ServiceSortableJobViewer1.TabIndex = 1
         Me.ServiceSortableJobViewer1.TitleText = "Choose Job"
         '

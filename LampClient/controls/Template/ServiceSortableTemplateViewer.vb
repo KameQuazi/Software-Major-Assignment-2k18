@@ -127,23 +127,23 @@ Public Class ServiceSortableTemplateViewer
         Me.SplitContainer1.SplitterDistance = Me.Width / 5 * 4
     End Sub
 
-    Private _sortOrder As LampSort
-    Public Property SortOrder As LampSort
+    Private _sortOrder As LampTemplateSort
+    Public Property SortOrder As LampTemplateSort
         Get
             Return _sortOrder
         End Get
-        Set(value As LampSort)
+        Set(value As LampTemplateSort)
             Select Case value
-                Case LampSort.SubmitDateAsc
+                Case LampTemplateSort.SubmitDateAsc
                     rdbtnAsc.Checked = True
                     ComboBox1.SelectedItem = "Submit Date"
-                Case LampSort.SubmitDateDesc
+                Case LampTemplateSort.SubmitDateDesc
                     rdbtnDesc.Checked = True
                     ComboBox1.SelectedItem = "Submit Date"
-                Case LampSort.TemplateNameAsc
+                Case LampTemplateSort.TemplateNameAsc
                     rdbtnAsc.Checked = True
                     ComboBox1.SelectedItem = "Name"
-                Case LampSort.TemplateNameDesc
+                Case LampTemplateSort.TemplateNameDesc
                     rdbtnDesc.Checked = True
                     ComboBox1.SelectedItem = "Name"
 
@@ -157,15 +157,15 @@ Public Class ServiceSortableTemplateViewer
         Select Case ComboBox1.SelectedItem
             Case "Submit Date"
                 If rdbtnAsc.Checked Then
-                    ServiceTemplateViewer1.SortOrder = LampSort.SubmitDateAsc
+                    ServiceTemplateViewer1.SortOrder = LampTemplateSort.SubmitDateAsc
                 Else
-                    ServiceTemplateViewer1.SortOrder = LampSort.SubmitDateDesc
+                    ServiceTemplateViewer1.SortOrder = LampTemplateSort.SubmitDateDesc
                 End If
             Case "Name"
                 If rdbtnAsc.Checked Then
-                    ServiceTemplateViewer1.SortOrder = LampSort.TemplateNameAsc
+                    ServiceTemplateViewer1.SortOrder = LampTemplateSort.TemplateNameAsc
                 Else
-                    ServiceTemplateViewer1.SortOrder = LampSort.TemplateNameDesc
+                    ServiceTemplateViewer1.SortOrder = LampTemplateSort.TemplateNameDesc
                 End If
         End Select
         WriteSettings()

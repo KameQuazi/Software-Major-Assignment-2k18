@@ -120,3 +120,12 @@ Public Enum LampStatus
     EmailConflict = 512
     NoTemplateFound = 1024
 End Enum
+
+<DataContract>
+Public Class LampUserListWrapper
+    <DataMember>
+    Public Property Users As New List(Of LampUser)
+
+    <DataMember>
+    Public Property Status As LampStatus
+End Class

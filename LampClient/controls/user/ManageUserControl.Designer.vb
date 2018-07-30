@@ -38,7 +38,6 @@ Partial Class ManageUserControl
         Me.btnRevert = New System.Windows.Forms.Button()
         Me.btnEdit = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
-        Me.ServiceSortableJobViewer1 = New LampClient.ServiceSortableJobViewer()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
@@ -260,24 +259,11 @@ Partial Class ManageUserControl
         Me.btnDelete.Text = "Delete User"
         Me.btnDelete.UseVisualStyleBackColor = False
         '
-        'ServiceSortableJobViewer1
-        '
-        Me.ServiceSortableJobViewer1.ApprovedType = LampCommon.LampApprove.All
-        Me.ServiceSortableJobViewer1.JustMyJobs = False
-        Me.ServiceSortableJobViewer1.Location = New System.Drawing.Point(182, 189)
-        Me.ServiceSortableJobViewer1.Name = "ServiceSortableJobViewer1"
-        Me.ServiceSortableJobViewer1.SidebarHidden = False
-        Me.ServiceSortableJobViewer1.Size = New System.Drawing.Size(1500, 555)
-        Me.ServiceSortableJobViewer1.SortOrder = LampCommon.LampSort.NoSort
-        Me.ServiceSortableJobViewer1.TabIndex = 0
-        Me.ServiceSortableJobViewer1.TitleText = "Choose Job"
-        '
         'ManageUserControl
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.TableLayoutPanel1)
-        Me.Controls.Add(Me.ServiceSortableJobViewer1)
         Me.Name = "ManageUserControl"
         Me.Size = New System.Drawing.Size(476, 429)
         Me.TableLayoutPanel1.ResumeLayout(False)
@@ -287,8 +273,6 @@ Partial Class ManageUserControl
         Me.ResumeLayout(False)
 
     End Sub
-
-    Friend WithEvents ServiceSortableJobViewer1 As ServiceSortableJobViewer
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
     Friend WithEvents Label4 As Label

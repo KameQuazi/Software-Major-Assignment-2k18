@@ -78,7 +78,7 @@ Partial Class ApproveTemplateForm
         Me.ServiceSortableTemplateViewer1.Name = "ServiceSortableTemplateViewer1"
         Me.ServiceSortableTemplateViewer1.SidebarHidden = False
         Me.ServiceSortableTemplateViewer1.Size = New System.Drawing.Size(1220, 555)
-        Me.ServiceSortableTemplateViewer1.SortOrder = LampCommon.LampSort.NoSort
+        Me.ServiceSortableTemplateViewer1.SortOrder = LampCommon.LampTemplateSort.NoSort
         Me.ServiceSortableTemplateViewer1.TabIndex = 0
         Me.ServiceSortableTemplateViewer1.TitleText = "Unapproved Templates"
         '

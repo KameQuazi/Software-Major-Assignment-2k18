@@ -103,7 +103,7 @@ Partial Class ServiceSortableTemplateViewer
         Me.ServiceTemplateViewer1.Name = "ServiceTemplateViewer1"
         Me.ServiceTemplateViewer1.Offset = 0
         Me.ServiceTemplateViewer1.Size = New System.Drawing.Size(1265, 492)
-        Me.ServiceTemplateViewer1.SortOrder = LampCommon.LampSort.SubmitDateAsc
+        Me.ServiceTemplateViewer1.SortOrder = LampCommon.LampTemplateSort.SubmitDateAsc
         Me.ServiceTemplateViewer1.TabIndex = 0
         '
         'TableLayoutPanel2

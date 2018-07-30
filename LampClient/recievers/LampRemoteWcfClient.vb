@@ -191,20 +191,28 @@ Public Class LampRemoteWcfClient
         Return Channel.RemoveJobAsync(credentials, guid)
     End Function
 
-    Public Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampSort) As LampTemplateListWrapper Implements ILampService.GetTemplateList
+    Public Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampTemplateSort) As LampTemplateListWrapper Implements ILampService.GetTemplateList
         Return Channel.GetTemplateList(credentials, tags, byUser, limit, offset, approveStatus, orderBy)
     End Function
 
-    Public Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampSort) As Task(Of LampTemplateListWrapper) Implements ILampServiceAsync.GetTemplateListAsync
+    Public Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampTemplateSort) As Task(Of LampTemplateListWrapper) Implements ILampServiceAsync.GetTemplateListAsync
         Return Channel.GetTemplateListAsync(credentials, tags, byUser, limit, offset, approveStatus, orderBy)
     End Function
 
-    Public Function GetJobList(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampSort) As LampJobListWrapper Implements ILampService.GetJobList
+    Public Function GetJobList(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampJobSort) As LampJobListWrapper Implements ILampService.GetJobList
         Return Channel.GetJobList(credentials, byUsers, limit, offset, orderBy)
     End Function
 
-    Public Function GetJobListAsync(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampSort) As Task(Of LampJobListWrapper) Implements ILampServiceAsync.GetJobListAsync
+    Public Function GetJobListAsync(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampJobSort) As Task(Of LampJobListWrapper) Implements ILampServiceAsync.GetJobListAsync
         Return Channel.GetJobListAsync(credentials, byUsers, limit, offset, orderBy)
+    End Function
+
+    Public Function GetUserList(credentials As LampCredentials, limit As Integer, offset As Integer, orderBy As LampUserSort) As LampUserListWrapper Implements ILampService.GetUserList
+        Return Channel.GetUserList(credentials, limit, offset, orderBy)
+    End Function
+
+    Public Function GetUserListAsync(credentials As LampCredentials, limit As Integer, offset As Integer, orderBy As LampUserSort) As Task(Of LampUserListWrapper) Implements ILampServiceAsync.GetUserListAsync
+        Return Channel.GetUserListAsync(credentials, limit, offset, orderBy)
     End Function
 
 

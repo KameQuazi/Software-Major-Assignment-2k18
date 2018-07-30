@@ -9,12 +9,12 @@ Public Class ServiceTemplateViewer
         ' just bubble the event
     End Sub
 
-    Private _sortOrder As LampSort = LampSort.SubmitDateAsc
-    Public Property SortOrder As LampSort
+    Private _sortOrder As LampTemplateSort = LampTemplateSort.SubmitDateAsc
+    Public Property SortOrder As LampTemplateSort
         Get
             Return _sortOrder
         End Get
-        Set(value As LampSort)
+        Set(value As LampTemplateSort)
             _sortOrder = value
             If IsHandleCreated Then
                 UpdateContents()

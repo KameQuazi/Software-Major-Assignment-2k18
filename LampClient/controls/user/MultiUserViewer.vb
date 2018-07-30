@@ -6,6 +6,39 @@ Public Class MultiUserViewer
     ' Public Property Users As New List(Of LampUser)
     Public Event UserClick(sender As Object, args As UserClickEventArgs)
 
+    Public ReadOnly Property Users As IList
+        Get
+            Return LampUserBindingSource
+        End Get
+    End Property
+
+
+    ' enable double buffering
+    Protected Overrides ReadOnly Property CreateParams As CreateParams
+        Get
+
+            Dim baseParams = MyBase.CreateParams
+            baseParams.ExStyle = baseParams.ExStyle Or &H2000000 ' magic number that enables double buffering
+            Return baseParams
+        End Get
+    End Property
+
+
+
+    Private _suspend As Boolean = False
+
+    Public Sub Suspend()
+        _suspend = True
+    End Sub
+
+    Public Sub EndSuspend(Optional doUpdate As Boolean = True)
+        _suspend = False
+        If doUpdate Then
+            UpdateContents()
+        End If
+    End Sub
+
+
     Public Sub New()
 
         ' This call is required by the designer.
@@ -24,7 +57,7 @@ Public Class MultiUserViewer
         'DataGridView1.Rows.Add(row)
         'row = New String() {"4", "Product 4", "4000"}
         'DataGridView1.Rows.Add(row)
-        LampUserBindingSource.Add(New LampUser("", UserPermission.Admin, "asdf", "asdasdf", "asdf", "asdasdas"))
+        ' LampUserBindingSource.Add(New LampUser("", UserPermission.Admin, "asdf", "asdasdf", "asdf", "asdasdas"))
     End Sub
 
     Public Sub UpdateContents()
@@ -41,11 +74,17 @@ Public Class MultiUserViewer
         Dim senderGrid As DataGridView = sender
         If TypeOf senderGrid.Columns(e.ColumnIndex) Is DataGridViewButtonColumn AndAlso e.RowIndex >= 0 Then
             Dim selectedUser As LampUser = LampUserBindingSource(e.RowIndex)
-            Using dialog As New EditUserForm
-                dialog.User = selectedUser
-                dialog.ShowDialog(Me)
-            End Using
+            RaiseEvent UserClick(Me, New UserClickEventArgs(selectedUser))
         End If
+    End Sub
+
+    Public Sub ShowLoading()
+        TableLayoutPanel2.Visible = True
+        LoadingPictureBox.Visible = True
+    End Sub
+
+    Public Sub StopLoading()
+        TableLayoutPanel2.Visible = False
     End Sub
 End Class
 
