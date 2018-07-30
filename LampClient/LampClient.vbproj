@@ -162,6 +162,9 @@
     <Compile Include="controls\jobs\ServiceSortableJobViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="controls\PasswordRichTextBox.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="controls\template\EditDynamicText.Designer.vb">
       <DependentUpon>EditDynamicText.vb</DependentUpon>
     </Compile>
@@ -208,6 +211,18 @@
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
     </Compile>
     <Compile Include="controls\template\MultiTemplateViewer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\user\ManageUserControl.Designer.vb">
+      <DependentUpon>ManageUserControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\user\ManageUserControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="controls\user\MultiUserControl.Designer.vb">
+      <DependentUpon>MultiUserControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\user\MultiUserControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="controls\user\ProfileDisplay.Designer.vb">
@@ -304,6 +319,12 @@
       <DependentUpon>CloseBox.vb</DependentUpon>
     </Compile>
     <Compile Include="DialogBoxes\CloseBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogBoxes\LampPasswordBox.Designer.vb">
+      <DependentUpon>LampPasswordBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DialogBoxes\LampPasswordBox.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\frmCreateAcc.Designer.vb">
@@ -471,6 +492,12 @@
     <EmbeddedResource Include="controls\template\MultiTemplateViewer.resx">
       <DependentUpon>MultiTemplateViewer.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="controls\user\ManageUserControl.resx">
+      <DependentUpon>ManageUserControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\user\MultiUserControl.resx">
+      <DependentUpon>MultiUserControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\user\ProfileDisplay.resx">
       <DependentUpon>ProfileDisplay.vb</DependentUpon>
     </EmbeddedResource>
@@ -521,6 +548,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DialogBoxes\EditTemplateDialog.resx">
       <DependentUpon>EditTemplateDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogBoxes\LampPasswordBox.resx">
+      <DependentUpon>LampPasswordBox.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\frmCreateAcc.resx">
       <DependentUpon>frmCreateAcc.vb</DependentUpon>
@@ -587,6 +617,7 @@
     </None>
     <None Include="My Project\DataSources\LampCommon.LampTemplate.datasource" />
     <None Include="My Project\DataSources\LampCommon.LampTemplateWrapper.datasource" />
+    <None Include="My Project\DataSources\LampCommon.LampUser.datasource" />
     <None Include="My Project\DataSources\LampCommon.LampUserReturnWrapper.datasource" />
     <None Include="My Project\DataSources\LampCommon.LampUserWrapper.datasource" />
     <None Include="My Project\Settings.settings">

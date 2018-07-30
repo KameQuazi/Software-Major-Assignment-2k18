@@ -1,7 +1,4 @@
 ﻿Public Class LampInputBox
-    Private Sub LampInputBox_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
 
     ''' <summary>
     ''' The text that is inputted by the user

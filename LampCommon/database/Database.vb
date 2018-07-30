@@ -609,10 +609,10 @@ Partial Public Class TemplateDatabase
                 End If
             Next
 
-            If optTrans IsNot Nothing Then
+            If optTrans Is Nothing Then
                 trans.Commit()
             End If
-            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
+            Return True
         End Using
     End Function
 
@@ -1378,7 +1378,7 @@ Partial Public Class TemplateDatabase
     ''' <param name="user"></param>
     ''' <param name="trans"></param>
     ''' <returns></returns>
-    Public Function UserExists(user As LampUser, Optional trans As SqliteTransactionWrapper = Nothing) As LampStatus
+    Public Function UniqueUser(user As LampUser, Optional trans As SqliteTransactionWrapper = Nothing) As LampStatus
         Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
             command.CommandText = "Select EXISTS(SELECT 1 from Users WHERE userid=@userid)"
             command.Parameters.AddWithValue("@userid", user.UserId)

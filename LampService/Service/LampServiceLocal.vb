@@ -274,16 +274,11 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            Dim exists = Database.UserExists(newUser)
-            If exists <> LampStatus.OK Then
-                response = exists
-                Return response
-            End If
-
             If oldUser Is Nothing Then
                 response = LampStatus.DoesNotExist
                 Return response
             End If
+
 
 
             Await Database.SetUserAsync(newUser).ConfigureAwait(False)
@@ -298,11 +293,11 @@ Public Class LampServiceLocal
 
     End Function
 
-    Public Async Function RemoveUserAsync(credentials As LampCredentials, newUser As LampUser) As Task(Of LampStatus) Implements ILampServiceAsync.RemoveUserAsync
+    Public Async Function RemoveUserAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.RemoveUserAsync
         Dim response As LampStatus
 
         Try
-            If newUser Is Nothing Then
+            If guid Is Nothing Then
                 response = LampStatus.InvalidParameters
                 Return response
             End If
@@ -315,20 +310,22 @@ Public Class LampServiceLocal
 
 
             Dim thisUser = auth.user
-            Dim oldUser = Await Database.SelectUserAsync(newUser.UserId).ConfigureAwait(False)
+            Dim oldUser = Await Database.SelectUserAsync(guid).ConfigureAwait(False)
+
+            If Not HasRemoveUserPerms(thisUser, oldUser) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
 
             If oldUser Is Nothing Then
                 response = LampStatus.DoesNotExist
                 Return response
             End If
 
-            If Not HasEditUserPerms(thisUser, oldUser, newUser) Then
-                response = LampStatus.NoAccess
-                Return response
-            End If
+
 
             ' passed all checks
-            Await Database.SetUserAsync(newUser).ConfigureAwait(False)
+            Await Database.RemoveUserAsync(guid).ConfigureAwait(False)
             response = LampStatus.OK
             Return response
 

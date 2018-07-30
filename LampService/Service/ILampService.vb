@@ -67,10 +67,10 @@ Public Interface ILampService
     ''' delets a user from the server
     ''' </summary>
     ''' <param name="credentials"></param>
-    ''' <param name="user"></param>
+    ''' <param name="guid"></param>
     ''' <returns></returns>
     <OperationContract>
-    Function RemoveUser(credentials As LampCredentials, user As LampUser) As LampStatus
+    Function RemoveUser(credentials As LampCredentials, guid As String) As LampStatus
 
     ''' <summary>
     ''' tries to login, and returns a user / reason wrapper
@@ -199,7 +199,7 @@ Public Interface ILampServiceAsync
     Function EditUserAsync(credentials As LampCredentials, user As LampUser) As Task(Of LampStatus)
 
     <OperationContract>
-    Function RemoveUserAsync(credentials As LampCredentials, user As LampUser) As Task(Of LampStatus)
+    Function RemoveUserAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus)
 
     <OperationContract>
     Function AuthenticateAsync(credentials As LampCredentials) As Task(Of LampUserWrapper)

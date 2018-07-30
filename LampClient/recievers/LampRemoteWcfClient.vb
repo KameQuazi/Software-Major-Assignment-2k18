@@ -80,12 +80,12 @@ Public Class LampRemoteWcfClient
         Return Channel.EditUserAsync(credentials, user)
     End Function
 
-    Public Function RemoveUser(credentials As LampCredentials, user As LampUser) As LampStatus Implements ILampServiceBoth.RemoveUser
-        Return Channel.RemoveUser(credentials, user)
+    Public Function RemoveUser(credentials As LampCredentials, guid As String) As LampStatus Implements ILampServiceBoth.RemoveUser
+        Return Channel.RemoveUser(credentials, guid)
     End Function
 
-    Public Function RemoveUserAsync(credentials As LampCredentials, user As LampUser) As Task(Of LampStatus) Implements ILampServiceBoth.RemoveUserAsync
-        Return Channel.RemoveUserAsync(credentials, user)
+    Public Function RemoveUserAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceBoth.RemoveUserAsync
+        Return Channel.RemoveUserAsync(credentials, guid)
     End Function
 
     Public Function Authenticate(credentials As LampCredentials) As LampUserWrapper Implements ILampServiceBoth.Authenticate

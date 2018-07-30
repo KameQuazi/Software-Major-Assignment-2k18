@@ -38,7 +38,7 @@ Public Module OwO
     End Sub
 
     Public Sub ShowError([error] As LampStatus)
-        MessageBox.Show("An error occurred: " + [error].ToString, "Error")
+        MessageBox.Show("An error occurred: " + [error].ToString, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
     End Sub
 
 

@@ -22,8 +22,6 @@ Partial Class JobDisplay
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim LampTemplate1 As LampCommon.LampTemplate = New LampCommon.LampTemplate()
-        Dim LampDxfDocument1 As LampCommon.LampDxfDocument = New LampCommon.LampDxfDocument()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.FileDisplay1 = New LampClient.TemplateDisplay()
@@ -82,20 +80,6 @@ Partial Class JobDisplay
         Me.FileDisplay1.Name = "FileDisplay1"
         Me.FileDisplay1.Size = New System.Drawing.Size(475, 298)
         Me.FileDisplay1.TabIndex = 3
-        LampTemplate1.ApproverProfile = Nothing
-        LampTemplate1.BaseDrawing = LampDxfDocument1
-        LampTemplate1.CreatorProfile = Nothing
-        LampTemplate1.GUID = "cef4512c-eb16-4eb4-ac49-71de15c81646"
-        LampTemplate1.Height = 0R
-        LampTemplate1.IsComplete = False
-        LampTemplate1.Length = 0R
-        LampTemplate1.LongDescription = ""
-        LampTemplate1.Material = "Unspecified"
-        LampTemplate1.MaterialThickness = 0R
-        LampTemplate1.Name = ""
-        LampTemplate1.ShortDescription = ""
-        LampTemplate1.SubmitDate = Nothing
-        Me.FileDisplay1.Template = LampTemplate1
         '
         'SimpleProfileDisplay2
         '

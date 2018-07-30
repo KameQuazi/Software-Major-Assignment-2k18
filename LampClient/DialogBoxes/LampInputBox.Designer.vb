@@ -23,9 +23,9 @@ Partial Class LampInputBox
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
         Me.CancelExitButon = New System.Windows.Forms.Button()
         Me.OkButton = New System.Windows.Forms.Button()
+        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
         Me.SuspendLayout()
         '
         'Label1
@@ -36,14 +36,6 @@ Partial Class LampInputBox
         Me.Label1.Size = New System.Drawing.Size(58, 13)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Enter Data"
-        '
-        'RichTextBox1
-        '
-        Me.RichTextBox1.Location = New System.Drawing.Point(12, 66)
-        Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(218, 96)
-        Me.RichTextBox1.TabIndex = 1
-        Me.RichTextBox1.Text = ""
         '
         'CancelExitButon
         '
@@ -65,6 +57,14 @@ Partial Class LampInputBox
         Me.OkButton.Text = "Ok"
         Me.OkButton.UseVisualStyleBackColor = True
         '
+        'RichTextBox1
+        '
+        Me.RichTextBox1.Location = New System.Drawing.Point(12, 66)
+        Me.RichTextBox1.Name = "RichTextBox1"
+        Me.RichTextBox1.Size = New System.Drawing.Size(218, 96)
+        Me.RichTextBox1.TabIndex = 1
+        Me.RichTextBox1.Text = ""
+        '
         'LampInputBox
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -83,7 +83,7 @@ Partial Class LampInputBox
     End Sub
 
     Friend WithEvents Label1 As Label
-    Friend WithEvents RichTextBox1 As RichTextBox
     Friend WithEvents CancelExitButon As Button
     Friend WithEvents OkButton As Button
+    Friend WithEvents RichTextBox1 As RichTextBox
 End Class

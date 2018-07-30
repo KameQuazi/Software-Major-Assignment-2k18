@@ -26,7 +26,12 @@ Public Class DebugForm
     End Sub
 
     Private Sub DebugForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ' ManageUserControl1.User = New LampUser(GetNewGuid, UserPermission.Standard, "hello@gmail.com", "hello", "asdf", "did it")
+        MultiUserControl1.LampUserBindingSource.Add(New LampUser(GetNewGuid, UserPermission.Standard, "hello@gmail.com", "hello", "asdf", "did it"))
+        MultiUserControl1.LampUserBindingSource.Add(New LampUser(GetNewGuid, UserPermission.Standard, "hello@2.com", "hello", "asdf", "did it"))
 
+        MultiUserControl1.LampUserBindingSource.Add(New LampUser(GetNewGuid, UserPermission.Standard, "3@gmail.com", "hello", "asdf", "did it"))
+        MultiUserControl1.UpdateContents()
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click

@@ -6,6 +6,7 @@ Imports LampCommon
 ''' </summary>
 <DataContract>
 Public Class LampUser
+    Implements ICloneable
     ''' <summary>
     ''' a anonymous user
     ''' </summary>
@@ -16,6 +17,7 @@ Public Class LampUser
     Public Property Email As String
 
     <DataMember>
+    <ComponentModel.Browsable(False)>
     Public Property Password As String
 
     <DataMember>
@@ -51,6 +53,16 @@ Public Class LampUser
     Public Function ToCredentials() As LampCredentials
         Return New LampCredentials(Me.Username, Me.Password)
     End Function
+
+    Public Function Clone() As Object Implements ICloneable.Clone
+        Dim user = New LampUser(Me.UserId.Clone(),
+                                Me.PermissionLevel,
+                                Me.Email.Clone(),
+                                Me.Username.Clone(),
+                                Me.Password.Clone(),
+                                Me.Name.Clone())
+        Return user
+    End Function
 End Class
 
 Public Enum UserPermission
@@ -84,6 +96,8 @@ Public Class LampUserWrapper
 
     Public Sub New()
     End Sub
+
+
 End Class
 
 

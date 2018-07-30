@@ -35,6 +35,10 @@ Partial Class DebugForm
         Me.Button10 = New System.Windows.Forms.Button()
         Me.Button11 = New System.Windows.Forms.Button()
         Me.Button12 = New System.Windows.Forms.Button()
+        Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
+        Me.MultiUserControl1 = New LampClient.MultiUserControl()
+        Me.MultiUserControl2 = New LampClient.MultiUserControl()
+        Me.MultiUserControl3 = New LampClient.MultiUserControl()
         Me.SuspendLayout()
         '
         'Button1
@@ -176,11 +180,46 @@ Partial Class DebugForm
         Me.Button12.Text = "Test Refpoints"
         Me.Button12.UseVisualStyleBackColor = False
         '
+        'MultiTemplateViewer1
+        '
+        Me.MultiTemplateViewer1.AutoScroll = True
+        Me.MultiTemplateViewer1.Columns = 4
+        Me.MultiTemplateViewer1.Location = New System.Drawing.Point(90, 375)
+        Me.MultiTemplateViewer1.MouseOverHighlight = False
+        Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
+        Me.MultiTemplateViewer1.Rows = 2
+        Me.MultiTemplateViewer1.Size = New System.Drawing.Size(150, 441)
+        Me.MultiTemplateViewer1.TabIndex = 17
+        Me.MultiTemplateViewer1.TemplateCursor = System.Windows.Forms.Cursors.Hand
+        '
+        'MultiUserControl1
+        '
+        Me.MultiUserControl1.Location = New System.Drawing.Point(0, 0)
+        Me.MultiUserControl1.Name = "MultiUserControl1"
+        Me.MultiUserControl1.Size = New System.Drawing.Size(459, 380)
+        Me.MultiUserControl1.TabIndex = 0
+        '
+        'MultiUserControl2
+        '
+        Me.MultiUserControl2.Location = New System.Drawing.Point(0, 0)
+        Me.MultiUserControl2.Name = "MultiUserControl2"
+        Me.MultiUserControl2.Size = New System.Drawing.Size(459, 380)
+        Me.MultiUserControl2.TabIndex = 0
+        '
+        'MultiUserControl3
+        '
+        Me.MultiUserControl3.Location = New System.Drawing.Point(452, 94)
+        Me.MultiUserControl3.Name = "MultiUserControl3"
+        Me.MultiUserControl3.Size = New System.Drawing.Size(459, 380)
+        Me.MultiUserControl3.TabIndex = 18
+        '
         'DebugForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(1232, 703)
+        Me.Controls.Add(Me.MultiUserControl3)
+        Me.Controls.Add(Me.MultiTemplateViewer1)
         Me.Controls.Add(Me.Button12)
         Me.Controls.Add(Me.Button11)
         Me.Controls.Add(Me.Button10)
@@ -215,4 +254,8 @@ Partial Class DebugForm
     Friend WithEvents Button10 As Button
     Friend WithEvents Button11 As Button
     Friend WithEvents Button12 As Button
+    Friend WithEvents MultiTemplateViewer1 As MultiTemplateViewer
+    Friend WithEvents MultiUserControl1 As MultiUserControl
+    Friend WithEvents MultiUserControl2 As MultiUserControl
+    Friend WithEvents MultiUserControl3 As MultiUserControl
 End Class

@@ -58,7 +58,7 @@ Public Class LampService
 
             response.Status = LampStatus.OK
             response.Template = template
-                Return response
+            Return response
 
 
 
@@ -256,7 +256,7 @@ Public Class LampService
                 Return response
             End If
 
-            Dim exists = Database.UserExists(toAddUser)
+            Dim exists = Database.UniqueUser(toAddUser)
             If exists <> LampStatus.OK Then
                 response = exists
                 Return response
@@ -277,7 +277,7 @@ Public Class LampService
 
     Public Function DebugAddUser(user As LampUser) As LampStatus
         Dim response As LampStatus
-        Dim exists = Database.UserExists(user)
+        Dim exists = Database.UniqueUser(user)
         If exists <> LampStatus.OK Then
             response = exists
             Return response
@@ -313,12 +313,6 @@ Public Class LampService
                 Return response
             End If
 
-            Dim exists = Database.UserExists(newUser)
-            If exists <> LampStatus.OK Then
-                response = exists
-                Return response
-            End If
-
             If oldUser Is Nothing Then
                 response = LampStatus.DoesNotExist
                 Return response
@@ -341,13 +335,13 @@ Public Class LampService
     ''' only admins
     ''' </summary>
     ''' <param name="credentials"></param>
-    ''' <param name="newUser"></param>
+    ''' <param name="guid"></param>
     ''' <returns></returns>
-    Public Function RemoveUser(credentials As LampCredentials, newUser As LampUser) As LampStatus Implements ILampService.RemoveUser
+    Public Function RemoveUser(credentials As LampCredentials, guid As String) As LampStatus Implements ILampService.RemoveUser
         Dim response As LampStatus
 
         Try
-            If newUser Is Nothing Then
+            If guid Is Nothing Then
                 response = LampStatus.InvalidParameters
                 Return response
             End If
@@ -360,20 +354,20 @@ Public Class LampService
 
 
             Dim thisUser = auth.user
-            Dim oldUser = Database.SelectUser(newUser.UserId)
+            Dim oldUser = Database.SelectUser(guid)
+
+            If Not HasRemoveUserPerms(thisUser, oldUser) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
 
             If oldUser Is Nothing Then
                 response = LampStatus.DoesNotExist
                 Return response
             End If
 
-            If Not HasEditUserPerms(thisUser, oldUser, newUser) Then
-                response = LampStatus.NoAccess
-                Return response
-            End If
-
             ' passed all checks
-            Database.SetUser(newUser)
+            Database.RemoveUser(oldUser.UserId)
             response = LampStatus.OK
             Return response
 
@@ -1059,7 +1053,7 @@ Public Class LampService
         '  deny if standard user tries to get unapproved templates from other users
         If user.PermissionLevel < UserPermission.Elevated Then
             If byUser.Count() = 0 Then
-                Return false 
+                Return False
             End If
             Dim notUser As Boolean = False
             For Each item In byUser
@@ -1161,7 +1155,14 @@ Public Class LampService
     End Function
 
     Public Function HasEditUserPerms(user As LampUser, oldUser As LampUser, newUser As LampUser) As Boolean
-        Return oldUser.UserId = user.UserId OrElse user.PermissionLevel >= UserPermission.Admin
+
+        If user.PermissionLevel >= UserPermission.Admin Then
+            Return True
+        End If
+        If oldUser Is Nothing Then
+            Return False
+        End If
+        Return oldUser.UserId = user.UserId
     End Function
 
     Public Function HasRemoveUserPerms(user As LampUser, otherUser As LampUser)
