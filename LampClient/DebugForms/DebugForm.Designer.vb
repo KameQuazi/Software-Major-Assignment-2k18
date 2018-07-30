@@ -36,9 +36,8 @@ Partial Class DebugForm
         Me.Button11 = New System.Windows.Forms.Button()
         Me.Button12 = New System.Windows.Forms.Button()
         Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
-        Me.MultiUserControl1 = New LampClient.MultiUserControl()
-        Me.MultiUserControl2 = New LampClient.MultiUserControl()
-        Me.MultiUserControl3 = New LampClient.MultiUserControl()
+        Me.MultiUserControl1 = New LampClient.MultiUserViewer()
+        Me.MultiUserControl2 = New LampClient.MultiUserViewer()
         Me.SuspendLayout()
         '
         'Button1
@@ -206,19 +205,11 @@ Partial Class DebugForm
         Me.MultiUserControl2.Size = New System.Drawing.Size(459, 380)
         Me.MultiUserControl2.TabIndex = 0
         '
-        'MultiUserControl3
-        '
-        Me.MultiUserControl3.Location = New System.Drawing.Point(452, 94)
-        Me.MultiUserControl3.Name = "MultiUserControl3"
-        Me.MultiUserControl3.Size = New System.Drawing.Size(459, 380)
-        Me.MultiUserControl3.TabIndex = 18
-        '
         'DebugForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(1232, 703)
-        Me.Controls.Add(Me.MultiUserControl3)
         Me.Controls.Add(Me.MultiTemplateViewer1)
         Me.Controls.Add(Me.Button12)
         Me.Controls.Add(Me.Button11)
@@ -255,7 +246,6 @@ Partial Class DebugForm
     Friend WithEvents Button11 As Button
     Friend WithEvents Button12 As Button
     Friend WithEvents MultiTemplateViewer1 As MultiTemplateViewer
-    Friend WithEvents MultiUserControl1 As MultiUserControl
-    Friend WithEvents MultiUserControl2 As MultiUserControl
-    Friend WithEvents MultiUserControl3 As MultiUserControl
+    Friend WithEvents MultiUserControl1 As MultiUserViewer
+    Friend WithEvents MultiUserControl2 As MultiUserViewer
 End Class

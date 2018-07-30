@@ -219,10 +219,10 @@
     <Compile Include="controls\user\ManageUserControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="controls\user\MultiUserControl.Designer.vb">
-      <DependentUpon>MultiUserControl.vb</DependentUpon>
+    <Compile Include="controls\user\MultiUserViewer.Designer.vb">
+      <DependentUpon>MultiUserViewer.vb</DependentUpon>
     </Compile>
-    <Compile Include="controls\user\MultiUserControl.vb">
+    <Compile Include="controls\user\MultiUserViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="controls\user\ProfileDisplay.Designer.vb">
@@ -273,6 +273,12 @@
     <Compile Include="controls\toolbar\ToolBar.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="controls\user\ServiceMultiUserViewer.Designer.vb">
+      <DependentUpon>ServiceMultiUserViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\user\ServiceMultiUserViewer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\user\SimpleProfileDisplay.Designer.vb">
       <DependentUpon>SimpleProfileDisplay.vb</DependentUpon>
     </Compile>
@@ -319,6 +325,12 @@
       <DependentUpon>CloseBox.vb</DependentUpon>
     </Compile>
     <Compile Include="DialogBoxes\CloseBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogBoxes\EditUserForm.Designer.vb">
+      <DependentUpon>EditUserForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DialogBoxes\EditUserForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DialogBoxes\LampPasswordBox.Designer.vb">
@@ -495,8 +507,8 @@
     <EmbeddedResource Include="controls\user\ManageUserControl.resx">
       <DependentUpon>ManageUserControl.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="controls\user\MultiUserControl.resx">
-      <DependentUpon>MultiUserControl.vb</DependentUpon>
+    <EmbeddedResource Include="controls\user\MultiUserViewer.resx">
+      <DependentUpon>MultiUserViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\user\ProfileDisplay.resx">
       <DependentUpon>ProfileDisplay.vb</DependentUpon>
@@ -521,6 +533,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="controls\toolbar\ToolBar.resx">
       <DependentUpon>ToolBar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\user\ServiceMultiUserViewer.resx">
+      <DependentUpon>ServiceMultiUserViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\user\SimpleProfileDisplay.resx">
       <DependentUpon>SimpleProfileDisplay.vb</DependentUpon>
@@ -548,6 +563,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DialogBoxes\EditTemplateDialog.resx">
       <DependentUpon>EditTemplateDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogBoxes\EditUserForm.resx">
+      <DependentUpon>EditUserForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DialogBoxes\LampPasswordBox.resx">
       <DependentUpon>LampPasswordBox.vb</DependentUpon>

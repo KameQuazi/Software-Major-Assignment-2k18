@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class MultiUserControl
+Partial Class MultiUserViewer
     Inherits System.Windows.Forms.UserControl
 
     'UserControl overrides dispose to clean up the component list.
@@ -46,7 +46,7 @@ Partial Class MultiUserControl
         Me.DataGridView1.Location = New System.Drawing.Point(0, 0)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.ReadOnly = True
-        Me.DataGridView1.Size = New System.Drawing.Size(459, 380)
+        Me.DataGridView1.Size = New System.Drawing.Size(600, 500)
         Me.DataGridView1.TabIndex = 0
         '
         'LampUserBindingSource
@@ -86,6 +86,8 @@ Partial Class MultiUserControl
         Me.EditUser.HeaderText = "Edit User"
         Me.EditUser.Name = "EditUser"
         Me.EditUser.ReadOnly = True
+        Me.EditUser.Text = "Edit User"
+        Me.EditUser.UseColumnTextForButtonValue = True
         '
         'MultiUserControl
         '
@@ -93,7 +95,7 @@ Partial Class MultiUserControl
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.DataGridView1)
         Me.Name = "MultiUserControl"
-        Me.Size = New System.Drawing.Size(459, 380)
+        Me.Size = New System.Drawing.Size(600, 500)
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LampUserBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)

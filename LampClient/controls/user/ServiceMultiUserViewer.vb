@@ -1,11 +1,10 @@
 ﻿Imports LampCommon
 
-Public Class ServiceTemplateViewer
+Public Class ServiceMultiUserViewer
+    Public Event UserClick(sender As Object, e As UserClickEventArgs)
 
-    Public Event TemplateClick(sender As Object, e As TemplateClickedEventArgs)
-
-    Private Sub MultiTemplateViewer1_TemplateClick(sender As Object, e As TemplateClickedEventArgs) Handles MultiTemplateViewer1.TemplateClick
-        RaiseEvent TemplateClick(Me, e)
+    Private Sub MultiTemplateViewer1_TemplateClick(sender As Object, e As UserClickEventArgs) Handles MultiUserControl1.UserClick
+        RaiseEvent UserClick(Me, e)
         ' just bubble the event
     End Sub
 
@@ -47,32 +46,6 @@ Public Class ServiceTemplateViewer
 
     Public Property Offset = 0
 
-    Public Property MouseOverHighlight As Boolean
-        Get
-            Return MultiTemplateViewer1.MouseOverHighlight
-        End Get
-        Set(value As Boolean)
-            MultiTemplateViewer1.MouseOverHighlight = value
-        End Set
-    End Property
-
-    Private _approvedType As LampApprove = LampApprove.Approved
-    Public Property ApprovedType As LampApprove
-        Get
-            Return _approvedType
-        End Get
-        Set(value As LampApprove)
-            _approvedType = value
-            If IsHandleCreated Then
-                UpdateContents()
-            End If
-        End Set
-    End Property
-
-    Public Sub UpdateContents()
-        NewThreadUpdateInterface()
-    End Sub
-
     Private Sub UpdateInterfaceLocking()
         Try
             SyncLock CurrentSender
@@ -106,13 +79,13 @@ Public Class ServiceTemplateViewer
                 End If
 
                 ' actually aadd the templates
-                MultiTemplateViewer1.SafeInvokeEx(Sub(control As MultiTemplateViewer) control.Suspend())
-                MultiTemplateViewer1.SafeInvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Clear())
+                MultiUserControl1.SafeInvokeEx(Sub(control As MultiTemplateViewer) control.Suspend())
+                MultiUserControl1.SafeInvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Clear())
 
                 For Each item In request.Templates
-                    MultiTemplateViewer1.SafeInvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Add(item))
+                    MultiUserControl1.SafeInvokeEx(Sub(control As MultiTemplateViewer) control.Templates.Add(item))
                 Next
-                MultiTemplateViewer1.SafeInvokeEx(Sub(control As MultiTemplateViewer) control.EndSuspend())
+                MultiUserControl1.SafeInvokeEx(Sub(control As MultiTemplateViewer) control.EndSuspend())
 
                 ' check if the next page exists
                 If Offset + TEMPLATES_PER_PAGE >= 0 Then
@@ -142,25 +115,18 @@ Public Class ServiceTemplateViewer
         End Try
     End Sub
 
-    Sub New()
-
-        ' This call is required by the designer.
-        InitializeComponent()
-
-        ' Add any initialization after the InitializeComponent() call.
-        If Me.DesignMode Then
-            Me.StopLoading()
-        End If
-    End Sub
-
     Public Sub StopLoading()
-        Me.MultiTemplateViewer1.StopLoading()
+        Me.MultiUserControl1.StopLoading()
     End Sub
 
     Public Sub StartLoading()
-        Me.MultiTemplateViewer1.ShowLoading()
+        Me.MultiUserControl1.ShowLoading()
     End Sub
 
+
+    Public Sub UpdateContents()
+        NewThreadUpdateInterface()
+    End Sub
     Private Sub NewThreadUpdateInterface()
         btnNextPage.Enabled = False
         btnPreviousPage.Enabled = False
@@ -184,10 +150,6 @@ Public Class ServiceTemplateViewer
         End Try
     End Sub
 
-    Private Sub ShowError(status As LampStatus)
-        MessageBox.Show("Could not update: " + status.ToString)
-    End Sub
-
     Private Sub btnPreviousPage_Click(sender As Object, e As EventArgs) Handles btnPreviousPage.Click
         Offset -= TEMPLATES_PER_PAGE
         btnNextPage.Enabled = False
@@ -201,9 +163,4 @@ Public Class ServiceTemplateViewer
         btnPreviousPage.Enabled = False
         UpdateContents()
     End Sub
-
-    Private Sub ServiceTemplateViewer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        UpdateContents()
-    End Sub
-
 End Class

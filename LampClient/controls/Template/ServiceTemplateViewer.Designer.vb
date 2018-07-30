@@ -23,10 +23,10 @@ Partial Class ServiceTemplateViewer
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.btnPreviousPage = New System.Windows.Forms.Button()
         Me.btnNextPage = New System.Windows.Forms.Button()
-        Me.MultiTemplateViewer1 = New LampClient.MultiTemplateViewer()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
@@ -46,6 +46,20 @@ Partial Class ServiceTemplateViewer
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(857, 565)
         Me.TableLayoutPanel2.TabIndex = 8
+        '
+        'MultiTemplateViewer1
+        '
+        Me.MultiTemplateViewer1.AutoScroll = True
+        Me.MultiTemplateViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.MultiTemplateViewer1.Columns = 4
+        Me.MultiTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.MultiTemplateViewer1.Location = New System.Drawing.Point(3, 3)
+        Me.MultiTemplateViewer1.MouseOverHighlight = False
+        Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
+        Me.MultiTemplateViewer1.Rows = 2
+        Me.MultiTemplateViewer1.Size = New System.Drawing.Size(851, 513)
+        Me.MultiTemplateViewer1.TabIndex = 1
+        Me.MultiTemplateViewer1.TemplateCursor = System.Windows.Forms.Cursors.Hand
         '
         'FlowLayoutPanel1
         '
@@ -81,20 +95,6 @@ Partial Class ServiceTemplateViewer
         Me.btnNextPage.TabIndex = 4
         Me.btnNextPage.Text = "->"
         Me.btnNextPage.UseVisualStyleBackColor = True
-        '
-        'MultiTemplateViewer1
-        '
-        Me.MultiTemplateViewer1.AutoScroll = True
-        Me.MultiTemplateViewer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.MultiTemplateViewer1.Columns = 4
-        Me.MultiTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.MultiTemplateViewer1.Location = New System.Drawing.Point(3, 3)
-        Me.MultiTemplateViewer1.MouseOverHighlight = False
-        Me.MultiTemplateViewer1.Name = "MultiTemplateViewer1"
-        Me.MultiTemplateViewer1.Rows = 2
-        Me.MultiTemplateViewer1.Size = New System.Drawing.Size(851, 513)
-        Me.MultiTemplateViewer1.TabIndex = 1
-        Me.MultiTemplateViewer1.TemplateCursor = System.Windows.Forms.Cursors.Hand
         '
         'ServiceTemplateViewer
         '
