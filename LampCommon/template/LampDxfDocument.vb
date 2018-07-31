@@ -803,8 +803,89 @@ Public Class LampDxfDocument
     End Function
 
 
+    ''' <summary>
+    ''' returns nothing if successful,
+    ''' </summary>
+    ''' <param name="allowed"></param>
+    ''' <returns></returns>
+    Public Function ValidateDrawing(allowed As ValidateEnum) As EntityObject
+        ' nothing allowed
+        If allowed = 0 Then
+            Throw New ArgumentOutOfRangeException(NameOf(allowed))
+        End If
+        For Each item As EntityObject In Me.Entities
+            If allowed.HasFlag(ValidateEnum.VectorCut) Then
+                If item.Color.Equals(VectorCut) Then
+                    Continue For
+                End If
+            End If
+            If allowed.HasFlag(ValidateEnum.VectorEngrave) Then
+                If item.Color.Equals(VectorEngrave) Then
+                    Continue For
+                End If
+            End If
+            If allowed.HasFlag(ValidateEnum.RasterEngrave) Then
+                If item.Color.Equals(RasterEngrave) Then
+                    Continue For
+                End If
+            End If
+            Return item
+        Next
+        Return Nothing
+    End Function
 
+    Public Shared Property VectorCut As AciColor = AciColor.Red
+
+    Public Shared Property VectorEngrave As AciColor = AciColor.Blue
+
+    Public Shared Property RasterEngrave As AciColor = New AciColor(255, 255, 255)
+
+    Public ReadOnly Property Entities As IEnumerable(Of EntityObject)
+        Get
+            Return Drawing.Arcs.Concat(
+                Drawing.Circles.Concat(
+                Drawing.Ellipses.Concat(
+                Drawing.Lines.Concat(
+                Drawing.Ellipses.Concat(
+                Drawing.Points.Concat(
+                Drawing.Polylines.Concat(
+                Drawing.Texts.Concat(
+                Drawing.MTexts.Concat(
+                Drawing.Images.Concat(
+                Drawing.MLines.Concat(
+                Drawing.Rays
+                )
+                )
+            )
+            )
+            )
+            )
+            )
+            )
+            )
+            )
+            )
+
+
+
+
+
+
+
+
+
+
+
+        End Get
+    End Property
 End Class
+
+<Flags>
+Public Enum ValidateEnum
+    VectorCut = 1
+    VectorEngrave = 2
+    RasterEngrave = 4
+End Enum
 
 Public Class DxfJsonConverter
     Inherits JsonConverter

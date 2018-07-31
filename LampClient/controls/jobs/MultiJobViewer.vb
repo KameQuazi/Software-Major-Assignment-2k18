@@ -7,6 +7,23 @@ Imports LampCommon
 Public Class MultiJobViewer
     Public Event JobClick(sender As Object, e As JobClickedEventArgs)
 
+    Public Event ApproveClick(sender As Object, job As LampJobEventArgs)
+    Public Event ViewDrawingClicks(sender As Object, job As LampJobEventArgs)
+    Public Event AdvancedClick(sender As Object, job As LampJobEventArgs)
+
+    Private Sub ApproveClickHandler(sender As Object, job As LampJobEventArgs)
+        RaiseEvent ApproveClick(Me, job)
+    End Sub
+
+    Private Sub ViewDrawingClickHandler(sender As Object, job As LampJobEventArgs)
+        RaiseEvent ViewDrawingClicks(Me, job)
+    End Sub
+
+    Private Sub AdvancedHandler(sender As Object, job As LampJobEventArgs)
+        RaiseEvent AdvancedClick(Me, job)
+    End Sub
+
+
     Public ReadOnly Property Jobs As ObservableCollection(Of LampJob)
 
     Private _columns As Integer = 1
@@ -85,6 +102,9 @@ Public Class MultiJobViewer
                     .Dock = DockStyle.Fill
                 }
                 AddHandler newViewer.Click, AddressOf HandleJobClicked
+                AddHandler newViewer.ApproveClick, AddressOf ApproveClickHandler
+                AddHandler newViewer.AdvancedClick, AddressOf AdvancedHandler
+                AddHandler newViewer.ViewDrawingClicks, AddressOf ViewDrawingClickHandler
 
                 TableLayoutPanel1.Controls.Add(newViewer)
 

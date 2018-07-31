@@ -22,8 +22,9 @@ Public Module ToolbarUtilities
                 PreviousForms.Add(LampForm.AdminForm)
             Case GetType(NewTemplateForm)
                 PreviousForms.Add(LampForm.NewTemplateForm)
-            Case GetType(ViewEditJobsForm)
-                PreviousForms.Add(LampForm.ViewEditJobsForm)
+            Case GetType(ApproveJobForm)
+                PreviousForms.Add(LampForm.ApproveJobForm)
+
             Case GetType(ViewEditTemplateForm)
                 PreviousForms.Add(LampForm.ViewEditTemplateForm)
             Case GetType(ApproveTemplateForm)
@@ -64,8 +65,8 @@ Public Module ToolbarUtilities
                 AdminForm.Show()
             Case LampForm.NewTemplateForm
                 NewTemplateForm.Show()
-            Case LampForm.ViewEditJobsForm
-                ViewEditJobsForm.Show()
+            Case LampForm.ApproveJobForm
+                ApproveJobForm.Show()
             Case LampForm.ViewEditTemplateForm
                 ViewEditTemplateForm.Show()
             Case LampForm.ApproveTemplateForm
@@ -280,6 +281,7 @@ Public Class ToolBar
         Tooltip1.SetToolTip(Me.btnLogOut, "log out of your LAMP account")
         Tooltip1.SetToolTip(Me.btnOrders, "view your current orders")
         Tooltip1.SetToolTip(Me.btnQuit, "close the program")
+        Tooltip1.SetToolTip(Me.btnNewTemplate, "create a new template")
     End Sub
 
     Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
@@ -313,7 +315,7 @@ Public Enum LampForm
     TemplateSelectForm
     AdminForm
     NewTemplateForm
-    ViewEditJobsForm
+    ApproveJobForm
     ViewEditTemplateForm
     ApproveTemplateForm
     ManageUsersForm

@@ -23,18 +23,18 @@ Partial Class JobDisplay
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.FileDisplay1 = New LampClient.TemplateDisplay()
-        Me.SimpleProfileDisplay2 = New LampClient.SimpleProfileDisplay()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.SimpleProfileDisplay1 = New LampClient.SimpleProfileDisplay()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnApprove = New System.Windows.Forms.Button()
+        Me.btnViewDrawing = New System.Windows.Forms.Button()
+        Me.btnAdvanced = New System.Windows.Forms.Button()
         Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.tboxSummary = New System.Windows.Forms.RichTextBox()
-        Me.btnAdvanced = New System.Windows.Forms.Button()
-        Me.btnViewDrawing = New System.Windows.Forms.Button()
-        Me.btnApprove = New System.Windows.Forms.Button()
+        Me.SimpleProfileDisplay2 = New LampClient.SimpleProfileDisplay()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
@@ -58,16 +58,6 @@ Partial Class JobDisplay
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(961, 304)
         Me.TableLayoutPanel1.TabIndex = 0
         '
-        'Panel1
-        '
-        Me.Panel1.Controls.Add(Me.TableLayoutPanel2)
-        Me.Panel1.Controls.Add(Me.SimpleProfileDisplay2)
-        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel1.Location = New System.Drawing.Point(3, 3)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(474, 298)
-        Me.Panel1.TabIndex = 1
-        '
         'FileDisplay1
         '
         Me.FileDisplay1.BackColor = System.Drawing.Color.White
@@ -81,16 +71,15 @@ Partial Class JobDisplay
         Me.FileDisplay1.Size = New System.Drawing.Size(475, 298)
         Me.FileDisplay1.TabIndex = 3
         '
-        'SimpleProfileDisplay2
+        'Panel1
         '
-        Me.SimpleProfileDisplay2.DetailedEnabled = True
-        Me.SimpleProfileDisplay2.Location = New System.Drawing.Point(111, 94)
-        Me.SimpleProfileDisplay2.Name = "SimpleProfileDisplay2"
-        Me.SimpleProfileDisplay2.Profile = Nothing
-        Me.SimpleProfileDisplay2.Readonly = True
-        Me.SimpleProfileDisplay2.Size = New System.Drawing.Size(8, 8)
-        Me.SimpleProfileDisplay2.TabIndex = 1
-        Me.SimpleProfileDisplay2.TitleText = "Title"
+        Me.Panel1.Controls.Add(Me.TableLayoutPanel2)
+        Me.Panel1.Controls.Add(Me.SimpleProfileDisplay2)
+        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel1.Location = New System.Drawing.Point(3, 3)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(474, 298)
+        Me.Panel1.TabIndex = 1
         '
         'TableLayoutPanel2
         '
@@ -136,9 +125,51 @@ Partial Class JobDisplay
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
         Me.TableLayoutPanel3.RowCount = 1
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53.0!))
         Me.TableLayoutPanel3.Size = New System.Drawing.Size(466, 53)
         Me.TableLayoutPanel3.TabIndex = 2
+        '
+        'btnApprove
+        '
+        Me.btnApprove.BackColor = System.Drawing.Color.White
+        Me.btnApprove.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnApprove.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnApprove.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnApprove.Location = New System.Drawing.Point(315, 5)
+        Me.btnApprove.Margin = New System.Windows.Forms.Padding(5)
+        Me.btnApprove.Name = "btnApprove"
+        Me.btnApprove.Size = New System.Drawing.Size(146, 43)
+        Me.btnApprove.TabIndex = 47
+        Me.btnApprove.Text = "Approve"
+        Me.btnApprove.UseVisualStyleBackColor = False
+        '
+        'btnViewDrawing
+        '
+        Me.btnViewDrawing.BackColor = System.Drawing.Color.White
+        Me.btnViewDrawing.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnViewDrawing.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnViewDrawing.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnViewDrawing.Location = New System.Drawing.Point(160, 5)
+        Me.btnViewDrawing.Margin = New System.Windows.Forms.Padding(5)
+        Me.btnViewDrawing.Name = "btnViewDrawing"
+        Me.btnViewDrawing.Size = New System.Drawing.Size(145, 43)
+        Me.btnViewDrawing.TabIndex = 46
+        Me.btnViewDrawing.Text = "View Drawing(s)"
+        Me.btnViewDrawing.UseVisualStyleBackColor = False
+        '
+        'btnAdvanced
+        '
+        Me.btnAdvanced.BackColor = System.Drawing.Color.White
+        Me.btnAdvanced.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnAdvanced.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnAdvanced.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAdvanced.Location = New System.Drawing.Point(5, 5)
+        Me.btnAdvanced.Margin = New System.Windows.Forms.Padding(5)
+        Me.btnAdvanced.Name = "btnAdvanced"
+        Me.btnAdvanced.Size = New System.Drawing.Size(145, 43)
+        Me.btnAdvanced.TabIndex = 45
+        Me.btnAdvanced.Text = "Advanced Options"
+        Me.btnAdvanced.UseVisualStyleBackColor = False
         '
         'TableLayoutPanel4
         '
@@ -177,47 +208,16 @@ Partial Class JobDisplay
         Me.tboxSummary.TabIndex = 1
         Me.tboxSummary.Text = ""
         '
-        'btnAdvanced
+        'SimpleProfileDisplay2
         '
-        Me.btnAdvanced.BackColor = System.Drawing.Color.White
-        Me.btnAdvanced.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnAdvanced.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnAdvanced.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAdvanced.Location = New System.Drawing.Point(5, 5)
-        Me.btnAdvanced.Margin = New System.Windows.Forms.Padding(5)
-        Me.btnAdvanced.Name = "btnAdvanced"
-        Me.btnAdvanced.Size = New System.Drawing.Size(145, 43)
-        Me.btnAdvanced.TabIndex = 45
-        Me.btnAdvanced.Text = "Advanced Options"
-        Me.btnAdvanced.UseVisualStyleBackColor = False
-        '
-        'btnViewDrawing
-        '
-        Me.btnViewDrawing.BackColor = System.Drawing.Color.White
-        Me.btnViewDrawing.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnViewDrawing.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnViewDrawing.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnViewDrawing.Location = New System.Drawing.Point(160, 5)
-        Me.btnViewDrawing.Margin = New System.Windows.Forms.Padding(5)
-        Me.btnViewDrawing.Name = "btnViewDrawing"
-        Me.btnViewDrawing.Size = New System.Drawing.Size(145, 43)
-        Me.btnViewDrawing.TabIndex = 46
-        Me.btnViewDrawing.Text = "View Drawing(s)"
-        Me.btnViewDrawing.UseVisualStyleBackColor = False
-        '
-        'btnApprove
-        '
-        Me.btnApprove.BackColor = System.Drawing.Color.White
-        Me.btnApprove.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnApprove.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnApprove.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnApprove.Location = New System.Drawing.Point(315, 5)
-        Me.btnApprove.Margin = New System.Windows.Forms.Padding(5)
-        Me.btnApprove.Name = "btnApprove"
-        Me.btnApprove.Size = New System.Drawing.Size(146, 43)
-        Me.btnApprove.TabIndex = 47
-        Me.btnApprove.Text = "Approve"
-        Me.btnApprove.UseVisualStyleBackColor = False
+        Me.SimpleProfileDisplay2.DetailedEnabled = True
+        Me.SimpleProfileDisplay2.Location = New System.Drawing.Point(111, 94)
+        Me.SimpleProfileDisplay2.Name = "SimpleProfileDisplay2"
+        Me.SimpleProfileDisplay2.Profile = Nothing
+        Me.SimpleProfileDisplay2.Readonly = True
+        Me.SimpleProfileDisplay2.Size = New System.Drawing.Size(8, 8)
+        Me.SimpleProfileDisplay2.TabIndex = 1
+        Me.SimpleProfileDisplay2.TitleText = "Title"
         '
         'JobDisplay
         '

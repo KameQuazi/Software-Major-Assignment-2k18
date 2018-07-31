@@ -26,7 +26,7 @@ Partial Class ViewOrdersForm
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.ToolBar1 = New LampClient.ToolBar()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.ServiceJobViewer1 = New LampClient.ServiceJobViewer()
+        Me.ServiceSortableJobViewer1 = New LampClient.ServiceSortableJobViewer()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.SuspendLayout()
@@ -66,7 +66,7 @@ Partial Class ViewOrdersForm
         '
         Me.TableLayoutPanel2.ColumnCount = 1
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.Controls.Add(Me.ServiceJobViewer1, 0, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.ServiceSortableJobViewer1, 0, 0)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(3, 108)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
@@ -76,17 +76,18 @@ Partial Class ViewOrdersForm
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(1226, 592)
         Me.TableLayoutPanel2.TabIndex = 1
         '
-        'ServiceJobViewer1
+        'ServiceSortableJobViewer1
         '
-        Me.ServiceJobViewer1.ApprovedType = LampCommon.LampApprove.Approved
-        Me.ServiceJobViewer1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ServiceJobViewer1.JustMyJobs = False
-        Me.ServiceJobViewer1.Location = New System.Drawing.Point(3, 3)
-        Me.ServiceJobViewer1.Name = "ServiceJobViewer1"
-        Me.ServiceJobViewer1.Offset = 0
-        Me.ServiceJobViewer1.Size = New System.Drawing.Size(1220, 586)
-        Me.ServiceJobViewer1.SortOrder = LampCommon.LampTemplateSort.NoSort
-        Me.ServiceJobViewer1.TabIndex = 8
+        Me.ServiceSortableJobViewer1.ApprovedType = LampCommon.LampApprove.Approved
+        Me.ServiceSortableJobViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ServiceSortableJobViewer1.JustMyJobs = False
+        Me.ServiceSortableJobViewer1.Location = New System.Drawing.Point(3, 3)
+        Me.ServiceSortableJobViewer1.Name = "ServiceSortableJobViewer1"
+        Me.ServiceSortableJobViewer1.SidebarHidden = False
+        Me.ServiceSortableJobViewer1.Size = New System.Drawing.Size(1220, 586)
+        Me.ServiceSortableJobViewer1.SortOrder = LampCommon.LampJobSort.NoSort
+        Me.ServiceSortableJobViewer1.TabIndex = 0
+        Me.ServiceSortableJobViewer1.TitleText = "View/Edit Job"
         '
         'ViewOrdersForm
         '
@@ -108,5 +109,5 @@ Partial Class ViewOrdersForm
     Friend WithEvents ToolBar1 As ToolBar
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
-    Friend WithEvents ServiceJobViewer1 As ServiceJobViewer
+    Friend WithEvents ServiceSortableJobViewer1 As ServiceSortableJobViewer
 End Class

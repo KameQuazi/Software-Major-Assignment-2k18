@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class ViewEditJobsForm
+Partial Class ApproveJobForm
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -62,17 +62,17 @@ Partial Class ViewEditJobsForm
         Me.ServiceSortableJobViewer1.Name = "ServiceSortableJobViewer1"
         Me.ServiceSortableJobViewer1.SidebarHidden = False
         Me.ServiceSortableJobViewer1.Size = New System.Drawing.Size(1226, 592)
-        Me.ServiceSortableJobViewer1.SortOrder = LampCommon.LampTemplateSort.NoSort
+        Me.ServiceSortableJobViewer1.SortOrder = LampCommon.LampJobSort.NoSort
         Me.ServiceSortableJobViewer1.TabIndex = 1
         Me.ServiceSortableJobViewer1.TitleText = "Choose Job"
         '
-        'ViewEditJobsForm
+        'ApproveJobForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.TableLayoutPanel1)
-        Me.Name = "ViewEditJobsForm"
+        Me.Name = "ApproveJobForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "ViewEditJobsForm"
         Me.TableLayoutPanel1.ResumeLayout(False)

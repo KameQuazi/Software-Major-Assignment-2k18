@@ -25,7 +25,7 @@ Public Class AdminToolbar
     End Sub
 
     Private Sub btnViewEditJobs_Click(sender As Object, e As EventArgs) Handles btnViewEditJobs.Click
-        ShowNewForm(ParentForm, ViewEditJobsForm)
+        ShowNewForm(ParentForm, ApproveJobForm)
     End Sub
 
     Private Sub btnApproveTemplates_Click(sender As Object, e As EventArgs) Handles btnApproveTemplates.Click

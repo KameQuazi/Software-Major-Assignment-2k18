@@ -137,16 +137,16 @@
     <Compile Include="AdminForms\ManageUsersForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AdminForms\ViewEditJobsForm.Designer.vb">
-      <DependentUpon>ViewEditJobsForm.vb</DependentUpon>
+    <Compile Include="AdminForms\ApproveJobForm.Designer.vb">
+      <DependentUpon>ApproveJobForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="AdminForms\ViewEditJobsForm.vb">
+    <Compile Include="AdminForms\ApproveJobForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AdminForms\ViewEditTemplateForm.Designer.vb">
+    <Compile Include="forms\ViewEditTemplateForm.Designer.vb">
       <DependentUpon>ViewEditTemplateForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="AdminForms\ViewEditTemplateForm.vb">
+    <Compile Include="forms\ViewEditTemplateForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ApplicationEvents.vb" />
@@ -462,10 +462,10 @@
     <EmbeddedResource Include="AdminForms\ManageUsersForm.resx">
       <DependentUpon>ManageUsersForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AdminForms\ViewEditJobsForm.resx">
-      <DependentUpon>ViewEditJobsForm.vb</DependentUpon>
+    <EmbeddedResource Include="AdminForms\ApproveJobForm.resx">
+      <DependentUpon>ApproveJobForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AdminForms\ViewEditTemplateForm.resx">
+    <EmbeddedResource Include="forms\ViewEditTemplateForm.resx">
       <DependentUpon>ViewEditTemplateForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\jobs\JobCreatorControl.resx">
