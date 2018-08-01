@@ -51,9 +51,9 @@ Partial Public Class TemplateDatabase
         Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Transaction.LockTransaction), command = Connection.GetCommand(trans)
             Dim results As New List(Of Boolean)
             command.CommandText = "CREATE TABLE if not exists users (
-                                  UserId Text Not Null,
-                                  email Text Not Null,
-                                  Username text Not NULL,
+                                  UserId Text Not Null UNIQUE,
+                                  email Text Not Null UNIQUE,
+                                  Username text Not NULL UNIQUE,
 
                                   PermissionLevel Integer Not Null,
                                   Password Text Not Null,
@@ -155,9 +155,9 @@ Partial Public Class TemplateDatabase
         Using conn = Connection.OpenConnection(), trans = If(optTrans IsNot Nothing, optTrans.UseTransaction, Await Transaction.LockTransactionAsync.ConfigureAwait(False)), command = Connection.GetCommand(trans)
             Dim tasks As New List(Of Task(Of Integer))
             command.CommandText = "CREATE TABLE if not exists users (
-                                  UserId Text Not Null,
-                                  email Text Not Null,
-                                  Username text Not NULL,
+                                  UserId Text Not Null UNIQUE,
+                                  email Text Not Null UNIQUE,
+                                  Username text Not NULL UNIQUE,
 
                                   PermissionLevel Integer Not Null,
                                   Password Text Not Null,

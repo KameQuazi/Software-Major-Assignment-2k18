@@ -32,6 +32,13 @@ Public Class LampUser
     <DataMember>
     Public Property PermissionLevel As UserPermission
 
+    ''' <summary>
+    ''' Creates a new, empty LampUser
+    ''' </summary>
+    Sub New()
+        Me.New(GetNewGuid, UserPermission.Standard, "", "", "", "")
+    End Sub
+
     Sub New(userid As String, permissionLevel As UserPermission, email As String, username As String, password As String, name As String)
         Me.Email = email
         Me.Password = password

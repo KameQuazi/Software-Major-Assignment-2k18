@@ -8,7 +8,7 @@ Public Class MultiJobViewer
     Public Event JobClick(sender As Object, e As JobClickedEventArgs)
 
     Public Event ApproveClick(sender As Object, job As LampJobEventArgs)
-    Public Event ViewDrawingClicks(sender As Object, job As LampJobEventArgs)
+    Public Event ViewDrawingClick(sender As Object, job As LampJobEventArgs)
     Public Event AdvancedClick(sender As Object, job As LampJobEventArgs)
 
     Private Sub ApproveClickHandler(sender As Object, job As LampJobEventArgs)
@@ -16,12 +16,14 @@ Public Class MultiJobViewer
     End Sub
 
     Private Sub ViewDrawingClickHandler(sender As Object, job As LampJobEventArgs)
-        RaiseEvent ViewDrawingClicks(Me, job)
+        RaiseEvent ViewDrawingClick(Me, job)
     End Sub
 
     Private Sub AdvancedHandler(sender As Object, job As LampJobEventArgs)
         RaiseEvent AdvancedClick(Me, job)
     End Sub
+
+
 
 
     Public ReadOnly Property Jobs As ObservableCollection(Of LampJob)

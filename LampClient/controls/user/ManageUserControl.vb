@@ -2,8 +2,15 @@
 Imports LampCommon
 
 Public Class ManageUserControl
-    Public Event UserDeleted(sender As Object, args As UserDeletedEventArgs)
-    Public Event UserEdited(sender As Object, args As UserEditedEventArgs)
+    Public Property UsernameReadonly As Boolean
+        Get
+            Return TboxUsername.ReadOnly
+        End Get
+        Set(value As Boolean)
+            TboxUsername.ReadOnly = value
+        End Set
+    End Property
+
     Private _user As New LampUser("", UserPermission.Guest, "", "", "", "")
     <DesignerSerializationVisibilityAttribute(False)>
     Public Property User As LampUser
@@ -15,6 +22,38 @@ Public Class ManageUserControl
             UpdateContents()
         End Set
     End Property
+
+    Private _readonly As Boolean
+    Public Property [Readonly] As Boolean
+        Get
+            Return _readonly
+        End Get
+        Set(value As Boolean)
+            _readonly = value
+            If _readonly Then
+                DisableEdit()
+            Else
+                EnableEdit()
+            End If
+        End Set
+    End Property
+
+
+    Private Sub EnableEdit()
+        TboxEmail.ReadOnly = False
+        TboxName.ReadOnly = False
+        DropDownPermission.Enabled = True
+        btnResetPassword.Enabled = True
+    End Sub
+
+
+    Private Sub DisableEdit()
+        TboxEmail.ReadOnly = True
+        TboxName.ReadOnly = True
+        DropDownPermission.Enabled = False
+        btnResetPassword.Enabled = False
+    End Sub
+
 
 
     Private Sub UpdateContents()
@@ -33,6 +72,7 @@ Public Class ManageUserControl
 
         End Select
         TboxEmail.Text = User.Email
+        TboxPassword.Text = User.Password
 
     End Sub
 
@@ -42,67 +82,13 @@ Public Class ManageUserControl
         Using input As New LampPasswordBox()
             If input.ShowDialog(Me) = DialogResult.OK Then
                 User.Password = input.InputText
+                TboxPassword.Text = input.InputText
             End If
         End Using
     End Sub
 
-    Private Sub EnableEdit()
-        TboxEmail.ReadOnly = False
-        TboxName.ReadOnly = False
-        DropDownPermission.Enabled = True
-        btnResetPassword.Enabled = True
-    End Sub
-
-    Private Sub DisableEdit()
-        TboxEmail.ReadOnly = True
-        TboxName.ReadOnly = True
-        DropDownPermission.Enabled = False
-        btnResetPassword.Enabled = False
-    End Sub
-
-    Private previousUser As LampUser
-    Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
-        allowEdit = Not allowEdit
 
 
-        If allowEdit Then
-            btnEdit.Text = "Confirm Edit"
-            EnableEdit()
-            btnRevert.Enabled = True
-            previousUser = User.Clone()
-
-        Else
-            ' actually submit it
-            Dim response = CurrentSender.EditUser(CurrentUser.ToCredentials, User)
-            Select Case response
-                Case LampStatus.OK
-                    MessageBox.Show("Successfully edited user!")
-                    RaiseEvent UserEdited(Me, New UserEditedEventArgs(User))
-                    btnEdit.Text = "Edit User"
-                    btnRevert.Enabled = False
-                    allowEdit = False
-                    DisableEdit()
-                Case Else
-                    ShowError(response)
-            End Select
-
-
-        End If
-
-    End Sub
-
-    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
-        If MessageBox.Show("This will permanently remove this user", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) Then
-            Dim response = CurrentSender.RemoveUser(CurrentUser.ToCredentials, User.UserId)
-            Select Case response
-                Case LampStatus.OK
-                    MessageBox.Show("Sucessfully deleted user!")
-                    RaiseEvent UserDeleted(Me, New UserDeletedEventArgs(User))
-                Case Else
-                    ShowError(response)
-            End Select
-        End If
-    End Sub
 
     Private Const UnknownText = "Unknown"
     Private Sub DropDownPermission_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DropDownPermission.SelectedIndexChanged
@@ -132,22 +118,23 @@ Public Class ManageUserControl
         User.Email = TboxEmail.Text
     End Sub
 
-    Private Sub btnRevert_Click(sender As Object, e As EventArgs) Handles btnRevert.Click
-        btnRevert.Enabled = False
-        User = previousUser
-        previousUser = Nothing
-        btnEdit.Enabled = True
-        btnEdit.Text = "Edit User"
-        DisableEdit()
-        allowEdit = False
-    End Sub
 
-    Private Sub ManageUserControl_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        DisableEdit()
-    End Sub
+
 
     Private Sub TboxName_TextChanged(sender As Object, e As EventArgs) Handles TboxName.TextChanged
         User.Name = TboxName.Text
+    End Sub
+
+    Private Sub TableLayoutPanel2_Paint(sender As Object, e As PaintEventArgs) Handles TableLayoutPanel2.Paint
+
+    End Sub
+
+    Private Sub TboxUsername_TextChanged(sender As Object, e As EventArgs) Handles TboxUsername.TextChanged
+        User.Username = TboxUsername.Text
+    End Sub
+
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TboxPassword.TextChanged
+
     End Sub
 End Class
 

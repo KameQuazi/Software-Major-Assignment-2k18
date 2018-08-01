@@ -946,12 +946,12 @@ Partial Public Class TemplateDatabase
     ''' <param name="guid"></param>
     ''' <param name="approver"></param>
     ''' <returns>True if found, false if not updated (no template)</returns>
-    Public Function SetApprover(guid As String, approver As String) As Boolean
-        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand()
-            sqlite_cmd.CommandText = "UPDATE template SET approverId = @approverId"
-            sqlite_cmd.Parameters.AddWithValue("@approverId", approver)
+    Public Function SetTemplateApprover(guid As String, approver As String) As Boolean
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "UPDATE template SET approverId = @approverId"
+            command.Parameters.AddWithValue("@approverId", approver)
 
-            Return Convert.ToBoolean(sqlite_cmd.ExecuteNonQuery())
+            Return Convert.ToBoolean(command.ExecuteNonQuery())
         End Using
     End Function
 
@@ -962,7 +962,7 @@ Partial Public Class TemplateDatabase
     ''' <param name="guid"></param>
     ''' <param name="approver"></param>
     ''' <returns>True if found, false if not updated (no template)</returns>
-    Public Async Function SetApproverAsync(guid As String, approver As String) As Task(Of Boolean)
+    Public Async Function SetTemplateApproverAsync(guid As String, approver As String) As Task(Of Boolean)
         Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand()
             sqlite_cmd.CommandText = "UPDATE template SET approverId = @approverId"
             sqlite_cmd.Parameters.AddWithValue("@approverId", approver)

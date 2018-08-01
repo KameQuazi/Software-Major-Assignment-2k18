@@ -242,7 +242,7 @@ Public Class LampService
                 Return response
             End If
 
-            Dim thisUser As LampUser
+            Dim thisUser As LampUser = Nothing
             If credentials IsNot Nothing Then
                 Dim auth = Authenticate(credentials)
                 If auth.user Is Nothing Then
@@ -250,11 +250,7 @@ Public Class LampService
                     Return response
                 End If
                 thisUser = auth.user
-            Else
-                thisUser = LampUser.Guest
             End If
-
-
 
 
             If Not HasAddUserPerms(thisUser, toAddUser) Then
@@ -620,6 +616,11 @@ Public Class LampService
 
             Dim template = Database.SelectTemplate(guid)
 
+            If Not HasApproveTemplatePerms(user, template) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
             If template Is Nothing Then
                 response = LampStatus.DoesNotExist
                 Return response
@@ -630,14 +631,8 @@ Public Class LampService
                 Return response
             End If
 
-            If Not HasApproveTemplatePerms(user, template) Then
-                response = LampStatus.NoAccess
-                Return response
-            End If
-
-
             ' passed all tests
-            Database.SetTemplate(template, template.CreatorId, user.UserId) ' new approver
+            Database.SetTemplateApprover(guid, user.UserId) ' new approver
             response = LampStatus.OK
             Return response
 
@@ -685,7 +680,7 @@ Public Class LampService
 
 
             ' passed all tests
-            Database.SetTemplate(template, template.CreatorId, Nothing) ' remove the approver
+            Database.SetTemplateApprover(guid, Nothing) ' remove the approver
             response = LampStatus.OK
             Return response
 
@@ -928,6 +923,88 @@ Public Class LampService
         End Try
     End Function
 
+    Public Function ApproveJob(credentials As LampCredentials, jobId As String) As LampStatus Implements ILampService.ApproveJob
+        Dim response As LampStatus
+
+        Try
+            If jobId Is Nothing Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response = auth.Status
+                Return response
+            End If
+
+            Dim user = auth.user
+
+            Dim job = Database.SelectJob(jobId)
+
+            If Not HasApproveJobPerms(user, job) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+            If job Is Nothing Then
+                ' no job exists
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            Database.SetJobApprover(jobId, user.UserId)
+            response = LampStatus.OK
+            Return response
+
+        Catch ex As Exception
+            Log(ex)
+            response = LampStatus.InternalServerError
+            Return response
+        End Try
+    End Function
+
+    Public Function RevokeJob(credentials As LampCredentials, jobId As String) As LampStatus Implements ILampService.RevokeJob
+        Dim response As LampStatus
+
+        Try
+            If jobId Is Nothing Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim auth = Authenticate(credentials)
+            If auth.user Is Nothing Then
+                response = auth.Status
+                Return response
+            End If
+
+            Dim user = auth.user
+
+            Dim job = Database.SelectJob(jobId)
+
+            If Not HasRevokeJobPerms(user, job) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+            If job Is Nothing Then
+                ' no job exists
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            Database.SetJobApprover(jobId, Nothing)
+            response = LampStatus.OK
+            Return response
+
+        Catch ex As Exception
+            Log(ex)
+            response = LampStatus.InternalServerError
+            Return response
+        End Try
+    End Function
+
 
     Public Function GetAllTemplate(credentials As LampCredentials) As List(Of LampTemplate) Implements ILampService.GetAllTemplate
         ' TODO add hasview template
@@ -988,7 +1065,7 @@ Public Class LampService
     End Function
 
 
-    Public Function GetJobList(credentials As LampCredentials, byUser As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampJobSort) As LampJobListWrapper Implements ILampService.GetJobList
+    Public Function GetJobList(credentials As LampCredentials, byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampJobSort) As LampJobListWrapper Implements ILampService.GetJobList
         Dim response As New LampJobListWrapper
         'todo
 
@@ -1021,7 +1098,7 @@ Public Class LampService
                 Return response
             End If
 
-            response.Templates = Database.GetMultipleJob(byUser, limit, offset, orderBy)
+            response.Templates = Database.GetMultipleJob(byUser, limit, offset, approveStatus, orderBy)
             response.Status = LampStatus.OK
             Return response
 
@@ -1185,7 +1262,7 @@ Public Class LampService
         If otherUser.PermissionLevel = UserPermission.Standard Then
             Return True
         End If
-        Return thisUser.PermissionLevel >= UserPermission.Admin
+        Return thisUser IsNot Nothing AndAlso thisUser.PermissionLevel >= UserPermission.Admin
     End Function
 
     Public Function HasEditUserPerms(user As LampUser, oldUser As LampUser, newUser As LampUser) As Boolean
@@ -1258,7 +1335,13 @@ Public Class LampService
 
 
 
+    Public Function HasApproveJobPerms(user As LampUser, job As LampJob)
+        Return user IsNot Nothing AndAlso user.PermissionLevel >= UserPermission.Admin
+    End Function
 
+    Public Function HasRevokeJobPerms(user As LampUser, job As LampJob)
+        Return user IsNot Nothing AndAlso user.PermissionLevel >= UserPermission.Admin
+    End Function
 
 
 

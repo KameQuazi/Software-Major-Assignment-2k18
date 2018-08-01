@@ -25,7 +25,7 @@ Public Class ServiceSortableTemplateViewer
             ServiceTemplateViewer1.JustMyTemplates = value
             If JustMyTemplates Then
                 rdbtnMe.Checked = True
-                rdbtnAllApproved.Checked = True
+                ' rdbtnAllApproved.Checked = True
             Else
                 rdbtnPublic.Checked = True
             End If
@@ -38,6 +38,14 @@ Public Class ServiceSortableTemplateViewer
         End Get
         Set(value As LampApprove)
             ServiceTemplateViewer1.ApprovedType = value
+            Select Case value
+                Case LampApprove.Approved
+                    rdbtnYesApproved.Checked = True
+                Case LampApprove.All
+                    rdbtnAllApproved.Checked = True
+                Case LampApprove.Unapproved
+                    rdbtnNoApproved.Checked = True
+            End Select
         End Set
     End Property
 

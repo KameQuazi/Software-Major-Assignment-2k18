@@ -199,12 +199,12 @@ Public Class LampRemoteWcfClient
         Return Channel.GetTemplateListAsync(credentials, tags, byUser, limit, offset, approveStatus, orderBy)
     End Function
 
-    Public Function GetJobList(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampJobSort) As LampJobListWrapper Implements ILampService.GetJobList
-        Return Channel.GetJobList(credentials, byUsers, limit, offset, orderBy)
+    Public Function GetJobList(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampJobSort) As LampJobListWrapper Implements ILampService.GetJobList
+        Return Channel.GetJobList(credentials, byUsers, limit, offset, approveStatus, orderBy)
     End Function
 
-    Public Function GetJobListAsync(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampJobSort) As Task(Of LampJobListWrapper) Implements ILampServiceAsync.GetJobListAsync
-        Return Channel.GetJobListAsync(credentials, byUsers, limit, offset, orderBy)
+    Public Function GetJobListAsync(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampJobSort) As Task(Of LampJobListWrapper) Implements ILampServiceAsync.GetJobListAsync
+        Return Channel.GetJobListAsync(credentials, byUsers, limit, offset, approveStatus, orderBy)
     End Function
 
     Public Function GetUserList(credentials As LampCredentials, limit As Integer, offset As Integer, orderBy As LampUserSort) As LampUserListWrapper Implements ILampService.GetUserList
@@ -213,6 +213,22 @@ Public Class LampRemoteWcfClient
 
     Public Function GetUserListAsync(credentials As LampCredentials, limit As Integer, offset As Integer, orderBy As LampUserSort) As Task(Of LampUserListWrapper) Implements ILampServiceAsync.GetUserListAsync
         Return Channel.GetUserListAsync(credentials, limit, offset, orderBy)
+    End Function
+
+    Public Function ApproveJob(credentials As LampCredentials, jobId As String) As LampStatus Implements ILampService.ApproveJob
+        Return Channel.ApproveJob(credentials, jobId)
+    End Function
+
+    Public Function RevokeJob(credentials As LampCredentials, jobId As String) As LampStatus Implements ILampService.RevokeJob
+        Return Channel.RevokeJob(credentials, jobId)
+    End Function
+
+    Public Function ApproveJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus) Implements ILampServiceAsync.ApproveJobAsync
+        Return Channel.ApproveJobAsync(credentials, jobId)
+    End Function
+
+    Public Function RevokeJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus) Implements ILampServiceAsync.RevokeJobAsync
+        Return Channel.RevokeJobAsync(credentials, jobId)
     End Function
 
 

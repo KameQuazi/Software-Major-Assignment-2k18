@@ -63,6 +63,7 @@ Public Class ServiceTemplateViewer
         End Get
         Set(value As LampApprove)
             _approvedType = value
+
             If IsHandleCreated Then
                 UpdateContents()
             End If

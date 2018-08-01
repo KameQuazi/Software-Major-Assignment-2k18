@@ -196,12 +196,12 @@ Public Class LampLocalWcfClient
         Return DirectCast(Channel, ILampServiceBoth).GetTemplateListAsync(credentials, tags, byUser, limit, offset, approveStatus, orderBy)
     End Function
 
-    Public Function GetJobList(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampJobSort) As LampJobListWrapper Implements ILampService.GetJobList
-        Return DirectCast(Channel, ILampServiceBoth).GetJobList(credentials, byUsers, limit, offset, orderBy)
+    Public Function GetJobList(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampJobSort) As LampJobListWrapper Implements ILampService.GetJobList
+        Return DirectCast(Channel, ILampServiceBoth).GetJobList(credentials, byUsers, limit, offset, approveStatus, orderBy)
     End Function
 
-    Public Function GetJobListAsync(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampJobSort) As Task(Of LampJobListWrapper) Implements ILampServiceAsync.GetJobListAsync
-        Return DirectCast(Channel, ILampServiceBoth).GetJobListAsync(credentials, byUsers, limit, offset, orderBy)
+    Public Function GetJobListAsync(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampJobSort) As Task(Of LampJobListWrapper) Implements ILampServiceAsync.GetJobListAsync
+        Return DirectCast(Channel, ILampServiceBoth).GetJobListAsync(credentials, byUsers, limit, offset, approveStatus, orderBy)
     End Function
 
     Public Function GetUserList(credentials As LampCredentials, limit As Integer, offset As Integer, orderBy As LampUserSort) As LampUserListWrapper Implements ILampService.GetUserList
@@ -210,6 +210,22 @@ Public Class LampLocalWcfClient
 
     Public Function GetUserListAsync(credentials As LampCredentials, limit As Integer, offset As Integer, orderBy As LampUserSort) As Task(Of LampUserListWrapper) Implements ILampServiceAsync.GetUserListAsync
         Return DirectCast(Channel, ILampServiceBoth).GetUserListAsync(credentials, limit, offset, orderBy)
+    End Function
+
+    Public Function ApproveJob(credentials As LampCredentials, jobId As String) As LampStatus Implements ILampService.ApproveJob
+        Return DirectCast(Channel, ILampServiceBoth).ApproveJob(credentials, jobId)
+    End Function
+
+    Public Function RevokeJob(credentials As LampCredentials, jobId As String) As LampStatus Implements ILampService.RevokeJob
+        Return DirectCast(Channel, ILampServiceBoth).RevokeJob(credentials, jobId)
+    End Function
+
+    Public Function ApproveJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus) Implements ILampServiceAsync.ApproveJobAsync
+        Return DirectCast(Channel, ILampServiceBoth).ApproveJobAsync(credentials, jobId)
+    End Function
+
+    Public Function RevokeJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus) Implements ILampServiceAsync.RevokeJobAsync
+        Return DirectCast(Channel, ILampServiceBoth).RevokeJobAsync(credentials, jobId)
     End Function
 End Class
 

@@ -168,7 +168,7 @@ Public Interface ILampService
     Function RemoveJob(credentials As LampCredentials, guid As String) As LampStatus
 
     <OperationContract>
-    Function GetJobList(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampJobSort) As LampJobListWrapper
+    Function GetJobList(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampJobSort) As LampJobListWrapper
 
     <OperationContract>
     Function GetTemplateList(credentials As LampCredentials, tags As IEnumerable(Of String), byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampTemplateSort) As LampTemplateListWrapper
@@ -176,6 +176,11 @@ Public Interface ILampService
     <OperationContract>
     Function GetUserList(credentials As LampCredentials, limit As Integer, offset As Integer, orderBy As LampUserSort) As LampUserListWrapper
 
+    <OperationContract>
+    Function ApproveJob(credentials As LampCredentials, jobId As String) As LampStatus
+
+    <OperationContract>
+    Function RevokeJob(credentials As LampCredentials, jobId As String) As LampStatus
 End Interface
 
 <ServiceContract>
@@ -247,13 +252,17 @@ Public Interface ILampServiceAsync
     Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampTemplateSort) As Task(Of LampTemplateListWrapper)
 
     <OperationContract>
-    Function GetJobListAsync(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampJobSort) As Task(Of LampJobListWrapper)
+    Function GetJobListAsync(credentials As LampCredentials, byUsers As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampJobSort) As Task(Of LampJobListWrapper)
 
     <OperationContract>
     Function GetUserListAsync(credentials As LampCredentials, limit As Integer, offset As Integer, orderBy As LampUserSort) As Task(Of LampUserListWrapper)
 
 
+    <OperationContract>
+    Function ApproveJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus)
 
+    <OperationContract>
+    Function RevokeJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus)
 End Interface
 
 <ServiceContract>

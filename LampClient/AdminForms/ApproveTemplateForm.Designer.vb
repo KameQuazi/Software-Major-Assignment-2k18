@@ -23,8 +23,8 @@ Partial Class ApproveTemplateForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.AdminToolbar1 = New LampClient.AdminToolbar()
+        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.ServiceSortableTemplateViewer1 = New LampClient.ServiceSortableTemplateViewer()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
@@ -46,6 +46,15 @@ Partial Class ApproveTemplateForm
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1232, 703)
         Me.TableLayoutPanel1.TabIndex = 0
         '
+        'AdminToolbar1
+        '
+        Me.AdminToolbar1.BackColor = System.Drawing.Color.LightSeaGreen
+        Me.AdminToolbar1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.AdminToolbar1.Location = New System.Drawing.Point(3, 3)
+        Me.AdminToolbar1.Name = "AdminToolbar1"
+        Me.AdminToolbar1.Size = New System.Drawing.Size(1226, 99)
+        Me.AdminToolbar1.TabIndex = 0
+        '
         'TableLayoutPanel2
         '
         Me.TableLayoutPanel2.ColumnCount = 1
@@ -60,15 +69,6 @@ Partial Class ApproveTemplateForm
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 592.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(1226, 592)
         Me.TableLayoutPanel2.TabIndex = 1
-        '
-        'AdminToolbar1
-        '
-        Me.AdminToolbar1.BackColor = System.Drawing.Color.LightSeaGreen
-        Me.AdminToolbar1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.AdminToolbar1.Location = New System.Drawing.Point(3, 3)
-        Me.AdminToolbar1.Name = "AdminToolbar1"
-        Me.AdminToolbar1.Size = New System.Drawing.Size(1226, 99)
-        Me.AdminToolbar1.TabIndex = 0
         '
         'ServiceSortableTemplateViewer1
         '

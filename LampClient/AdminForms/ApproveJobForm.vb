@@ -1,7 +1,26 @@
-﻿Public Class ApproveJobForm
-    Private Sub ServiceSortableJobViewer1_JobClick(sender As Object, e As JobClickedEventArgs) Handles ServiceSortableJobViewer1.JobClick
-        If MessageBox.Show("Do you wish to approve this job?", "Approve", MessageBoxButtons.YesNo) Then
+﻿Imports LampCommon
 
+Public Class ApproveJobForm
+
+
+    Private Sub ApproveJob(job As LampJob)
+        If MessageBox.Show("Do you wish to approve this job?", "Approve", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+            Dim response = CurrentSender.ApproveJob(CurrentUser.ToCredentials, job.JobId)
+            Select Case response
+                Case LampStatus.OK
+                    MessageBox.Show("Approve Successful")
+                    ServiceSortableJobViewer1.UpdateContents()
+                Case Else
+                    ShowError(response)
+            End Select
         End If
+    End Sub
+
+    Private Sub Handle_ApproveClicked(sender As Object, e As LampJobEventArgs) Handles ServiceSortableJobViewer1.ApproveClick
+        ApproveJob(e.Job)
+    End Sub
+
+    Private Sub ApproveJobForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ServiceSortableJobViewer1.ApprovedType = LampApprove.Unapproved
     End Sub
 End Class

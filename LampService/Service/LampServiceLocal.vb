@@ -540,7 +540,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            Dim auth = Await AuthenticateAsync(credentials)
+            Dim auth = Await AuthenticateAsync(credentials).ConfigureAwait(False)
             If auth.user Is Nothing Then
                 response = auth.Status
                 Return response
@@ -548,7 +548,12 @@ Public Class LampServiceLocal
 
             Dim user = auth.user
 
-            Dim template = Await Database.SelectTemplateAsync(guid)
+            Dim template = Await Database.SelectTemplateAsync(guid).ConfigureAwait(False)
+
+            If Not HasApproveTemplatePerms(user, template) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
 
             If template Is Nothing Then
                 response = LampStatus.DoesNotExist
@@ -560,14 +565,11 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            If Not HasApproveTemplatePerms(user, template) Then
-                response = LampStatus.NoAccess
-                Return response
-            End If
+
 
 
             ' passed all tests
-            Await Database.SetTemplateAsync(template, template.CreatorId, user.UserId) ' new approver
+            Await Database.SetTemplateApproverAsync(guid, user.UserId).ConfigureAwait(False) ' new approver
             response = LampStatus.OK
             Return response
 
@@ -588,7 +590,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            Dim auth = Await AuthenticateAsync(credentials)
+            Dim auth = Await AuthenticateAsync(credentials).ConfigureAwait(False)
             If auth.user Is Nothing Then
                 response = auth.Status
                 Return response
@@ -596,7 +598,12 @@ Public Class LampServiceLocal
 
             Dim user = auth.user
 
-            Dim template = Await Database.SelectTemplateAsync(guid)
+            Dim template = Await Database.SelectTemplateAsync(guid).ConfigureAwait(False)
+
+            If Not HasRevokeTemplatePerms(user, template) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
 
             If template Is Nothing Then
                 response = LampStatus.DoesNotExist
@@ -608,14 +615,11 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            If Not HasRevokeTemplatePerms(user, template) Then
-                response = LampStatus.NoAccess
-                Return response
-            End If
+
 
 
             ' passed all tests
-            Await Database.SetTemplateAsync(template, template.CreatorId, Nothing) ' remove the approver
+            Await Database.SetTemplateApproverAsync(guid, Nothing).ConfigureAwait(False) ' remove the approver
             response = LampStatus.OK
             Return response
 
@@ -917,7 +921,7 @@ Public Class LampServiceLocal
     End Function
 
 
-    Public Async Function GetJobListAsync(credentials As LampCredentials, byUser As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampJobSort) As Task(Of LampJobListWrapper) Implements ILampServiceBoth.GetJobListAsync
+    Public Async Function GetJobListAsync(credentials As LampCredentials, byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampJobSort) As Task(Of LampJobListWrapper) Implements ILampServiceBoth.GetJobListAsync
         Dim response As New LampJobListWrapper
         'todo
 
@@ -948,7 +952,7 @@ Public Class LampServiceLocal
                 Return response
             End If
 
-            response.Templates = Await Database.GetMultipleJobAsync(byUser, limit, offset, orderBy).ConfigureAwait(False)
+            response.Templates = Await Database.GetMultipleJobAsync(byUser, limit, offset, approveStatus, orderBy).ConfigureAwait(False)
             response.Status = LampStatus.OK
             Return response
 
@@ -992,6 +996,88 @@ Public Class LampServiceLocal
 
         Catch ex As Exception
             response.Status = LampStatus.InternalServerError
+            Return response
+        End Try
+    End Function
+
+    Public Async Function ApproveJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus) Implements ILampServiceAsync.ApproveJobAsync
+        Dim response As LampStatus
+
+        Try
+            If jobId Is Nothing Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim auth = Await AuthenticateAsync(credentials).ConfigureAwait(False)
+            If auth.user Is Nothing Then
+                response = auth.Status
+                Return response
+            End If
+
+            Dim user = auth.user
+
+            Dim job = Await Database.SelectJobAsync(jobId).ConfigureAwait(False)
+
+            If Not HasApproveJobPerms(user, job) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+            If job Is Nothing Then
+                ' no job exists
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            Await Database.SetJobApproverAsync(jobId, user.UserId).ConfigureAwait(False)
+            response = LampStatus.OK
+            Return response
+
+        Catch ex As Exception
+            Log(ex)
+            response = LampStatus.InternalServerError
+            Return response
+        End Try
+    End Function
+
+    Public Async Function RevokeJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus) Implements ILampServiceAsync.RevokeJobAsync
+        Dim response As LampStatus
+
+        Try
+            If jobId Is Nothing Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim auth = Await AuthenticateAsync(credentials).ConfigureAwait(False)
+            If auth.user Is Nothing Then
+                response = auth.Status
+                Return response
+            End If
+
+            Dim user = auth.user
+
+            Dim job = Await Database.SelectJobAsync(jobId).ConfigureAwait(False)
+
+            If Not HasRevokeJobPerms(user, job) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+            If job Is Nothing Then
+                ' no job exists
+                response = LampStatus.DoesNotExist
+                Return response
+            End If
+
+            Await Database.SetJobApproverAsync(jobId, Nothing).ConfigureAwait(False)
+            response = LampStatus.OK
+            Return response
+
+        Catch ex As Exception
+            Log(ex)
+            response = LampStatus.InternalServerError
             Return response
         End Try
     End Function

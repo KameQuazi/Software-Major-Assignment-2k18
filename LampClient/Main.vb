@@ -41,7 +41,9 @@ Public Module OwO
         MessageBox.Show("An error occurred: " + [error].ToString, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
     End Sub
 
-
+    Public Function ValidateEmail(email As String) As Boolean
+        Return True ' todo
+    End Function
 
 
 End Module

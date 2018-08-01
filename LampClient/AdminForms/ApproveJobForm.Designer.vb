@@ -64,7 +64,7 @@ Partial Class ApproveJobForm
         Me.ServiceSortableJobViewer1.Size = New System.Drawing.Size(1226, 592)
         Me.ServiceSortableJobViewer1.SortOrder = LampCommon.LampJobSort.NoSort
         Me.ServiceSortableJobViewer1.TabIndex = 1
-        Me.ServiceSortableJobViewer1.TitleText = "Choose Job"
+        Me.ServiceSortableJobViewer1.TitleText = "Approve Job"
         '
         'ApproveJobForm
         '

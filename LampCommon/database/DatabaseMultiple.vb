@@ -350,7 +350,7 @@ Public Class TemplateDatabase
 #End Region
 
 #Region "Multile Job"
-    Public Function GetMultipleJob(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampJobSort) As List(Of LampJob)
+    Public Function GetMultipleJob(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampJobSort) As List(Of LampJob)
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingJobs As New List(Of LampJob)
 
@@ -364,11 +364,23 @@ Public Class TemplateDatabase
                 userParameter += ")"
             End If
 
-            Dim stringCommand = String.Format("SELECT jobId FROM jobs WHERE {0} 
-                                            {1}
+            Dim approveParameter = "1"
+            Select Case approveStatus
+                Case LampApprove.All
+                    approveParameter = "1"
+                Case LampApprove.Approved
+                    approveParameter = "approverId is not null"
+                Case LampApprove.Unapproved
+                    approveParameter = "approverId is null"
+                Case Else
+                    Throw New ArgumentOutOfRangeException(NameOf(approveStatus))
+            End Select
+
+            Dim stringCommand = String.Format("SELECT jobId FROM jobs WHERE {0} AND {1}
+                                            {2}
                                             LIMIT @limit
                                             OFFSET @offset",
-                                            userParameter, GetJobSqlFromSort(orderBy))
+                                            userParameter, approveParameter, GetJobSqlFromSort(orderBy))
             command.CommandText = stringCommand
 
             command.Parameters.AddWithValue("@limit", limit)
@@ -390,7 +402,7 @@ Public Class TemplateDatabase
         End Using
     End Function
 
-    Public Async Function GetMultipleJobAsync(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, orderBy As LampJobSort) As Task(Of List(Of LampJob))
+    Public Async Function GetMultipleJobAsync(byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampJobSort) As Task(Of List(Of LampJob))
         Using conn = Connection.OpenConnection(), command = Connection.GetCommand()
             Dim matchingJobs As New List(Of LampJob)
 
@@ -403,13 +415,27 @@ Public Class TemplateDatabase
 
                 userParameter += ")"
             End If
+            Dim approveParameter = "1"
+            Select Case approveStatus
+                Case LampApprove.All
+                    approveParameter = "1"
+                Case LampApprove.Approved
+                    approveParameter = "approverId is not null"
+                Case LampApprove.Unapproved
+                    approveParameter = "approverId is null"
+                Case Else
+                    Throw New ArgumentOutOfRangeException(NameOf(approveStatus))
+            End Select
 
-            Dim stringCommand = String.Format("SELECT jobId FROM jobs WHERE {0} 
-                                            {1}
+
+            Dim stringCommand = String.Format("SELECT jobId FROM jobs WHERE {0} AND {1}
+                                            {2}
                                             LIMIT @limit
                                             OFFSET @offset",
-                                            userParameter, GetJobSqlFromSort(orderBy))
+                                            userParameter, approveParameter, GetJobSqlFromSort(orderBy))
             command.CommandText = stringCommand
+
+
 
             command.Parameters.AddWithValue("@limit", limit)
             command.Parameters.AddWithValue("@offset", offset)

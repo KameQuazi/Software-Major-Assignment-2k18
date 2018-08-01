@@ -6,4 +6,12 @@
             ServiceMultiUserViewer1.UpdateContents()
         End Using
     End Sub
+
+    Private Sub btnAddUser_Click(sender As Object, e As EventArgs) Handles btnAddUser.Click
+        Using dialog As New AddNewUserDialog
+            If dialog.ShowDialog(Me) = DialogResult.OK Then
+
+            End If
+        End Using
+    End Sub
 End Class

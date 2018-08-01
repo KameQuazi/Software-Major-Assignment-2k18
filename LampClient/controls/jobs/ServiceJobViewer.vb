@@ -4,19 +4,33 @@ Imports LampCommon
 <DefaultEvent("JobClick")>
 Public Class ServiceJobViewer
     Public Event JobClick(sender As Object, e As JobClickedEventArgs)
+    Public Event ApproveClick(sender As Object, job As LampJobEventArgs)
+    Public Event ViewDrawingClick(sender As Object, job As LampJobEventArgs)
+    Public Event AdvancedClick(sender As Object, job As LampJobEventArgs)
+
+    Private Sub HandleApproveClick(sender As Object, job As LampJobEventArgs) Handles MultiJobViewer1.ApproveClick
+        RaiseEvent ApproveClick(Me, job)
+    End Sub
+    Private Sub HandleViewDrawingClick(sender As Object, job As LampJobEventArgs) Handles MultiJobViewer1.ViewDrawingClick
+        RaiseEvent ApproveClick(Me, job)
+    End Sub
+    Private Sub HandleAdvancedClick(sender As Object, job As LampJobEventArgs) Handles MultiJobViewer1.AdvancedClick
+        RaiseEvent AdvancedClick(Me, job)
+    End Sub
 
     Private Sub MultiJobViewer1_JobClick(sender As Object, e As JobClickedEventArgs) Handles MultiJobViewer1.JobClick
         RaiseEvent JobClick(Me, e)
     End Sub
 
 
-    Private _sortOrder As LampTemplateSort = LampTemplateSort.NoSort
-    Public Property SortOrder As LampTemplateSort
+    Private _sortOrder As LampJobSort = LampJobSort.NoSort
+    Public Property SortOrder As LampJobSort
         Get
             Return _sortOrder
         End Get
-        Set(value As LampTemplateSort)
+        Set(value As LampJobSort)
             _sortOrder = value
+
             If IsHandleCreated Then
                 UpdateContents()
             End If
@@ -73,7 +87,7 @@ Public Class ServiceJobViewer
                 If Offset - JOBS_PER_PAGE >= 0 Then
                     Dim previousPage = CurrentSender.GetJobList(CurrentUser.ToCredentials,
                                                         GetFilteredUserList,
-                                                        JOBS_PER_PAGE, Offset - JOBS_PER_PAGE, SortOrder)
+                                                        JOBS_PER_PAGE, Offset - JOBS_PER_PAGE, ApprovedType, SortOrder)
                     If previousPage.Status = LampStatus.OK Then
                         If previousPage.Templates.Count() > 0 Then
                             Me.SafeInvokeEx(Sub(control As ServiceJobViewer) control.btnPreviousPage.Enabled = True)
@@ -91,7 +105,7 @@ Public Class ServiceJobViewer
 
                 Dim request = CurrentSender.GetJobList(CurrentUser.ToCredentials,
                                                                GetFilteredUserList,
-                                                               JOBS_PER_PAGE, Offset, SortOrder)
+                                                               JOBS_PER_PAGE, Offset, ApprovedType, SortOrder)
 
                 If request.Status <> LampStatus.OK Then
                     ShowError(request.Status)
@@ -111,7 +125,7 @@ Public Class ServiceJobViewer
                 If Offset + JOBS_PER_PAGE >= 0 Then
                     Dim previousPage = CurrentSender.GetJobList(CurrentUser.ToCredentials,
                                                             GetFilteredUserList,
-                                                            JOBS_PER_PAGE, Offset + JOBS_PER_PAGE, SortOrder)
+                                                            JOBS_PER_PAGE, Offset + JOBS_PER_PAGE, ApprovedType, SortOrder)
                     If previousPage.Status = LampStatus.OK Then
                         If previousPage.Templates.Count() > 0 Then
                             Me.SafeInvokeEx(Sub(control As ServiceJobViewer) control.btnNextPage.Enabled = True)

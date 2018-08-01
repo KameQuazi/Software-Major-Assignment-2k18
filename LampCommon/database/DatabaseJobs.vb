@@ -261,4 +261,34 @@ Partial Class TemplateDatabase
         Return False
     End Function
 
+
+    ''' <summary>
+    ''' Sets or unsets the approver of a job
+    ''' </summary>
+    ''' <param name="jobId"></param>
+    ''' <param name="approver"></param>
+    ''' <returns>True if found, false if not updated (no template)</returns>
+    Public Function SetJobApprover(jobId As String, approver As String) As Boolean
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "UPDATE jobs SET approverId = @approverId"
+            command.Parameters.AddWithValue("@approverId", approver)
+
+            Return Convert.ToBoolean(command.ExecuteNonQuery())
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Sets or unsets the approver of a job
+    ''' </summary>
+    ''' <param name="jobId"></param>
+    ''' <param name="approver"></param>
+    ''' <returns>True if found, false if not updated (no template)</returns>
+    Public Async Function SetJobApproverAsync(jobId As String, approver As String) As Task(Of Boolean)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand()
+            command.CommandText = "UPDATE jobs SET approverId = @approverId"
+            command.Parameters.AddWithValue("@approverId", approver)
+
+            Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
+        End Using
+    End Function
 End Class

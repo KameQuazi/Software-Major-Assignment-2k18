@@ -3,6 +3,19 @@ Imports LampCommon
 
 Public Class ServiceSortableJobViewer
     Public Event JobClick(sender As Object, e As JobClickedEventArgs)
+    Public Event ApproveClick(sender As Object, job As LampJobEventArgs)
+    Public Event ViewDrawingClick(sender As Object, job As LampJobEventArgs)
+    Public Event AdvancedClick(sender As Object, job As LampJobEventArgs)
+
+    Private Sub HandleApproveClick(sender As Object, job As LampJobEventArgs) Handles ServiceJobViewer1.ApproveClick
+        RaiseEvent ApproveClick(Me, job)
+    End Sub
+    Private Sub HandleViewDrawingClick(sender As Object, job As LampJobEventArgs) Handles ServiceJobViewer1.ViewDrawingClick
+        RaiseEvent ApproveClick(Me, job)
+    End Sub
+    Private Sub HandleAdvancedClick(sender As Object, job As LampJobEventArgs) Handles ServiceJobViewer1.AdvancedClick
+        RaiseEvent AdvancedClick(Me, job)
+    End Sub
 
     Private Sub ServiceTemplateViewer1_TemplateClick(sender As Object, e As JobClickedEventArgs) Handles ServiceJobViewer1.JobClick
         RaiseEvent JobClick(Me, e)
@@ -23,7 +36,7 @@ Public Class ServiceSortableJobViewer
             ServiceJobViewer1.JustMyJobs = value
             If JustMyJobs Then
                 rdbtnMe.Checked = True
-                rdbtnAllApproved.Checked = True
+                ' rdbtnAllApproved.Checked = True
             Else
                 rdbtnPublic.Checked = True
             End If
@@ -36,6 +49,14 @@ Public Class ServiceSortableJobViewer
         End Get
         Set(value As LampApprove)
             ServiceJobViewer1.ApprovedType = value
+            Select Case value
+                Case LampApprove.Approved
+                    rdbtnYesApproved.Checked = True
+                Case LampApprove.All
+                    rdbtnAllApproved.Checked = True
+                Case LampApprove.Unapproved
+                    rdbtnNoApproved.Checked = True
+            End Select
         End Set
     End Property
 
@@ -48,7 +69,6 @@ Public Class ServiceSortableJobViewer
         End Set
     End Property
 
-    Public ReadOnly Property Templates As ObservableCollection(Of LampTemplate)
 
     Private tags As List(Of String) ' lower case
 
@@ -79,9 +99,6 @@ Public Class ServiceSortableJobViewer
     End Sub
 
 
-    Private Sub MultiTemplateViewer1_Load(sender As Object, e As EventArgs)
-
-    End Sub
 
 
 
@@ -91,8 +108,6 @@ Public Class ServiceSortableJobViewer
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Templates = New ObservableCollection(Of LampTemplate)
-
     End Sub
 
 
