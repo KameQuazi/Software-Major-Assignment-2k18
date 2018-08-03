@@ -12,7 +12,7 @@ Public Class ServiceJobViewer
         RaiseEvent ApproveClick(Me, job)
     End Sub
     Private Sub HandleViewDrawingClick(sender As Object, job As LampJobEventArgs) Handles MultiJobViewer1.ViewDrawingClick
-        RaiseEvent ApproveClick(Me, job)
+        RaiseEvent ViewDrawingClick(Me, job)
     End Sub
     Private Sub HandleAdvancedClick(sender As Object, job As LampJobEventArgs) Handles MultiJobViewer1.AdvancedClick
         RaiseEvent AdvancedClick(Me, job)

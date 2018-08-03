@@ -46,6 +46,12 @@ Public Class ManageUserControl
         btnResetPassword.Enabled = True
     End Sub
 
+    Friend Sub ValidateAll()
+        ValidateEmail()
+        ValidateUsername()
+        ValidateName()
+        ValidatePassword()
+    End Sub
 
     Private Sub DisableEdit()
         TboxEmail.ReadOnly = True
@@ -81,7 +87,6 @@ Public Class ManageUserControl
     Private Sub btnResetPassword_Click(sender As Object, e As EventArgs) Handles btnResetPassword.Click
         Using input As New LampPasswordBox()
             If input.ShowDialog(Me) = DialogResult.OK Then
-                User.Password = input.InputText
                 TboxPassword.Text = input.InputText
             End If
         End Using
@@ -116,6 +121,7 @@ Public Class ManageUserControl
     Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs) Handles TboxEmail.TextChanged
         ' tOdo email validation
         User.Email = TboxEmail.Text
+        ValidateEmail()
     End Sub
 
 
@@ -123,18 +129,66 @@ Public Class ManageUserControl
 
     Private Sub TboxName_TextChanged(sender As Object, e As EventArgs) Handles TboxName.TextChanged
         User.Name = TboxName.Text
+        ValidateName()
     End Sub
 
-    Private Sub TableLayoutPanel2_Paint(sender As Object, e As PaintEventArgs) Handles TableLayoutPanel2.Paint
 
-    End Sub
+
+    Public Function ValidateEmail() As Boolean
+        If TboxEmail.Text = "" Then
+            ErrorProvider1.SetError(TboxEmail, "Email is empty")
+            Return False
+        ElseIf Not OwO.ValidateEmail(TboxEmail.Text) Then
+            ErrorProvider1.SetError(TboxEmail, "Email in invalid format")
+            Return False
+        Else
+            ErrorProvider1.SetError(TboxEmail, "")
+        End If
+        Return True
+    End Function
+
+    Public Function ValidateUsername() As Boolean
+        If TboxUsername.Text = "" Then
+            ErrorProvider1.SetError(TboxUsername, "Username is empty")
+            Return False
+        Else
+            ErrorProvider1.SetError(TboxUsername, "")
+        End If
+        Return True
+    End Function
+
+    Public Function ValidateName() As Boolean
+        If TboxName.Text = "" Then
+            ErrorProvider1.SetError(TboxName, "Name is empty")
+            Return False
+        Else
+            ErrorProvider1.SetError(TboxName, "")
+        End If
+        Return True
+    End Function
 
     Private Sub TboxUsername_TextChanged(sender As Object, e As EventArgs) Handles TboxUsername.TextChanged
         User.Username = TboxUsername.Text
+        ValidateUsername()
     End Sub
 
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TboxPassword.TextChanged
+    Public Function ValidatePassword() As Boolean
+        If TboxPassword.Text = "" Then
+            ErrorProvider1.SetError(TboxPassword, "Password is empty")
+            Return False
+        ElseIf TboxPassword.Text.Length < MIN_PASSWORD_LENGTH Then
+            ErrorProvider1.SetError(TboxPassword, String.Format("Password must be longer than {0} characters long", MIN_PASSWORD_LENGTH))
+            Return False
+        Else
+            ErrorProvider1.SetError(TboxPassword, "")
+        End If
 
+        Return True
+    End Function
+
+    Private Sub TboxPassword_TextChanged(sender As Object, e As EventArgs) Handles TboxPassword.TextChanged
+        User.Password = TboxPassword.Text
+        ValidatePassword()
     End Sub
 End Class
 

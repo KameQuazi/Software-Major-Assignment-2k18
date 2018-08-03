@@ -1,4 +1,6 @@
-﻿Imports System.ServiceModel
+﻿Imports System.ComponentModel.DataAnnotations
+Imports System.ServiceModel
+Imports System.Text.RegularExpressions
 Imports LampCommon
 Imports LampService
 
@@ -42,8 +44,9 @@ Public Module OwO
     End Sub
 
     Public Function ValidateEmail(email As String) As Boolean
-        Return True ' todo
+        Return New EmailAddressAttribute().IsValid(email)
     End Function
 
+    Public Const MIN_PASSWORD_LENGTH = 6
 
 End Module

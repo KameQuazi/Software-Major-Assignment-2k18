@@ -11,10 +11,10 @@
 
     Public Property InputText As String
         Get
-            Return PasswordRichTextBox1.Text
+            Return TextBox1.Text
         End Get
         Set(value As String)
-            PasswordRichTextBox1.Text = value
+            TextBox1.Text = value
         End Set
     End Property
 End Class

@@ -104,7 +104,6 @@ Public Class MultiJobViewer
                     .Dock = DockStyle.Fill
                 }
                 AddHandler newViewer.Click, AddressOf HandleJobClicked
-                AddHandler newViewer.ApproveClick, AddressOf ApproveClickHandler
                 AddHandler newViewer.AdvancedClick, AddressOf AdvancedHandler
                 AddHandler newViewer.ViewDrawingClicks, AddressOf ViewDrawingClickHandler
 

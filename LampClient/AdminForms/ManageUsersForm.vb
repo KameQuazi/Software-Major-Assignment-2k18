@@ -12,6 +12,7 @@
             If dialog.ShowDialog(Me) = DialogResult.OK Then
 
             End If
+            ServiceMultiUserViewer1.UpdateContents()
         End Using
     End Sub
 End Class

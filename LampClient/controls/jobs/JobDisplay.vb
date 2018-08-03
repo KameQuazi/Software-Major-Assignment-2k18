@@ -40,15 +40,13 @@ Public Class JobDisplay
             dynamicTextViewer.Source = Job.Template
             FileDisplay1.Template = Job.Template
             tboxSummary.Text = Job.Summary
+            tboxSubmitter.Text = Job.Submitter?.Username
+            dtPicker.Value = Job.SubmitDate
         End If
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs)
         dynamicTextViewer.ShowDialog()
-    End Sub
-
-    Private Sub btnApprove_Click(sender As Object, e As EventArgs) Handles btnApprove.Click
-        RaiseEvent ApproveClick(Me, New LampJobEventArgs(Job))
     End Sub
 
     Private Sub btnViewDrawing_Click(sender As Object, e As EventArgs) Handles btnViewDrawing.Click
@@ -59,7 +57,6 @@ Public Class JobDisplay
         RaiseEvent AdvancedClick(Me, New LampJobEventArgs(Job))
     End Sub
 
-    Public Event ApproveClick(sender As Object, job As LampJobEventArgs)
     Public Event ViewDrawingClicks(sender As Object, job As LampJobEventArgs)
     Public Event AdvancedClick(sender As Object, job As LampJobEventArgs)
 End Class

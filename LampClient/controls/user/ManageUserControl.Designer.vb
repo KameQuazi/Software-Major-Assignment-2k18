@@ -22,6 +22,7 @@ Partial Class ManageUserControl
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -36,9 +37,11 @@ Partial Class ManageUserControl
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.TboxPassword = New System.Windows.Forms.TextBox()
         Me.btnResetPassword = New System.Windows.Forms.Button()
+        Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -212,6 +215,11 @@ Partial Class ManageUserControl
         Me.btnResetPassword.Text = "Reset Password"
         Me.btnResetPassword.UseVisualStyleBackColor = True
         '
+        'ErrorProvider1
+        '
+        Me.ErrorProvider1.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink
+        Me.ErrorProvider1.ContainerControl = Me
+        '
         'ManageUserControl
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -224,6 +232,7 @@ Partial Class ManageUserControl
         Me.TableLayoutPanel2.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -241,4 +250,5 @@ Partial Class ManageUserControl
     Friend WithEvents Panel1 As Panel
     Friend WithEvents TboxPassword As TextBox
     Friend WithEvents btnResetPassword As Button
+    Friend WithEvents ErrorProvider1 As ErrorProvider
 End Class

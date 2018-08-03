@@ -22,19 +22,11 @@ Partial Class LampPasswordBox
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.PasswordRichTextBox1 = New LampClient.PasswordRichTextBox()
         Me.btnOk = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
-        '
-        'PasswordRichTextBox1
-        '
-        Me.PasswordRichTextBox1.Location = New System.Drawing.Point(52, 95)
-        Me.PasswordRichTextBox1.Name = "PasswordRichTextBox1"
-        Me.PasswordRichTextBox1.Size = New System.Drawing.Size(250, 109)
-        Me.PasswordRichTextBox1.TabIndex = 0
-        Me.PasswordRichTextBox1.Text = ""
         '
         'btnOk
         '
@@ -63,24 +55,31 @@ Partial Class LampPasswordBox
         Me.Label1.TabIndex = 3
         Me.Label1.Text = "Enter New Password"
         '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(12, 79)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(250, 20)
+        Me.TextBox1.TabIndex = 4
+        Me.TextBox1.UseSystemPasswordChar = True
+        '
         'LampPasswordBox
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(358, 270)
+        Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnOk)
-        Me.Controls.Add(Me.PasswordRichTextBox1)
         Me.Name = "LampPasswordBox"
         Me.Text = "Enter Password"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-
-    Friend WithEvents PasswordRichTextBox1 As PasswordRichTextBox
     Friend WithEvents btnOk As Button
     Friend WithEvents btnCancel As Button
     Friend WithEvents Label1 As Label
+    Friend WithEvents TextBox1 As TextBox
 End Class

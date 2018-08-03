@@ -3,15 +3,11 @@ Imports LampCommon
 
 Public Class ServiceSortableJobViewer
     Public Event JobClick(sender As Object, e As JobClickedEventArgs)
-    Public Event ApproveClick(sender As Object, job As LampJobEventArgs)
     Public Event ViewDrawingClick(sender As Object, job As LampJobEventArgs)
     Public Event AdvancedClick(sender As Object, job As LampJobEventArgs)
 
-    Private Sub HandleApproveClick(sender As Object, job As LampJobEventArgs) Handles ServiceJobViewer1.ApproveClick
-        RaiseEvent ApproveClick(Me, job)
-    End Sub
     Private Sub HandleViewDrawingClick(sender As Object, job As LampJobEventArgs) Handles ServiceJobViewer1.ViewDrawingClick
-        RaiseEvent ApproveClick(Me, job)
+        RaiseEvent ViewDrawingClick(Me, job)
     End Sub
     Private Sub HandleAdvancedClick(sender As Object, job As LampJobEventArgs) Handles ServiceJobViewer1.AdvancedClick
         RaiseEvent AdvancedClick(Me, job)

@@ -102,6 +102,9 @@ Public Class EditUserForm
     Private previousUser As LampUser
     Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
         If editPressed Then
+            If Not ValidateUser() Then
+                Return
+            End If
             Dim response = CurrentSender.EditUser(CurrentUser.ToCredentials, User)
             Select Case response
                 Case LampStatus.OK
@@ -114,9 +117,34 @@ Public Class EditUserForm
         editPressed = Not editPressed
     End Sub
 
-    Private Sub ManageUserControl1_Load(sender As Object, e As EventArgs) Handles ManageUserControl1.Load
+    Private Function validateUser() As Boolean
+        Dim warnings As Boolean = False
+        Dim warningTEext As String = "Warnings detected: \n"
+        If User.Username = String.Empty Then
+            MessageBox.Show("Username must be specified")
+            Return False
+        End If
+        If User.Email = String.Empty Then
+            MessageBox.Show("Email must be specified")
+            Return False
+        End If
 
-    End Sub
+        If Not ValidateEmail(User.Email) Then
+            MessageBox.Show("Email is invalid")
+            Return False
+        End If
 
+        If User.Password = String.Empty Then
+            MessageBox.Show("Password is empty")
+            Return False
+        End If
+
+        If User.Password.Length < MIN_PASSWORD_LENGTH Then
+            MessageBox.Show(String.Format("Password must be {0} or more characters long", MIN_PASSWORD_LENGTH))
+            Return False
+        End If
+        Return True
+
+    End Function
 
 End Class

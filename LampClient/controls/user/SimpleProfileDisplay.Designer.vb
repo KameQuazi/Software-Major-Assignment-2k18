@@ -40,8 +40,8 @@ Partial Class SimpleProfileDisplay
         Me.TableLayoutPanel1.ColumnCount = 2
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.btnDetailed, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.TableLayoutPanel2, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.btnDetailed, 1, 0)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
@@ -64,6 +64,7 @@ Partial Class SimpleProfileDisplay
         Me.TableLayoutPanel2.RowCount = 2
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(232, 114)
         Me.TableLayoutPanel2.TabIndex = 0
         '
@@ -79,7 +80,7 @@ Partial Class SimpleProfileDisplay
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
         Me.TableLayoutPanel3.RowCount = 1
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 51.0!))
         Me.TableLayoutPanel3.Size = New System.Drawing.Size(226, 51)
         Me.TableLayoutPanel3.TabIndex = 0
         '
@@ -115,13 +116,17 @@ Partial Class SimpleProfileDisplay
         '
         'btnDetailed
         '
-        Me.btnDetailed.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnDetailed.Location = New System.Drawing.Point(253, 49)
+        Me.btnDetailed.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.btnDetailed.BackColor = System.Drawing.Color.White
+        Me.btnDetailed.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnDetailed.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDetailed.Location = New System.Drawing.Point(245, 6)
+        Me.btnDetailed.Margin = New System.Windows.Forms.Padding(5)
         Me.btnDetailed.Name = "btnDetailed"
-        Me.btnDetailed.Size = New System.Drawing.Size(75, 23)
-        Me.btnDetailed.TabIndex = 1
-        Me.btnDetailed.Text = "Details...."
-        Me.btnDetailed.UseVisualStyleBackColor = True
+        Me.btnDetailed.Size = New System.Drawing.Size(92, 43)
+        Me.btnDetailed.TabIndex = 48
+        Me.btnDetailed.Text = "Detailed"
+        Me.btnDetailed.UseVisualStyleBackColor = False
         '
         'SimpleProfileDisplay
         '

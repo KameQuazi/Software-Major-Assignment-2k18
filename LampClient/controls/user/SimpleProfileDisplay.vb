@@ -74,6 +74,7 @@ Public Class SimpleProfileDisplay
         ' Add any initialization after the InitializeComponent() call.
         [Readonly] = True
     End Sub
+
 End Class
 
 

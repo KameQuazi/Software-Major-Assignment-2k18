@@ -16,9 +16,7 @@ Public Class ApproveJobForm
         End If
     End Sub
 
-    Private Sub Handle_ApproveClicked(sender As Object, e As LampJobEventArgs) Handles ServiceSortableJobViewer1.ApproveClick
-        ApproveJob(e.Job)
-    End Sub
+
 
     Private Sub ApproveJobForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ServiceSortableJobViewer1.ApprovedType = LampApprove.Unapproved
