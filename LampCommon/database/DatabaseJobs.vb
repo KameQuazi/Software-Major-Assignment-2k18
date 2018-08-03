@@ -270,8 +270,9 @@ Partial Class TemplateDatabase
     ''' <returns>True if found, false if not updated (no template)</returns>
     Public Function SetJobApprover(jobId As String, approver As String) As Boolean
         Using conn = Connection.OpenConnection, command = Connection.GetCommand()
-            command.CommandText = "UPDATE jobs SET approverId = @approverId"
+            command.CommandText = "UPDATE jobs SET approverId = @approverId WHERE jobid=@jobid"
             command.Parameters.AddWithValue("@approverId", approver)
+            command.Parameters.AddWithValue("@jobid", jobId)
 
             Return Convert.ToBoolean(command.ExecuteNonQuery())
         End Using
@@ -285,8 +286,9 @@ Partial Class TemplateDatabase
     ''' <returns>True if found, false if not updated (no template)</returns>
     Public Async Function SetJobApproverAsync(jobId As String, approver As String) As Task(Of Boolean)
         Using conn = Connection.OpenConnection, command = Connection.GetCommand()
-            command.CommandText = "UPDATE jobs SET approverId = @approverId"
+            command.CommandText = "UPDATE jobs SET approverId = @approverId WHERE jobid = @jobid"
             command.Parameters.AddWithValue("@approverId", approver)
+            command.Parameters.AddWithValue("@jobid", jobId)
 
             Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
         End Using

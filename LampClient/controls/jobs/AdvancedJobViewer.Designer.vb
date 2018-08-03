@@ -28,19 +28,22 @@ Partial Class AdvancedJobViewer
         Me.tboxSummary = New System.Windows.Forms.RichTextBox()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.dtPicker = New System.Windows.Forms.DateTimePicker()
-        Me.tboxApprover = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.tboxPages = New System.Windows.Forms.TextBox()
         Me.btnViewDrawing = New System.Windows.Forms.Button()
         Me.tboxSubmitter = New System.Windows.Forms.TextBox()
-        Me.tboxPages = New System.Windows.Forms.TextBox()
+        Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
+        Me.tboxApprover = New System.Windows.Forms.TextBox()
+        Me.btnApprove = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel6.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
+        Me.TableLayoutPanel4.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -106,13 +109,13 @@ Partial Class AdvancedJobViewer
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
         Me.TableLayoutPanel2.Controls.Add(Me.dtPicker, 1, 2)
-        Me.TableLayoutPanel2.Controls.Add(Me.tboxApprover, 1, 1)
         Me.TableLayoutPanel2.Controls.Add(Me.Label5, 0, 2)
         Me.TableLayoutPanel2.Controls.Add(Me.Label4, 0, 1)
         Me.TableLayoutPanel2.Controls.Add(Me.Label3, 0, 3)
         Me.TableLayoutPanel2.Controls.Add(Me.Label2, 0, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel3, 1, 3)
         Me.TableLayoutPanel2.Controls.Add(Me.tboxSubmitter, 1, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel4, 1, 1)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(4, 175)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
@@ -135,14 +138,6 @@ Partial Class AdvancedJobViewer
         Me.dtPicker.Name = "dtPicker"
         Me.dtPicker.Size = New System.Drawing.Size(248, 20)
         Me.dtPicker.TabIndex = 7
-        '
-        'tboxApprover
-        '
-        Me.tboxApprover.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tboxApprover.Location = New System.Drawing.Point(111, 51)
-        Me.tboxApprover.Name = "tboxApprover"
-        Me.tboxApprover.Size = New System.Drawing.Size(161, 20)
-        Me.tboxApprover.TabIndex = 6
         '
         'Label5
         '
@@ -208,6 +203,14 @@ Partial Class AdvancedJobViewer
         Me.TableLayoutPanel3.Size = New System.Drawing.Size(248, 35)
         Me.TableLayoutPanel3.TabIndex = 4
         '
+        'tboxPages
+        '
+        Me.tboxPages.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.tboxPages.Location = New System.Drawing.Point(3, 7)
+        Me.tboxPages.Name = "tboxPages"
+        Me.tboxPages.Size = New System.Drawing.Size(161, 20)
+        Me.tboxPages.TabIndex = 48
+        '
         'btnViewDrawing
         '
         Me.btnViewDrawing.BackColor = System.Drawing.Color.White
@@ -230,13 +233,43 @@ Partial Class AdvancedJobViewer
         Me.tboxSubmitter.Size = New System.Drawing.Size(161, 20)
         Me.tboxSubmitter.TabIndex = 5
         '
-        'tboxPages
+        'TableLayoutPanel4
         '
-        Me.tboxPages.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tboxPages.Location = New System.Drawing.Point(3, 7)
-        Me.tboxPages.Name = "tboxPages"
-        Me.tboxPages.Size = New System.Drawing.Size(161, 20)
-        Me.tboxPages.TabIndex = 48
+        Me.TableLayoutPanel4.ColumnCount = 2
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
+        Me.TableLayoutPanel4.Controls.Add(Me.btnApprove, 1, 0)
+        Me.TableLayoutPanel4.Controls.Add(Me.tboxApprover, 0, 0)
+        Me.TableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel4.Location = New System.Drawing.Point(111, 44)
+        Me.TableLayoutPanel4.Name = "TableLayoutPanel4"
+        Me.TableLayoutPanel4.RowCount = 1
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel4.Size = New System.Drawing.Size(248, 35)
+        Me.TableLayoutPanel4.TabIndex = 8
+        '
+        'tboxApprover
+        '
+        Me.tboxApprover.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.tboxApprover.Location = New System.Drawing.Point(3, 7)
+        Me.tboxApprover.Name = "tboxApprover"
+        Me.tboxApprover.Size = New System.Drawing.Size(161, 20)
+        Me.tboxApprover.TabIndex = 8
+        '
+        'btnApprove
+        '
+        Me.btnApprove.BackColor = System.Drawing.Color.White
+        Me.btnApprove.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnApprove.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnApprove.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnApprove.Location = New System.Drawing.Point(178, 5)
+        Me.btnApprove.Margin = New System.Windows.Forms.Padding(5)
+        Me.btnApprove.Name = "btnApprove"
+        Me.btnApprove.Size = New System.Drawing.Size(65, 25)
+        Me.btnApprove.TabIndex = 48
+        Me.btnApprove.Text = "Approve"
+        Me.btnApprove.UseVisualStyleBackColor = False
         '
         'AdvancedJobViewer
         '
@@ -252,6 +285,8 @@ Partial Class AdvancedJobViewer
         Me.TableLayoutPanel2.PerformLayout()
         Me.TableLayoutPanel3.ResumeLayout(False)
         Me.TableLayoutPanel3.PerformLayout()
+        Me.TableLayoutPanel4.ResumeLayout(False)
+        Me.TableLayoutPanel4.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -267,8 +302,10 @@ Partial Class AdvancedJobViewer
     Friend WithEvents Label2 As Label
     Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
     Friend WithEvents btnViewDrawing As Button
-    Friend WithEvents tboxApprover As TextBox
     Friend WithEvents tboxSubmitter As TextBox
     Friend WithEvents dtPicker As DateTimePicker
     Friend WithEvents tboxPages As TextBox
+    Friend WithEvents TableLayoutPanel4 As TableLayoutPanel
+    Friend WithEvents tboxApprover As TextBox
+    Friend WithEvents btnApprove As Button
 End Class

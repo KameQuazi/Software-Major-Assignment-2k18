@@ -239,7 +239,7 @@ Public Class ServiceSortableTemplateViewer
         ElseIf rdbtnNoApproved.Checked Then
             ApprovedType = LampApprove.Unapproved
         End If
-
+        ServiceTemplateViewer1.Offset = 0
     End Sub
 
 
