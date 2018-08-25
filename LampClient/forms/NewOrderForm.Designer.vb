@@ -23,114 +23,20 @@ Partial Class NewOrderForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(NewOrderForm))
-        Me.txtRecipient = New System.Windows.Forms.TextBox()
-        Me.txtPrefix = New System.Windows.Forms.ComboBox()
-        Me.grpParameters = New System.Windows.Forms.GroupBox()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Button2 = New System.Windows.Forms.Button()
-        Me.btnNext = New System.Windows.Forms.Button()
-        Me.chkYear = New System.Windows.Forms.CheckBox()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.ToolBar1 = New LampClient.ToolBar()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
-        Me.grpParameters.SuspendLayout()
+        Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.gboxHelp = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.gbox1 = New System.Windows.Forms.GroupBox()
+        Me.ToolBar1 = New LampClient.ToolBar()
+        Me.ServiceSortableTemplateViewer1 = New LampClient.ServiceSortableTemplateViewer()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
-        Me.Panel1.SuspendLayout()
+        Me.TableLayoutPanel3.SuspendLayout()
+        Me.gboxHelp.SuspendLayout()
+        Me.gbox1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'txtRecipient
-        '
-        Me.txtRecipient.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!)
-        Me.txtRecipient.Location = New System.Drawing.Point(173, 29)
-        Me.txtRecipient.Name = "txtRecipient"
-        Me.txtRecipient.Size = New System.Drawing.Size(224, 29)
-        Me.txtRecipient.TabIndex = 33
-        Me.txtRecipient.Text = "Insert Name Here"
-        '
-        'txtPrefix
-        '
-        Me.txtPrefix.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!)
-        Me.txtPrefix.FormattingEnabled = True
-        Me.txtPrefix.Items.AddRange(New Object() {"Awarded to:", "to:"})
-        Me.txtPrefix.Location = New System.Drawing.Point(6, 29)
-        Me.txtPrefix.Name = "txtPrefix"
-        Me.txtPrefix.Size = New System.Drawing.Size(161, 32)
-        Me.txtPrefix.TabIndex = 34
-        '
-        'grpParameters
-        '
-        Me.grpParameters.Controls.Add(Me.Label1)
-        Me.grpParameters.Controls.Add(Me.Button2)
-        Me.grpParameters.Controls.Add(Me.btnNext)
-        Me.grpParameters.Controls.Add(Me.chkYear)
-        Me.grpParameters.Controls.Add(Me.TextBox1)
-        Me.grpParameters.Controls.Add(Me.txtPrefix)
-        Me.grpParameters.Controls.Add(Me.txtRecipient)
-        Me.grpParameters.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.grpParameters.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!)
-        Me.grpParameters.Location = New System.Drawing.Point(616, 3)
-        Me.grpParameters.Name = "grpParameters"
-        Me.grpParameters.Size = New System.Drawing.Size(607, 586)
-        Me.grpParameters.TabIndex = 36
-        Me.grpParameters.TabStop = False
-        Me.grpParameters.Text = "Edit Text"
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(18, 384)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(47, 20)
-        Me.Label1.TabIndex = 37
-        Me.Label1.Text = "Year:"
-        '
-        'Button2
-        '
-        Me.Button2.BackColor = System.Drawing.Color.White
-        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.8!)
-        Me.Button2.Location = New System.Drawing.Point(268, 515)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(129, 52)
-        Me.Button2.TabIndex = 40
-        Me.Button2.Text = "choose new design"
-        Me.Button2.UseVisualStyleBackColor = False
-        '
-        'btnNext
-        '
-        Me.btnNext.BackColor = System.Drawing.Color.White
-        Me.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnNext.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.8!)
-        Me.btnNext.Location = New System.Drawing.Point(416, 519)
-        Me.btnNext.Name = "btnNext"
-        Me.btnNext.Size = New System.Drawing.Size(129, 44)
-        Me.btnNext.TabIndex = 38
-        Me.btnNext.Text = "Next"
-        Me.btnNext.UseVisualStyleBackColor = False
-        '
-        'chkYear
-        '
-        Me.chkYear.AutoSize = True
-        Me.chkYear.Location = New System.Drawing.Point(23, 352)
-        Me.chkYear.Name = "chkYear"
-        Me.chkYear.Size = New System.Drawing.Size(127, 24)
-        Me.chkYear.TabIndex = 36
-        Me.chkYear.Text = "Include Year?"
-        Me.chkYear.UseVisualStyleBackColor = True
-        '
-        'TextBox1
-        '
-        Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!)
-        Me.TextBox1.Location = New System.Drawing.Point(83, 380)
-        Me.TextBox1.MaxLength = 4
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(63, 29)
-        Me.TextBox1.TabIndex = 35
-        Me.TextBox1.Text = "2018"
         '
         'TableLayoutPanel1
         '
@@ -148,6 +54,72 @@ Partial Class NewOrderForm
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1232, 703)
         Me.TableLayoutPanel1.TabIndex = 38
         '
+        'TableLayoutPanel2
+        '
+        Me.TableLayoutPanel2.ColumnCount = 2
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80.0!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel3, 1, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.gbox1, 0, 0)
+        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(3, 108)
+        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+        Me.TableLayoutPanel2.RowCount = 1
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(1226, 592)
+        Me.TableLayoutPanel2.TabIndex = 38
+        '
+        'TableLayoutPanel3
+        '
+        Me.TableLayoutPanel3.ColumnCount = 1
+        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel3.Controls.Add(Me.gboxHelp, 0, 0)
+        Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel3.Location = New System.Drawing.Point(983, 3)
+        Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
+        Me.TableLayoutPanel3.RowCount = 2
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(240, 586)
+        Me.TableLayoutPanel3.TabIndex = 38
+        '
+        'gboxHelp
+        '
+        Me.gboxHelp.Controls.Add(Me.Label1)
+        Me.gboxHelp.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gboxHelp.Font = New System.Drawing.Font("Arial Narrow", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gboxHelp.Location = New System.Drawing.Point(3, 3)
+        Me.gboxHelp.Name = "gboxHelp"
+        Me.gboxHelp.Size = New System.Drawing.Size(234, 287)
+        Me.gboxHelp.TabIndex = 0
+        Me.gboxHelp.TabStop = False
+        Me.gboxHelp.Text = "Help"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(3, 28)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(228, 72)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "Choose a template to create a " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "job. This template will be placed" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "one or more ti" &
+    "mes in the final " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "output to laser cut"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'gbox1
+        '
+        Me.gbox1.Controls.Add(Me.ServiceSortableTemplateViewer1)
+        Me.gbox1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbox1.Font = New System.Drawing.Font("Arial Narrow", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbox1.Location = New System.Drawing.Point(3, 3)
+        Me.gbox1.Name = "gbox1"
+        Me.gbox1.Size = New System.Drawing.Size(974, 586)
+        Me.gbox1.TabIndex = 39
+        Me.gbox1.TabStop = False
+        Me.gbox1.Text = "Choose Template"
+        '
         'ToolBar1
         '
         Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
@@ -163,45 +135,21 @@ Partial Class NewOrderForm
         Me.ToolBar1.ViewOrderEnabled = True
         Me.ToolBar1.ViewTemplateEnabled = True
         '
-        'TableLayoutPanel2
+        'ServiceSortableTemplateViewer1
         '
-        Me.TableLayoutPanel2.ColumnCount = 2
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.Controls.Add(Me.grpParameters, 1, 0)
-        Me.TableLayoutPanel2.Controls.Add(Me.Panel1, 0, 0)
-        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel2.Location = New System.Drawing.Point(3, 108)
-        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
-        Me.TableLayoutPanel2.RowCount = 1
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(1226, 592)
-        Me.TableLayoutPanel2.TabIndex = 38
-        '
-        'Panel1
-        '
-        Me.Panel1.Controls.Add(Me.DxfViewerControl1)
-        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel1.Location = New System.Drawing.Point(3, 3)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(607, 586)
-        Me.Panel1.TabIndex = 37
-        '
-        'DxfViewerControl1
-        '
-        Me.DxfViewerControl1.BackColor = System.Drawing.Color.White
-        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
-        Me.DxfViewerControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.DxfViewerControl1.Drawing = Nothing
-        Me.DxfViewerControl1.Location = New System.Drawing.Point(0, 0)
-        Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(4)
-        Me.DxfViewerControl1.Name = "DxfViewerControl1"
-        Me.DxfViewerControl1.Size = New System.Drawing.Size(607, 586)
-        Me.DxfViewerControl1.TabIndex = 39
-        Me.DxfViewerControl1.ZoomX = 1.0R
-        Me.DxfViewerControl1.ZoomY = 1.0R
+        Me.ServiceSortableTemplateViewer1.ApprovedType = LampCommon.LampApprove.All
+        Me.ServiceSortableTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ServiceSortableTemplateViewer1.Font = New System.Drawing.Font("Arial Narrow", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ServiceSortableTemplateViewer1.JustMyTemplates = False
+        Me.ServiceSortableTemplateViewer1.Location = New System.Drawing.Point(3, 28)
+        Me.ServiceSortableTemplateViewer1.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
+        Me.ServiceSortableTemplateViewer1.Name = "ServiceSortableTemplateViewer1"
+        Me.ServiceSortableTemplateViewer1.SidebarHidden = False
+        Me.ServiceSortableTemplateViewer1.Size = New System.Drawing.Size(968, 555)
+        Me.ServiceSortableTemplateViewer1.SortOrder = LampCommon.LampTemplateSort.NoSort
+        Me.ServiceSortableTemplateViewer1.SplitterDistance = 750
+        Me.ServiceSortableTemplateViewer1.TabIndex = 0
+        Me.ServiceSortableTemplateViewer1.TitleText = "Choose Template"
         '
         'NewOrderForm
         '
@@ -213,25 +161,21 @@ Partial Class NewOrderForm
         Me.Name = "NewOrderForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "LAMP - Create New Job"
-        Me.grpParameters.ResumeLayout(False)
-        Me.grpParameters.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
-        Me.Panel1.ResumeLayout(False)
+        Me.TableLayoutPanel3.ResumeLayout(False)
+        Me.gboxHelp.ResumeLayout(False)
+        Me.gboxHelp.PerformLayout()
+        Me.gbox1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents txtRecipient As TextBox
-    Friend WithEvents txtPrefix As ComboBox
-    Friend WithEvents grpParameters As GroupBox
-    Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents chkYear As CheckBox
-    Friend WithEvents Label1 As Label
     Friend WithEvents ToolBar1 As ToolBar
-    Friend WithEvents btnNext As Button
-    Friend WithEvents DxfViewerControl1 As DxfViewerControl
-    Friend WithEvents Button2 As Button
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
-    Friend WithEvents Panel1 As Panel
+    Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
+    Friend WithEvents gboxHelp As GroupBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents gbox1 As GroupBox
+    Friend WithEvents ServiceSortableTemplateViewer1 As ServiceSortableTemplateViewer
 End Class

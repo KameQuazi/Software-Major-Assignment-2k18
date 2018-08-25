@@ -1,6 +1,7 @@
 ﻿
 Imports System.Collections.ObjectModel
 Imports System.Collections.Specialized
+Imports System.ComponentModel
 Imports LampCommon
 
 Public Class ServiceSortableTemplateViewer
@@ -10,6 +11,15 @@ Public Class ServiceSortableTemplateViewer
         RaiseEvent TemplateClick(Me, e)
         ' just bubble the event
     End Sub
+
+    Public Property SplitterDistance As Integer
+        Get
+            Return SplitContainer1.SplitterDistance
+        End Get
+        Set(value As Integer)
+            SplitContainer1.SplitterDistance = value
+        End Set
+    End Property
 
     Private _justMyTemplates As Boolean
     ''' <summary>
@@ -58,7 +68,9 @@ Public Class ServiceSortableTemplateViewer
         End Set
     End Property
 
+    <Browsable(False), EditorBrowsable(EditorBrowsableState.Never)>
     Public ReadOnly Property Templates As ObservableCollection(Of LampTemplate)
+
 
     Private tags As List(Of String) ' lower case
 
@@ -122,7 +134,7 @@ Public Class ServiceSortableTemplateViewer
 
 
 
-    Public Sub ToggleSidebar() 
+    Public Sub ToggleSidebar()
         SidebarHidden = Not SidebarHidden
     End Sub
 

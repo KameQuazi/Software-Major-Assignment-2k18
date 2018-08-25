@@ -1,4 +1,5 @@
 ﻿Imports System.Collections.ObjectModel
+Imports System.ComponentModel
 Imports LampCommon
 
 Public Class ServiceSortableJobViewer
@@ -17,6 +18,17 @@ Public Class ServiceSortableJobViewer
         RaiseEvent JobClick(Me, e)
         ' just bubble the event
     End Sub
+
+
+    Public Property SplitterDistance As Integer
+        Get
+            Return SplitContainer1.SplitterDistance
+        End Get
+        Set(value As Integer)
+            SplitContainer1.SplitterDistance = value
+        End Set
+    End Property
+
 
     Private _justMyTemplates As Boolean
     ''' <summary>
@@ -64,6 +76,7 @@ Public Class ServiceSortableJobViewer
             lblTitle.Text = value
         End Set
     End Property
+
 
 
     Private tags As List(Of String) ' lower case

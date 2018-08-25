@@ -9,23 +9,12 @@ Public Class NewOrderForm
         End Get
         Set(value As LampTemplate)
             _currentTemplate = value
-            DxfViewerControl1.Drawing = value.BaseDrawing
         End Set
     End Property
 
-    Private Sub txtRecipient_Enter(sender As Object, e As EventArgs) Handles txtRecipient.Enter
-        If txtRecipient.Text = "Insert Name Here" Then
-            txtRecipient.Text = ""
-        End If
-    End Sub
 
-    Private Sub txtRecipient_Leave(sender As Object, e As EventArgs) Handles txtRecipient.Leave
-        If txtRecipient.Text = "" Then
-            txtRecipient.Text = "Insert Name Here"
-        End If
-    End Sub
 
-    Private Sub TextBox1_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBox1.KeyDown
+    Private Sub TextBox1_KeyDown(sender As Object, e As KeyEventArgs)
         Select Case e.KeyCode
 
         End Select
@@ -36,7 +25,7 @@ Public Class NewOrderForm
     End Sub
 
 
-    Private Sub DxfViewerControl1_Click(sender As Object, e As EventArgs) Handles DxfViewerControl1.Click
+    Private Sub DxfViewerControl1_Click(sender As Object, e As EventArgs)
         Using dialog As New TemplateSelectBox ' 
             If dialog.ShowDialog() = DialogResult.OK Then
                 CurrentTemplate = dialog.SelectedTemplate
@@ -44,7 +33,7 @@ Public Class NewOrderForm
         End Using
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs)
         Dim job = New LampJob(Me.CurrentTemplate, CurrentUser.ToProfile, "hello summary")
         job.Pages = 3
 
@@ -62,5 +51,9 @@ Public Class NewOrderForm
             Case Else
                 ShowError(response)
         End Select
+    End Sub
+
+    Private Sub ServiceSortableTemplateViewer1_TemplateClick(sender As Object, e As TemplateClickedEventArgs) Handles ServiceSortableTemplateViewer1.TemplateClick
+        Console.WriteLine("owo")
     End Sub
 End Class
