@@ -167,6 +167,12 @@
     <Compile Include="forms\MultiDrawingViewer.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="forms\NewOrderForm\NewOrderFormChooseParameter.Designer.vb">
+      <DependentUpon>NewOrderFormChooseParameter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\NewOrderForm\NewOrderFormChooseParameter.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="forms\ViewEditTemplateForm.Designer.vb">
       <DependentUpon>ViewEditTemplateForm.vb</DependentUpon>
     </Compile>
@@ -501,6 +507,9 @@
     <EmbeddedResource Include="forms\MultiDrawingViewer.resx">
       <DependentUpon>MultiDrawingViewer.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\NewOrderForm\NewOrderFormChooseParameter.resx">
+      <DependentUpon>NewOrderFormChooseParameter.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\ViewEditTemplateForm.resx">
       <DependentUpon>ViewEditTemplateForm.vb</DependentUpon>
     </EmbeddedResource>
@@ -665,6 +674,7 @@
     <None Include="My Project\DataSources\LampCommon.LampUser.datasource" />
     <None Include="My Project\DataSources\LampCommon.LampUserReturnWrapper.datasource" />
     <None Include="My Project\DataSources\LampCommon.LampUserWrapper.datasource" />
+    <None Include="My Project\DataSources\MultipleTemplateDynamicTextDictionary1.datasource" />
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <CustomToolNamespace>My</CustomToolNamespace>

@@ -95,7 +95,7 @@ Public Class DynamicTextKey
         Me.InputType = inputType
         Me.TextHeight = textHeight
         Me.TextWidth = textWidth
-        If font IsNot Nothing Then
+        If font Is Nothing Then
             Me.Font = defaultFont
         Else
             Me.Font = font

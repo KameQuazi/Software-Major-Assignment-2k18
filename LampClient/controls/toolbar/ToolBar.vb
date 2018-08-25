@@ -15,8 +15,12 @@ Public Module ToolbarUtilities
                 PreviousForms.Add(LampForm.ViewOrdersForm)
             Case GetType(ViewTemplatesForm)
                 PreviousForms.Add(LampForm.ViewTemplatesForm)
+
             Case GetType(NewOrderForm)
                 PreviousForms.Add(LampForm.NewOrderForm)
+            Case GetType(NewOrderFormChooseParameter)
+                PreviousForms.Add(LampForm.NewOrderForm)
+
 
             Case GetType(AdminForm)
                 PreviousForms.Add(LampForm.AdminForm)
@@ -59,7 +63,7 @@ Public Module ToolbarUtilities
             Case LampForm.ViewTemplatesForm
                 ViewTemplatesForm.Show()
             Case LampForm.NewOrderForm
-                NewOrderForm.Show()
+                NewOrderFormChooseParameter.Show()
 
             Case LampForm.AdminForm
                 AdminForm.Show()
@@ -125,8 +129,16 @@ Public Module ToolbarUtilities
     End Function
 End Module
 
+
 Public Interface IToolbar
     Sub SetUsername(username As String)
+
+    ''' <summary>
+    ''' Whether or not 
+    ''' </summary>
+    ''' <returns></returns>
+    Property ConfirmationRequired As ConfirmationInformation
+
 
 End Interface
 
@@ -181,6 +193,16 @@ Public Class ToolBar
         End Get
         Set(value As Boolean)
             btnNewOrder.Enabled = value
+        End Set
+    End Property
+
+    Private _confirmationRequired As ConfirmationInformation
+    Public Property ConfirmationRequired As ConfirmationInformation Implements IToolbar.ConfirmationRequired
+        Get
+            Return _confirmationRequired
+        End Get
+        Set(value As ConfirmationInformation)
+            _confirmationRequired = value
         End Set
     End Property
 
@@ -320,3 +342,29 @@ Public Enum LampForm
     ApproveTemplateForm
     ManageUsersForm
 End Enum
+
+Public Class ConfirmationInformation
+    Public Property ConfirmationRequired As Boolean
+    Public Property ConfirmationMessage As Boolean
+
+    Public Overrides Function Equals(other As Object) As Boolean
+        ' check if other is nothing
+        If other Is Nothing Then
+            Return False
+        End If
+        Dim otherCast = TryCast(other, ConfirmationInformation)
+        If other Is Nothing Then
+            Return False
+        End If
+
+        If otherCast.ConfirmationRequired <> Me.ConfirmationRequired Then
+            Return False
+        End If
+
+        If otherCast.ConfirmationMessage <> Me.ConfirmationMessage Then
+            Return False
+        End If
+
+        Return True
+    End Function
+End Class

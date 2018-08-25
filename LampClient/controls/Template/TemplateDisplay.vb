@@ -1,6 +1,8 @@
-﻿Imports LampCommon
+﻿Imports System.ComponentModel
+Imports LampCommon
 
 Public Class TemplateDisplay
+
 
     Private _template As LampTemplate
 
@@ -8,6 +10,7 @@ Public Class TemplateDisplay
     ''' Change template to change the text on the display
     ''' </summary>
     ''' <returns></returns>
+    <Browsable(False), EditorBrowsable(EditorBrowsableState.Never)>
     Public Property Template As LampTemplate
         Get
             Return _template
@@ -94,28 +97,4 @@ Public Class TemplateDisplay
         Next
     End Sub
 
-
-    Public Property MouseOverHighlight As Boolean = False
-
-    Public Property HighLightColor As Color = Color.AliceBlue
-
-    Private _mouseEntered As Boolean = False
-
-    Private Sub FileDisplay_MouseEnter(sender As Object, e As EventArgs) Handles MyBase.MouseEnter
-        _mouseEntered = True
-        If MouseOverHighlight Then
-            Me.BackColor = HighLightColor
-        End If
-    End Sub
-
-    Private Sub FileDisplay_MouseLeave(sender As Object, e As EventArgs) Handles MyBase.MouseLeave
-        _mouseEntered = False
-        If MouseOverHighlight Then
-            Me.BackColor = Color.White
-        End If
-    End Sub
-
-    Private Sub editapprover_Click(sender As Object, e As EventArgs) Handles editapprover.Click
-
-    End Sub
 End Class

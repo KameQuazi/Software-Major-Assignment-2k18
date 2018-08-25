@@ -116,7 +116,6 @@ Public Class MultiTemplateViewer
                 Dim newViewer As New TemplateDisplay() With {
                                        .Template = template,
                                        .Dock = DockStyle.Fill,
-                                       .MouseOverHighlight = Me.MouseOverHighlight,
                                        .Margin = DefaultTemplateMargin,
                                        .Cursor = TemplateCursor
                                        }

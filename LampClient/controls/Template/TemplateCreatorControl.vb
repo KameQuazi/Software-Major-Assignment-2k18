@@ -548,9 +548,9 @@ Public Class TemplateCreatorControl
         ' create a new job
         ' we need to push the current form (before this is opened as a dialog) => the toolbar previousform stack
         If Me.ParentForm.Owner IsNot Nothing Then
-            ShowNewForm(Nothing, Me.ParentForm.Owner, New NewOrderForm() With {.CurrentTemplate = Me.Template})
+            ShowNewForm(Nothing, Me.ParentForm.Owner, New NewOrderFormChooseParameter() With {.SelectedTemplate = Me.Template})
         Else
-            Dim x As New NewOrderForm() With {.CurrentTemplate = Me.Template}
+            Dim x As New NewOrderFormChooseParameter() With {.SelectedTemplate = Me.Template}
             x.Show()
             Me.ParentForm.Close()
             MessageBox.Show("Warning: Cannot update history")

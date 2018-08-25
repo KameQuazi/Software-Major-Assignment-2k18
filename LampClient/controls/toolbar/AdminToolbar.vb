@@ -7,6 +7,17 @@ Public Class AdminToolbar
         Me.Username.Text = String.Format("Welcome {0}", username)
     End Sub
 
+    Private _confirmationRequired As ConfirmationInformation
+    Public Property ConfirmationRequired As ConfirmationInformation Implements IToolbar.ConfirmationRequired
+        Get
+            Return _confirmationRequired
+        End Get
+        Set(value As ConfirmationInformation)
+            _confirmationRequired = value
+        End Set
+    End Property
+
+
     Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
         ShowNewForm(ParentForm, HomeForm)
     End Sub

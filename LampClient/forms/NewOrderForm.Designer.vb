@@ -31,6 +31,7 @@ Partial Class NewOrderForm
         Me.gbox1 = New System.Windows.Forms.GroupBox()
         Me.ToolBar1 = New LampClient.ToolBar()
         Me.ServiceSortableTemplateViewer1 = New LampClient.ServiceSortableTemplateViewer()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
@@ -86,6 +87,7 @@ Partial Class NewOrderForm
         '
         'gboxHelp
         '
+        Me.gboxHelp.Controls.Add(Me.Label2)
         Me.gboxHelp.Controls.Add(Me.Label1)
         Me.gboxHelp.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gboxHelp.Font = New System.Drawing.Font("Arial Narrow", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -151,6 +153,17 @@ Partial Class NewOrderForm
         Me.ServiceSortableTemplateViewer1.TabIndex = 0
         Me.ServiceSortableTemplateViewer1.TitleText = "Choose Template"
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Arial Narrow", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(2, 115)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(206, 40)
+        Me.Label2.TabIndex = 1
+        Me.Label2.Text = "Click on a template in the list to" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "select"
+        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'NewOrderForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -178,4 +191,5 @@ Partial Class NewOrderForm
     Friend WithEvents Label1 As Label
     Friend WithEvents gbox1 As GroupBox
     Friend WithEvents ServiceSortableTemplateViewer1 As ServiceSortableTemplateViewer
+    Friend WithEvents Label2 As Label
 End Class
