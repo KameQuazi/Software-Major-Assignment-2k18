@@ -5,9 +5,11 @@ Imports System.Runtime.Serialization
 Imports netDxf
 Imports Newtonsoft.Json
 
+
+
 ''' <summary>
 ''' The location where a template should be inserted into the board
-''' this encompasses 1 single template to insert
+''' this encompasses 1 single object to insert
 ''' </summary>
 <JsonObject(MemberSerialization.OptIn)>
 <DataContract>
@@ -21,7 +23,7 @@ Public Class LampSingleDxfInsertLocation
 
     Private _insertionPoint As Vector3
     ''' <summary>
-    ''' Where the text should be inserted
+    ''' Where the item
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("insertPoint")>
@@ -50,6 +52,7 @@ Public Class LampSingleDxfInsertLocation
     ''' <returns></returns>
     <JsonProperty("dynamicTextData")>
     <DataMember>
+    <Browsable(False)>
     Public Property DynamicTextData As New DynamicTextDictionary
 
     Sub New(point As Vector3)
@@ -57,6 +60,10 @@ Public Class LampSingleDxfInsertLocation
     End Sub
 End Class
 
+''' <summary>
+''' More than 1 single object (1 board)
+''' this represents 1 sheet of dxf objects to put into the laser cutter
+''' </summary>
 <DataContract>
 Public Class LampMultipleInsertLocation
     Inherits ObservableCollection(Of LampSingleDxfInsertLocation)

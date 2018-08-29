@@ -142,10 +142,8 @@ Public Class LampJob
 
     Private _insertionLocations As New ObservableCollection(Of LampMultipleInsertLocation)
     ''' <summary>
-    ''' Where each individual trophy will be inserted (in cartesian form) on the competedDrawing
-    ''' Contains rotation data, dynamic text data, everything required to rebuild the
-    ''' completeddrawing
-    ''' each LampMultipleInsertLocation represents 1 page of cutter (1 page can have x number of insertion)
+    ''' Each InsertionPages is list of LampMultipleInsertLocation. each multiple insert location locations to 
+    ''' 1 dxf document / 1 board of the laser cutter
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("insertion_locations")>

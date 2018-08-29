@@ -32,32 +32,32 @@ Public Class TemplateDisplay
     ''' </summary>
     ''' <param name="template"></param>
     Private Sub DisplayTemplate(template As LampTemplate)
-        Dim dxf = template.BaseDrawing
+        Dim dxf = template?.BaseDrawing
 
-        editname.Text = template.Name
+        editname.Text = template?.Name
 
-        If template.CreatorProfile IsNot Nothing Then
+        If template?.CreatorProfile IsNot Nothing Then
             editcreator.Text = template.CreatorProfile.Username
         Else
             editcreator.Text = NoneText
         End If
 
-        If template.ApproverProfile IsNot Nothing Then
+        If template?.ApproverProfile IsNot Nothing Then
             editapprover.Text = template.ApproverProfile.Username
         Else
             editapprover.Text = NoneText
         End If
 
-        If template.PreviewImages(0) IsNot Nothing Then
+        If template?.PreviewImages(0) IsNot Nothing Then
             DisplayBox.Image = template.PreviewImages(0)
         Else
             DisplayBox.Image = My.Resources.no_preview_image
         End If
 
         ' TO decimal places
-        editwidth.Text = dxf.Width.ToString("0.00")
-        editheight.Text = dxf.Height.ToString("0.00")
-        editmaterial.Text = template.Material
+        editwidth.Text = dxf?.Width.ToString("0.00")
+        editheight.Text = dxf?.Height.ToString("0.00")
+        editmaterial.Text = template?.Material
 
         '" thiccness: " & template.MaterialThickness
 

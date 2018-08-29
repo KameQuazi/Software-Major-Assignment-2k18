@@ -1,4 +1,5 @@
-﻿Imports System.ComponentModel
+﻿Imports System.Collections.ObjectModel
+Imports System.ComponentModel
 Imports LampCommon
 
 Public Class NewOrderFormChooseParameter
@@ -14,10 +15,38 @@ Public Class NewOrderFormChooseParameter
         End Set
     End Property
 
+    Public Property Items As New ObservableCollection(Of DynamicTextValueRow)
+
+
+    Public ReadOnly Property Parameters As ObservableCollection(Of DynamicTextKey)
+        Get
+            Return SelectedTemplate?.DynamicTextList
+        End Get
+    End Property
+
     Private Sub UpdateContents()
         TemplateDisplay1.Template = SelectedTemplate
+        UpdateColumnHeaders()
+        UpdateRows()
     End Sub
 
+    Private Sub UpdateRows()
+        For Each row In Items
+            DataGridView1.Rows.Add(row)
+        Next
+    End Sub
+
+    Private Sub UpdateColumnHeaders()
+        DataGridView1.Columns.Clear()
+
+
+        If Parameters IsNot Nothing Then
+            For Each item In Parameters
+                DataGridView1.Columns.Add(New DataGridViewTextBoxColumn() With {.Name = item.ParameterName})
+            Next
+        End If
+
+    End Sub
 
     Private Sub TextBox1_KeyDown(sender As Object, e As KeyEventArgs)
         Select Case e.KeyCode
@@ -25,18 +54,14 @@ Public Class NewOrderFormChooseParameter
         End Select
     End Sub
 
-    Private dataSource As New MultipleTemplateDynamicTextDictionary
 
     Sub New()
 
         ' This call is required by the designer.
         InitializeComponent()
-
         ' Add any initialization after the InitializeComponent() call.
-        dataSource.Add(New DynamicTextDictionary() From {
-            {New DynamicTextKey("hello", "this is", New netDxf.Vector3(0, 0, 0), 10, 20), New DynamicTextValue("none")}
-                       })
-        DataGridView1.DataSource = dataSource
+        UpdateContents()
+
     End Sub
 
 
@@ -70,94 +95,57 @@ Public Class NewOrderFormChooseParameter
     End Sub
 
     Private Sub ServiceSortableTemplateViewer1_TemplateClick(sender As Object, e As TemplateClickedEventArgs)
-        Console.WriteLine("owo")
     End Sub
 
+    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
 
+    End Sub
+
+    Private Sub TemplateDisplay1_Load(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub btnCreate_Click(sender As Object, e As EventArgs) Handles btnCreate.Click
+        Using dialog As New DynamicTextCreationForm(SelectedTemplate)
+            dialog.ShowDialog()
+
+        End Using
+    End Sub
+
+    Private _numberOfTemplates As Integer
+    Private Property NumberOfTemplates As Integer
+        Get
+            Return _numberOfTemplates
+        End Get
+        Set(value As Integer)
+            If value > _numberOfTemplates Then
+                ' gotta add some empty templates
+                For i = 1 To value - _numberOfTemplates
+                    Items.Add(New DynamicTextValueRow())
+                Next
+
+            ElseIf value < _numberOfTemplates Then
+                For i = _numberOfTemplates - 1 To value
+                    Items.RemoveAt(i)
+                Next
+            End If
+            _numberOfTemplates = value
+            UpdateContents()
+        End Set
+    End Property
+
+
+    Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
+        NumberOfTemplates += 1
+    End Sub
+
+    Private Sub btnMinus_Click(sender As Object, e As EventArgs) Handles btnMinus.Click
+        NumberOfTemplates -= 1
+    End Sub
 End Class
 
-Public Class MultipleTemplateDynamicTextDictionary
-    Inherits List(Of DynamicTextDictionary)
 
-    Public Function CommonKeys() As DynamicTextKey()
-        Return If(Me.Count > 0, Me(0).Keys.ToArray, Nothing)
-    End Function
+
+Public Class DynamicTextValueRow
+    Inherits ObservableCollection(Of DynamicTextValue)
 End Class
-
-'' original typed list taken from here, converted to dictionaries
-'' https://stackoverflow.com/questions/4716092/winforms-datagridview-databind-to-an-object-with-a-list-property-variable-num
-
-
-'Public Class MultipleTemplateDynamicTextDictionary
-'    Inherits List(Of DynamicTextDictionary)
-'    Implements ITypedList
-
-'    Public Function GetItemProperties(ByVal listAccessors As PropertyDescriptor()) As PropertyDescriptorCollection Implements ITypedList.GetItemProperties
-'        Dim newProps As List(Of PropertyDescriptor) = New List(Of PropertyDescriptor)
-
-'        For Each Item As DynamicTextDictionary In Me
-'            For Each key As DynamicTextKey In Item.Keys
-'                newProps.Add(New ListItemDescriptor(key))
-'            Next
-'        Next
-'        Return New PropertyDescriptorCollection(newProps.ToArray())
-'    End Function
-
-'    Public Function GetListName(ByVal listAccessors As PropertyDescriptor()) As String Implements ITypedList.GetListName
-'        Return ""
-'    End Function
-
-'End Class
-
-'Class ListItemDescriptor
-'    Inherits PropertyDescriptor
-
-'    Private Shared ReadOnly nix As Attribute() = New Attribute(-1) {}
-'    Private ReadOnly type As Type = GetType(DynamicTextKey)
-'    Private ReadOnly key As DynamicTextKey
-
-
-'    Public Sub New(ByVal key As DynamicTextKey)
-'        MyBase.New(key.ParameterName, nix)
-'        Me.key = key
-'    End Sub
-
-'    Public Overrides Function GetValue(ByVal component As Object) As Object
-'        Return key
-'    End Function
-
-'    Public Overrides ReadOnly Property PropertyType As Type
-'        Get
-'            Return type
-'        End Get
-'    End Property
-
-'    Public Overrides ReadOnly Property IsReadOnly As Boolean
-'        Get
-'            Return True
-'        End Get
-'    End Property
-
-'    Public Overrides ReadOnly Property ComponentType As Type
-'        Get
-'            Throw New NotImplementedException()
-'        End Get
-'    End Property
-
-'    Public Overrides Sub SetValue(ByVal component As Object, ByVal value As Object)
-'        Throw New NotSupportedException()
-'    End Sub
-
-'    Public Overrides Sub ResetValue(ByVal component As Object)
-'        Throw New NotSupportedException()
-'    End Sub
-
-'    Public Overrides Function CanResetValue(ByVal component As Object) As Boolean
-'        Return False
-'    End Function
-
-
-'    Public Overrides Function ShouldSerializeValue(ByVal component As Object) As Boolean
-'        Return False
-'    End Function
-'End Class
