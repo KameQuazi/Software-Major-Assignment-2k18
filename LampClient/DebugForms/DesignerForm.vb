@@ -142,27 +142,25 @@ Public Class DesignerForm
         End If
     End Sub
 
-    Private Sub TrackBar1_Scroll(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
-        Dim zoom = TrackBar1.Value / 10
-        ZoomLevelBox.Text = zoom.ToString
-        DesignerScreen1.ZoomX = zoom
-        DesignerScreen1.ZoomY = zoom
+    Private Sub TrackBar1_ValueChanged(sender As Object, e As EventArgs) Handles TrackBar1.ValueChanged
+        Dim zoom = TrackBar1.Value
+        ' this is zoom percentage
+
+        ZoomLevelBox.Text = zoom.ToString + "%"
+        DesignerScreen1.ZoomX = zoom / 100
+        DesignerScreen1.ZoomY = zoom / 100
     End Sub
 
     Private Sub DesignerScreen1_MouseWheel(sender As Object, e As MouseEventArgs) Handles MyBase.MouseWheel
-        Dim zoomDiff = e.Delta / 120 / 4
+        Dim zoomDiff = e.Delta / 120
+
         If zoomDiff > 0 Then
-            Dim newZoom = Math.Min(DesignerScreen1.ZoomX + zoomDiff, 3)
-            TrackBar1.Value = Convert.ToInt32(newZoom * 10)
-            ZoomLevelBox.Text = newZoom.ToString
-            DesignerScreen1.ZoomX = newZoom
-            DesignerScreen1.ZoomY = newZoom
+            Dim zoomPercent = Math.Min((DesignerScreen1.ZoomX + zoomDiff) * 100, 1000)
+            TrackBar1.Value = Convert.ToInt32(zoomPercent)
+
         ElseIf zoomDiff < 0 Then
-            Dim newZoom = Math.Max(DesignerScreen1.ZoomX + zoomDiff, 0.1)
-            TrackBar1.Value = Convert.ToInt32(newZoom * 10)
-            ZoomLevelBox.Text = newZoom.ToString
-            DesignerScreen1.ZoomX = newZoom
-            DesignerScreen1.ZoomY = newZoom
+            Dim zoomPercent = Math.Max((DesignerScreen1.ZoomX + zoomDiff) * 100, 10)
+            TrackBar1.Value = Convert.ToInt32(zoomPercent)
         End If
     End Sub
 
@@ -183,7 +181,9 @@ Public Class DesignerForm
     Private Sub DesignerForm_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
         If e.KeyCode = Keys.Escape Then
             ' revert the item being drawing right now
-
+            If currentState <> DrawingState.None Then
+                RevertDraw()
+            End If
         End If
 
     End Sub
@@ -204,13 +204,78 @@ Public Class DesignerForm
 
     Private currentState As DrawingState = DrawingState.None
 
+    Private Sub RevertDraw()
+        Select Case CurrentTool
+            Case LampTool.Measure, LampTool.Arc, LampTool.Circle, LampTool.Line
+                If currentState = DrawingState.Uncommitted Then
+                    Drawing.RemoveEntity(previousEntity)
+                End If
+            Case LampTool.DynamicMText
+                ' todo
+            Case Else
+                MessageBox.Show("No cancel routine found for " + CurrentTool.ToString)
+
+
+        End Select
+        firstPoint = Nothing
+        currentState = DrawingState.None
+    End Sub
+
+    Private Sub DesignerScreen1_LocationClicked(sender As Object, e As MouseClickAbsoluteEventArgs) Handles DesignerScreen1.MouseClickAbsolute
+        Select Case CurrentTool
+            Case LampTool.Measure
+                If currentState = DrawingState.Uncommitted Then
+                    ' tell the user the distance
+                    MessageBox.Show("Distance is " + DistanceTwoPoints(firstPoint, e.Location).ToString)
+                    currentState = DrawingState.None
+                    firstPoint = Nothing
+                    Drawing.RemoveEntity(previousEntity)
+                Else
+                    ' startpoint
+                    firstPoint = e.Location
+                    previousEntity = Nothing
+                    currentState = DrawingState.Uncommitted
+                End If
+            Case LampTool.DynamicMText
+                Select Case currentState
+                    Case DrawingState.None
+                        ' specify top left 
+                        firstPoint = e.Location
+                        previousEntity = Nothing
+                        currentState = DrawingState.Uncommitted
+                    Case DrawingState.Uncommitted
+                        ' specify 
+
+                End Select
+
+
+            Case LampTool.Arc, LampTool.Circle, LampTool.Line
+                If currentState = DrawingState.None Then
+                    firstPoint = e.Location
+                    currentState = DrawingState.Uncommitted
+
+                Else
+                    firstPoint = Nothing
+                    previousEntity = Nothing
+                    currentState = DrawingState.None
+
+                End If
+
+        End Select
+
+
+
+    End Sub
 
 
     Private Sub DesignerScreen1_LocationMoved(sender As Object, e As MouseMoveAbsoluteEventArgs) Handles DesignerScreen1.MouseMoveAbsolute
 
         Select Case CurrentTool
             Case LampTool.Nothing
-                If currentState = DrawingState.Start Then
+                ' do nothing
+
+            Case LampTool.Line
+                If currentState = DrawingState.Uncommitted Then
 
                     If previousEntity IsNot Nothing Then
                         ' delete the previous line and add new line
@@ -222,7 +287,7 @@ Public Class DesignerForm
                 End If
 
             Case LampTool.Circle
-                If currentState = DrawingState.Start Then
+                If currentState = DrawingState.Uncommitted Then
                     If previousEntity IsNot Nothing Then
                         Drawing.RemoveEntity(previousEntity)
                         previousEntity = Drawing.AddCircle(firstPoint, DistanceTwoPoints(firstPoint, e.Location))
@@ -231,19 +296,162 @@ Public Class DesignerForm
                     End If
                 End If
 
+            Case LampTool.Measure
+                If currentState = DrawingState.Uncommitted Then
+                    If previousEntity IsNot Nothing Then
+                        Drawing.RemoveEntity(previousEntity)
+                        previousEntity = Drawing.AddLine(firstPoint, e.Location)
+                    Else
+                        previousEntity = Drawing.AddLine(firstPoint, e.Location)
+                    End If
+                End If
+
+            Case LampTool.MText
+                If currentState = DrawingState.Uncommitted Then
+                    ' drawing bounding box for mtext
+                    If previousEntity IsNot Nothing Then
+                        Drawing.RemoveEntity(previousEntity)
+                        previousEntity = Drawing.AddLine(firstPoint, e.Location)
+                    Else
+                        previousEntity = Drawing.AddLine(firstPoint, e.Location)
+                    End If
+                End If
+
+
+
+
         End Select
 
     End Sub
 
-    Private Sub DesignerScreen1_LocationClicked(sender As Object, e As MouseClickAbsoluteEventArgs) Handles DesignerScreen1.MouseClickAbsolute
-        If currentState = DrawingState.None Then
-            firstPoint = e.Location
-            currentState = DrawingState.Start
-        ElseIf currentState = DrawingState.Start Then
-            ' commit the line and firstpoint
-            firstPoint = Nothing
-            previousEntity = Nothing
-            currentState = DrawingState.None
+    Private StartPoint As Vector3
+    ' need to set doUpdate to prevent calls from overwriting each otehr
+    Private doUpdate As Boolean = True
+
+
+
+    Public Sub ResetDrawingState(Optional keep As CheckBox = Nothing)
+        firstPoint = Nothing
+        currentState = DrawingState.None
+        CurrentTool = LampTool.Nothing
+        Dim cboxes As New List(Of CheckBox) From {cboxArc, cboxCircle, cboxLine, cboxDynamicText, cboxStaticText, cboxMeasure}
+        For Each box In cboxes
+            If Not box.Equals(keep) Then
+                box.Checked = False
+            End If
+        Next
+    End Sub
+
+    Private Sub cboxDynamicText_CheckedChanged(sender As Object, e As EventArgs) Handles cboxDynamicText.CheckedChanged
+        If doUpdate Then
+            doUpdate = False
+            ResetDrawingState(cboxDynamicText)
+            If cboxDynamicText.Checked Then
+                CurrentTool = LampTool.DynamicMText
+            Else
+                CurrentTool = LampTool.Nothing
+            End If
+        End If
+        doUpdate = True
+    End Sub
+
+    Private Sub cboxStaticText_CheckedChanged(sender As Object, e As EventArgs) Handles cboxStaticText.CheckedChanged
+
+        If doUpdate Then
+            doUpdate = False
+            ResetDrawingState(cboxStaticText)
+            If cboxStaticText.Checked Then
+                CurrentTool = LampTool.MText
+            Else
+                CurrentTool = LampTool.Nothing
+            End If
+        End If
+        doUpdate = True
+    End Sub
+
+    Private Sub cboxLine_CheckedChanged(sender As Object, e As EventArgs) Handles cboxLine.CheckedChanged
+
+        If doUpdate Then
+            doUpdate = False
+            ResetDrawingState(cboxLine)
+            If cboxLine.Checked Then
+                CurrentTool = LampTool.Line
+            Else
+                CurrentTool = LampTool.Nothing
+            End If
+        End If
+        doUpdate = True
+    End Sub
+
+    Private Sub cboxMeasure_CheckedChanged(sender As Object, e As EventArgs) Handles cboxMeasure.CheckedChanged
+        If doUpdate Then
+            doUpdate = False
+            ResetDrawingState(cboxMeasure)
+            If cboxMeasure.Checked Then
+                CurrentTool = LampTool.Measure
+            Else
+                CurrentTool = LampTool.Nothing
+            End If
+            doUpdate = True
+        End If
+
+    End Sub
+
+    Private Sub cboxCircle_CheckedChanged(sender As Object, e As EventArgs) Handles cboxCircle.CheckedChanged
+        If doUpdate Then
+            doUpdate = False
+            ResetDrawingState(cboxCircle)
+            If cboxCircle.Checked Then
+                CurrentTool = LampTool.Circle
+            Else
+                CurrentTool = LampTool.Nothing
+            End If
+            doUpdate = True
+        End If
+
+    End Sub
+
+    Private Sub cboxArc_CheckedChanged(sender As Object, e As EventArgs) Handles cboxArc.CheckedChanged
+        If doUpdate Then
+            doUpdate = False
+            ResetDrawingState(cboxArc)
+            If cboxArc.Checked Then
+                CurrentTool = LampTool.Arc
+            Else
+                CurrentTool = LampTool.Nothing
+            End If
+            doUpdate = True
+        End If
+    End Sub
+
+    Private Sub rtboxCurrent_TextChanged(sender As Object, e As EventArgs) Handles rtboxCurrent.TextChanged
+
+    End Sub
+
+    Private Sub rtboxPrevious_TextChanged(sender As Object, e As EventArgs) Handles rtboxPrevious.TextChanged
+        rtboxPrevious.ScrollToCaret()
+    End Sub
+
+    Private Sub AddCommand(command As String)
+        If rtboxCurrent.Text <> String.Empty Then
+            AddMessage(rtboxCurrent.Text)
+            rtboxCurrent.Text = ""
+        End If
+
+        rtboxCurrent.Text = command
+    End Sub
+
+    Private Sub AddMessage(message As String)
+        rtboxPrevious.AppendText(message)
+    End Sub
+
+
+
+    Private Sub rtboxCurrent_KeyDown(sender As Object, e As KeyEventArgs) Handles rtboxCurrent.KeyDown
+        If e.KeyCode = Keys.Enter Then
+            e.Handled = True
+            AddMessage(rtboxCurrent.Text + Environment.NewLine)
+            rtboxCurrent.Text = ""
         End If
     End Sub
 End Class
@@ -254,7 +462,9 @@ Public Enum LampTool
     Line
     Circle
     Arc
-
+    Measure
+    MText
+    DynamicMText
 End Enum
 
 
@@ -267,6 +477,6 @@ End Module
 
 Public Enum DrawingState
     None = 0
-    Start = 1
-
+    Uncommitted = 1
+    InTextMode = 2
 End Enum

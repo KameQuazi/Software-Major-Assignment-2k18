@@ -558,7 +558,6 @@ Public Class TemplateCreatorControl
 
     End Sub
 
-
 End Class
 
 

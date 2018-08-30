@@ -76,4 +76,8 @@ Public Class EditTemplateDialog
             btnDelete.PerformClick()
         End If
     End Sub
+
+    Private Sub TemplateCreatorControl1_Load(sender As Object, e As EventArgs) Handles TemplateCreatorControl1.Load
+
+    End Sub
 End Class

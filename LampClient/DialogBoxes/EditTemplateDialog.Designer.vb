@@ -23,10 +23,10 @@ Partial Class EditTemplateDialog
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.TemplateCreatorControl1 = New LampClient.TemplateCreatorControl()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.btnSubmitEdit = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
-        Me.TemplateCreatorControl1 = New LampClient.TemplateCreatorControl()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
@@ -45,6 +45,16 @@ Partial Class EditTemplateDialog
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1232, 703)
         Me.TableLayoutPanel1.TabIndex = 0
+        '
+        'TemplateCreatorControl1
+        '
+        Me.TemplateCreatorControl1.JobEnabled = False
+        Me.TemplateCreatorControl1.Location = New System.Drawing.Point(3, 73)
+        Me.TemplateCreatorControl1.Name = "TemplateCreatorControl1"
+        Me.TemplateCreatorControl1.ReadOnly = False
+        Me.TemplateCreatorControl1.Size = New System.Drawing.Size(1226, 592)
+        Me.TemplateCreatorControl1.SubmitType = LampClient.TemplateCreatorControl.SendType.None
+        Me.TemplateCreatorControl1.TabIndex = 1
         '
         'FlowLayoutPanel1
         '
@@ -82,16 +92,6 @@ Partial Class EditTemplateDialog
         Me.btnDelete.TabIndex = 14
         Me.btnDelete.Text = "Delete"
         Me.btnDelete.UseVisualStyleBackColor = False
-        '
-        'TemplateCreatorControl1
-        '
-        Me.TemplateCreatorControl1.JobEnabled = False
-        Me.TemplateCreatorControl1.Location = New System.Drawing.Point(3, 73)
-        Me.TemplateCreatorControl1.Name = "TemplateCreatorControl1"
-        Me.TemplateCreatorControl1.ReadOnly = False
-        Me.TemplateCreatorControl1.Size = New System.Drawing.Size(1226, 592)
-        Me.TemplateCreatorControl1.SubmitType = LampClient.TemplateCreatorControl.SendType.None
-        Me.TemplateCreatorControl1.TabIndex = 1
         '
         'EditTemplateDialog
         '

@@ -670,13 +670,22 @@ Public Class LampDxfDocument
 
                 Dim gdiUpperleft = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperleft, pixelsPerUnitX, pixelsPerUnitY)
 
-                g.DrawString(text.Value, New Font(New FontFamily(text.Style.FontFamilyName), (text.Height / pixelsPerUnitY).ToSingle), New SolidBrush(text.Color.ToColor()), gdiUpperleft)
+                g.DrawString(text.Value, New Font(New FontFamily(text.Style.FontFamilyName), (text.Height / pixelsPerUnitY)), New SolidBrush(text.Color.ToColor()), gdiUpperleft)
 
             End If
         Next
 
         For Each mtext As MText In Drawing.MTexts
+            If InsideBounds(bounds, mtext) Then
+                Dim upperleft = mtext.Position
+                Dim format = New StringFormat
+                Select Case mtext.AttachmentPoint
+                    Case MTextAttachmentPoint.TopLeft
 
+                End Select
+                Dim gdiUpperLeft = CartesianToGdi(focalPoint, renderHeight, renderWidth, mtext.Position, pixelsPerUnitX, pixelsPerUnitY)
+                g.DrawString(mtext.PlainText, New Font(New FontFamily(mtext.Style.FontFamilyName), (mtext.Height / pixelsPerUnitY)), New SolidBrush(mtext.Color.ToColor), gdiUpperLeft)
+            End If
         Next
 
         For Each image As Entities.Image In Drawing.Images
