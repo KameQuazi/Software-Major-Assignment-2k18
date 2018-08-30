@@ -311,15 +311,15 @@ Public Class LampDxfDocument
     ''' Adds a polyline to drawing. Shorthand for AddPolyLine(points)
     ''' </summary>
     ''' <param name="Points"></param>
-    Public Function AddPolyline(ParamArray Points() As Vector3) As Polyline
-        Return AddPolyline(Points)
+    Public Function AddPolyLineParams(ParamArray Points() As Vector3) As Polyline
+        Return AddPolyLine(Points)
     End Function
 
     ''' <summary>
     ''' Adds a polyline to drawing. Shorthand for AddPolyLine(points)
     ''' </summary>
     ''' <param name="Point3s"></param>
-    Public Function AddPolyline(Point3s As IEnumerable(Of Vector3)) As Polyline
+    Public Function AddPolyLine(Point3s As IEnumerable(Of Vector3)) As Polyline
         Return AddPolyLine(New Polyline(Point3s))
     End Function
 
@@ -364,6 +364,11 @@ Public Class LampDxfDocument
     ''' <param name="height"></param>
     Public Function AddText(x As Integer, y As Integer, text As String, height As Integer) As Text
         Return AddText(New Text(text, New Vector3(x, y, 0), height))
+    End Function
+
+    Public Function AddRectangle(topLeft As Vector3, bottomRight As Vector3) As Polyline
+        Return AddPolyLineParams(topLeft, New Vector3(bottomRight.X, topLeft.Y, 0), bottomRight, New Vector3(topLeft.X, bottomRight.Y, 0), topLeft)
+
     End Function
 
     Public Function AddText(text As Text) As Text
@@ -683,7 +688,7 @@ Public Class LampDxfDocument
                     Case MTextAttachmentPoint.TopLeft
 
                 End Select
-                Dim gdiUpperLeft = CartesianToGdi(focalPoint, renderHeight, renderWidth, mtext.Position, pixelsPerUnitX, pixelsPerUnitY)
+                Dim gdiUpperLeft = CartesianToGdi(focalPoint, renderWidth, renderHeight, mtext.Position, pixelsPerUnitX, pixelsPerUnitY)
                 g.DrawString(mtext.PlainText, New Font(New FontFamily(mtext.Style.FontFamilyName), (mtext.Height / pixelsPerUnitY)), New SolidBrush(mtext.Color.ToColor), gdiUpperLeft)
             End If
         Next

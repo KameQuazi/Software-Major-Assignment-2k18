@@ -16,6 +16,8 @@ Public Class DesignerForm
         End Set
     End Property
 
+    Public Property DynamicText As New DynamicTextDictionary
+
     Public Property [Readonly] As Boolean
 
 
@@ -127,13 +129,7 @@ Public Class DesignerForm
         DesignerScreen1.Center = Transform(DesignerScreen1.Center, 0, 10)
     End Sub
 
-    Private Sub DesignerScreen1_Load(sender As Object, e As EventArgs) Handles DesignerScreen1.Load
 
-    End Sub
-
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
-
-    End Sub
 
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
         If SaveFileDialog2.ShowDialog = DialogResult.OK Then
@@ -179,18 +175,39 @@ Public Class DesignerForm
     End Sub
 
     Private Sub DesignerForm_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
-        If e.KeyCode = Keys.Escape Then
-            ' revert the item being drawing right now
-            If currentState <> DrawingState.None Then
-                RevertDraw()
+        Select Case e.KeyCode
+            Case Keys.Escape
+                ' revert the item being drawing right now
+                If currentState <> DrawingState.None Then
+                    RevertDraw()
+                End If
+            Case Keys.Enter
+                If currentState <> DrawingState.None Then
+                    EnterPressed()
+                End If
+
+
+
+        End Select
+        If currentState = DrawingState.InTextMode Then
+            Dim character = "" + ChrW(e.KeyValue)
+
+            If My.Computer.Keyboard.ShiftKeyDown Then
+                character = character.ToUpper()
+            Else
+                character = character.ToLower()
+            End If
+
+            If Char.IsLetterOrDigit(character) Or Char.IsSymbol(character) Then
+                textbuff += character
+                SetCommand(String.Format(EnterText, textbuff))
             End If
         End If
 
+
     End Sub
 
-    Private Sub DesignerForm_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
-        Console.WriteLine("hewww-wo?")
-    End Sub
+
 
     Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
         Me.DialogResult = DialogResult.OK
@@ -199,8 +216,12 @@ Public Class DesignerForm
 
     Dim firstPoint As Vector3
 
-    Dim previousEntity As EntityObject
+    Dim firstPreviousEntity As EntityObject
+    Dim secondPreviousEntity As EntityObject
+    Private textbuff As String = ""
     Public Property CurrentTool As LampTool = LampTool.Circle
+
+    Private textWidth As Double = 0
 
     Private currentState As DrawingState = DrawingState.None
 
@@ -208,18 +229,46 @@ Public Class DesignerForm
         Select Case CurrentTool
             Case LampTool.Measure, LampTool.Arc, LampTool.Circle, LampTool.Line
                 If currentState = DrawingState.Uncommitted Then
-                    Drawing.RemoveEntity(previousEntity)
+                    Drawing.RemoveEntity(firstPreviousEntity)
                 End If
             Case LampTool.DynamicMText
-                ' todo
+                Drawing.RemoveEntity(firstPreviousEntity)
+                Drawing.RemoveEntity(secondPreviousEntity)
+                textWidth = 0
+                textbuff = ""
+
             Case Else
                 MessageBox.Show("No cancel routine found for " + CurrentTool.ToString)
 
 
         End Select
         firstPoint = Nothing
+        firstPreviousEntity = Nothing
+        secondPreviousEntity = Nothing
         currentState = DrawingState.None
     End Sub
+
+    Private Delegate Sub askStringCallback(str As String)
+
+    Private Async Sub AskString(message As String)
+
+    End Sub
+    Private Sub EnterPressed()
+        Select Case CurrentTool
+            Case LampTool.DynamicMText
+                If currentState = DrawingState.InTextMode Then
+                    ' add in the dynamic text (finally)
+                    If textbuff.Count > 0 Then
+                        Dim key As New DynamicTextKey(textbuff, "", )
+                        DynamicText.Add()
+                    Else
+                        SetError("Text cannot be empty")
+                    End If
+
+        End Select
+
+    End Sub
+
 
     Private Sub DesignerScreen1_LocationClicked(sender As Object, e As MouseClickAbsoluteEventArgs) Handles DesignerScreen1.MouseClickAbsolute
         Select Case CurrentTool
@@ -229,11 +278,11 @@ Public Class DesignerForm
                     MessageBox.Show("Distance is " + DistanceTwoPoints(firstPoint, e.Location).ToString)
                     currentState = DrawingState.None
                     firstPoint = Nothing
-                    Drawing.RemoveEntity(previousEntity)
+                    Drawing.RemoveEntity(firstPreviousEntity)
                 Else
                     ' startpoint
                     firstPoint = e.Location
-                    previousEntity = Nothing
+                    firstPreviousEntity = Nothing
                     currentState = DrawingState.Uncommitted
                 End If
             Case LampTool.DynamicMText
@@ -241,10 +290,18 @@ Public Class DesignerForm
                     Case DrawingState.None
                         ' specify top left 
                         firstPoint = e.Location
-                        previousEntity = Nothing
+                        firstPreviousEntity = Nothing
                         currentState = DrawingState.Uncommitted
                     Case DrawingState.Uncommitted
-                        ' specify 
+                        ' specify width
+                        If firstPoint.X > e.Location.X Then
+                            SetError("Textwidth has to be > 0 ")
+                        Else
+                            textWidth = firstPoint.X <= e.Location.X
+                            currentState = DrawingState.InTextMode
+                            SetCommand(String.Format(EnterText, ""))
+                        End If
+
 
                 End Select
 
@@ -256,7 +313,7 @@ Public Class DesignerForm
 
                 Else
                     firstPoint = Nothing
-                    previousEntity = Nothing
+                    firstPreviousEntity = Nothing
                     currentState = DrawingState.None
 
                 End If
@@ -277,45 +334,50 @@ Public Class DesignerForm
             Case LampTool.Line
                 If currentState = DrawingState.Uncommitted Then
 
-                    If previousEntity IsNot Nothing Then
+                    If firstPreviousEntity IsNot Nothing Then
                         ' delete the previous line and add new line
-                        Drawing.RemoveEntity(previousEntity)
-                        previousEntity = Drawing.AddLine(firstPoint, e.Location)
+                        Drawing.RemoveEntity(firstPreviousEntity)
+                        firstPreviousEntity = Drawing.AddLine(firstPoint, e.Location)
                     Else
-                        previousEntity = Drawing.AddLine(firstPoint, e.Location)
+                        firstPreviousEntity = Drawing.AddLine(firstPoint, e.Location)
                     End If
                 End If
 
             Case LampTool.Circle
                 If currentState = DrawingState.Uncommitted Then
-                    If previousEntity IsNot Nothing Then
-                        Drawing.RemoveEntity(previousEntity)
-                        previousEntity = Drawing.AddCircle(firstPoint, DistanceTwoPoints(firstPoint, e.Location))
+                    If firstPreviousEntity IsNot Nothing Then
+                        Drawing.RemoveEntity(firstPreviousEntity)
+                        firstPreviousEntity = Drawing.AddCircle(firstPoint, DistanceTwoPoints(firstPoint, e.Location))
                     Else
-                        previousEntity = Drawing.AddCircle(firstPoint, DistanceTwoPoints(firstPoint, e.Location))
+                        firstPreviousEntity = Drawing.AddCircle(firstPoint, DistanceTwoPoints(firstPoint, e.Location))
                     End If
                 End If
 
             Case LampTool.Measure
                 If currentState = DrawingState.Uncommitted Then
-                    If previousEntity IsNot Nothing Then
-                        Drawing.RemoveEntity(previousEntity)
-                        previousEntity = Drawing.AddLine(firstPoint, e.Location)
+                    If firstPreviousEntity IsNot Nothing Then
+                        Drawing.RemoveEntity(firstPreviousEntity)
+                        firstPreviousEntity = Drawing.AddLine(firstPoint, e.Location)
                     Else
-                        previousEntity = Drawing.AddLine(firstPoint, e.Location)
+                        firstPreviousEntity = Drawing.AddLine(firstPoint, e.Location)
                     End If
                 End If
 
-            Case LampTool.MText
-                If currentState = DrawingState.Uncommitted Then
-                    ' drawing bounding box for mtext
-                    If previousEntity IsNot Nothing Then
-                        Drawing.RemoveEntity(previousEntity)
-                        previousEntity = Drawing.AddLine(firstPoint, e.Location)
-                    Else
-                        previousEntity = Drawing.AddLine(firstPoint, e.Location)
-                    End If
-                End If
+            Case LampTool.DynamicMText
+                Select Case currentState
+                    Case DrawingState.None
+                        SetCommand(String.Format(FirstCorner, e.Location.X, e.Location.Y))
+                    Case DrawingState.Uncommitted
+                        If firstPreviousEntity IsNot Nothing Then
+                            Drawing.RemoveEntity(firstPreviousEntity)
+                            firstPreviousEntity = Drawing.AddRectangle(firstPoint, e.Location)
+                        Else
+                            firstPreviousEntity = Drawing.AddRectangle(firstPoint, e.Location)
+                        End If
+                        SetCommand(String.Format(SecondCorner, e.Location.X, e.Location.Y))
+
+                End Select
+
 
 
 
@@ -324,6 +386,10 @@ Public Class DesignerForm
 
     End Sub
 
+    Private DynamicTextPrefix = "DyamicText"
+    Private FirstCorner = "Specify First Corner: {0},{1} or tab for manual entry"
+    Private SecondCorner = "Specify Second Corner: {0},{1} or tab for manual entry"
+    Private EnterText = "Enter text: {0}"
     Private StartPoint As Vector3
     ' need to set doUpdate to prevent calls from overwriting each otehr
     Private doUpdate As Boolean = True
@@ -331,9 +397,14 @@ Public Class DesignerForm
 
 
     Public Sub ResetDrawingState(Optional keep As CheckBox = Nothing)
+        If currentState <> DrawingState.None Then
+            RevertDraw()
+        End If
+
         firstPoint = Nothing
         currentState = DrawingState.None
         CurrentTool = LampTool.Nothing
+
         Dim cboxes As New List(Of CheckBox) From {cboxArc, cboxCircle, cboxLine, cboxDynamicText, cboxStaticText, cboxMeasure}
         For Each box In cboxes
             If Not box.Equals(keep) Then
@@ -445,6 +516,16 @@ Public Class DesignerForm
         rtboxPrevious.AppendText(message)
     End Sub
 
+    Private Sub SetCommand(command As String)
+        rtboxCurrent.Text = command
+    End Sub
+
+
+    Private Sub SetError([error] As String)
+        AddMessage([error] + Environment.NewLine)
+    End Sub
+
+
 
 
     Private Sub rtboxCurrent_KeyDown(sender As Object, e As KeyEventArgs) Handles rtboxCurrent.KeyDown
@@ -453,6 +534,12 @@ Public Class DesignerForm
             AddMessage(rtboxCurrent.Text + Environment.NewLine)
             rtboxCurrent.Text = ""
         End If
+    End Sub
+
+
+    Private Sub DesignerScreen1_KeyDown(sender As Object, e As KeyEventArgs) Handles DesignerScreen1.KeyDown
+        ' bubble the event
+        OnKeyDown(e)
     End Sub
 End Class
 
