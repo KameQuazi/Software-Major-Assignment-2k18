@@ -207,7 +207,7 @@ Partial Class DesignerForm
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(100, 28)
         Me.Button1.TabIndex = 18
-        Me.Button1.Text = "Save As Dxf"
+        Me.Button1.Text = "Save As spf"
         Me.Button1.UseVisualStyleBackColor = False
         '
         'TrackBar1
