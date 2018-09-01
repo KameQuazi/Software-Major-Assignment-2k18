@@ -5,7 +5,7 @@ Public Class NewOrderForm
     Dim dynamicTextDict As New List(Of String)
     Dim valid As Boolean = False
     Dim summary As String = ""
-    Private _currentTemplate As LampTemplate
+    Private _currentTemplate As LampTemplate = New LampTemplate()
     Public Property CurrentTemplate As LampTemplate
         Get
             Return _currentTemplate

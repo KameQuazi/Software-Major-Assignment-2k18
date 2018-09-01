@@ -277,7 +277,7 @@ Public Class TemplateCreatorControl
 
         Using viewer As New DesignerForm(DxfViewerControl1.Drawing) With {.Readonly = Me.ReadOnly}
             If viewer.ShowDialog() = DialogResult.OK Then
-                DxfViewerControl1.Template = Template
+                Me.Template = viewer.Template
             End If
         End Using
     End Sub

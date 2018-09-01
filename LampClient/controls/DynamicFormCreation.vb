@@ -13,7 +13,7 @@ Public Class DynamicFormCreation
             Return Nothing
         End Get
         Set(value As LampTemplate)
-            Source.AddRange(Template?.DynamicTextList)
+            Source.AddRange(value?.DynamicTextList)
         End Set
     End Property
 

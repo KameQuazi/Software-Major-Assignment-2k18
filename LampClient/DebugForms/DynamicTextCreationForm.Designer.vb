@@ -38,10 +38,11 @@ Partial Class DynamicTextCreationForm
         'DynamicFormCreation1
         '
         Me.DynamicFormCreation1.AutoScroll = True
-        Me.DynamicFormCreation1.Location = New System.Drawing.Point(266, 100)
+        Me.DynamicFormCreation1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.DynamicFormCreation1.Location = New System.Drawing.Point(0, 0)
         Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
         Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(0, 0, 17, 0)
-        Me.DynamicFormCreation1.Size = New System.Drawing.Size(813, 561)
+        Me.DynamicFormCreation1.Size = New System.Drawing.Size(1232, 703)
         Me.DynamicFormCreation1.TabIndex = 0
         '
         'DynamicTextCreationForm

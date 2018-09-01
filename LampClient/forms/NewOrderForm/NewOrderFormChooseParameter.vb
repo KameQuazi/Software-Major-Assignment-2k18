@@ -26,14 +26,18 @@ Public Class NewOrderFormChooseParameter
 
     Private Sub UpdateContents()
         TemplateDisplay1.Template = SelectedTemplate
+        tboxNumTemplates.Text = NumberOfTemplates.ToString
         UpdateColumnHeaders()
         UpdateRows()
     End Sub
 
     Private Sub UpdateRows()
-        For Each row In Items
-            DataGridView1.Rows.Add(row)
-        Next
+        If DataGridView1.ColumnCount >= 1 Then
+
+            For Each row In Items
+                DataGridView1.Rows.Add(row)
+            Next
+        End If
     End Sub
 
     Private Sub UpdateColumnHeaders()
@@ -106,18 +110,30 @@ Public Class NewOrderFormChooseParameter
     End Sub
 
     Private Sub btnCreate_Click(sender As Object, e As EventArgs) Handles btnCreate.Click
-        Using dialog As New DynamicTextCreationForm(SelectedTemplate)
-            dialog.ShowDialog()
-
-        End Using
+        AddCopy()
     End Sub
 
-    Private _numberOfTemplates As Integer
+    Private Sub AddCopy()
+        If SelectedTemplate.DynamicTextList.Count > 0 Then
+
+            Using dialog As New DynamicTextCreationForm(SelectedTemplate)
+                If dialog.ShowDialog() = DialogResult.OK Then
+                    Items.Add(dialog.DynamicTextValues)
+
+                End If
+
+            End Using
+        Else
+            NumberOfTemplates += 1
+        End If
+    End Sub
+
     Private Property NumberOfTemplates As Integer
         Get
-            Return _numberOfTemplates
+            Return Items.Count()
         End Get
         Set(value As Integer)
+            Dim _numberOfTemplates = NumberOfTemplates
             If value > _numberOfTemplates Then
                 ' gotta add some empty templates
                 For i = 1 To value - _numberOfTemplates
@@ -129,7 +145,6 @@ Public Class NewOrderFormChooseParameter
                     Items.RemoveAt(i)
                 Next
             End If
-            _numberOfTemplates = value
             UpdateContents()
         End Set
     End Property

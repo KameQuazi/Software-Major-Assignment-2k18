@@ -28,7 +28,7 @@ Public Class DynamicTextCreationForm
         Next
 
         If DynamicFormCreation1.Source.Count() = 0 Then
-            DynamicFormCreation1.Source.Add(New DynamicTextKey("No parameters found", "No parameters are in this template", New netDxf.Vector3, 0, 0, InputType.None, Nothing))
+            DynamicFormCreation1.Source.Add(New DynamicTextKey("No dynamic text in this template", "", Nothing, 0, 0))
             btnSubmit.Enabled = False
         Else
             btnSubmit.Enabled = True
@@ -72,4 +72,16 @@ Public Class DynamicTextCreationForm
     Private Sub DynamicFormCreation1_Load(sender As Object, e As EventArgs) Handles DynamicFormCreation1.Load
 
     End Sub
+
+    Public ReadOnly Property DynamicTextValues As DynamicTextValueRow
+        Get
+            Dim out As New DynamicTextValueRow
+            For Each item In DynamicFormCreation1.FlowLayoutPanel1.Controls
+                Dim x As SingleDynamicText = item
+                out.Add(New DynamicTextValue(x.GetValue()))
+            Next
+            Return out
+        End Get
+
+    End Property
 End Class

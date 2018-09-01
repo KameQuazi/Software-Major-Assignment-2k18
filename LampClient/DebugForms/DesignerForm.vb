@@ -30,9 +30,9 @@ Public Class DesignerForm
         End Set
     End Property
 
-    Public ReadOnly Property DynamicTextKeys As List(Of DynamicTextKey)
+    Public ReadOnly Property DynamicTextKeys As ObservableCollection(Of DynamicTextKey)
         Get
-            Return Template?.DynamicTextList.ToList
+            Return Template?.DynamicTextList
         End Get
     End Property
 
@@ -74,9 +74,7 @@ Public Class DesignerForm
         ' since the GUID is a unique constraint, it will simply exit the function
         ' as if a return was placed there
         ' I've moved the stuff to the sub new underneath
-        If Drawing IsNot Nothing Then
-            jsonOutput.Text = Drawing.ToDxfString
-        End If
+
 
     End Sub
 
@@ -170,7 +168,7 @@ Public Class DesignerForm
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
         If SaveFileDialog2.ShowDialog = DialogResult.OK Then
             Dim x As New LampTemplate(Drawing)
-            x.DynamicTextList.AddRange(DynamicTextKeys.ToObservableList)
+            x.DynamicTextList.AddRange(DynamicTextKeys)
             x.Save(SaveFileDialog2.FileName)
         End If
     End Sub

@@ -689,7 +689,7 @@ End Class
 
 Public Module Owo3
     <Extension>
-    Public Function ContainsString(self As List(Of DynamicTextKey), textbuff As String) As Boolean
+    Public Function ContainsString(self As IEnumerable(Of DynamicTextKey), textbuff As String) As Boolean
         For Each key In self
             If key.ParameterName.ToLower = textbuff.ToLower() Then
                 Return True
