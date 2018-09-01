@@ -24,6 +24,8 @@ Partial Class TemplateCreatorControl
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TemplateCreatorControl))
+        Dim LampDxfDocument1 As LampCommon.LampDxfDocument = New LampCommon.LampDxfDocument()
+        Dim LampTemplate1 As LampCommon.LampTemplate = New LampCommon.LampTemplate()
         Me.RootColumn = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Dynbox = New System.Windows.Forms.ListBox()
@@ -52,6 +54,7 @@ Partial Class TemplateCreatorControl
         Me.ImportSpf = New System.Windows.Forms.Button()
         Me.ExportDxf = New System.Windows.Forms.Button()
         Me.ExportSpf = New System.Windows.Forms.Button()
+        Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
         Me.DrawingDivider = New System.Windows.Forms.TableLayoutPanel()
         Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
@@ -199,6 +202,7 @@ Partial Class TemplateCreatorControl
         Me.EmptySpaceDivider.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
         Me.EmptySpaceDivider.Controls.Add(Me.DescriptionDivider, 0, 0)
         Me.EmptySpaceDivider.Controls.Add(Me.TableLayoutPanel1, 2, 0)
+        Me.EmptySpaceDivider.Controls.Add(Me.DynamicFormCreation1, 1, 0)
         Me.EmptySpaceDivider.Dock = System.Windows.Forms.DockStyle.Fill
         Me.EmptySpaceDivider.Location = New System.Drawing.Point(3, 3)
         Me.EmptySpaceDivider.Name = "EmptySpaceDivider"
@@ -463,6 +467,15 @@ Partial Class TemplateCreatorControl
         Me.ExportSpf.Text = "Export To SPF"
         Me.ExportSpf.UseVisualStyleBackColor = False
         '
+        'DynamicFormCreation1
+        '
+        Me.DynamicFormCreation1.AutoScroll = True
+        Me.DynamicFormCreation1.Location = New System.Drawing.Point(432, 3)
+        Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
+        Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(0, 0, 17, 0)
+        Me.DynamicFormCreation1.Size = New System.Drawing.Size(337, 428)
+        Me.DynamicFormCreation1.TabIndex = 29
+        '
         'TableLayoutPanel3
         '
         Me.TableLayoutPanel3.ColumnCount = 1
@@ -499,12 +512,26 @@ Partial Class TemplateCreatorControl
         Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
         Me.DxfViewerControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.DxfViewerControl1.Drawing = Nothing
+        Me.DxfViewerControl1.Drawing = LampDxfDocument1
         Me.DxfViewerControl1.Location = New System.Drawing.Point(17, 17)
         Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(16)
         Me.DxfViewerControl1.Name = "DxfViewerControl1"
         Me.DxfViewerControl1.Size = New System.Drawing.Size(328, 254)
         Me.DxfViewerControl1.TabIndex = 0
+        LampTemplate1.ApproverProfile = Nothing
+        LampTemplate1.BaseDrawing = LampDxfDocument1
+        LampTemplate1.CreatorProfile = Nothing
+        LampTemplate1.GUID = "18feba16-389c-42d7-8347-ca40157fb6f0"
+        LampTemplate1.Height = 0R
+        LampTemplate1.IsComplete = False
+        LampTemplate1.Length = 0R
+        LampTemplate1.LongDescription = ""
+        LampTemplate1.Material = "Unspecified"
+        LampTemplate1.MaterialThickness = 0R
+        LampTemplate1.Name = ""
+        LampTemplate1.ShortDescription = ""
+        LampTemplate1.SubmitDate = Nothing
+        Me.DxfViewerControl1.Template = LampTemplate1
         Me.DxfViewerControl1.ZoomX = 1.0R
         Me.DxfViewerControl1.ZoomY = 1.0R
         '
@@ -675,4 +702,5 @@ Partial Class TemplateCreatorControl
     Friend WithEvents TboxApprove As TextBox
     Friend WithEvents Label6 As Label
     Friend WithEvents btnNewJob As Button
+    Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
 End Class

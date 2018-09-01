@@ -54,7 +54,7 @@ Public Class TemplateCreatorControl
     ''' Determines the template 
     ''' </summary>
     ''' <returns></returns>
-    <[ReadOnly](True)>
+    <Browsable(False), EditorBrowsable(EditorBrowsableState.Never)>
     Public Property Template As LampTemplate
         Get
             Return _template
@@ -63,6 +63,7 @@ Public Class TemplateCreatorControl
             _template = value
             AddHandler _template.PropertyChanged, AddressOf Template_PropertyChanged
             UpdateAllFromTempate()
+
         End Set
     End Property
 
@@ -153,6 +154,7 @@ Public Class TemplateCreatorControl
         UpdateTagsFromTemplate()
         UpdateDxfFromTemplate()
         UpdateApproval()
+        DynamicFormCreation1.Template = Template
     End Sub
 
     Private Sub UpdateApproval()
@@ -245,11 +247,11 @@ Public Class TemplateCreatorControl
 
 
     Private Sub UpdateDxfFromTemplate()
-        DxfViewerControl1.Drawing = Template.BaseDrawing
+        DxfViewerControl1.Template = Template
     End Sub
 
     Private Sub UpdateTemplateFromDxf()
-        Template.BaseDrawing = DxfViewerControl1.Drawing
+        Template = DxfViewerControl1.Template
     End Sub
 
     ''' <summary>
@@ -264,9 +266,9 @@ Public Class TemplateCreatorControl
 
 
     Private Sub EditDrawingButton_Click(sender As Object, e As EventArgs) Handles btnViewDrawing.Click
-        Using viewer As New DesignerForm(DxfViewerControl1.Drawing) With {.Readonly = Me.ReadOnly}
+        Using viewer As New DesignerForm(Me.Template) With {.Readonly = Me.ReadOnly}
             If viewer.ShowDialog() = DialogResult.OK Then
-                DxfViewerControl1.Drawing = viewer.Drawing
+                Me.Template = viewer.Drawing
             End If
         End Using
     End Sub
@@ -275,7 +277,7 @@ Public Class TemplateCreatorControl
 
         Using viewer As New DesignerForm(DxfViewerControl1.Drawing) With {.Readonly = Me.ReadOnly}
             If viewer.ShowDialog() = DialogResult.OK Then
-                DxfViewerControl1.Drawing = viewer.Drawing
+                DxfViewerControl1.Template = Template
             End If
         End Using
     End Sub
@@ -558,6 +560,15 @@ Public Class TemplateCreatorControl
 
     End Sub
 
+    Private Sub btnEdit_Click(sender As Object, e As EventArgs)
+        Using x As New DynamicTextCreationForm(Template)
+            x.ShowDialog()
+        End Using
+    End Sub
+
+    Private Sub DxfViewerControl1_MouseClickAbsolute(sender As Object, args As MouseClickAbsoluteEventArgs) Handles DxfViewerControl1.MouseClickAbsolute
+
+    End Sub
 End Class
 
 

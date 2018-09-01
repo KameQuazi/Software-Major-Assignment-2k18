@@ -7,6 +7,18 @@ Public Class DynamicFormCreation
 
     Public ReadOnly Property Source As New ObservableCollection(Of DynamicTextKey)
 
+
+    Public Property Template As LampTemplate
+        Private Get
+            Return Nothing
+        End Get
+        Set(value As LampTemplate)
+            Source.AddRange(Template?.DynamicTextList)
+        End Set
+    End Property
+
+
+
     Public ReadOnly ScrollBarOffset As Integer = 20
 
     Protected Overrides Sub OnPaddingChanged(e As EventArgs)

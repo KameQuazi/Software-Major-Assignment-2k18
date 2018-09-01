@@ -22,7 +22,18 @@ Public Class DesignerForm
 
     Public Property [Readonly] As Boolean
 
-
+    Private _undoEntity As EntityObject
+    Private Property UndoEntity As EntityObject
+        Get
+            Return _undoEntity
+        End Get
+        Set(value As EntityObject)
+            _undoEntity = value
+            If value IsNot Nothing Then
+                btnUndo.Enabled = False
+            End If
+        End Set
+    End Property
 
     Private Sub OpenFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
 
@@ -205,6 +216,8 @@ Public Class DesignerForm
                 textbuff += character
             ElseIf e.KeyCode = Keys.Back Then
                 textbuff = textbuff.TrimFinalCharacter()
+            ElseIf e.KeyCode = Keys.OemPeriod Then
+                textbuff += "."
             End If
 
             SetCommand(String.Format(currentCmdText, textbuff))
@@ -225,7 +238,6 @@ Public Class DesignerForm
     Dim firstPoint As Vector3
 
     Dim firstPreviousEntity As EntityObject
-    Dim secondPreviousEntity As EntityObject
     Private textbuff As String = ""
     Dim parameterName As String = ""
     Public Property CurrentTool As LampTool = LampTool.Nothing
@@ -244,7 +256,6 @@ Public Class DesignerForm
                 End If
             Case LampTool.DynamicMText
                 Drawing.RemoveEntity(firstPreviousEntity)
-                Drawing.RemoveEntity(secondPreviousEntity)
                 textWidth = 0
                 textbuff = ""
                 parameterName = ""
@@ -259,7 +270,6 @@ Public Class DesignerForm
     Private Sub ResetVariables()
         firstPoint = Nothing
         firstPreviousEntity = Nothing
-        secondPreviousEntity = Nothing
         currentState = DrawingState.None
         parameterName = ""
         textbuff = ""
@@ -281,21 +291,27 @@ Public Class DesignerForm
                         Else
                             currentState = DrawingState.AskingTextHeight
                             currentCmdText = "Enter text Height: {0}"
+                            parameterName = textbuff
                             SetCommand(String.Format(currentCmdText, ""))
-                            textbuff = 0
+                            textbuff = ""
 
                         End If
+
                     Case DrawingState.AskingTextHeight
                         If textbuff.Count = 0 Then
                             SetError("Height cannot be empty")
                         ElseIf Not Double.TryParse(textbuff, textHeight) Then
                             SetError("Text entered is not a decimal number")
-                            textbuff = ""
+
 
                         Else
                             currentState = DrawingState.None
-                            ResetVariables()
+
+
                             DynamicTextKeys.Add(New DynamicTextKey(parameterName, "", firstPoint, textHeight, textWidth))
+                            Drawing.RemoveEntity(firstPreviousEntity)
+                            Drawing.AddMText(firstPoint, parameterName, textHeight, textWidth)
+                            ResetVariables()
                         End If
                 End Select
         End Select
@@ -330,7 +346,7 @@ Public Class DesignerForm
                         If firstPoint.X > e.Location.X Then
                             SetError("Textwidth has to be > 0 ")
                         Else
-                            textWidth = firstPoint.X <= e.Location.X
+                            textWidth = e.Location.X - firstPoint.X
                             currentState = DrawingState.InTextMode
                             currentCmdText = EnterText
                             SetCommand(String.Format(EnterText, ""))
@@ -623,6 +639,9 @@ Public Module Owo3
 
     <Extension>
     Public Sub AddRange(Of T)(self As ObservableCollection(Of T), range As IEnumerable(Of T))
+        If range Is Nothing Then
+            Return
+        End If
         For Each item In range
             self.Add(item)
         Next

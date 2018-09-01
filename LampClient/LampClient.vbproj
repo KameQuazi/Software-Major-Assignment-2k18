@@ -195,12 +195,6 @@
     <Compile Include="controls\PasswordRichTextBox.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="controls\template\EditDynamicText.Designer.vb">
-      <DependentUpon>EditDynamicText.vb</DependentUpon>
-    </Compile>
-    <Compile Include="controls\template\EditDynamicText.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="controls\toolbar\AdminToolbar.Designer.vb">
       <DependentUpon>AdminToolbar.vb</DependentUpon>
     </Compile>
@@ -518,9 +512,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="controls\jobs\ServiceSortableJobViewer.resx">
       <DependentUpon>ServiceSortableJobViewer.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="controls\template\EditDynamicText.resx">
-      <DependentUpon>EditDynamicText.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\toolbar\AdminToolbar.resx">
       <DependentUpon>AdminToolbar.vb</DependentUpon>

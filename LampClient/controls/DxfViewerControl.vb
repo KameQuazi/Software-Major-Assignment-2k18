@@ -42,22 +42,21 @@ Public Class DxfViewerControl
         End If
     End Sub
 
-    Private _drawing As LampDxfDocument
 
     <Description("The dxf document that is rendered onto this control"), Category("Data")>
     Public Property Drawing As LampDxfDocument
         Get
-            Return _drawing
+            Return Template.BaseDrawing
         End Get
         Set(value As LampDxfDocument)
-            If _drawing IsNot Nothing Then
-                RemoveHandler _drawing.PropertyChanged, AddressOf SourceChanged
+            If Template.BaseDrawing IsNot Nothing Then
+                RemoveHandler Template.BaseDrawing.PropertyChanged, AddressOf SourceChanged
             End If
 
             If value IsNot Nothing Then
                 AddHandler value.PropertyChanged, AddressOf SourceChanged
             End If
-            _drawing = value
+            Template.BaseDrawing = value
             UpdateView()
         End Set
     End Property
@@ -112,6 +111,16 @@ Public Class DxfViewerControl
         End Get
     End Property
 
+    Private _template As LampTemplate = New LampTemplate
+    <Browsable(False), EditorBrowsable(EditorBrowsableState.Never)>
+    Public Property Template As LampTemplate
+        Get
+            Return _template
+        End Get
+        Set(value As LampTemplate)
+            value = _template
+        End Set
+    End Property
 
     Public Sub UpdateView()
         Me.Invalidate()

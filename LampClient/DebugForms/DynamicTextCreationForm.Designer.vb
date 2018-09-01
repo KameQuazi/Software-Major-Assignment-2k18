@@ -28,7 +28,7 @@ Partial Class DynamicTextCreationForm
         '
         'btnSubmit
         '
-        Me.btnSubmit.Location = New System.Drawing.Point(443, 239)
+        Me.btnSubmit.Location = New System.Drawing.Point(1145, 668)
         Me.btnSubmit.Name = "btnSubmit"
         Me.btnSubmit.Size = New System.Drawing.Size(75, 23)
         Me.btnSubmit.TabIndex = 1
@@ -38,7 +38,7 @@ Partial Class DynamicTextCreationForm
         'DynamicFormCreation1
         '
         Me.DynamicFormCreation1.AutoScroll = True
-        Me.DynamicFormCreation1.Location = New System.Drawing.Point(262, 239)
+        Me.DynamicFormCreation1.Location = New System.Drawing.Point(266, 100)
         Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
         Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(0, 0, 17, 0)
         Me.DynamicFormCreation1.Size = New System.Drawing.Size(813, 561)

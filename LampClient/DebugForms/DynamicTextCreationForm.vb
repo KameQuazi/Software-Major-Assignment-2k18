@@ -5,6 +5,8 @@ Public Class DynamicTextCreationForm
 
     Private _source As LampTemplate
     Private newJob As LampJob
+
+
     Public Property Source As LampTemplate
         Get
             Return _source
@@ -65,5 +67,9 @@ Public Class DynamicTextCreationForm
                 'newJob.DynamicTextDictionaries(value).Add(Source.DynamicTextList.Item(value), New DynamicTextValue(singleDT.GetValue.ToString.Split(",").GetValue(value)))
             Next
         Next
+    End Sub
+
+    Private Sub DynamicFormCreation1_Load(sender As Object, e As EventArgs) Handles DynamicFormCreation1.Load
+
     End Sub
 End Class

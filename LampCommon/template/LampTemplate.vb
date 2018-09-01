@@ -353,7 +353,7 @@ Public NotInheritable Class LampTemplate
 
 
 #Region "Instance Variables"
-    Private _baseDrawing As LampDxfDocument
+    Private _baseDrawing As LampDxfDocument = New LampDxfDocument
     ''' <summary>
     ''' The actual template : contains just 1 of drawing
     ''' Is serialized last in the file 

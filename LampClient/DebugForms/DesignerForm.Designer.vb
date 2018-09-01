@@ -53,6 +53,7 @@ Partial Class DesignerForm
         Me.rtboxPrevious = New System.Windows.Forms.RichTextBox()
         Me.rtboxCurrent = New System.Windows.Forms.RichTextBox()
         Me.DesignerScreen1 = New LampClient.DxfViewerControl()
+        Me.btnUndo = New System.Windows.Forms.Button()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -60,7 +61,7 @@ Partial Class DesignerForm
         '
         Me.OpenFileBtn.BackColor = System.Drawing.Color.White
         Me.OpenFileBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.OpenFileBtn.Location = New System.Drawing.Point(73, 163)
+        Me.OpenFileBtn.Location = New System.Drawing.Point(82, 163)
         Me.OpenFileBtn.Margin = New System.Windows.Forms.Padding(4)
         Me.OpenFileBtn.Name = "OpenFileBtn"
         Me.OpenFileBtn.Size = New System.Drawing.Size(100, 28)
@@ -354,11 +355,24 @@ Partial Class DesignerForm
         Me.DesignerScreen1.ZoomX = 1.0R
         Me.DesignerScreen1.ZoomY = 1.0R
         '
+        'btnUndo
+        '
+        Me.btnUndo.BackColor = System.Drawing.Color.White
+        Me.btnUndo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnUndo.Location = New System.Drawing.Point(86, 109)
+        Me.btnUndo.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnUndo.Name = "btnUndo"
+        Me.btnUndo.Size = New System.Drawing.Size(100, 28)
+        Me.btnUndo.TabIndex = 35
+        Me.btnUndo.Text = "Undo"
+        Me.btnUndo.UseVisualStyleBackColor = False
+        '
         'DesignerForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(1232, 703)
+        Me.Controls.Add(Me.btnUndo)
         Me.Controls.Add(Me.rtboxCurrent)
         Me.Controls.Add(Me.rtboxPrevious)
         Me.Controls.Add(Me.cboxMeasure)
@@ -427,4 +441,5 @@ Partial Class DesignerForm
     Friend WithEvents cboxMeasure As CheckBox
     Friend WithEvents rtboxPrevious As RichTextBox
     Friend WithEvents rtboxCurrent As RichTextBox
+    Friend WithEvents btnUndo As Button
 End Class

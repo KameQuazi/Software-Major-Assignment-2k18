@@ -79,7 +79,7 @@ Public Class DynamicTextKey
 
 
 
-    Private Shared defaultFont As String = SystemFonts.DefaultFont.Name
+    Private Shared defaultFont As String = "Arial"
 
     ''' <summary>
     ''' 
