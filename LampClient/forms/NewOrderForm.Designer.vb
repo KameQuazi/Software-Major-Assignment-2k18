@@ -26,16 +26,16 @@ Partial Class NewOrderForm
         Me.txtRecipient = New System.Windows.Forms.TextBox()
         Me.txtPrefix = New System.Windows.Forms.ComboBox()
         Me.grpParameters = New System.Windows.Forms.GroupBox()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.txtNum = New System.Windows.Forms.TextBox()
+        Me.btnDEBUG = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.btnNext = New System.Windows.Forms.Button()
-        Me.chkYear = New System.Windows.Forms.CheckBox()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.ToolBar1 = New LampClient.ToolBar()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.ToolBar1 = New LampClient.ToolBar()
         Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
+        Me.txtSum = New System.Windows.Forms.TextBox()
         Me.grpParameters.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
@@ -47,15 +47,14 @@ Partial Class NewOrderForm
         Me.txtRecipient.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!)
         Me.txtRecipient.Location = New System.Drawing.Point(173, 29)
         Me.txtRecipient.Name = "txtRecipient"
-        Me.txtRecipient.Size = New System.Drawing.Size(224, 29)
+        Me.txtRecipient.Size = New System.Drawing.Size(411, 29)
         Me.txtRecipient.TabIndex = 33
-        Me.txtRecipient.Text = "Insert Name Here"
+        Me.txtRecipient.Text = "Insert csv Here"
         '
         'txtPrefix
         '
         Me.txtPrefix.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!)
         Me.txtPrefix.FormattingEnabled = True
-        Me.txtPrefix.Items.AddRange(New Object() {"Awarded to:", "to:"})
         Me.txtPrefix.Location = New System.Drawing.Point(6, 29)
         Me.txtPrefix.Name = "txtPrefix"
         Me.txtPrefix.Size = New System.Drawing.Size(161, 32)
@@ -63,11 +62,11 @@ Partial Class NewOrderForm
         '
         'grpParameters
         '
-        Me.grpParameters.Controls.Add(Me.Label1)
+        Me.grpParameters.Controls.Add(Me.txtSum)
+        Me.grpParameters.Controls.Add(Me.txtNum)
+        Me.grpParameters.Controls.Add(Me.btnDEBUG)
         Me.grpParameters.Controls.Add(Me.Button2)
         Me.grpParameters.Controls.Add(Me.btnNext)
-        Me.grpParameters.Controls.Add(Me.chkYear)
-        Me.grpParameters.Controls.Add(Me.TextBox1)
         Me.grpParameters.Controls.Add(Me.txtPrefix)
         Me.grpParameters.Controls.Add(Me.txtRecipient)
         Me.grpParameters.Dock = System.Windows.Forms.DockStyle.Fill
@@ -79,14 +78,23 @@ Partial Class NewOrderForm
         Me.grpParameters.TabStop = False
         Me.grpParameters.Text = "Edit Text"
         '
-        'Label1
+        'txtNum
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(18, 384)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(47, 20)
-        Me.Label1.TabIndex = 37
-        Me.Label1.Text = "Year:"
+        Me.txtNum.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!)
+        Me.txtNum.Location = New System.Drawing.Point(173, 125)
+        Me.txtNum.Name = "txtNum"
+        Me.txtNum.Size = New System.Drawing.Size(224, 29)
+        Me.txtNum.TabIndex = 42
+        Me.txtNum.Text = "Number Of Jobs"
+        '
+        'btnDEBUG
+        '
+        Me.btnDEBUG.Location = New System.Drawing.Point(112, 370)
+        Me.btnDEBUG.Name = "btnDEBUG"
+        Me.btnDEBUG.Size = New System.Drawing.Size(262, 50)
+        Me.btnDEBUG.TabIndex = 41
+        Me.btnDEBUG.Text = "DEBUG BUTTON XD"
+        Me.btnDEBUG.UseVisualStyleBackColor = True
         '
         'Button2
         '
@@ -112,26 +120,6 @@ Partial Class NewOrderForm
         Me.btnNext.Text = "Next"
         Me.btnNext.UseVisualStyleBackColor = False
         '
-        'chkYear
-        '
-        Me.chkYear.AutoSize = True
-        Me.chkYear.Location = New System.Drawing.Point(23, 352)
-        Me.chkYear.Name = "chkYear"
-        Me.chkYear.Size = New System.Drawing.Size(127, 24)
-        Me.chkYear.TabIndex = 36
-        Me.chkYear.Text = "Include Year?"
-        Me.chkYear.UseVisualStyleBackColor = True
-        '
-        'TextBox1
-        '
-        Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!)
-        Me.TextBox1.Location = New System.Drawing.Point(83, 380)
-        Me.TextBox1.MaxLength = 4
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(63, 29)
-        Me.TextBox1.TabIndex = 35
-        Me.TextBox1.Text = "2018"
-        '
         'TableLayoutPanel1
         '
         Me.TableLayoutPanel1.ColumnCount = 1
@@ -147,21 +135,6 @@ Partial Class NewOrderForm
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1232, 703)
         Me.TableLayoutPanel1.TabIndex = 38
-        '
-        'ToolBar1
-        '
-        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
-        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = False
-        Me.ToolBar1.NewTemplateEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
-        Me.ToolBar1.TabIndex = 37
-        Me.ToolBar1.ViewOrderEnabled = True
-        Me.ToolBar1.ViewTemplateEnabled = True
         '
         'TableLayoutPanel2
         '
@@ -188,6 +161,21 @@ Partial Class NewOrderForm
         Me.Panel1.Size = New System.Drawing.Size(607, 586)
         Me.Panel1.TabIndex = 37
         '
+        'ToolBar1
+        '
+        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolBar1.HomeEnabled = True
+        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.NewOrderEnabled = False
+        Me.ToolBar1.NewTemplateEnabled = True
+        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
+        Me.ToolBar1.TabIndex = 37
+        Me.ToolBar1.ViewOrderEnabled = True
+        Me.ToolBar1.ViewTemplateEnabled = True
+        '
         'DxfViewerControl1
         '
         Me.DxfViewerControl1.BackColor = System.Drawing.Color.White
@@ -202,6 +190,15 @@ Partial Class NewOrderForm
         Me.DxfViewerControl1.TabIndex = 39
         Me.DxfViewerControl1.ZoomX = 1.0R
         Me.DxfViewerControl1.ZoomY = 1.0R
+        '
+        'txtSum
+        '
+        Me.txtSum.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!)
+        Me.txtSum.Location = New System.Drawing.Point(173, 222)
+        Me.txtSum.Name = "txtSum"
+        Me.txtSum.Size = New System.Drawing.Size(224, 29)
+        Me.txtSum.TabIndex = 43
+        Me.txtSum.Text = "Summary"
         '
         'NewOrderForm
         '
@@ -224,9 +221,6 @@ Partial Class NewOrderForm
     Friend WithEvents txtRecipient As TextBox
     Friend WithEvents txtPrefix As ComboBox
     Friend WithEvents grpParameters As GroupBox
-    Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents chkYear As CheckBox
-    Friend WithEvents Label1 As Label
     Friend WithEvents ToolBar1 As ToolBar
     Friend WithEvents btnNext As Button
     Friend WithEvents DxfViewerControl1 As DxfViewerControl
@@ -234,4 +228,7 @@ Partial Class NewOrderForm
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
     Friend WithEvents Panel1 As Panel
+    Friend WithEvents btnDEBUG As Button
+    Friend WithEvents txtNum As TextBox
+    Friend WithEvents txtSum As TextBox
 End Class
