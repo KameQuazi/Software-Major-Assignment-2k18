@@ -268,7 +268,7 @@ Public Class TemplateCreatorControl
     Private Sub EditDrawingButton_Click(sender As Object, e As EventArgs) Handles btnViewDrawing.Click
         Using viewer As New DesignerForm(Me.Template) With {.Readonly = Me.ReadOnly}
             If viewer.ShowDialog() = DialogResult.OK Then
-                Me.Template = viewer.Drawing
+                Me.Template = viewer.Template
             End If
         End Using
     End Sub
@@ -365,6 +365,8 @@ Public Class TemplateCreatorControl
         End If
     End Sub
 
+
+
     Private Sub AddTag_Click(sender As Object, e As EventArgs) Handles AddTag.Click
         Dim dialog As New LampInputBox("New tag", "Enter new tag")
         If dialog.ShowDialog() = DialogResult.OK Then
@@ -373,9 +375,14 @@ Public Class TemplateCreatorControl
             If Me.Template.Tags.Contains(newTag) Then
                 ' dont allow duplicates
                 MessageBox.Show("tags must be unique ")
+            ElseIf newTag.Length > 16 Then
+                MessageBox.Show("tag must be shorter or equal to 16 characters")
+            ElseIf newTag.Length = 0 Then
+                MessageBox.Show("tag not be empty")
             Else
                 ' add them to the tags in the template
                 Me.Template.Tags.Add(newTag)
+                Me.Template.SortTags()
             End If
         End If
     End Sub

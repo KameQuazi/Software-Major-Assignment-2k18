@@ -470,9 +470,10 @@ Partial Class TemplateCreatorControl
         'DynamicFormCreation1
         '
         Me.DynamicFormCreation1.AutoScroll = True
+        Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.DynamicFormCreation1.Location = New System.Drawing.Point(432, 3)
         Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
-        Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(0, 0, 17, 0)
+        Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(20)
         Me.DynamicFormCreation1.Size = New System.Drawing.Size(337, 428)
         Me.DynamicFormCreation1.TabIndex = 29
         '
@@ -521,7 +522,7 @@ Partial Class TemplateCreatorControl
         LampTemplate1.ApproverProfile = Nothing
         LampTemplate1.BaseDrawing = LampDxfDocument1
         LampTemplate1.CreatorProfile = Nothing
-        LampTemplate1.GUID = "18feba16-389c-42d7-8347-ca40157fb6f0"
+        LampTemplate1.GUID = "6221784f-8c50-488a-a5c1-81ed37f8c5f4"
         LampTemplate1.Height = 0R
         LampTemplate1.IsComplete = False
         LampTemplate1.Length = 0R

@@ -441,6 +441,43 @@ Public NotInheritable Class LampTemplate
     End Property
 
     ''' <summary>
+    '''  se algorithm for in depth explaination
+    ''' </summary>
+    Public Sub SortTags()
+        Dim copy(Tags.Count) As String
+        Tags.CopyTo(copy, 0)
+        ' use selection sort
+        Dim sortedTillElement = 0
+        Dim temp As String
+        Dim current As String
+        Dim upto As Integer = 0
+        Dim largestPos As Integer = -1
+        Dim nextUnsorted As Integer
+
+        While sortedTillElement <= copy.Length
+            upto = sortedTillElement + 1
+            largestPos = sortedTillElement
+            While upto <= copy.Length
+                current = copy(upto)
+                If current > copy(largestPos) Then
+                    largestPos = upto
+                End If
+                upto += 1
+            End While
+
+            nextUnsorted = sortedTillElement + 1
+            temp = copy(nextUnsorted)
+            copy(nextUnsorted) = copy(largestPos)
+            copy(largestPos) = temp
+            sortedTillElement += 1
+
+        End While
+        copy.Log("Sorting successful")
+        Tags.Clear()
+        Tags.AddRange(copy)
+    End Sub
+
+    ''' <summary>
     ''' Handler for dynamic text changes
     ''' </summary>
     ''' <param name="sender"></param>
@@ -649,3 +686,46 @@ Public Class LampTemplateWrapper
     <DataMember>
     Public Property Status As LampStatus
 End Class
+
+Public Module Owo3
+    <Extension>
+    Public Function ContainsString(self As List(Of DynamicTextKey), textbuff As String) As Boolean
+        For Each key In self
+            If key.ParameterName.ToLower = textbuff.ToLower() Then
+                Return True
+            End If
+        Next
+        Return False
+    End Function
+
+    <Extension>
+    Public Sub AddRange(Of T)(self As ObservableCollection(Of T), range As IEnumerable(Of T))
+        If range Is Nothing Then
+            Return
+        End If
+        For Each item In range
+            self.Add(item)
+        Next
+    End Sub
+
+
+    <Extension>
+    Public Function TrimFinalCharacter(self As String)
+        If String.IsNullOrEmpty(self) Then
+            Return self
+        Else
+            Return self.Remove(self.Length - 1)
+        End If
+    End Function
+
+    <Extension>
+    Public Sub Log(array As String(), message As String)
+#If DEBUG Then
+        Console.WriteLine(message)
+#End If
+        Dim x As List(Of String) = array.ToList()
+        x.Sort()
+        x.CopyTo(array)
+
+    End Sub
+End Module

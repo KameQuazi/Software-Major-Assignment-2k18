@@ -33,7 +33,6 @@ Partial Class NewOrderForm
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.ToolBar1 = New LampClient.ToolBar()
         Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
         Me.txtSum = New System.Windows.Forms.TextBox()
         Me.grpParameters.SuspendLayout()
@@ -328,4 +327,7 @@ Partial Class NewOrderForm
     Friend WithEvents btnDEBUG As Button
     Friend WithEvents txtNum As TextBox
     Friend WithEvents txtSum As TextBox
+    Friend WithEvents Button2 As Button
+    Friend WithEvents btnNext As Button
+    Friend WithEvents DxfViewerControl1 As DxfViewerControl
 End Class

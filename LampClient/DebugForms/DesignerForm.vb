@@ -9,6 +9,18 @@ Imports System.Collections.ObjectModel
 Public Class DesignerForm
     Private _drawing As LampDxfDocument
 
+    Public Property Template As LampTemplate
+        Get
+            Return DesignerScreen1.Template
+        End Get
+        Set(value As LampTemplate)
+            If value Is Nothing Then
+                Throw New ArgumentNullException("Cannot be nothing")
+            End If
+            DesignerScreen1.Template = value
+        End Set
+    End Property
+
     Public Property Drawing As LampDxfDocument
         Get
             Return DesignerScreen1.Drawing
@@ -18,21 +30,20 @@ Public Class DesignerForm
         End Set
     End Property
 
-    Public Property DynamicTextKeys As New List(Of DynamicTextKey)
+    Public ReadOnly Property DynamicTextKeys As List(Of DynamicTextKey)
+        Get
+            Return Template?.DynamicTextList.ToList
+        End Get
+    End Property
 
     Public Property [Readonly] As Boolean
 
-    Private _undoEntity As EntityObject
-    Private Property UndoEntity As EntityObject
+    Private _undoEntities As New Stack(Of EntityObject)
+    Private ReadOnly Property UndoEntities As Stack(Of EntityObject)
         Get
-            Return _undoEntity
+            Return _undoEntities
         End Get
-        Set(value As EntityObject)
-            _undoEntity = value
-            If value IsNot Nothing Then
-                btnUndo.Enabled = False
-            End If
-        End Set
+
     End Property
 
     Private Sub OpenFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
@@ -83,10 +94,24 @@ Public Class DesignerForm
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        DesignerScreen1.Drawing = dxf
+        If dxf IsNot Nothing Then
+            DesignerScreen1.Drawing = dxf
+        End If
 
 
     End Sub
+
+    Sub New(Optional template As LampTemplate = Nothing)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        If template IsNot Nothing Then
+            Me.template = template
+        End If
+    End Sub
+
 
 
     Private Sub Button4_Click_1(sender As Object, e As EventArgs) Handles Button4.Click
@@ -310,7 +335,7 @@ Public Class DesignerForm
 
                             DynamicTextKeys.Add(New DynamicTextKey(parameterName, "", firstPoint, textHeight, textWidth))
                             Drawing.RemoveEntity(firstPreviousEntity)
-                            Drawing.AddMText(firstPoint, parameterName, textHeight, textWidth)
+                            UndoEntities.Push(Drawing.AddMText(firstPoint, parameterName, textHeight, textWidth))
                             ResetVariables()
                         End If
                 End Select
@@ -363,9 +388,11 @@ Public Class DesignerForm
                     currentState = DrawingState.Uncommitted
 
                 Else
+                    UndoEntities.Push(firstPreviousEntity)
                     firstPoint = Nothing
                     firstPreviousEntity = Nothing
                     currentState = DrawingState.None
+
 
                 End If
 
@@ -598,6 +625,10 @@ Public Class DesignerForm
             RevertDraw()
         End If
     End Sub
+
+    Private Sub btnUndo_Click(sender As Object, e As EventArgs) Handles btnUndo.Click
+        Drawing.RemoveEntity(UndoEntities.Pop)
+    End Sub
 End Class
 
 
@@ -626,34 +657,3 @@ Public Enum DrawingState
     AskingTextHeight = 3
 End Enum
 
-Public Module Owo3
-    <Extension>
-    Public Function ContainsString(self As List(Of DynamicTextKey), textbuff As String) As Boolean
-        For Each key In self
-            If key.ParameterName.ToLower = textbuff.ToLower() Then
-                Return True
-            End If
-        Next
-        Return False
-    End Function
-
-    <Extension>
-    Public Sub AddRange(Of T)(self As ObservableCollection(Of T), range As IEnumerable(Of T))
-        If range Is Nothing Then
-            Return
-        End If
-        For Each item In range
-            self.Add(item)
-        Next
-    End Sub
-
-
-    <Extension>
-    Public Function TrimFinalCharacter(self As String)
-        If String.IsNullOrEmpty(self) Then
-            Return self
-        Else
-            Return self.Remove(self.Length - 1)
-        End If
-    End Function
-End Module

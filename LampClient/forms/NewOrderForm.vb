@@ -5,13 +5,18 @@ Public Class NewOrderForm
     Dim dynamicTextDict As New List(Of String)
     Dim valid As Boolean = False
     Dim summary As String = ""
+    Private _currentTemplate As LampTemplate
+    Public Property CurrentTemplate As LampTemplate
+        Get
+            Return _currentTemplate
+        End Get
+        Set(value As LampTemplate)
+            _currentTemplate = value
+
+        End Set
+    End Property
 
 
-    Private Sub txtRecipient_Enter(sender As Object, e As EventArgs) Handles txtRecipient.Enter
-        If txtRecipient.Text = "Insert Name Here" Then
-            txtRecipient.Text = ""
-        End If
-    End Sub
     Private Sub loadElements() Handles Me.Load
         If Not CurrentTemplate.HasDynamicText Then
             txtPrefix.Show()
@@ -36,11 +41,6 @@ Public Class NewOrderForm
     End Sub
 
     Private Sub txtRecipient_Leave(sender As Object, e As EventArgs) Handles txtRecipient.Leave
-        If txtRecipient.Text = "" Then
-            txtRecipient.Text = "Insert Name Here"
-        End If
-    End Sub
-    Private Sub txtRecipient_Leave(sender As Object, e As EventArgs) Handles txtRecipient.Leave
         dynamicTextDict(txtPrefix.SelectedIndex()) = txtRecipient.Text
         If txtRecipient.Text = "" Then
             txtRecipient.Text = "Insert csv Here"
@@ -48,11 +48,6 @@ Public Class NewOrderForm
 
     End Sub
 
-    Private Sub TextBox1_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBox1.KeyDown
-        Select Case e.KeyCode
-        
-        End Select
-    End Sub
 
     Private Sub checkValid()
         valid = True
@@ -87,9 +82,6 @@ Public Class NewOrderForm
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnNext.Click
         checkValid()
         If valid = True Then
-
-        For i = 0 To 2
-            job.AddInsertionPoint(New LampSingleDxfInsertLocation(New netDxf.Vector3(0, 0, 0)), i, True)
 
             Dim job = New LampJob(Me.CurrentTemplate, CurrentUser.ToProfile, summary)
             ' For i = 0 To dynamicTextDict.Count - 1
