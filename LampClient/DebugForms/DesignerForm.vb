@@ -15,7 +15,7 @@ Public Class DesignerForm
         End Get
         Set(value As LampTemplate)
             If value Is Nothing Then
-                Throw New ArgumentNullException("Cannot be nothing")
+                Throw New ArgumentNullException(NameOf(Template))
             End If
             DesignerScreen1.Template = value
         End Set
