@@ -730,6 +730,38 @@ Partial Public Class TemplateDatabase
         End Using
     End Function
 
+    Private Function SelectDynamicText(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As IEnumerable(Of DynamicTextKey)
+        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand(trans)
+            sqlite_cmd.CommandText = "SELECT dText from dynamicText WHERE guid = @guid"
+            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+            Dim out As New List(Of DynamicTextKey)
+            Using reader = sqlite_cmd.ExecuteReader
+                While reader.Read()
+                    out.Add(DynamicTextKey.Deserialise(reader.GetString(reader.GetOrdinal("dText"))))
+                End While
+            End Using
+            Return out
+        End Using
+    End Function
+
+    Private Async Function SelectDynamicTextAsync(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of IEnumerable(Of DynamicTextKey))
+        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand(trans)
+            sqlite_cmd.CommandText = "SELECT dText from dynamicText WHERE guid = @guid"
+            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+            Dim out As New List(Of DynamicTextKey)
+            Using reader = Await sqlite_cmd.ExecuteReaderAsync.ConfigureAwait(False)
+                While Await reader.ReadAsync().ConfigureAwait(False)
+                    out.Add(DynamicTextKey.Deserialise(reader.GetString(reader.GetOrdinal("dText"))))
+                End While
+            End Using
+            Return out
+        End Using
+    End Function
+
+    Private Function SetDynamicText(guid As String, text As IEnumerable(Of DynamicTextKey), Optional trans As SqliteTransactionWrapper = Nothing) As Integer
+
+    End Function
+
     ''' <summary>
     ''' Finds a template in the database, given its corresponding guid
     ''' If no template is found, returns nothing
@@ -760,6 +792,11 @@ Partial Public Class TemplateDatabase
                 ' get all the tags from the db as well
                 For Each tag In SelectTags(guid, trans)
                     template.Tags.Add(tag)
+                Next
+
+                ' get all dynamicText from db as well
+                For Each dyn In SelectDynamicText(guid, trans)
+                    template.DynamicTextList.Add(dyn)
                 Next
             End If
 

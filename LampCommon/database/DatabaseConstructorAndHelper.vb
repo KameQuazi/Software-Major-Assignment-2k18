@@ -135,6 +135,14 @@ Partial Public Class TemplateDatabase
                                   ) WITHOUT rowId;"
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
+            command.CommandText = "CREATE TABLE if not exists dynamicText (
+                                  guid Text Not Null,
+                                  dText Text Not NULL
+                                  FOREIGN KEY(guid) REFERENCES template(UserId)
+                                 
+                                  );"
+            results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
+
             Dim allSuccess = results.All(Function(x) x = True)
 
             If optTrans Is Nothing Then
@@ -238,6 +246,14 @@ Partial Public Class TemplateDatabase
                                   FOREIGN KEY(approverId) REFERENCES users(UserId),
                                   FOREIGN KEY(templateId) REFERENCES template(guid)
                                   ) WITHOUT rowId;"
+            tasks.Add(command.ExecuteNonQueryAsync())
+
+            command.CommandText = "CREATE TABLE if not exists dynamicText (
+                                  guid Text Not Null,
+                                  dText Text Not NULL
+                                  FOREIGN KEY(guid) REFERENCES template(UserId)
+                                 
+                                  );"
             tasks.Add(command.ExecuteNonQueryAsync())
 
             Dim results = Await Task.WhenAll(tasks).ConfigureAwait(False)
