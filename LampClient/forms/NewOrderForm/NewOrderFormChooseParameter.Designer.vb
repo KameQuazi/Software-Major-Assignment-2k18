@@ -23,22 +23,23 @@ Partial Class NewOrderFormChooseParameter
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.ToolBar1 = New LampClient.ToolBar()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.gboxHelp = New System.Windows.Forms.GroupBox()
+        Me.btnNext = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.gboxData = New System.Windows.Forms.GroupBox()
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
         Me.gbox1 = New System.Windows.Forms.GroupBox()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.Button1 = New System.Windows.Forms.Button()
-        Me.btnCreate = New System.Windows.Forms.Button()
-        Me.ToolBar1 = New LampClient.ToolBar()
         Me.TemplateDisplay1 = New LampClient.TemplateDisplay()
-        Me.tboxNumTemplates = New System.Windows.Forms.TextBox()
-        Me.btnMinus = New System.Windows.Forms.Button()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.btnAdd = New System.Windows.Forms.Button()
+        Me.btnMinus = New System.Windows.Forms.Button()
+        Me.tboxNumTemplates = New System.Windows.Forms.TextBox()
+        Me.btnDeletedSelected = New System.Windows.Forms.Button()
+        Me.btnCreate = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.gboxHelp.SuspendLayout()
@@ -65,6 +66,22 @@ Partial Class NewOrderFormChooseParameter
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1232, 703)
         Me.TableLayoutPanel1.TabIndex = 38
         '
+        'ToolBar1
+        '
+        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.ToolBar1.ConfirmationRequired = Nothing
+        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolBar1.HomeEnabled = True
+        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.NewOrderEnabled = False
+        Me.ToolBar1.NewTemplateEnabled = True
+        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
+        Me.ToolBar1.TabIndex = 37
+        Me.ToolBar1.ViewOrderEnabled = True
+        Me.ToolBar1.ViewTemplateEnabled = True
+        '
         'TableLayoutPanel2
         '
         Me.TableLayoutPanel2.ColumnCount = 3
@@ -84,10 +101,11 @@ Partial Class NewOrderFormChooseParameter
         '
         'gboxHelp
         '
+        Me.gboxHelp.Controls.Add(Me.btnNext)
         Me.gboxHelp.Controls.Add(Me.Label2)
         Me.gboxHelp.Controls.Add(Me.Label1)
         Me.gboxHelp.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gboxHelp.Font = New System.Drawing.Font("Arial Narrow", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gboxHelp.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gboxHelp.Location = New System.Drawing.Point(983, 3)
         Me.gboxHelp.Name = "gboxHelp"
         Me.gboxHelp.Size = New System.Drawing.Size(240, 586)
@@ -95,13 +113,24 @@ Partial Class NewOrderFormChooseParameter
         Me.gboxHelp.TabStop = False
         Me.gboxHelp.Text = "Help"
         '
+        'btnNext
+        '
+        Me.btnNext.BackColor = System.Drawing.Color.White
+        Me.btnNext.Font = New System.Drawing.Font("Arial", 10.25!)
+        Me.btnNext.Location = New System.Drawing.Point(144, 547)
+        Me.btnNext.Name = "btnNext"
+        Me.btnNext.Size = New System.Drawing.Size(90, 33)
+        Me.btnNext.TabIndex = 18
+        Me.btnNext.Text = "Next"
+        Me.btnNext.UseVisualStyleBackColor = False
+        '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Arial Narrow", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(-1, 115)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(210, 60)
+        Me.Label2.Size = New System.Drawing.Size(271, 60)
         Me.Label2.TabIndex = 3
         Me.Label2.Text = "Use the add/remove buttons and" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "the grid to edit each template's" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "individual text" &
     ""
@@ -123,7 +152,7 @@ Partial Class NewOrderFormChooseParameter
         '
         Me.gboxData.Controls.Add(Me.DataGridView1)
         Me.gboxData.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gboxData.Font = New System.Drawing.Font("Arial Narrow", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gboxData.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gboxData.Location = New System.Drawing.Point(3, 3)
         Me.gboxData.Name = "gboxData"
         Me.gboxData.Size = New System.Drawing.Size(729, 586)
@@ -135,9 +164,9 @@ Partial Class NewOrderFormChooseParameter
         '
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.DataGridView1.Location = New System.Drawing.Point(3, 28)
+        Me.DataGridView1.Location = New System.Drawing.Point(3, 27)
         Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(723, 555)
+        Me.DataGridView1.Size = New System.Drawing.Size(723, 556)
         Me.DataGridView1.TabIndex = 0
         '
         'TableLayoutPanel3
@@ -159,67 +188,13 @@ Partial Class NewOrderFormChooseParameter
         '
         Me.gbox1.Controls.Add(Me.TemplateDisplay1)
         Me.gbox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbox1.Font = New System.Drawing.Font("Arial Narrow", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbox1.Location = New System.Drawing.Point(3, 237)
         Me.gbox1.Name = "gbox1"
         Me.gbox1.Size = New System.Drawing.Size(233, 346)
         Me.gbox1.TabIndex = 42
         Me.gbox1.TabStop = False
         Me.gbox1.Text = "Selected Template"
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.btnAdd)
-        Me.GroupBox1.Controls.Add(Me.btnMinus)
-        Me.GroupBox1.Controls.Add(Me.tboxNumTemplates)
-        Me.GroupBox1.Controls.Add(Me.Button1)
-        Me.GroupBox1.Controls.Add(Me.btnCreate)
-        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox1.Font = New System.Drawing.Font("Arial Narrow", 15.75!)
-        Me.GroupBox1.Location = New System.Drawing.Point(3, 3)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(233, 228)
-        Me.GroupBox1.TabIndex = 43
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Options"
-        '
-        'Button1
-        '
-        Me.Button1.BackColor = System.Drawing.Color.White
-        Me.Button1.Font = New System.Drawing.Font("Arial", 10.25!)
-        Me.Button1.Location = New System.Drawing.Point(6, 86)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(138, 49)
-        Me.Button1.TabIndex = 14
-        Me.Button1.Text = "Remove Selected Template"
-        Me.Button1.UseVisualStyleBackColor = False
-        '
-        'btnCreate
-        '
-        Me.btnCreate.BackColor = System.Drawing.Color.White
-        Me.btnCreate.Font = New System.Drawing.Font("Arial", 10.25!)
-        Me.btnCreate.Location = New System.Drawing.Point(6, 31)
-        Me.btnCreate.Name = "btnCreate"
-        Me.btnCreate.Size = New System.Drawing.Size(138, 49)
-        Me.btnCreate.TabIndex = 13
-        Me.btnCreate.Text = "Add New Template"
-        Me.btnCreate.UseVisualStyleBackColor = False
-        '
-        'ToolBar1
-        '
-        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
-        Me.ToolBar1.ConfirmationRequired = Nothing
-        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = False
-        Me.ToolBar1.NewTemplateEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
-        Me.ToolBar1.TabIndex = 37
-        Me.ToolBar1.ViewOrderEnabled = True
-        Me.ToolBar1.ViewTemplateEnabled = True
         '
         'TemplateDisplay1
         '
@@ -231,14 +206,32 @@ Partial Class NewOrderFormChooseParameter
         Me.TemplateDisplay1.Size = New System.Drawing.Size(218, 294)
         Me.TemplateDisplay1.TabIndex = 0
         '
-        'tboxNumTemplates
+        'GroupBox1
         '
-        Me.tboxNumTemplates.Location = New System.Drawing.Point(50, 192)
-        Me.tboxNumTemplates.Name = "tboxNumTemplates"
-        Me.tboxNumTemplates.Size = New System.Drawing.Size(52, 32)
-        Me.tboxNumTemplates.TabIndex = 15
-        Me.tboxNumTemplates.Text = "0"
-        Me.tboxNumTemplates.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.GroupBox1.Controls.Add(Me.btnAdd)
+        Me.GroupBox1.Controls.Add(Me.btnMinus)
+        Me.GroupBox1.Controls.Add(Me.tboxNumTemplates)
+        Me.GroupBox1.Controls.Add(Me.btnDeletedSelected)
+        Me.GroupBox1.Controls.Add(Me.btnCreate)
+        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!)
+        Me.GroupBox1.Location = New System.Drawing.Point(3, 3)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(233, 228)
+        Me.GroupBox1.TabIndex = 43
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Options"
+        '
+        'btnAdd
+        '
+        Me.btnAdd.BackColor = System.Drawing.Color.White
+        Me.btnAdd.Font = New System.Drawing.Font("Arial", 10.25!)
+        Me.btnAdd.Location = New System.Drawing.Point(108, 192)
+        Me.btnAdd.Name = "btnAdd"
+        Me.btnAdd.Size = New System.Drawing.Size(38, 30)
+        Me.btnAdd.TabIndex = 17
+        Me.btnAdd.Text = "+"
+        Me.btnAdd.UseVisualStyleBackColor = False
         '
         'btnMinus
         '
@@ -251,16 +244,36 @@ Partial Class NewOrderFormChooseParameter
         Me.btnMinus.Text = "-"
         Me.btnMinus.UseVisualStyleBackColor = False
         '
-        'btnAdd
+        'tboxNumTemplates
         '
-        Me.btnAdd.BackColor = System.Drawing.Color.White
-        Me.btnAdd.Font = New System.Drawing.Font("Arial", 10.25!)
-        Me.btnAdd.Location = New System.Drawing.Point(108, 192)
-        Me.btnAdd.Name = "btnAdd"
-        Me.btnAdd.Size = New System.Drawing.Size(38, 30)
-        Me.btnAdd.TabIndex = 17
-        Me.btnAdd.Text = "+"
-        Me.btnAdd.UseVisualStyleBackColor = False
+        Me.tboxNumTemplates.Location = New System.Drawing.Point(50, 192)
+        Me.tboxNumTemplates.Name = "tboxNumTemplates"
+        Me.tboxNumTemplates.Size = New System.Drawing.Size(52, 31)
+        Me.tboxNumTemplates.TabIndex = 15
+        Me.tboxNumTemplates.Text = "0"
+        Me.tboxNumTemplates.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'btnDeletedSelected
+        '
+        Me.btnDeletedSelected.BackColor = System.Drawing.Color.White
+        Me.btnDeletedSelected.Font = New System.Drawing.Font("Arial", 10.25!)
+        Me.btnDeletedSelected.Location = New System.Drawing.Point(6, 86)
+        Me.btnDeletedSelected.Name = "btnDeletedSelected"
+        Me.btnDeletedSelected.Size = New System.Drawing.Size(138, 49)
+        Me.btnDeletedSelected.TabIndex = 14
+        Me.btnDeletedSelected.Text = "Remove Selected Template"
+        Me.btnDeletedSelected.UseVisualStyleBackColor = False
+        '
+        'btnCreate
+        '
+        Me.btnCreate.BackColor = System.Drawing.Color.White
+        Me.btnCreate.Font = New System.Drawing.Font("Arial", 10.25!)
+        Me.btnCreate.Location = New System.Drawing.Point(6, 31)
+        Me.btnCreate.Name = "btnCreate"
+        Me.btnCreate.Size = New System.Drawing.Size(138, 49)
+        Me.btnCreate.TabIndex = 13
+        Me.btnCreate.Text = "Add New Template"
+        Me.btnCreate.UseVisualStyleBackColor = False
         '
         'NewOrderFormChooseParameter
         '
@@ -296,9 +309,10 @@ Partial Class NewOrderFormChooseParameter
     Friend WithEvents gbox1 As GroupBox
     Friend WithEvents TemplateDisplay1 As TemplateDisplay
     Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents Button1 As Button
+    Friend WithEvents btnDeletedSelected As Button
     Friend WithEvents btnCreate As Button
     Friend WithEvents btnAdd As Button
     Friend WithEvents btnMinus As Button
     Friend WithEvents tboxNumTemplates As TextBox
+    Friend WithEvents btnNext As Button
 End Class

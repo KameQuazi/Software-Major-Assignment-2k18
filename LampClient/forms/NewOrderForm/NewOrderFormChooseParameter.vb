@@ -11,11 +11,20 @@ Public Class NewOrderFormChooseParameter
         End Get
         Set(value As LampTemplate)
             _selectedTemplate = value
-            UpdateContents()
+            UpdateFromItems()
         End Set
     End Property
 
-    Public Property Items As New ObservableCollection(Of DynamicTextValueRow)
+    Public WithEvents Items As New ObservableCollection(Of DynamicTextValueRow)
+
+    Private Sub HandleItemChanged(sender As Object, e As EventArgs) Handles Items.CollectionChanged
+        If Items.Count = 0 Then
+            btnNext.Enabled = False
+        Else
+            btnNext.Enabled = True
+        End If
+    End Sub
+
 
 
     Public ReadOnly Property Parameters As ObservableCollection(Of DynamicTextKey)
@@ -24,20 +33,32 @@ Public Class NewOrderFormChooseParameter
         End Get
     End Property
 
-    Private Sub UpdateContents()
+    Private Sub UpdateFromItems()
         TemplateDisplay1.Template = SelectedTemplate
         tboxNumTemplates.Text = NumberOfTemplates.ToString
         UpdateColumnHeaders()
         UpdateRows()
     End Sub
 
+    Dim doUpdateFromGrid As Boolean = True
+
     Private Sub UpdateRows()
+        doUpdateFromGrid = False
         If DataGridView1.ColumnCount >= 1 Then
 
             For Each row In Items
-                DataGridView1.Rows.Add(row)
+
+                Dim rowIndex = DataGridView1.Rows.Add()
+
+                ' row to insert
+                For index = 0 To Parameters.Count - 1
+                    Dim para = Parameters(index)
+                    DataGridView1.Rows(rowIndex).Cells(para.ParameterName).Value = row(index).Value
+                Next
+
             Next
         End If
+        doUpdateFromGrid = True
     End Sub
 
     Private Sub UpdateColumnHeaders()
@@ -64,7 +85,7 @@ Public Class NewOrderFormChooseParameter
         ' This call is required by the designer.
         InitializeComponent()
         ' Add any initialization after the InitializeComponent() call.
-        UpdateContents()
+        UpdateFromItems()
 
     End Sub
 
@@ -101,7 +122,7 @@ Public Class NewOrderFormChooseParameter
     Private Sub ServiceSortableTemplateViewer1_TemplateClick(sender As Object, e As TemplateClickedEventArgs)
     End Sub
 
-    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
+    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs)
 
     End Sub
 
@@ -123,6 +144,7 @@ Public Class NewOrderFormChooseParameter
                 End If
 
             End Using
+            UpdateFromItems()
         Else
             NumberOfTemplates += 1
         End If
@@ -136,7 +158,11 @@ Public Class NewOrderFormChooseParameter
             Dim _numberOfTemplates = NumberOfTemplates
             If value > _numberOfTemplates Then
                 ' gotta add some empty templates
+                If Parameters.Count > 0 Then
+                    Throw New Exception("Cannot add numbertemplates, add Items instead for templates with parameters")
+                End If
                 For i = 1 To value - _numberOfTemplates
+
                     Items.Add(New DynamicTextValueRow())
                 Next
 
@@ -145,22 +171,72 @@ Public Class NewOrderFormChooseParameter
                     Items.RemoveAt(i)
                 Next
             End If
-            UpdateContents()
+            UpdateFromItems()
         End Set
     End Property
 
 
     Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
-        NumberOfTemplates += 1
+        AddCopy()
     End Sub
 
     Private Sub btnMinus_Click(sender As Object, e As EventArgs) Handles btnMinus.Click
-        NumberOfTemplates -= 1
+        If NumberOfTemplates >= 1 Then
+            NumberOfTemplates -= 1
+        End If
+
+    End Sub
+
+    Private Sub DataGridView1_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellValueChanged
+        SetItemFromDataGridView()
+    End Sub
+
+    Private Sub SetItemFromDataGridView()
+        If doUpdateFromGrid Then
+            Items.Clear()
+            For Each row As DataGridViewRow In DataGridView1.Rows
+                If Not row.IsNewRow Then
+                    Dim dRow As New DynamicTextValueRow
+                    For Each p In Parameters
+                        Dim parameterName = p.ParameterName
+                        dRow.Add(New DynamicTextValue(row.Cells(p.ParameterName).Value))
+                    Next
+                    Items.Add(dRow)
+                End If
+            Next
+            tboxNumTemplates.Text = NumberOfTemplates.ToString
+        End If
+
+    End Sub
+
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles btnDeletedSelected.Click
+        Dim rows = DataGridView1.SelectedRows
+        For Each owos As DataGridViewRow In rows
+            If Not owos.IsNewRow Then
+                DataGridView1.Rows.Remove(owos)
+            End If
+        Next
+    End Sub
+
+    Private Sub DataGridView1_KeyDown(sender As Object, e As KeyEventArgs) Handles DataGridView1.KeyDown
+        If e.KeyCode = Keys.Delete OrElse e.KeyCode = Keys.Back Then
+            btnDeletedSelected.PerformClick()
+        End If
+    End Sub
+
+    Private Sub btNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+        Dim newJob As New LampJob(SelectedTemplate)
+
+        Dim x As New NewOrderFormExport(newJob)
+        x.Show()
+        Me.Close()
+
+    End Sub
+
+    Private Sub NewOrderFormChooseParameter_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
     End Sub
 End Class
 
 
 
-Public Class DynamicTextValueRow
-    Inherits ObservableCollection(Of DynamicTextValue)
-End Class

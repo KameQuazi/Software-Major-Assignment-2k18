@@ -24,6 +24,7 @@ Partial Class DynamicTextCreationForm
     Private Sub InitializeComponent()
         Me.btnSubmit = New System.Windows.Forms.Button()
         Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
+        Me.btnCancel = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btnSubmit
@@ -45,11 +46,21 @@ Partial Class DynamicTextCreationForm
         Me.DynamicFormCreation1.Size = New System.Drawing.Size(1232, 703)
         Me.DynamicFormCreation1.TabIndex = 0
         '
+        'btnCancel
+        '
+        Me.btnCancel.Location = New System.Drawing.Point(1038, 668)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(75, 23)
+        Me.btnCancel.TabIndex = 2
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.UseVisualStyleBackColor = True
+        '
         'DynamicTextCreationForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1232, 703)
+        Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnSubmit)
         Me.Controls.Add(Me.DynamicFormCreation1)
         Me.Name = "DynamicTextCreationForm"
@@ -61,4 +72,5 @@ Partial Class DynamicTextCreationForm
 
     Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
     Friend WithEvents btnSubmit As Button
+    Friend WithEvents btnCancel As Button
 End Class

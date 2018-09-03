@@ -16,10 +16,9 @@ Public Module ToolbarUtilities
             Case GetType(ViewTemplatesForm)
                 PreviousForms.Add(LampForm.ViewTemplatesForm)
 
-            Case GetType(NewOrderForm)
+            Case GetType(NewOrderForm), GetType(NewOrderFormChooseParameter), GetType(NewOrderFormExport)
                 PreviousForms.Add(LampForm.NewOrderForm)
-            Case GetType(NewOrderFormChooseParameter)
-                PreviousForms.Add(LampForm.NewOrderForm)
+
 
 
             Case GetType(AdminForm)

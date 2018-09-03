@@ -56,7 +56,7 @@ Public Class DynamicTextCreationForm
         Dim singleDT As LampClient.SingleDynamicText
 
 
-        For index As Integer = 0 To DynamicFormCreation1.FlowLayoutPanel1.Controls.Count
+        For index As Integer = 0 To DynamicFormCreation1.FlowLayoutPanel1.Controls.Count - 1
 
             singleDT = DynamicFormCreation1.FlowLayoutPanel1.Controls.Item(index)
             For value As Integer = 0 To singleDT.GetValue.ToString.Split(",").Count
@@ -67,6 +67,8 @@ Public Class DynamicTextCreationForm
                 'newJob.DynamicTextDictionaries(value).Add(Source.DynamicTextList.Item(value), New DynamicTextValue(singleDT.GetValue.ToString.Split(",").GetValue(value)))
             Next
         Next
+        Me.DialogResult = DialogResult.OK
+        Me.Close()
     End Sub
 
     Private Sub DynamicFormCreation1_Load(sender As Object, e As EventArgs) Handles DynamicFormCreation1.Load
@@ -84,4 +86,9 @@ Public Class DynamicTextCreationForm
         End Get
 
     End Property
+
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+        Me.DialogResult = DialogResult.Cancel
+        Me.Close()
+    End Sub
 End Class

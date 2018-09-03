@@ -734,13 +734,14 @@ Partial Public Class TemplateDatabase
         Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand(trans)
             sqlite_cmd.CommandText = "SELECT dText from dynamicText WHERE guid = @guid"
             sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-            Dim out As New List(Of DynamicTextKey)
-            Using reader = sqlite_cmd.ExecuteReader
-                While reader.Read()
-                    out.Add(DynamicTextKey.Deserialise(reader.GetString(reader.GetOrdinal("dText"))))
-                End While
-            End Using
-            Return out
+            Dim results As String = sqlite_cmd.ExecuteScalar()
+
+            If results IsNot Nothing Then
+                Return DynamicTextKey.Deserialise(results)
+            Else
+                Return New List(Of DynamicTextKey)
+            End If
+
         End Using
     End Function
 
@@ -748,18 +749,63 @@ Partial Public Class TemplateDatabase
         Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand(trans)
             sqlite_cmd.CommandText = "SELECT dText from dynamicText WHERE guid = @guid"
             sqlite_cmd.Parameters.AddWithValue("@guid", guid)
-            Dim out As New List(Of DynamicTextKey)
-            Using reader = Await sqlite_cmd.ExecuteReaderAsync.ConfigureAwait(False)
-                While Await reader.ReadAsync().ConfigureAwait(False)
-                    out.Add(DynamicTextKey.Deserialise(reader.GetString(reader.GetOrdinal("dText"))))
-                End While
-            End Using
-            Return out
+            Dim results As String = Await sqlite_cmd.ExecuteScalarAsync().ConfigureAwait(False)
+
+            If results IsNot Nothing Then
+                Return DynamicTextKey.Deserialise(results)
+            Else
+                Return New List(Of DynamicTextKey)
+            End If
+
+
         End Using
     End Function
 
     Private Function SetDynamicText(guid As String, text As IEnumerable(Of DynamicTextKey), Optional trans As SqliteTransactionWrapper = Nothing) As Integer
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
+            command.CommandText = "INSERT OR REPLACE INTO dynamicText
+                    (Guid, dText)
+                    VALUES
+                    (@guid, @dynamicKey);"
 
+            Dim insertedRows As Integer = 0
+            command.Parameters.AddWithValue("@guid", guid)
+            command.Parameters.AddWithValue("@dynamicKey", DynamicTextKey.Serialise(text))
+
+            Return command.ExecuteNonQuery()
+        End Using
+    End Function
+
+
+    Private Async Function SetDynamicTextAsync(guid As String, text As IEnumerable(Of DynamicTextKey), Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of Integer)
+        Using conn = Connection.OpenConnection, command = Connection.GetCommand(trans)
+            command.CommandText = "INSERT OR REPLACE INTO dynamicText
+                    (Guid, dText)
+                    VALUES
+                    (@guid, @dynamicKey);"
+
+            Dim insertedRows As Integer = 0
+            command.Parameters.AddWithValue("@guid", guid)
+            command.Parameters.AddWithValue("@dynamicKey", DynamicTextKey.Serialise(text))
+
+            Return Await command.ExecuteNonQueryAsync().ConfigureAwait(False)
+        End Using
+    End Function
+
+    Private Function RemoveDynamicText(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As Integer
+        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand(trans)
+            sqlite_cmd.CommandText = "DELETE from dynamicText WHERE guid = @guid"
+            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+            Return sqlite_cmd.ExecuteNonQuery()
+        End Using
+    End Function
+
+    Private Async Function RemoveDynamicTextAsync(guid As String, Optional trans As SqliteTransactionWrapper = Nothing) As Task(Of Integer)
+        Using conn = Connection.OpenConnection, sqlite_cmd = Connection.GetCommand(trans)
+            sqlite_cmd.CommandText = "DELETE from dynamicText WHERE guid = @guid"
+            sqlite_cmd.Parameters.AddWithValue("@guid", guid)
+            Return Await sqlite_cmd.ExecuteNonQueryAsync().ConfigureAwait(False)
+        End Using
     End Function
 
     ''' <summary>
@@ -820,6 +866,7 @@ Partial Public Class TemplateDatabase
                 Dim dxfTask = SelectDxfAsync(guid, trans)
                 Dim imageTask = SelectImagesAsync(guid, trans)
                 Dim tagTask = SelectTagsAsync(guid, trans)
+                Dim dynTask = SelectDynamicTextAsync(guid, trans)
 
                 Await Task.WhenAll(dxfTask, imageTask, tagTask).ConfigureAwait(False)
 
@@ -837,6 +884,11 @@ Partial Public Class TemplateDatabase
 
                 For Each tag In tagTask.Result
                     template.Tags.Add(tag)
+                Next
+
+                ' get all dynamicText from db as well
+                For Each dyn In dynTask.Result
+                    template.DynamicTextList.Add(dyn)
                 Next
             End If
 
@@ -866,6 +918,12 @@ Partial Public Class TemplateDatabase
                     RemoveTags(template.GUID, trans)
                     If template.Tags.Count > 0 Then
                         SetTags(template.GUID, template.Tags, trans)
+                    End If
+
+                    ' write dynamicText
+                    RemoveDynamicText(template.GUID, trans)
+                    If template.DynamicTextList.Count > 0 Then
+                        SetDynamicText(template.GUID, template.DynamicTextList, trans)
                     End If
 
                     ' actually write it to the database if using the auto transaction, otherwise leave it to the caller
@@ -902,6 +960,12 @@ Partial Public Class TemplateDatabase
                         Await SetTagsAsync(template.GUID, template.Tags, trans).ConfigureAwait(False)
                     End If
 
+                    ' write dynamicText
+                    Await RemoveDynamicTextAsync(template.GUID, trans).ConfigureAwait(False)
+                    If template.DynamicTextList.Count > 0 Then
+                        Await SetDynamicTextAsync(template.GUID, template.DynamicTextList, trans).ConfigureAwait(False)
+                    End If
+
                     ' actually write it to the database if using the auto transaction, otherwise leave it to the caller
                     If optTrans Is Nothing Then
                         trans.Commit()
@@ -931,6 +995,7 @@ Partial Public Class TemplateDatabase
                     ' might not have images/tags, just remove them (itll throw exception if it fails hopefully)
                     RemoveImages(guid, trans)
                     RemoveTags(guid, trans)
+                    RemoveDynamicText(guid, trans)
 
                     ' actually write it to the database if using the auto transaction, otherwise leave it to the caller
                     If optTrans Is Nothing Then
@@ -959,7 +1024,7 @@ Partial Public Class TemplateDatabase
                 If Await RemoveDxfAsync(guid, trans).ConfigureAwait(False) Then
 
                     ' wait for remove images/tags to finish
-                    Await Task.WhenAll(RemoveImagesAsync(guid, trans), RemoveTagsAsync(guid, trans)).ConfigureAwait(False)
+                    Await Task.WhenAll(RemoveImagesAsync(guid, trans), RemoveTagsAsync(guid, trans), RemoveDynamicTextAsync(guid, optTrans)).ConfigureAwait(False)
 
 
                     ' actually write it to the database if using the auto transaction, otherwise leave it to the caller

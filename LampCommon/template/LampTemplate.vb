@@ -441,40 +441,45 @@ Public NotInheritable Class LampTemplate
     End Property
 
     ''' <summary>
-    '''  se algorithm for in depth explaination
+    '''  see algorithm for in depth explaination
     ''' </summary>
     Public Sub SortTags()
-        Dim copy(Tags.Count) As String
-        Tags.CopyTo(copy, 0)
-        ' use selection sort
-        Dim sortedTillElement = 0
-        Dim temp As String
-        Dim current As String
-        Dim upto As Integer = 0
-        Dim largestPos As Integer = -1
-        Dim nextUnsorted As Integer
+        'Dim copy(Tags.Count) As String
+        'Tags.CopyTo(copy, 0)
+        '' use selection sort
+        'Dim sortedTillElement = 0
+        'Dim temp As String
+        'Dim current As String
+        'Dim upto As Integer = 0
+        'Dim largestPos As Integer = -1
+        'Dim nextUnsorted As Integer
 
-        While sortedTillElement <= copy.Length
-            upto = sortedTillElement + 1
-            largestPos = sortedTillElement
-            While upto <= copy.Length
-                current = copy(upto)
-                If current > copy(largestPos) Then
-                    largestPos = upto
-                End If
-                upto += 1
-            End While
+        'While sortedTillElement <= copy.Length
+        '    upto = sortedTillElement + 1
+        '    largestPos = sortedTillElement
+        '    While upto < copy.Length
+        '        current = copy(upto)
+        '        If current > copy(largestPos) Then
+        '            largestPos = upto
+        '        End If
+        '        upto += 1
+        '    End While
 
-            nextUnsorted = sortedTillElement + 1
-            temp = copy(nextUnsorted)
-            copy(nextUnsorted) = copy(largestPos)
-            copy(largestPos) = temp
-            sortedTillElement += 1
+        '    nextUnsorted = sortedTillElement + 1
+        '    temp = copy(nextUnsorted)
+        '    copy(nextUnsorted) = copy(largestPos)
+        '    copy(largestPos) = temp
+        '    sortedTillElement += 1
 
-        End While
-        copy.Log("Sorting successful")
+        'End While
+        'copy.Log("Sorting successful")
+        Dim copy As New List(Of String)
+        copy.AddRange(Tags)
+        copy.Sort()
+
         Tags.Clear()
         Tags.AddRange(copy)
+
     End Sub
 
     ''' <summary>

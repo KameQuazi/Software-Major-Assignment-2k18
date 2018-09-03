@@ -143,6 +143,12 @@
     <Compile Include="AdminForms\ApproveJobForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="controls\dxf\MultiDrawingViewerControl.Designer.vb">
+      <DependentUpon>MultiDrawingViewerControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\dxf\MultiDrawingViewerControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\jobs\AdvancedJobViewer.Designer.vb">
       <DependentUpon>AdvancedJobViewer.vb</DependentUpon>
     </Compile>
@@ -165,6 +171,12 @@
       <DependentUpon>MultiDrawingViewer.vb</DependentUpon>
     </Compile>
     <Compile Include="forms\MultiDrawingViewer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\NewOrderForm\NewOrderFormExport.Designer.vb">
+      <DependentUpon>NewOrderFormExport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="forms\NewOrderForm\NewOrderFormExport.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\NewOrderForm\NewOrderFormChooseParameter.Designer.vb">
@@ -489,6 +501,9 @@
     <EmbeddedResource Include="AdminForms\ApproveJobForm.resx">
       <DependentUpon>ApproveJobForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="controls\dxf\MultiDrawingViewerControl.resx">
+      <DependentUpon>MultiDrawingViewerControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\jobs\AdvancedJobViewer.resx">
       <DependentUpon>AdvancedJobViewer.vb</DependentUpon>
     </EmbeddedResource>
@@ -500,6 +515,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\MultiDrawingViewer.resx">
       <DependentUpon>MultiDrawingViewer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\NewOrderForm\NewOrderFormExport.resx">
+      <DependentUpon>NewOrderFormExport.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\NewOrderForm\NewOrderFormChooseParameter.resx">
       <DependentUpon>NewOrderFormChooseParameter.vb</DependentUpon>

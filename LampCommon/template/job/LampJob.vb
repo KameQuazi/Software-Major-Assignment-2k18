@@ -1,6 +1,7 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.Collections.Specialized
 Imports System.ComponentModel
+Imports System.Drawing
 Imports System.IO
 Imports System.Runtime.CompilerServices
 Imports System.Runtime.Serialization
@@ -17,6 +18,7 @@ Public Class LampJob
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
 
+    Public BoardSize As New SizeF(610, 305)
     Private _jobId As String
     ''' <summary>
     ''' The job id of this job
@@ -131,13 +133,25 @@ Public Class LampJob
 
     Public Property SubmitDate As Date?
 
+    Private _completedDrawings As New List(Of LampDxfDocument)
     ''' <summary>
     ''' The completed drawing, w/ all the templates laid out appropriately
     ''' Not serialized, as it can be generated using _template when deserialized
     ''' </summary>
     <JsonProperty("completed_drawing", Order:=1000)>
     <DataMember>
-    Public Property CompleteDrawings As New List(Of LampDxfDocument)
+    Public Property CompleteDrawings As List(Of LampDxfDocument)
+        Get
+            If needsRegenerate Then
+                RefreshCompleteDrawing()
+            End If
+            Return _completedDrawings
+
+        End Get
+        Private Set(value As List(Of LampDxfDocument))
+            _completedDrawings = value
+        End Set
+    End Property
 
 
     Private _insertionLocations As New ObservableCollection(Of LampMultipleInsertLocation)
@@ -235,7 +249,17 @@ Public Class LampJob
     ''' <param name="submitter"></param>
     Sub New(template As LampTemplate, submitter As LampProfile, summary As String)
         Me.New(GetNewGuid, template, submitter, Nothing, summary, DateTime.Now)
+        RefreshCompleteDrawing()
+    End Sub
 
+    ''' <summary>
+    ''' constructor for when job needs to be sent to db from client
+    ''' will auto-generate the drawing
+    ''' </summary>
+    ''' <param name="template"></param>
+    Sub New(template As LampTemplate)
+        Me.New(GetNewGuid, template, Nothing, Nothing, Nothing, DateTime.Now)
+        RefreshCompleteDrawing()
     End Sub
 
     ''' <summary>
@@ -263,6 +287,31 @@ Public Class LampJob
 
     End Sub
 
+    Public ReadOnly Property Parameters As ObservableCollection(Of DynamicTextKey)
+        Get
+            Return Me.Template?.DynamicTextList
+        End Get
+    End Property
+
+    Private needsRegenerate As Boolean = False
+
+    ''' <summary>
+    ''' adds a new template to 
+    ''' </summary>
+    ''' <param name="values"></param>
+    ''' <returns></returns>
+    Public Sub AddCopy(values As IEnumerable(Of DynamicTextKey), Optional regenerate As Boolean = True)
+        If values.Count <> Parameters.Count Then
+            Throw New ArgumentOutOfRangeException(NameOf(values) + "should be same length as parameters")
+
+        End If
+
+        ' do some magic here
+        ' take into account the board size
+    End Sub
+
+
+
     ''' <summary>
     ''' Refreshes the _completeDrawing based on the InsertionLocations
     ''' Expensive, dont call too many times
@@ -287,11 +336,13 @@ Public Class LampJob
     End Sub
 
 
-    Public Sub AddNewPage()
+
+
+    Private Sub AddNewPage()
         InsertionPages.Add(New LampMultipleInsertLocation)
     End Sub
 
-    Public Sub AddInsertionPoint(point As LampSingleDxfInsertLocation, page As Integer, Optional refresh As Boolean = False)
+    Private Sub AddInsertionPoint(point As LampSingleDxfInsertLocation, page As Integer, Optional refresh As Boolean = False)
         If page >= InsertionPages.Count Then
             Throw New ArgumentOutOfRangeException(NameOf(page))
         End If

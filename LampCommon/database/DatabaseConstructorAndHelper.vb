@@ -136,8 +136,8 @@ Partial Public Class TemplateDatabase
             results.Add(Convert.ToBoolean(command.ExecuteNonQuery()))
 
             command.CommandText = "CREATE TABLE if not exists dynamicText (
-                                  guid Text Not Null,
-                                  dText Text Not NULL
+                                  guid Text PRIMARY KEY Not Null,
+                                  dText Text Not NULL,
                                   FOREIGN KEY(guid) REFERENCES template(UserId)
                                  
                                   );"
@@ -249,8 +249,8 @@ Partial Public Class TemplateDatabase
             tasks.Add(command.ExecuteNonQueryAsync())
 
             command.CommandText = "CREATE TABLE if not exists dynamicText (
-                                  guid Text Not Null,
-                                  dText Text Not NULL
+                                  guid Text PRIMARY KEY Not Null,
+                                  dText Text Not NULL,
                                   FOREIGN KEY(guid) REFERENCES template(UserId)
                                  
                                   );"

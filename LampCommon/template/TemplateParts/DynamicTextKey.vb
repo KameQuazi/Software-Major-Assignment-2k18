@@ -126,6 +126,7 @@ Public Class DynamicTextKey
     End Function
 
 
+
     Public Overrides Function GetHashCode() As Integer
         Dim hash = MyBase.GetHashCode()
 
@@ -181,4 +182,6 @@ Public Enum InputType
     ' ListView
     None
 End Enum
+
+
 
