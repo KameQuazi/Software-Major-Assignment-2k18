@@ -208,7 +208,7 @@ Public Class LampDatabaseTests
 
         Dim test As New LampTemplate("0123-4567-8901-2345")
         test.Height = 199
-        test.Length = 30004.4
+        test.Width = 30004.4
         test.Material = "Thicc wood"
         test.MaterialThickness = 800000
         Dim result = Await database.SetTemplateAsync(test)
@@ -219,7 +219,7 @@ Public Class LampDatabaseTests
 
         AreEqual(test.GUID, template.GUID)
         AreEqual(test.Height, template.Height)
-        AreEqual(test.Length, template.Length)
+        AreEqual(test.Width, template.Width)
         AreEqual(test.Material, template.Material)
         AreEqual(test.MaterialThickness, template.MaterialThickness)
         template.Save("TestTemplates.spf")

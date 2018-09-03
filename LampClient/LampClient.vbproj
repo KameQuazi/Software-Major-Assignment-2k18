@@ -143,6 +143,7 @@
     <Compile Include="AdminForms\ApproveJobForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="autocad\Autocad.vb" />
     <Compile Include="controls\dxf\MultiDrawingViewerControl.Designer.vb">
       <DependentUpon>MultiDrawingViewerControl.vb</DependentUpon>
     </Compile>
@@ -737,6 +738,35 @@
     <Content Include="Resources\no_job_preview_image.png" />
     <Content Include="Resources\no_pending jobs.png" />
     <Content Include="Resources\no_preview_image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="AutoCAD">
+      <Guid>{5B3245BE-661C-4324-BB55-3AD94EBBFDD7}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Illustrator">
+      <Guid>{3271C7D8-D207-4C7C-B2B4-7F3DA9D1A8F9}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

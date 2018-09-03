@@ -51,7 +51,7 @@ Partial Class TemplateDatabase
 
                     Dim summary = reader.GetString(reader.GetOrdinal("summary"))
 
-                    job = New LampJob(jobId, template, submitterP, approverP, summary, submitDate, completedDrawings)
+                    job = New LampJob(jobId, template, submitterP, approverP, summary, submitDate, Nothing, completedDrawings)
 
                 End If
                 Return job
@@ -105,7 +105,7 @@ Partial Class TemplateDatabase
 
                     Dim submitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
                     Dim summary = reader.GetString(reader.GetOrdinal("summary"))
-                    job = New LampJob(jobId, template, submitterP, approverP, summary, submitDate, completedDrawings)
+                    job = New LampJob(jobId, template, submitterP, approverP, summary, submitDate, Nothing, completedDrawings)
                 End If
 
                 Return job

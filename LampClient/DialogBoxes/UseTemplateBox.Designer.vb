@@ -59,7 +59,7 @@ Partial Class UseTemplateBox
         LampTemplate1.GUID = "86a55c4b-2c35-447e-abc5-504823620f0c"
         LampTemplate1.Height = 0R
         LampTemplate1.IsComplete = False
-        LampTemplate1.Length = 0R
+        LampTemplate1.Width = 0R
         LampTemplate1.LongDescription = ""
         LampTemplate1.Material = "Unspecified"
         LampTemplate1.MaterialThickness = 0R

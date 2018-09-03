@@ -9,7 +9,7 @@ Public Class DebugRefpoints
 
         Dim point As New LampSingleDxfInsertLocation(New netDxf.Vector3(0, 0, 0))
         randItem.Height = 193
-        randItem.Length = 73
+        randItem.Width = 73
 
         Dim listPoint As New List(Of LampSingleDxfInsertLocation)
 

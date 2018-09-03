@@ -522,10 +522,10 @@ Partial Class TemplateCreatorControl
         LampTemplate1.ApproverProfile = Nothing
         LampTemplate1.BaseDrawing = LampDxfDocument1
         LampTemplate1.CreatorProfile = Nothing
-        LampTemplate1.GUID = "fc71a2cd-a55e-4686-ba0e-18ff786eda0f"
+        LampTemplate1.GUID = "b096ad0f-9605-4b34-abb0-9df8f2b0d506"
         LampTemplate1.Height = 0R
         LampTemplate1.IsComplete = False
-        LampTemplate1.Length = 0R
+        LampTemplate1.Width = 0R
         LampTemplate1.LongDescription = ""
         LampTemplate1.Material = "Unspecified"
         LampTemplate1.MaterialThickness = 0R

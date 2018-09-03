@@ -18,7 +18,16 @@ Public Class LampJob
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
 
-    Public BoardSize As New SizeF(610, 305)
+    Private _boardSize As New SizeF(610, 305)
+    Public Property BoardSize As SizeF
+        Get
+            Return _boardSize
+        End Get
+        Private Set(value As SizeF)
+            _boardSize = value
+        End Set
+    End Property
+
     Private _jobId As String
     ''' <summary>
     ''' The job id of this job
@@ -62,6 +71,16 @@ Public Class LampJob
             _template = value
             If _template IsNot Nothing Then
                 AddHandler _template.PropertyChanged, AddressOf Template_PropertyChanged
+            End If
+
+            If TemplateWidth + 2 * SeperationDist > BoardWidth Then
+                ' cannot even fit one, just exit
+                Throw New ArgumentOutOfRangeException(String.Format("Template is too high for laser cutter bed {widthWithpadding={0}, boardWidth={1}", TemplateWidth + 2 * SeperationDist, BoardWidth))
+            End If
+
+            If TemplateHeight + 2 * SeperationDist > BoardHeight Then
+                ' cannot even fit one, just exit
+                Throw New ArgumentOutOfRangeException(String.Format("Template is too high for laser cutter bed {heightWithPadding={0}, boardHeight={1}", TemplateHeight + 2 * SeperationDist, BoardHeight))
             End If
 
             NotifyPropertyChanged()
@@ -144,6 +163,7 @@ Public Class LampJob
         Get
             If needsRegenerate Then
                 RefreshCompleteDrawing()
+                needsRegenerate = False
             End If
             Return _completedDrawings
 
@@ -270,10 +290,13 @@ Public Class LampJob
     ''' <param name="approver"></param>
     ''' <param name="submitDate"></param>
     ''' <param name="CompleteDrawings"></param>
-    Sub New(jobId As String, template As LampTemplate, submitter As LampProfile, approver As LampProfile, summary As String, submitDate As Date?, Optional CompleteDrawings As List(Of LampDxfDocument) = Nothing)
+    Sub New(jobId As String, template As LampTemplate, submitter As LampProfile, approver As LampProfile, summary As String, submitDate As Date?, Optional boardSize As SizeF? = Nothing, Optional CompleteDrawings As List(Of LampDxfDocument) = Nothing)
 
         If template Is Nothing Then
             Throw New ArgumentNullException(NameOf(template))
+        End If
+        If boardSize IsNot Nothing Then
+            Me.BoardSize = boardSize
         End If
         Me.JobId = jobId
         Me.Template = template
@@ -295,19 +318,92 @@ Public Class LampJob
 
     Private needsRegenerate As Boolean = False
 
-    ''' <summary>
-    ''' adds a new template to 
-    ''' </summary>
-    ''' <param name="values"></param>
-    ''' <returns></returns>
-    Public Sub AddCopy(values As IEnumerable(Of DynamicTextKey), Optional regenerate As Boolean = True)
-        If values.Count <> Parameters.Count Then
-            Throw New ArgumentOutOfRangeException(NameOf(values) + "should be same length as parameters")
+    Public Property TemplateHeight As Double
+        Get
+            Return Template?.Height
+        End Get
+        Set(value As Double)
+            Template.Height = value
+        End Set
+    End Property
 
-        End If
+    Public Property TemplateWidth As Double
+        Get
+            Return Template?.Width
+        End Get
+        Set(value As Double)
+            Template.Width = value
+        End Set
+    End Property
 
-        ' do some magic here
-        ' take into account the board size
+
+    Public Property BoardHeight As Double
+        Get
+            Return BoardSize.Height
+        End Get
+        Set(value As Double)
+            BoardSize = New SizeF(BoardSize.Width, value)
+        End Set
+    End Property
+
+    Public Property BoardWidth As Double
+        Get
+            Return BoardSize.Width
+        End Get
+        Set(value As Double)
+            BoardSize = New SizeF(value, BoardSize.Height)
+        End Set
+    End Property
+
+
+
+    Private Function CanFitWidth(currentX As Double) As Boolean
+        Return currentX + TemplateWidth + SeperationDist <= BoardWidth
+    End Function
+
+    Private Function CanFitHeight(currentY As Double) As Boolean
+        Return currentY + TemplateHeight + SeperationDist <= BoardHeight
+    End Function
+
+    Private SeperationDist As Integer = 5
+
+    Public Sub SetCopies(values As IEnumerable(Of IEnumerable(Of DynamicTextValue)), Optional regenerate As Boolean = True)
+        Dim currentX As Double = SeperationDist
+        Dim currentY As Double = SeperationDist + TemplateHeight ' assume that it can fit a height, (since templateheight is validated at initial)
+        Dim currentPage As Integer = 0
+
+        InsertionPages.Clear()
+
+        AddNewPage()
+        For Each row In values
+            ' we will tile from top left to bottom right
+            ' we assume all boxes are same height
+            ' when it reaches the end, it will drop down
+            ' get the last element's 
+
+            ' check if the template will fit
+            ' check if there is enoguh width 
+            If CanFitWidth(currentX) Then
+                ' add a template here
+
+            Else
+                ' move back to left
+                currentX = SeperationDist
+                ' try to go down
+                If CanFitHeight(SeperationDist + TemplateHeight) Then
+                    currentY += SeperationDist + TemplateHeight
+
+                Else
+                    ' new page
+                    currentPage += 1
+                    AddNewPage()
+                    currentY = SeperationDist + TemplateHeight
+                End If
+            End If
+
+            AddInsertionPoint(currentX, currentY, currentPage)
+            currentX += SeperationDist + TemplateWidth
+        Next
     End Sub
 
 
@@ -318,7 +414,7 @@ Public Class LampJob
     ''' </summary>
     Public Sub RefreshCompleteDrawing()
         ' TODO!
-        CompleteDrawings.Clear()
+        _completedDrawings.Clear()
 
 
         For Each singleBoardInsert In InsertionPages
@@ -331,7 +427,7 @@ Public Class LampJob
 
             Next
 
-            CompleteDrawings.Add(newDrawing)
+            _completedDrawings.Add(newDrawing)
         Next
     End Sub
 
@@ -342,22 +438,25 @@ Public Class LampJob
         InsertionPages.Add(New LampMultipleInsertLocation)
     End Sub
 
-    Private Sub AddInsertionPoint(point As LampSingleDxfInsertLocation, page As Integer, Optional refresh As Boolean = False)
+    Private Sub AddInsertionPoint(point As LampSingleDxfInsertLocation, page As Integer)
         If page >= InsertionPages.Count Then
             Throw New ArgumentOutOfRangeException(NameOf(page))
         End If
 
         InsertionPages(page).Add(point)
 
-        If refresh Then
-            RefreshCompleteDrawing()
-        End If
+        needsRegenerate = True
+    End Sub
+
+    Private Sub AddInsertionPoint(x As Double, y As Double, page As Integer)
+        Dim insertPoint As New LampSingleDxfInsertLocation(New netDxf.Vector3(x, y, 0))
+        AddInsertionPoint(insertPoint, page)
     End Sub
 
     Private Sub EnsureCompleteIsUpdated(sender As Object, e As PropertyChangedEventArgs)
         Select Case e.PropertyName
             Case NameOf(Template)
-                RefreshCompleteDrawing()
+                needsRegenerate = True
         End Select
     End Sub
 

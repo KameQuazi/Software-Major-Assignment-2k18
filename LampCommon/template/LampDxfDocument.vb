@@ -126,7 +126,7 @@ Public Class LampDxfDocument
             Throw New ArgumentNullException(NameOf(dxfFile))
         End If
         Me.Drawing = dxfFile
-        RecalculateBounds()
+        ForceRecalculateBounds()
     End Sub
 
     ''' <summary>
@@ -406,21 +406,16 @@ Public Class LampDxfDocument
     ''' adds any entity to the drawing. 
     ''' </summary>
     ''' <param name="ent"></param>
-    ''' <param name="recalculate"></param>
-    Public Sub AddEntity(ent As EntityObject, Optional recalculate As Boolean = True)
+    Public Sub AddEntity(ent As EntityObject)
         Drawing.AddEntity(ent)
-        If recalculate = True Then
-            RecalculateBounds()
-        End If
+        RecalculateBoundFromEntity(ent)
         NotifyPropertyChanged(NameOf(Drawing))
     End Sub
 
 
-    Public Sub RemoveEntity(entity As EntityObject, Optional recalculate As Boolean = True)
+    Public Sub RemoveEntity(entity As EntityObject)
         Drawing.RemoveEntity(entity)
-        If recalculate = True Then
-            RecalculateBounds()
-        End If
+        ForceRecalculateBounds()
         NotifyPropertyChanged(NameOf(Drawing))
     End Sub
 
@@ -542,9 +537,9 @@ Public Class LampDxfDocument
         Dim curx As Double = 0
         Dim cury As Double = 0
         While cury + otherDrawing.Height + offset < height
-            While curx + otherDrawing.Length + offset < width
+            While curx + otherDrawing.Width + offset < width
                 newArray.Add(New LampSingleDxfInsertLocation(New netDxf.Vector3(curx, cury, 0)))
-                curx += otherDrawing.Length + offset
+                curx += otherDrawing.Width + offset
             End While
             curx = 0
             cury += otherDrawing.Height + offset
@@ -716,25 +711,103 @@ Public Class LampDxfDocument
 
     End Sub
 
+    Private ReadOnly Property AllEntities As IEnumerable(Of EntityObject)
+        Get
+            Dim out As New List(Of EntityObject)
+            out.Concat(Drawing.Arcs)
+            out.Concat(Drawing.Circles)
+            out.Concat(Drawing.Ellipses)
+            out.Concat(Drawing.Lines)
+            out.Concat(Drawing.Points)
+            out.Concat(Drawing.Texts)
+            out.Concat(Drawing.MTexts)
+            out.Concat(Drawing.Images)
+            out.Concat(Drawing.MLines)
+            out.Concat(Drawing.Rays)
+            out.Concat(Drawing.LwPolylines)
+            out.Concat(Drawing.Polylines)
+            Return out
+        End Get
+    End Property
+
     ''' <summary>
     ''' Calculates the width, height bottomleft and right of the document
     ''' </summary>
-    Private Sub RecalculateBounds()
-        For Each line As Line In _drawing.Lines
-            If IsBottomOrLeft(line.StartPoint) Then
-                BottomLeft = line.StartPoint
-            End If
-            If IsBottomOrLeft(line.EndPoint) Then
-                BottomLeft = line.EndPoint
-            End If
-            If IsTopOrRight(line.StartPoint) Then
-                TopRight = line.StartPoint
-            End If
-            If IsTopOrRight(line.EndPoint) Then
-                TopRight = line.EndPoint
-            End If
+    Private Sub ForceRecalculateBounds()
+        BottomLeft = Nothing
+        TopRight = Nothing
+        For Each ent In AllEntities
+            RecalculateBoundFromEntity(ent)
         Next
+        'For Each line As Line In _drawing.Lines
+        '    If IsBottomOrLeft(line.StartPoint) Then
+        '        BottomLeft = line.StartPoint
+        '    End If
+        '    If IsBottomOrLeft(line.EndPoint) Then
+        '        BottomLeft = line.EndPoint
+        '    End If
+        '    If IsTopOrRight(line.StartPoint) Then
+        '        TopRight = line.StartPoint
+        '    End If
+        '    If IsTopOrRight(line.EndPoint) Then
+        '        TopRight = line.EndPoint
+        '    End If
+        'Next
         ' TODO others
+    End Sub
+
+    Private Sub RecalculateBoundFromEntity(ent As EntityObject)
+        Select Case ent.Type
+            Case EntityType.Arc
+                Dim arc As Arc = ent
+                ' top right
+                RecalculateFromPoint(Transform(arc.Center, arc.Radius, arc.Radius))
+                ' bottom left
+                RecalculateFromPoint(Transform(arc.Center, -arc.Radius, -arc.Radius))
+            Case EntityType.Circle
+                Dim circle As Circle = ent
+                ' top right
+                RecalculateFromPoint(Transform(circle.Center, circle.Radius, circle.Radius))
+                ' bottom left
+                RecalculateFromPoint(Transform(circle.Center, -circle.Radius, -circle.Radius))
+            Case EntityType.Ellipse
+                Dim ellipse As Ellipse = ent
+                ' top right
+                RecalculateFromPoint(Transform(ellipse.Center, ellipse.MajorAxis / 2, ellipse.MinorAxis / 2))
+                RecalculateFromPoint(Transform(ellipse.Center, -ellipse.MajorAxis / 2, -ellipse.MinorAxis / 2))
+            Case EntityType.Line
+                Dim line As Line = ent
+                RecalculateFromPoint(line.StartPoint)
+                RecalculateFromPoint(line.EndPoint)
+            Case EntityType.Point
+                Dim point As netDxf.Entities.Point = ent
+                RecalculateFromPoint(point.Position)
+            Case EntityType.MLine
+                Dim mline As MLine = ent
+                For Each item In mline.Vertexes
+                    RecalculateFromPoint(item.Location)
+                Next
+
+
+        End Select
+    End Sub
+
+    Private Sub RecalculateFromPoint(point As Vector3)
+        If IsTopOrRight(point) Then
+            Me.TopRight = point
+        End If
+        If IsBottomOrLeft(point) Then
+            Me.BottomLeft = point
+        End If
+    End Sub
+
+    Private Sub RecalculateFromPoint(point As Vector2)
+        If IsTopOrRight(point) Then
+            Me.TopRight = New Vector3(point.X, point.Y, 0)
+        End If
+        If IsBottomOrLeft(point) Then
+            Me.BottomLeft = New Vector3(point.X, point.Y, 0)
+        End If
     End Sub
 
     ''' <summary>
@@ -753,9 +826,37 @@ Public Class LampDxfDocument
     End Function
 
     ''' <summary>
+    ''' Checks if point is more bottom or more left of the drawing
+    ''' </summary>
+    ''' <param name="point"></param>
+    ''' <returns></returns>
+    Private Function IsBottomOrLeft(point As Vector2) As Boolean
+        If point.X < Me.BottomLeft.X Then
+            Return True
+        End If
+        If point.Y < Me.BottomLeft.Y Then
+            Return True
+        End If
+        Return False
+    End Function
+
+    ''' <summary>
     ''' Checks if point is more top or right of the drawing
     ''' </summary>
     Private Function IsTopOrRight(point As Vector3) As Boolean
+        If point.X > Me.TopRight.X Then
+            Return True
+        End If
+        If point.Y > Me.TopRight.Y Then
+            Return True
+        End If
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' Checks if point is more top or right of the drawing
+    ''' </summary>
+    Private Function IsTopOrRight(point As Vector2) As Boolean
         If point.X > Me.TopRight.X Then
             Return True
         End If

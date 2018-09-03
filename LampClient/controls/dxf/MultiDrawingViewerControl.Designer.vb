@@ -127,7 +127,7 @@ Partial Class MultiDrawingViewerControl
         LampTemplate1.GUID = "2710c1e7-9c58-4d85-bd6e-13940c2fa1b1"
         LampTemplate1.Height = 0R
         LampTemplate1.IsComplete = False
-        LampTemplate1.Length = 0R
+        LampTemplate1.Width = 0R
         LampTemplate1.LongDescription = ""
         LampTemplate1.Material = "Unspecified"
         LampTemplate1.MaterialThickness = 0R

@@ -93,7 +93,6 @@ Public Class NewOrderForm
             job.Pages = 3
 
             For i = 0 To 2
-                job.AddInsertionPoint(New LampSingleDxfInsertLocation(New netDxf.Vector3(0, 0, 0)), i, True)
 
             Next
 

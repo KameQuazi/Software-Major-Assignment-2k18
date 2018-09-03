@@ -359,7 +359,7 @@ Partial Class DesignerForm
         LampTemplate1.GUID = "6030c147-0ead-4a8e-b8f8-b166d19c1709"
         LampTemplate1.Height = 0R
         LampTemplate1.IsComplete = False
-        LampTemplate1.Length = 0R
+        LampTemplate1.Width = 0R
         LampTemplate1.LongDescription = ""
         LampTemplate1.Material = "Unspecified"
         LampTemplate1.MaterialThickness = 0R

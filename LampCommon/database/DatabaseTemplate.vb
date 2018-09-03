@@ -264,7 +264,7 @@ Partial Public Class TemplateDatabase
                     metadata.ShortDescription = reader.GetString(reader.GetOrdinal("ShortDescription"))
                     metadata.LongDescription = reader.GetString(reader.GetOrdinal("LongDescription"))
                     metadata.Material = reader.GetString(reader.GetOrdinal("material"))
-                    metadata.Length = reader.GetDouble(reader.GetOrdinal("length"))
+                    metadata.Width = reader.GetDouble(reader.GetOrdinal("length"))
                     metadata.Height = reader.GetDouble(reader.GetOrdinal("height"))
                     metadata.MaterialThickness = reader.GetDouble(reader.GetOrdinal("MaterialThickness"))
 
@@ -311,7 +311,7 @@ Partial Public Class TemplateDatabase
                     metadata.ShortDescription = reader.GetString(reader.GetOrdinal("ShortDescription"))
                     metadata.LongDescription = reader.GetString(reader.GetOrdinal("LongDescription"))
                     metadata.Material = reader.GetString(reader.GetOrdinal("material"))
-                    metadata.Length = reader.GetDouble(reader.GetOrdinal("length"))
+                    metadata.Width = reader.GetDouble(reader.GetOrdinal("length"))
                     metadata.Height = reader.GetDouble(reader.GetOrdinal("height"))
                     metadata.MaterialThickness = reader.GetDouble(reader.GetOrdinal("MaterialThickness"))
 
@@ -357,7 +357,7 @@ Partial Public Class TemplateDatabase
             command.Parameters.AddWithValue("@longDescription", template.LongDescription)
             command.Parameters.AddWithValue("@material", template.Material)
 
-            command.Parameters.AddWithValue("@length", template.Length)
+            command.Parameters.AddWithValue("@length", template.Width)
             command.Parameters.AddWithValue("@height", template.Height)
             command.Parameters.AddWithValue("@materialthickness", template.MaterialThickness)
 
@@ -394,7 +394,7 @@ Partial Public Class TemplateDatabase
             command.Parameters.AddWithValue("@longDescription", template.LongDescription)
             command.Parameters.AddWithValue("@material", template.Material)
 
-            command.Parameters.AddWithValue("@length", template.Length)
+            command.Parameters.AddWithValue("@length", template.Width)
             command.Parameters.AddWithValue("@height", template.Height)
             command.Parameters.AddWithValue("@materialthickness", template.MaterialThickness)
 
