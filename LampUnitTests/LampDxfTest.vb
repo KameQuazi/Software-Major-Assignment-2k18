@@ -43,6 +43,10 @@ Public Class LampDxfTest
         ' template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(60, 0, 0)))
         template.Save("template.spf")
         ' template.CompletedDrawing.Save("finished drawing.dxf")
+        dxf = New LampDxfDocument
+        dxf.AddLine(0, 0, 0, 10)
+        AreEqual(0.0, dxf.Width)
+        AreEqual(10.0, dxf.Height)
     End Sub
 
     <TestMethod>

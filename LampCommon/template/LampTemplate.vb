@@ -358,13 +358,16 @@ Public NotInheritable Class LampTemplate
     ''' The actual template : contains just 1 of drawing
     ''' Is serialized last in the file 
     ''' </summary>
-    <JsonProperty("template", Order:=1000)>
+    <JsonProperty("template", Order:=1000, Required:=Required.Always)>
     <DataMember>
     Public Property BaseDrawing As LampDxfDocument
         Get
             Return _baseDrawing
         End Get
         Set(value As LampDxfDocument)
+            If value Is Nothing Then
+
+            End If
             If _baseDrawing IsNot Nothing Then
                 RemoveHandler _baseDrawing.PropertyChanged, AddressOf BaseDrawing_PropertyChanged
             End If
@@ -372,10 +375,16 @@ Public NotInheritable Class LampTemplate
             If _baseDrawing IsNot Nothing Then
                 AddHandler _baseDrawing.PropertyChanged, AddressOf BaseDrawing_PropertyChanged
             End If
+
+
             NotifyPropertyChanged()
         End Set
     End Property
 
+    Private Sub UpdateBoundsFromDrawing()
+        Me.Width = BaseDrawing?.Width
+        Me.Height = BaseDrawing?.Height
+    End Sub
     ''' <summary>
     ''' handler for base drawing mutating
     ''' </summary>
@@ -618,6 +627,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <param name="dxf"></param>
     ''' <param name="guid"></param>
+    <JsonConstructor>
     Sub New(dxf As LampDxfDocument, guid As String)
         Me.GUID = guid
         Me.BaseDrawing = dxf
@@ -627,6 +637,7 @@ Public NotInheritable Class LampTemplate
         PreviewImages = New ObservableCollection(Of Image)
         PreviewImages.ClearAsArray()
     End Sub
+
 
     Public Shared Sub SortByMaterial(listOfTemplate As List(Of LampTemplate))
         listOfTemplate.Sort(AddressOf CompareMaterial)
