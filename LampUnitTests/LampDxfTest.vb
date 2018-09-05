@@ -47,6 +47,8 @@ Public Class LampDxfTest
         dxf.AddLine(0, 0, 0, 10)
         AreEqual(0.0, dxf.Width)
         AreEqual(10.0, dxf.Height)
+
+
     End Sub
 
     <TestMethod>

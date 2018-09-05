@@ -76,7 +76,7 @@ Public Class LampDxfDocument
     ''' <returns></returns>
     Public ReadOnly Property Width As Double
         Get
-            Return TopRight.X - BottomLeft.X
+            Return MostRight.X - MostLeft.Y
         End Get
     End Property
 
@@ -86,7 +86,7 @@ Public Class LampDxfDocument
     ''' <returns></returns>
     Public ReadOnly Property Height As Double
         Get
-            Return TopRight.Y - BottomLeft.Y
+            Return MostUp.Y - MostDOwn.Y
         End Get
     End Property
 
@@ -97,17 +97,13 @@ Public Class LampDxfDocument
     <IgnoreDataMember>
     Public Property BackgroundBrush As New SolidBrush(Color.LightSlateGray)
 
-    ''' <summary>
-    ''' Bottom Left point 
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property BottomLeft As New Vector3
+    Public Property MostLeft As Vector3
 
-    ''' <summary>
-    ''' Top right point
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property TopRight As New Vector3
+    Public Property MostRight As Vector3
+
+    Public Property MostUp As Vector3
+
+    Public Property MostDOwn As Vector3
 
     ''' <summary>
     ''' Constructor for LampDxfDocument
@@ -162,6 +158,10 @@ Public Class LampDxfDocument
         Return out
     End Function
 
+    Private Function GetBounds() As RectangleF
+        Return New RectangleF(MostLeft.X, MostUp.Y, Width, Height)
+    End Function
+
     ''' <summary>
     ''' Creates a new DxfDrawing, reading from a file given in filePath
     ''' </summary>
@@ -208,11 +208,9 @@ Public Class LampDxfDocument
     ''' </summary>
     ''' <returns></returns>
     Public Function ToImage() As System.Drawing.Image
-#Disable Warning BC42016 ' Implicit conversion
-
-        Return RasterizeImage(New PointF((BottomLeft.X + TopRight.X) / 2, (BottomLeft.Y + TopRight.Y) / 2),
-                       Width, Height)
-#Enable Warning BC42016 ' Implicit conversion
+        Dim bounds = GetBounds()
+        Dim center = bounds.GetCenter
+        Return RasterizeImage(center, Width, Height)
     End Function
 
 
@@ -517,6 +515,7 @@ Public Class LampDxfDocument
         NotifyPropertyChanged(NameOf(Drawing))
     End Sub
 
+
     Private Sub InsertDynamicText(otherDrawing As LampDxfDocument, offset As Vector3, textData As DynamicTextDictionary)
         For Each text In textData
             Dim key = text.Key
@@ -564,7 +563,7 @@ Public Class LampDxfDocument
     ''' <param name="renderHeight">number of pixels to render</param>
     ''' <param name="pixelsPerUnitX">number of cartesian units per pixel</param>
     ''' <param name="pixelsPerUnitY">Number of cartesian units in dxf per pixel y. recommended to be equal to pixelsPerX</param>
-    Public Sub WriteToGraphics(g As Graphics, focalPoint As PointF, renderWidth As Double, renderHeight As Double, Optional pixelsPerUnitX As Double = 1, Optional pixelsPerUnitY As Double = 1)
+    Public Sub WriteToGraphics(g As Graphics, focalPoint As PointF, renderWidth As Double, renderHeight As Double, Optional pixelsPerUnitX As Double = 1, Optional pixelsPerUnitY As Double = 1, Optional precision As Integer = 10)
         ' the bounds where entities are rendered
         ' draw x at 0, 0
         If pixelsPerUnitY <= 0 Then
@@ -1139,3 +1138,10 @@ Public Class LampDxfHelper
         Return Transform(point, offset.X, offset.Y)
     End Function
 End Class
+
+Public Module Extens
+    <Extension>
+    Public Function GetCenter(self As RectangleF) As PointF
+        Return New PointF(self.X = self.Width / 2, self.Y + self.Height / 2)
+    End Function
+End Module
