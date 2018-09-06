@@ -28,11 +28,6 @@ Partial Class DesignerForm
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.SaveFileBtn = New System.Windows.Forms.Button()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.Button4 = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.jsonOutput = New System.Windows.Forms.RichTextBox()
         Me.rightButton = New System.Windows.Forms.Button()
         Me.downButton = New System.Windows.Forms.Button()
@@ -43,7 +38,6 @@ Partial Class DesignerForm
         Me.SaveFileDialog2 = New System.Windows.Forms.SaveFileDialog()
         Me.TrackBar1 = New System.Windows.Forms.TrackBar()
         Me.ZoomLevelBox = New System.Windows.Forms.TextBox()
-        Me.DuplicateButton = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.cboxStaticText = New System.Windows.Forms.CheckBox()
         Me.cboxDynamicText = New System.Windows.Forms.CheckBox()
@@ -87,52 +81,6 @@ Partial Class DesignerForm
         Me.SaveFileBtn.TabIndex = 1
         Me.SaveFileBtn.Text = "Save file"
         Me.SaveFileBtn.UseVisualStyleBackColor = False
-        '
-        'TextBox1
-        '
-        Me.TextBox1.Location = New System.Drawing.Point(125, 433)
-        Me.TextBox1.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
-        Me.TextBox1.TabIndex = 5
-        '
-        'TextBox2
-        '
-        Me.TextBox2.Location = New System.Drawing.Point(125, 474)
-        Me.TextBox2.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(100, 20)
-        Me.TextBox2.TabIndex = 6
-        '
-        'Button4
-        '
-        Me.Button4.BackColor = System.Drawing.Color.White
-        Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button4.Location = New System.Drawing.Point(140, 530)
-        Me.Button4.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(75, 23)
-        Me.Button4.TabIndex = 7
-        Me.Button4.Text = "New line"
-        Me.Button4.UseVisualStyleBackColor = False
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(83, 433)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(27, 13)
-        Me.Label1.TabIndex = 8
-        Me.Label1.Text = "start"
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(83, 477)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(25, 13)
-        Me.Label2.TabIndex = 9
-        Me.Label2.Text = "end"
         '
         'jsonOutput
         '
@@ -236,18 +184,6 @@ Partial Class DesignerForm
         Me.ZoomLevelBox.Size = New System.Drawing.Size(132, 20)
         Me.ZoomLevelBox.TabIndex = 20
         Me.ZoomLevelBox.Text = "100"
-        '
-        'DuplicateButton
-        '
-        Me.DuplicateButton.BackColor = System.Drawing.Color.White
-        Me.DuplicateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.DuplicateButton.Location = New System.Drawing.Point(140, 577)
-        Me.DuplicateButton.Margin = New System.Windows.Forms.Padding(4)
-        Me.DuplicateButton.Name = "DuplicateButton"
-        Me.DuplicateButton.Size = New System.Drawing.Size(100, 28)
-        Me.DuplicateButton.TabIndex = 21
-        Me.DuplicateButton.Text = "duplicate"
-        Me.DuplicateButton.UseVisualStyleBackColor = False
         '
         'Button2
         '
@@ -356,16 +292,16 @@ Partial Class DesignerForm
         LampTemplate1.ApproverProfile = Nothing
         LampTemplate1.BaseDrawing = Nothing
         LampTemplate1.CreatorProfile = Nothing
-        LampTemplate1.GUID = "6030c147-0ead-4a8e-b8f8-b166d19c1709"
+        LampTemplate1.GUID = "099f9ccc-9732-413e-a858-199c579b9d24"
         LampTemplate1.Height = 0R
         LampTemplate1.IsComplete = False
-        LampTemplate1.Width = 0R
         LampTemplate1.LongDescription = ""
         LampTemplate1.Material = "Unspecified"
         LampTemplate1.MaterialThickness = 0R
         LampTemplate1.Name = ""
         LampTemplate1.ShortDescription = ""
         LampTemplate1.SubmitDate = Nothing
+        LampTemplate1.Width = 0R
         Me.DesignerScreen1.Template = LampTemplate1
         Me.DesignerScreen1.ZoomX = 1.0R
         Me.DesignerScreen1.ZoomY = 1.0R
@@ -397,7 +333,6 @@ Partial Class DesignerForm
         Me.Controls.Add(Me.cboxDynamicText)
         Me.Controls.Add(Me.cboxStaticText)
         Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.DuplicateButton)
         Me.Controls.Add(Me.ZoomLevelBox)
         Me.Controls.Add(Me.TrackBar1)
         Me.Controls.Add(Me.Button1)
@@ -408,11 +343,6 @@ Partial Class DesignerForm
         Me.Controls.Add(Me.downButton)
         Me.Controls.Add(Me.rightButton)
         Me.Controls.Add(Me.jsonOutput)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.Button4)
-        Me.Controls.Add(Me.TextBox2)
-        Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.SaveFileBtn)
         Me.Controls.Add(Me.OpenFileBtn)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -430,11 +360,6 @@ Partial Class DesignerForm
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents SaveFileBtn As Button
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
-    Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents TextBox2 As TextBox
-    Friend WithEvents Button4 As Button
-    Friend WithEvents Label1 As Label
-    Friend WithEvents Label2 As Label
     Friend WithEvents jsonOutput As RichTextBox
     Friend WithEvents rightButton As Button
     Friend WithEvents downButton As Button
@@ -446,7 +371,6 @@ Partial Class DesignerForm
     Friend WithEvents SaveFileDialog2 As SaveFileDialog
     Friend WithEvents TrackBar1 As TrackBar
     Friend WithEvents ZoomLevelBox As TextBox
-    Friend WithEvents DuplicateButton As Button
     Friend WithEvents Button2 As Button
     Friend WithEvents cboxStaticText As CheckBox
     Friend WithEvents cboxDynamicText As CheckBox

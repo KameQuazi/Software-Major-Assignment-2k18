@@ -86,7 +86,7 @@ Public Class LampDxfDocument
     ''' <returns></returns>
     Public ReadOnly Property Height As Double
         Get
-            Return MostUp.Y - MostDOwn.Y
+            Return MostTop.Y - MostBottom.Y
         End Get
     End Property
 
@@ -101,9 +101,9 @@ Public Class LampDxfDocument
 
     Public Property MostRight As Vector3
 
-    Public Property MostUp As Vector3
+    Public Property MostTop As Vector3
 
-    Public Property MostDOwn As Vector3
+    Public Property MostBottom As Vector3
 
     ''' <summary>
     ''' Constructor for LampDxfDocument
@@ -159,7 +159,7 @@ Public Class LampDxfDocument
     End Function
 
     Private Function GetBounds() As RectangleF
-        Return New RectangleF(MostLeft.X, MostUp.Y, Width, Height)
+        Return New RectangleF(MostLeft.X, MostTop.Y, Width, Height)
     End Function
 
     ''' <summary>
@@ -553,6 +553,7 @@ Public Class LampDxfDocument
     End Function
 
 
+    Private Const precision = 100
     ''' <summary>
     ''' Draws the contents onto a graphics object
     ''' Only draws lines right now
@@ -563,7 +564,7 @@ Public Class LampDxfDocument
     ''' <param name="renderHeight">number of pixels to render</param>
     ''' <param name="pixelsPerUnitX">number of cartesian units per pixel</param>
     ''' <param name="pixelsPerUnitY">Number of cartesian units in dxf per pixel y. recommended to be equal to pixelsPerX</param>
-    Public Sub WriteToGraphics(g As Graphics, focalPoint As PointF, renderWidth As Double, renderHeight As Double, Optional pixelsPerUnitX As Double = 1, Optional pixelsPerUnitY As Double = 1, Optional precision As Integer = 10)
+    Public Sub WriteToGraphics(g As Graphics, focalPoint As PointF, renderWidth As Double, renderHeight As Double, Optional pixelsPerUnitX As Double = 1, Optional pixelsPerUnitY As Double = 1, Optional precision As Integer = precision)
         ' the bounds where entities are rendered
         ' draw x at 0, 0
         If pixelsPerUnitY <= 0 Then
@@ -585,49 +586,21 @@ Public Class LampDxfDocument
 
         For Each arc As Arc In Drawing.Arcs
             If InsideBounds(bounds, arc) Then
-                ' draw arc takes in the upper left corner, width/height of the ellipse (equal=radius since it is always circular)
-                ' start angle and total angle subtended
-
-                ' However, we need the top left corner, from center
-                Dim upperLeft = arc.Center
-                upperLeft.X -= arc.Radius
-                upperLeft.Y += arc.Radius
-
-                Dim GdiUpperleft = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperLeft, pixelsPerUnitX, pixelsPerUnitY)
-                ' arc startangle is anti-clockwise from the positive x axis, then further anticlockwise till endangle
-                ' however, gdi draws clockwise from positive x axis, then clockwise theta degrees sweepangle
-                ' therefore, the arc's endpoint is actually the arc originates
-
-                Dim gdiStartAngle = 360 - arc.EndAngle
-
-                ' if startAngle > endangle, 
-                Dim angleRotated = (arc.EndAngle - arc.StartAngle + 360) Mod 360
-
-
-                ' Width, height = 2x radius
-                Dim arcBound As New RectangleF(GdiUpperleft, New SizeF(Convert.ToSingle(arc.Radius * 2 / pixelsPerUnitX), Convert.ToSingle(arc.Radius * 2 / pixelsPerUnitY)))
-
-                g.DrawArc(New Pen(arc.Color.ToColor()), arcBound, Convert.ToSingle(gdiStartAngle), Convert.ToSingle(angleRotated))
-
+                g.DrawPolyline(arc.ToPolyline(precision), focalPoint, renderWidth, renderHeight, pixelsPerUnitX, pixelsPerUnitY)
             End If
         Next
 
         For Each circle As Circle In Drawing.Circles
             If InsideBounds(bounds, circle) Then
                 ' get upper left point (in cartesian point)
-                Dim upperleft = circle.Center
-                upperleft.Y += circle.Radius
-                upperleft.X -= circle.Radius
-
-                Dim gdiCenter = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperleft, pixelsPerUnitX, pixelsPerUnitY)
-                Dim circleBound As New RectangleF(gdiCenter, New SizeF(Convert.ToSingle(circle.Radius * 2 / pixelsPerUnitX), Convert.ToSingle(circle.Radius * 2 / pixelsPerUnitY)))
-
-                g.DrawEllipse(New Pen(circle.Color.ToColor()), circleBound)
+                g.DrawPolyline(circle.ToPolyline(precision), focalPoint, renderWidth, renderHeight, pixelsPerUnitX, pixelsPerUnitY)
             End If
         Next
 
         For Each ellipse As Ellipse In Drawing.Ellipses
-
+            If InsideBounds(bounds, ellipse) Then
+                g.DrawPolyline(ellipse.ToPolyline(precision), focalPoint, renderWidth, renderHeight, pixelsPerUnitX, pixelsPerUnitY)
+            End If
         Next
 
         For Each line As Line In Drawing.Lines
@@ -641,23 +614,21 @@ Public Class LampDxfDocument
         Next
 
         For Each point As Entities.Point In Drawing.Points
-
+            If InsideBounds(bounds, point) Then
+                Dim loc = CartesianToGdi(focalPoint, renderWidth, renderHeight, point.Position, pixelsPerUnitX, pixelsPerUnitY)
+                g.FillRectangle(New SolidBrush(point.Color.ToColor), New RectangleF(loc, New SizeF(1, 1)))
+            End If
         Next
 
         For Each polyline As Polyline In Drawing.Polylines
             If InsideBounds(bounds, polyline) Then
-                Dim previousPoint As PolylineVertex = Nothing
-                For Each vertex In polyline.Vertexes
-                    If previousPoint IsNot Nothing Then
-                        Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, previousPoint.Position.X, previousPoint.Position.Y, pixelsPerUnitX, pixelsPerUnitY)
+                g.DrawPolyline(polyline, focalPoint, renderWidth, renderHeight, pixelsPerUnitX, pixelsPerUnitY)
+            End If
+        Next
 
-                        Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, vertex.Position.X, vertex.Position.Y, pixelsPerUnitX, pixelsPerUnitY)
-
-                        g.DrawLine(New Pen(polyline.Color.ToColor()), start, [end])
-                    End If
-
-                    previousPoint = vertex
-                Next
+        For Each lwP As LwPolyline In Drawing.LwPolylines
+            If InsideBounds(bounds, lwP) Then
+                g.DrawPolyline(lwP, focalPoint, renderWidth, renderHeight, pixelsPerUnitX, pixelsPerUnitY)
             End If
         Next
 
@@ -668,8 +639,14 @@ Public Class LampDxfDocument
                 upperleft.Y += text.Height
 
                 Dim gdiUpperleft = CartesianToGdi(focalPoint, renderWidth, renderHeight, upperleft, pixelsPerUnitX, pixelsPerUnitY)
+                Dim font As Font
+                Try
+                    font = New Font(New FontFamily(text.Style.FontFamilyName), (text.Height / pixelsPerUnitY))
 
-                g.DrawString(text.Value, New Font(New FontFamily(text.Style.FontFamilyName), (text.Height / pixelsPerUnitY)), New SolidBrush(text.Color.ToColor()), gdiUpperleft)
+                Catch ex As Exception
+                    font = New Font(FontFamily.GenericMonospace, (text.Height / pixelsPerUnitY))
+                End Try
+                g.DrawString(text.Value, font, New SolidBrush(text.Color.ToColor()), gdiUpperleft)
 
             End If
         Next
@@ -683,28 +660,24 @@ Public Class LampDxfDocument
 
                 End Select
                 Dim gdiUpperLeft = CartesianToGdi(focalPoint, renderWidth, renderHeight, mtext.Position, pixelsPerUnitX, pixelsPerUnitY)
-                g.DrawString(mtext.PlainText, New Font(New FontFamily(mtext.Style.FontFamilyName), (mtext.Height / pixelsPerUnitY)), New SolidBrush(mtext.Color.ToColor), gdiUpperLeft)
-            End If
+
+                Dim font As Font
+                Try
+                    font = New Font(New FontFamily(mtext.Style.FontFamilyName), (mtext.Height / pixelsPerUnitY))
+
+                Catch ex As Exception
+                    font = New Font(FontFamily.GenericMonospace, (mtext.Height / pixelsPerUnitY))
+                End Try
+                g.DrawString(mtext.PlainText, font, New SolidBrush(mtext.Color.ToColor), gdiUpperLeft)
+                End If
+
         Next
 
         For Each image As Entities.Image In Drawing.Images
+            If InsideBounds(bounds, image) Then
 
+            End If
         Next
-
-        For Each mLine As MLine In Drawing.MLines
-
-        Next
-
-        For Each ray As Ray In Drawing.Rays
-
-        Next
-
-
-
-
-
-
-
 
 
 
@@ -721,8 +694,6 @@ Public Class LampDxfDocument
             out.Concat(Drawing.Texts)
             out.Concat(Drawing.MTexts)
             out.Concat(Drawing.Images)
-            out.Concat(Drawing.MLines)
-            out.Concat(Drawing.Rays)
             out.Concat(Drawing.LwPolylines)
             out.Concat(Drawing.Polylines)
             Return out
@@ -733,47 +704,36 @@ Public Class LampDxfDocument
     ''' Calculates the width, height bottomleft and right of the document
     ''' </summary>
     Private Sub ForceRecalculateBounds()
-        BottomLeft = Nothing
-        TopRight = Nothing
+        MostBottom = Nothing
+        MostLeft = Nothing
+        MostTop = Nothing
+        MostRight = Nothing
         For Each ent In AllEntities
             RecalculateBoundFromEntity(ent)
         Next
-        'For Each line As Line In _drawing.Lines
-        '    If IsBottomOrLeft(line.StartPoint) Then
-        '        BottomLeft = line.StartPoint
-        '    End If
-        '    If IsBottomOrLeft(line.EndPoint) Then
-        '        BottomLeft = line.EndPoint
-        '    End If
-        '    If IsTopOrRight(line.StartPoint) Then
-        '        TopRight = line.StartPoint
-        '    End If
-        '    If IsTopOrRight(line.EndPoint) Then
-        '        TopRight = line.EndPoint
-        '    End If
-        'Next
-        ' TODO others
     End Sub
 
-    Private Sub RecalculateBoundFromEntity(ent As EntityObject)
+    Private Sub RecalculateBoundFromEntity(ent As EntityObject, Optional precision As Integer = precision)
         Select Case ent.Type
             Case EntityType.Arc
                 Dim arc As Arc = ent
-                ' top right
-                RecalculateFromPoint(Transform(arc.Center, arc.Radius, arc.Radius))
-                ' bottom left
-                RecalculateFromPoint(Transform(arc.Center, -arc.Radius, -arc.Radius))
+                For Each vertex In arc.ToPolyline(precision).Vertexes
+                    ' top right
+                    RecalculateFromPoint(vertex.Position)
+                Next
             Case EntityType.Circle
                 Dim circle As Circle = ent
-                ' top right
-                RecalculateFromPoint(Transform(circle.Center, circle.Radius, circle.Radius))
-                ' bottom left
-                RecalculateFromPoint(Transform(circle.Center, -circle.Radius, -circle.Radius))
+                For Each vertex In circle.ToPolyline(precision).Vertexes
+                    ' top right
+                    RecalculateFromPoint(vertex.Position)
+                Next
             Case EntityType.Ellipse
                 Dim ellipse As Ellipse = ent
                 ' top right
-                RecalculateFromPoint(Transform(ellipse.Center, ellipse.MajorAxis / 2, ellipse.MinorAxis / 2))
-                RecalculateFromPoint(Transform(ellipse.Center, -ellipse.MajorAxis / 2, -ellipse.MinorAxis / 2))
+                For Each vertex In ellipse.ToPolyline(precision).Vertexes
+                    ' top right
+                    RecalculateFromPoint(vertex.Position)
+                Next
             Case EntityType.Line
                 Dim line As Line = ent
                 RecalculateFromPoint(line.StartPoint)
@@ -781,31 +741,54 @@ Public Class LampDxfDocument
             Case EntityType.Point
                 Dim point As netDxf.Entities.Point = ent
                 RecalculateFromPoint(point.Position)
-            Case EntityType.MLine
-                Dim mline As MLine = ent
-                For Each item In mline.Vertexes
-                    RecalculateFromPoint(item.Location)
-                Next
+            Case EntityType.Text
+                Dim text As Text = ent
+                ' top left
+                ' text is ref. from bottom left
+                ' top left
+                RecalculateFromPoint(Transform(text.Position, 0, text.Height))
+
+                ' bottom right
+                RecalculateFromPoint(Transform(text.Position, text.WidthFactor * text.Value.Length, 0))
+            Case EntityType.MText
+                Dim text As MText = ent
+                ' top left
+                RecalculateFromPoint(Transform(text.Position, 0, 0))
+                RecalculateFromPoint(Transform(text.Position, text.RectangleWidth, text.Height))
 
 
         End Select
     End Sub
 
     Private Sub RecalculateFromPoint(point As Vector3)
-        If IsTopOrRight(point) Then
-            Me.TopRight = point
+        If IsBottom(point) Then
+            Me.MostBottom = point
         End If
-        If IsBottomOrLeft(point) Then
-            Me.BottomLeft = point
+        If IsRight(point) Then
+            Me.MostRight = point
+        End If
+
+        If IsTop(point) Then
+            Me.MostTop = point
+        End If
+        If IsLeft(point) Then
+            Me.MostLeft = point
         End If
     End Sub
 
     Private Sub RecalculateFromPoint(point As Vector2)
-        If IsTopOrRight(point) Then
-            Me.TopRight = New Vector3(point.X, point.Y, 0)
+        If IsBottom(point) Then
+            Me.MostBottom = point.ToV3
         End If
-        If IsBottomOrLeft(point) Then
-            Me.BottomLeft = New Vector3(point.X, point.Y, 0)
+        If IsRIght(point) Then
+            Me.MostRight = point.ToV3
+        End If
+
+        If IsTop(point) Then
+            Me.MostTop = point.ToV3
+        End If
+        If IsLeft(point) Then
+            Me.MostLeft = point.ToV3
         End If
     End Sub
 
@@ -814,14 +797,8 @@ Public Class LampDxfDocument
     ''' </summary>
     ''' <param name="point"></param>
     ''' <returns></returns>
-    Private Function IsBottomOrLeft(point As Vector3) As Boolean
-        If point.X < Me.BottomLeft.X Then
-            Return True
-        End If
-        If point.Y < Me.BottomLeft.Y Then
-            Return True
-        End If
-        Return False
+    Private Function IsBottom(point As Vector3) As Boolean
+        Return point.Y < Me.MostBottom.Y
     End Function
 
     ''' <summary>
@@ -829,40 +806,50 @@ Public Class LampDxfDocument
     ''' </summary>
     ''' <param name="point"></param>
     ''' <returns></returns>
-    Private Function IsBottomOrLeft(point As Vector2) As Boolean
-        If point.X < Me.BottomLeft.X Then
-            Return True
-        End If
-        If point.Y < Me.BottomLeft.Y Then
-            Return True
-        End If
-        Return False
+    Private Function IsBottom(point As Vector2) As Boolean
+        Return point.Y < Me.MostBottom.Y
     End Function
 
     ''' <summary>
     ''' Checks if point is more top or right of the drawing
     ''' </summary>
-    Private Function IsTopOrRight(point As Vector3) As Boolean
-        If point.X > Me.TopRight.X Then
-            Return True
-        End If
-        If point.Y > Me.TopRight.Y Then
-            Return True
-        End If
-        Return False
+    Private Function IsTop(point As Vector3) As Boolean
+        Return point.Y > Me.MostBottom.Y
     End Function
 
     ''' <summary>
     ''' Checks if point is more top or right of the drawing
     ''' </summary>
-    Private Function IsTopOrRight(point As Vector2) As Boolean
-        If point.X > Me.TopRight.X Then
-            Return True
-        End If
-        If point.Y > Me.TopRight.Y Then
-            Return True
-        End If
-        Return False
+    Private Function IsTop(point As Vector2) As Boolean
+        Return point.Y > Me.MostBottom.Y
+    End Function
+
+    ''' <summary>
+    ''' Checks if point is more top or right of the drawing
+    ''' </summary>
+    Private Function IsRight(point As Vector3) As Boolean
+        Return point.X > Me.MostRight.X
+    End Function
+
+    ''' <summary>
+    ''' Checks if point is more top or right of the drawing
+    ''' </summary>
+    Private Function IsRIght(point As Vector2) As Boolean
+        Return point.X > Me.MostRight.X
+    End Function
+
+    ''' <summary>
+    ''' Checks if point is more top or right of the drawing
+    ''' </summary>
+    Private Function IsLeft(point As Vector3) As Boolean
+        Return point.X < Me.MostLeft.X
+    End Function
+
+    ''' <summary>
+    ''' Checks if point is more top or right of the drawing
+    ''' </summary>
+    Private Function IsLeft(point As Vector2) As Boolean
+        Return point.X < Me.MostLeft.X
     End Function
 
     ''' <summary>
@@ -927,7 +914,7 @@ Public Class LampDxfDocument
         If allowed = 0 Then
             Throw New ArgumentOutOfRangeException(NameOf(allowed))
         End If
-        For Each item As EntityObject In Me.Entities
+        For Each item As EntityObject In Me.AllEntities
             If allowed.HasFlag(ValidateEnum.VectorCut) Then
                 If item.Color.Equals(VectorCut) Then
                     Continue For
@@ -954,44 +941,7 @@ Public Class LampDxfDocument
 
     Public Shared Property RasterEngrave As AciColor = New AciColor(255, 255, 255)
 
-    Public ReadOnly Property Entities As IEnumerable(Of EntityObject)
-        Get
-            Return Drawing.Arcs.Concat(
-                Drawing.Circles.Concat(
-                Drawing.Ellipses.Concat(
-                Drawing.Lines.Concat(
-                Drawing.Ellipses.Concat(
-                Drawing.Points.Concat(
-                Drawing.Polylines.Concat(
-                Drawing.Texts.Concat(
-                Drawing.MTexts.Concat(
-                Drawing.Images.Concat(
-                Drawing.MLines.Concat(
-                Drawing.Rays
-                )
-                )
-            )
-            )
-            )
-            )
-            )
-            )
-            )
-            )
-            )
 
-
-
-
-
-
-
-
-
-
-
-        End Get
-    End Property
 End Class
 
 <Flags>
@@ -1044,6 +994,21 @@ Public Class LampDxfHelper
         Return New PointF(point.X.ToSingle, point.Y.ToSingle)
     End Function
 
+    Public Shared Function InsideBounds(rect As RectangleF, lw As LwPolyline) As Boolean
+        Return True
+    End Function
+
+    Public Shared Function InsideBounds(rect As RectangleF, image As netDxf.Entities.Image) As Boolean
+        Return True
+    End Function
+
+    Public Shared Function InsideBounds(rect As RectangleF, ellipse As Ellipse) As Boolean
+        Return True
+    End Function
+    Public Shared Function InsideBounds(rect As RectangleF, ellipse As MLine) As Boolean
+        Return True
+    End Function
+
     Public Shared Function InsideBounds(rect As RectangleF, text As Text) As Boolean
         Return True
     End Function
@@ -1066,6 +1031,10 @@ Public Class LampDxfHelper
     End Function
 
     Public Shared Function InsideBounds(rect As RectangleF, polyLine As Polyline) As Boolean
+        Return True
+    End Function
+
+    Public Shared Function InsideBounds(rect As RectangleF, ppoint As netDxf.Entities.Point) As Boolean
         Return True
     End Function
 
@@ -1144,4 +1113,59 @@ Public Module Extens
     Public Function GetCenter(self As RectangleF) As PointF
         Return New PointF(self.X = self.Width / 2, self.Y + self.Height / 2)
     End Function
+
+    <Extension>
+    Public Sub DrawPolyline(self As Graphics, polyLine As LwPolyline, focalPoint As PointF, renderWidth As Double, renderHeight As Double, pixelsPerUnitX As Double, pixelsPerUnitY As Double, Optional wrapAround As Boolean = False)
+        Dim previousPoint As LwPolylineVertex = Nothing
+        For Each vertex In polyLine.Vertexes
+            If previousPoint IsNot Nothing Then
+                Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, previousPoint.Position.X, previousPoint.Position.Y, pixelsPerUnitX, pixelsPerUnitY)
+
+                Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, vertex.Position.X, vertex.Position.Y, pixelsPerUnitX, pixelsPerUnitY)
+
+                self.DrawLine(New Pen(polyLine.Color.ToColor()), start, [end])
+            End If
+
+            previousPoint = vertex
+        Next
+
+        If wrapAround Then
+            Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, previousPoint.Position.X, previousPoint.Position.Y, pixelsPerUnitX, pixelsPerUnitY)
+
+            Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, polyLine.Vertexes(0).Position.X, polyLine.Vertexes(0).Position.Y, pixelsPerUnitX, pixelsPerUnitY)
+
+            self.DrawLine(New Pen(polyLine.Color.ToColor()), start, [end])
+        End If
+    End Sub
+
+    <Extension>
+    Public Sub DrawPolyline(self As Graphics, polyLine As Polyline, focalPoint As PointF, renderWidth As Double, renderHeight As Double, pixelsPerUnitX As Double, pixelsPerUnitY As Double, Optional wrapAround As Boolean = False)
+        Dim previousPoint As PolylineVertex = Nothing
+        For Each vertex In polyLine.Vertexes
+            If previousPoint IsNot Nothing Then
+                Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, previousPoint.Position.X, previousPoint.Position.Y, pixelsPerUnitX, pixelsPerUnitY)
+
+                Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, vertex.Position.X, vertex.Position.Y, pixelsPerUnitX, pixelsPerUnitY)
+
+                self.DrawLine(New Pen(polyLine.Color.ToColor()), start, [end])
+            End If
+
+            previousPoint = vertex
+        Next
+
+        If wrapAround Then
+            Dim start = CartesianToGdi(focalPoint, renderWidth, renderHeight, previousPoint.Position.X, previousPoint.Position.Y, pixelsPerUnitX, pixelsPerUnitY)
+
+            Dim [end] = CartesianToGdi(focalPoint, renderWidth, renderHeight, polyLine.Vertexes(0).Position.X, polyLine.Vertexes(0).Position.Y, pixelsPerUnitX, pixelsPerUnitY)
+
+            self.DrawLine(New Pen(polyLine.Color.ToColor()), start, [end])
+        End If
+    End Sub
+
+
+    <Extension>
+    Public Function ToV3(self As Vector2) As Vector3
+        Return New Vector3(self.X, self.Y, 0)
+    End Function
+
 End Module

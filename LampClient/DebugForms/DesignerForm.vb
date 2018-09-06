@@ -27,8 +27,10 @@ Public Class DesignerForm
         End Get
         Set(value As LampDxfDocument)
             DesignerScreen1.Drawing = value
+
         End Set
     End Property
+
 
     Public ReadOnly Property DynamicTextKeys As ObservableCollection(Of DynamicTextKey)
         Get
@@ -112,7 +114,7 @@ Public Class DesignerForm
 
 
 
-    Private Sub Button4_Click_1(sender As Object, e As EventArgs) Handles Button4.Click
+    Private Sub Button4_Click_1(sender As Object, e As EventArgs)
         Try
             Dim z = TextBox1.Text.Split(" "c)
             Dim y = TextBox2.Text.Split(" "c)
@@ -195,7 +197,7 @@ Public Class DesignerForm
         End If
     End Sub
 
-    Private Sub DuplicateButton_Click(sender As Object, e As EventArgs) Handles DuplicateButton.Click
+    Private Sub DuplicateButton_Click(sender As Object, e As EventArgs)
         Dim input As New LampInputBox("enter location (x y) to insert", "enter a point [x y] without brackets")
         If input.ShowDialog = DialogResult.OK Then
             Try
