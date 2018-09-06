@@ -397,8 +397,10 @@ Public NotInheritable Class LampTemplate
     End Property
 
     Private Sub UpdateBoundsFromDrawing()
-        Me.Width = BaseDrawing?.Width
-        Me.Height = BaseDrawing?.Height
+        If BaseDrawing IsNot Nothing Then
+            Me.Width = BaseDrawing.Width
+            Me.Height = BaseDrawing.Height
+        End If
     End Sub
     ''' <summary>
     ''' handler for base drawing mutating
@@ -406,6 +408,10 @@ Public NotInheritable Class LampTemplate
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub BaseDrawing_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
+        If Not BoundsLock Then
+            UpdateBoundsFromDrawing()
+        End If
+
         NotifyPropertyChanged(NameOf(BaseDrawing))
     End Sub
 
@@ -658,7 +664,11 @@ Public NotInheritable Class LampTemplate
 
         PreviewImages = New ObservableCollection(Of Image)
         PreviewImages.ClearAsArray()
-        UpdateBoundsFromDrawing()
+
+        If Not BoundsLock Then
+            UpdateBoundsFromDrawing()
+        End If
+
     End Sub
 
 

@@ -17,5 +17,8 @@
     <Setting Name="SortSettings" Type="LampCommon.SortSettings" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="DesignerProgram" Type="LampCommon.OpenType" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

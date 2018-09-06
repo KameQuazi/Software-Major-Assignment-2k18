@@ -55,6 +55,7 @@ Public Class DesignerForm
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles OpenFileBtn.Click
         If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
             Drawing = LampDxfDocument.FromFile(OpenFileDialog1.FileName)
+            Drawing = Drawing.ShiftToZero()
             SaveFileBtn.Enabled = True
 
             FilenameTbox.Text = OpenFileDialog1.FileName

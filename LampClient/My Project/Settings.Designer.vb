@@ -112,6 +112,17 @@ Namespace My
                 Me("SortSettings") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+        Public Property DesignerProgram() As Global.LampCommon.OpenType
+            Get
+                Return CType(Me("DesignerProgram"),Global.LampCommon.OpenType)
+            End Get
+            Set
+                Me("DesignerProgram") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

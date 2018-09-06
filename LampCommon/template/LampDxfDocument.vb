@@ -72,21 +72,30 @@ Public Class LampDxfDocument
 
     ''' <summary>
     ''' The width of all parts of dxfDocument
+    ''' returns -1 if no entities
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property Width As Double
         Get
-            Return MostRight.X - MostLeft.X
+            If MostLeft Is Nothing Or MostRight Is Nothing Then
+                Return -1
+            End If
+            Return MostRight.Value.X - MostLeft.Value.X
         End Get
     End Property
 
     ''' <summary>
     ''' The height of all parts of dxfDocument
+    ''' returns -1 if no values
     ''' </summary>
     ''' <returns></returns>
     Public ReadOnly Property Height As Double
         Get
-            Return MostTop.Y - MostBottom.Y
+            If MostLeft Is Nothing Or MostRight Is Nothing Then
+                Return -1
+            End If
+
+            Return MostTop.Value.Y - MostBottom.Value.Y
         End Get
     End Property
 
@@ -97,13 +106,13 @@ Public Class LampDxfDocument
     <IgnoreDataMember>
     Public Property BackgroundBrush As New SolidBrush(Color.Black)
 
-    Public Property MostLeft As Vector3
+    Public Property MostLeft As Vector3? = Nothing
 
-    Public Property MostRight As Vector3
+    Public Property MostRight As Vector3? = Nothing
 
-    Public Property MostTop As Vector3
+    Public Property MostTop As Vector3? = Nothing
 
-    Public Property MostBottom As Vector3
+    Public Property MostBottom As Vector3? = Nothing
 
     ''' <summary>
     ''' Constructor for LampDxfDocument
@@ -159,7 +168,10 @@ Public Class LampDxfDocument
     End Function
 
     Private Function GetBounds() As RectangleF
-        Return New RectangleF(MostLeft.X, MostTop.Y, Width, Height)
+        If MostLeft Is Nothing Or MostRight Is Nothing Then
+            Return New RectangleF(0, 0, 0, 0)
+        End If
+        Return New RectangleF(MostLeft.Value.X, MostTop.Value.Y, Width, Height)
     End Function
 
     ''' <summary>
@@ -688,22 +700,22 @@ Public Class LampDxfDocument
 
     End Sub
 
-    Private ReadOnly Property AllEntities As IEnumerable(Of EntityObject)
+    Public ReadOnly Property AllEntities As IEnumerable(Of EntityObject)
         Get
-            Dim out As New List(Of EntityObject)
-            out.Concat(Drawing.Arcs)
-            out.Concat(Drawing.Circles)
-            out.Concat(Drawing.Ellipses)
-            out.Concat(Drawing.Lines)
-            out.Concat(Drawing.Points)
-            out.Concat(Drawing.Texts)
-            out.Concat(Drawing.MTexts)
-            out.Concat(Drawing.Images)
-            out.Concat(Drawing.LwPolylines)
-            out.Concat(Drawing.Polylines)
-            Return out
+
+            Return ConcatAllEnumerable(Drawing.Arcs, Drawing.Circles, Drawing.Ellipses, Drawing.Lines,
+                                       Drawing.Points, Drawing.Texts, Drawing.MTexts, Drawing.Images,
+                                        Drawing.Polylines, Drawing.LwPolylines)
         End Get
     End Property
+
+    Private Function ConcatAllEnumerable(ParamArray ents() As IEnumerable(Of EntityObject))
+        Dim out As IEnumerable(Of EntityObject) = Enumerable.Empty(Of EntityObject)
+        For Each item In ents
+            out = out.Concat(DirectCast(item, IEnumerable(Of EntityObject)))
+        Next
+        Return out
+    End Function
 
     ''' <summary>
     ''' Calculates the width, height bottomleft and right of the document
@@ -803,10 +815,8 @@ Public Class LampDxfDocument
     ''' <param name="point"></param>
     ''' <returns></returns>
     Private Function IsBottom(point As Vector3) As Boolean
-        If point.Y < Me.MostBottom.Y Then
-            Console.WriteLine("asdf")
-        End If
-        Return point.Y < Me.MostBottom.Y
+
+        Return Me.MostBottom Is Nothing OrElse point.Y < Me.MostBottom.Value.Y
     End Function
 
     ''' <summary>
@@ -815,49 +825,49 @@ Public Class LampDxfDocument
     ''' <param name="point"></param>
     ''' <returns></returns>
     Private Function IsBottom(point As Vector2) As Boolean
-        Return point.Y < Me.MostBottom.Y
+        Return Me.MostBottom Is Nothing OrElse point.Y < Me.MostBottom.Value.Y
     End Function
 
     ''' <summary>
     ''' Checks if point is more top or right of the drawing
     ''' </summary>
     Private Function IsTop(point As Vector3) As Boolean
-        Return point.Y > Me.MostTop.Y
+        Return Me.MostTop Is Nothing OrElse point.Y > Me.MostTop.Value.Y
     End Function
 
     ''' <summary>
     ''' Checks if point is more top or right of the drawing
     ''' </summary>
     Private Function IsTop(point As Vector2) As Boolean
-        Return point.Y > Me.MostTop.Y
+        Return Me.MostTop Is Nothing OrElse point.Y > Me.MostTop.Value.Y
     End Function
 
     ''' <summary>
     ''' Checks if point is more top or right of the drawing
     ''' </summary>
     Private Function IsRight(point As Vector3) As Boolean
-        Return point.X > Me.MostRight.X
+        Return Me.MostRight Is Nothing OrElse point.X > Me.MostRight.Value.X
     End Function
 
     ''' <summary>
     ''' Checks if point is more top or right of the drawing
     ''' </summary>
-    Private Function IsRIght(point As Vector2) As Boolean
-        Return point.X > Me.MostRight.X
+    Private Function IsRight(point As Vector2) As Boolean
+        Return Me.MostRight Is Nothing OrElse point.X > Me.MostRight.Value.X
     End Function
 
     ''' <summary>
     ''' Checks if point is more top or right of the drawing
     ''' </summary>
     Private Function IsLeft(point As Vector3) As Boolean
-        Return point.X < Me.MostLeft.X
+        Return Me.MostLeft Is Nothing OrElse point.X < Me.MostLeft.Value.X
     End Function
 
     ''' <summary>
     ''' Checks if point is more top or right of the drawing
     ''' </summary>
     Private Function IsLeft(point As Vector2) As Boolean
-        Return point.X < Me.MostLeft.X
+        Return Me.MostLeft Is Nothing OrElse point.X < Me.MostLeft.Value.X
     End Function
 
     ''' <summary>
@@ -949,7 +959,23 @@ Public Class LampDxfDocument
 
     Public Shared Property RasterEngrave As AciColor = New AciColor(255, 255, 255)
 
+    Public Shared Function ShiftToZero(drawing As LampDxfDocument) As LampDxfDocument
 
+        Dim offset As Vector3
+        If drawing.MostLeft IsNot Nothing And drawing.MostBottom IsNot Nothing Then
+            offset = New Vector3(-drawing.MostLeft?.X, -drawing.MostBottom?.Y, 0)
+        Else
+            offset = New Vector3(0, 0, 0)
+        End If
+
+        Dim ret As New LampDxfDocument
+        drawing.InsertInto(ret, New LampSingleDxfInsertLocation(offset))
+        Return ret
+    End Function
+
+    Public Function ShiftToZero() As LampDxfDocument
+        Return ShiftToZero(Me)
+    End Function
 End Class
 
 <Flags>
@@ -984,6 +1010,7 @@ Public Class DxfJsonConverter
 
         Return out
     End Function
+
 
 End Class
 
@@ -1114,6 +1141,8 @@ Public Class LampDxfHelper
     Public Shared Function Transform(point As Vector3, offset As Vector3) As Vector3
         Return Transform(point, offset.X, offset.Y)
     End Function
+
+
 End Class
 
 Public Module Extens

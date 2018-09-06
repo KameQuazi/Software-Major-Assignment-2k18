@@ -34,9 +34,11 @@ Public Class LampDxfTest
     <TestMethod()>
     Public Sub CompletedDrawingTest()
         Dim dxf As New LampDxfDocument
-        dxf.AddLine(0, 0, 10, 10)
         dxf.AddLine(10, 10, 20, 0)
-        dxf.AddLine(20, 0, 0, 0)
+        dxf.AddLine(20, 10, 10, 10)
+        dxf.Save("unshifted.dxf")
+        dxf = dxf.ShiftToZero()
+        dxf.Save("shifted.dxf")
 
         ' template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(0, 0, 0)))
         ' template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(30, 0, 0)))

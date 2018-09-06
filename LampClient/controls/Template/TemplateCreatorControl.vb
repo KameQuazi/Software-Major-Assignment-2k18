@@ -265,13 +265,7 @@ Public Class TemplateCreatorControl
 
 
 
-    Private Sub EditDrawingButton_Click(sender As Object, e As EventArgs) Handles btnViewDrawing.Click
-        Using viewer As New DesignerForm(Me.Template) With {.Readonly = Me.ReadOnly}
-            If viewer.ShowDialog() = DialogResult.OK Then
-                Me.Template = viewer.Template
-            End If
-        End Using
-    End Sub
+
 
     Private Sub DxfViewerControl1_Click(sender As Object, e As EventArgs) Handles DxfViewerControl1.Click
 
@@ -576,8 +570,66 @@ Public Class TemplateCreatorControl
     Private Sub DxfViewerControl1_MouseClickAbsolute(sender As Object, args As MouseClickAbsoluteEventArgs) Handles DxfViewerControl1.MouseClickAbsolute
 
     End Sub
-End Class
 
+    Public Property DrawingOpenProgram As OpenType
+        Get
+            Return My.Settings.DesignerProgram
+        End Get
+        Set(value As OpenType)
+            My.Settings.DesignerProgram = value
+            My.Settings.Save()
+        End Set
+    End Property
+
+    Private Sub btnSetDrawing_Click(sender As Object, e As EventArgs) Handles btnSetDrawing.Click
+        If DxfFileDialog.ShowDialog = DialogResult.OK Then
+            Me.CurrentFilename = DxfFileDialog.FileName
+            Dim loaded = LampDxfDocument.FromFile(CurrentFilename)
+            Console.WriteLine(loaded.AllEntities)
+            Template.BaseDrawing = loaded.ShiftToZero
+        End If
+
+
+    End Sub
+
+
+    Private CurrentFilename As String = Nothing
+
+    Private Sub AskForDrawingProgram()
+        DrawingOpenProgram = New OpenType(False, "S:\Programs\Autodesk\AutoCAD 2017\acad.exe")
+    End Sub
+
+    Private Sub EditDrawingButton_Click(sender As Object, e As EventArgs) Handles btnViewDrawing.Click
+        ' open with internal viewer
+        If DrawingOpenProgram Is Nothing Then
+            ' prompt user for 
+            AskForDrawingProgram()
+        End If
+        If DrawingOpenProgram.Internal Then
+            Using viewer As New DesignerForm(Me.Template) With {.Readonly = Me.ReadOnly}
+                If viewer.ShowDialog() = DialogResult.OK Then
+                    Me.Template = viewer.Template
+                End If
+            End Using
+        Else
+            Dim process As New Process
+            process.StartInfo.FileName = DrawingOpenProgram.ProgramPath
+            ' prompt use for file name and create empty dxf file
+            If CurrentFilename Is Nothing Then
+                If DxfSaveDialog.ShowDialog = DialogResult.OK Then
+                    CurrentFilename = DxfSaveDialog.FileName
+                    Me.Template.BaseDrawing.Save(CurrentFilename)
+                End If
+
+            End If
+
+            process.StartInfo.Arguments = CurrentFilename
+            process.Start()
+        End If
+        ' else open with saved opentype
+    End Sub
+
+End Class
 
 Public Class SubmitEventArgs
     Inherits EventArgs
