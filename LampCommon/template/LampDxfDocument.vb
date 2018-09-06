@@ -76,7 +76,7 @@ Public Class LampDxfDocument
     ''' <returns></returns>
     Public ReadOnly Property Width As Double
         Get
-            Return MostRight.X - MostLeft.Y
+            Return MostRight.X - MostLeft.X
         End Get
     End Property
 
@@ -95,7 +95,7 @@ Public Class LampDxfDocument
     ''' </summary>
     ''' <returns></returns>
     <IgnoreDataMember>
-    Public Property BackgroundBrush As New SolidBrush(Color.LightSlateGray)
+    Public Property BackgroundBrush As New SolidBrush(Color.Black)
 
     Public Property MostLeft As Vector3
 
@@ -224,6 +224,8 @@ Public Class LampDxfDocument
             _drawing.Save(fs)
         End Using
     End Sub
+
+#Region "AddFuncs"
 
     ''' <summary>
     ''' Adds an arc to the drawing. Shorthand for AddArc(...)
@@ -417,6 +419,8 @@ Public Class LampDxfDocument
         NotifyPropertyChanged(NameOf(Drawing))
     End Sub
 
+#End Region
+
 
     Public Overrides Function ToString() As String
         Return String.Format("CustomDxfDrawing: {0}", _drawing)
@@ -523,6 +527,7 @@ Public Class LampDxfDocument
             otherDrawing.AddMText(key.Location + offset, value.Value, key.TextHeight, key.TextWidth)
         Next
     End Sub
+
 
     ''' <summary> 
     ''' Generates an array of LampDXFInsertLocation base 
@@ -798,6 +803,9 @@ Public Class LampDxfDocument
     ''' <param name="point"></param>
     ''' <returns></returns>
     Private Function IsBottom(point As Vector3) As Boolean
+        If point.Y < Me.MostBottom.Y Then
+            Console.WriteLine("asdf")
+        End If
         Return point.Y < Me.MostBottom.Y
     End Function
 
@@ -814,14 +822,14 @@ Public Class LampDxfDocument
     ''' Checks if point is more top or right of the drawing
     ''' </summary>
     Private Function IsTop(point As Vector3) As Boolean
-        Return point.Y > Me.MostBottom.Y
+        Return point.Y > Me.MostTop.Y
     End Function
 
     ''' <summary>
     ''' Checks if point is more top or right of the drawing
     ''' </summary>
     Private Function IsTop(point As Vector2) As Boolean
-        Return point.Y > Me.MostBottom.Y
+        Return point.Y > Me.MostTop.Y
     End Function
 
     ''' <summary>
@@ -1111,7 +1119,7 @@ End Class
 Public Module Extens
     <Extension>
     Public Function GetCenter(self As RectangleF) As PointF
-        Return New PointF(self.X = self.Width / 2, self.Y + self.Height / 2)
+        Return New PointF((self.X + self.Width) / 2, (self.Y + self.Height) / 2)
     End Function
 
     <Extension>

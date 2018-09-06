@@ -49,6 +49,8 @@ Partial Class DesignerForm
         Me.rtboxCurrent = New System.Windows.Forms.RichTextBox()
         Me.DesignerScreen1 = New LampClient.DxfViewerControl()
         Me.btnUndo = New System.Windows.Forms.Button()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.TextBox2 = New System.Windows.Forms.TextBox()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -291,8 +293,9 @@ Partial Class DesignerForm
         Me.DesignerScreen1.TabIndex = 17
         LampTemplate1.ApproverProfile = Nothing
         LampTemplate1.BaseDrawing = Nothing
+        LampTemplate1.BoundsLock = False
         LampTemplate1.CreatorProfile = Nothing
-        LampTemplate1.GUID = "099f9ccc-9732-413e-a858-199c579b9d24"
+        LampTemplate1.GUID = "a0b4a7ab-9c6d-4085-8f79-038054e7bc26"
         LampTemplate1.Height = 0R
         LampTemplate1.IsComplete = False
         LampTemplate1.LongDescription = ""
@@ -318,11 +321,27 @@ Partial Class DesignerForm
         Me.btnUndo.Text = "Undo"
         Me.btnUndo.UseVisualStyleBackColor = False
         '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(56, 583)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox1.TabIndex = 36
+        '
+        'TextBox2
+        '
+        Me.TextBox2.Location = New System.Drawing.Point(178, 583)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox2.TabIndex = 37
+        '
         'DesignerForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(1232, 703)
+        Me.Controls.Add(Me.TextBox2)
+        Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.btnUndo)
         Me.Controls.Add(Me.rtboxCurrent)
         Me.Controls.Add(Me.rtboxPrevious)
@@ -381,4 +400,6 @@ Partial Class DesignerForm
     Friend WithEvents rtboxPrevious As RichTextBox
     Friend WithEvents rtboxCurrent As RichTextBox
     Friend WithEvents btnUndo As Button
+    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents TextBox2 As TextBox
 End Class

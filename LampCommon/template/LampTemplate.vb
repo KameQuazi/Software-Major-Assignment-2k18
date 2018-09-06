@@ -128,6 +128,8 @@ Public Class LampTemplateMetadata
     End Property
 
 
+
+
     Private _width As Double
     ''' <summary>
     ''' The length of all of the template
@@ -381,6 +383,19 @@ Public NotInheritable Class LampTemplate
         End Set
     End Property
 
+    <JsonProperty("bound_lock")>
+    <DataMember>
+    Private _boundsLock As Boolean
+    Public Property BoundsLock As Boolean
+        Get
+            Return _boundsLock
+        End Get
+        Set(value As Boolean)
+            _boundsLock = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
     Private Sub UpdateBoundsFromDrawing()
         Me.Width = BaseDrawing?.Width
         Me.Height = BaseDrawing?.Height
@@ -510,6 +525,7 @@ Public NotInheritable Class LampTemplate
         End Set
     End Property
 
+
     ''' <summary>
     ''' Handler for previewImages change
     ''' </summary>
@@ -594,6 +610,10 @@ Public NotInheritable Class LampTemplate
             formatting = Formatting.Indented
         End If
 
+        If Not BoundsLock Then
+            UpdateBoundsFromDrawing()
+        End If
+
         Using fileStream As New StreamWriter(path)
             fileStream.Write(ToJson(formatting))
         End Using
@@ -616,10 +636,12 @@ Public NotInheritable Class LampTemplate
 
     ''' <summary>
     '''  Creates a new <see cref="LampTemplate"></see> with default guid
+    '''  also sets the bounds
     ''' </summary>
     ''' <param name="dxf"></param>
     Sub New(dxf As LampDxfDocument)
         Me.New(dxf, System.Guid.NewGuid.ToString)
+
     End Sub
 
     ''' <summary>
@@ -636,6 +658,7 @@ Public NotInheritable Class LampTemplate
 
         PreviewImages = New ObservableCollection(Of Image)
         PreviewImages.ClearAsArray()
+        UpdateBoundsFromDrawing()
     End Sub
 
 

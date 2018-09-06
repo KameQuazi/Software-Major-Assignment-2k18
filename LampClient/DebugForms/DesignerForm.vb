@@ -113,18 +113,6 @@ Public Class DesignerForm
     End Sub
 
 
-
-    Private Sub Button4_Click_1(sender As Object, e As EventArgs)
-        Try
-            Dim z = TextBox1.Text.Split(" "c)
-            Dim y = TextBox2.Text.Split(" "c)
-            Drawing.AddLine(Double.Parse(z(0)), Double.Parse(z(1)), Double.Parse(y(0)), Double.Parse(y(1)))
-            DesignerScreen1.Refresh()
-        Catch ex As FormatException
-            MessageBox.Show("The format is incorrect!")
-        End Try
-    End Sub
-
     ''' <summary>
     ''' super override the keydown
     ''' </summary>
@@ -398,7 +386,8 @@ Public Class DesignerForm
 
         End Select
 
-
+        TextBox1.Text = Drawing.Width
+        TextBox2.Text = Drawing.Height
 
     End Sub
 
