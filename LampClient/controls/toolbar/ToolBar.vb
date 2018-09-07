@@ -237,36 +237,36 @@ Public Class ToolBar
         Me.ParentForm.Close()
     End Sub
 
-    Private Sub btnLogOut_Click(sender As Object, e As EventArgs) Handles btnLogOut.Click
+    Private Sub btnLogOut_Click(sender As Object, e As EventArgs)
         Logout(ParentForm)
     End Sub
 
 
-    Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
+    Private Sub btnHome_Click(sender As Object, e As EventArgs)
         ShowNewForm(ParentForm, HomeForm)
     End Sub
 
-    Private Sub btnNewOrder_Click(sender As Object, e As EventArgs) Handles btnNewOrder.Click
+    Private Sub btnNewOrder_Click(sender As Object, e As EventArgs)
         ShowNewForm(ParentForm, NewOrderForm)
     End Sub
 
-    Private Sub btnDesigns_Click(sender As Object, e As EventArgs) Handles btnDesigns.Click
+    Private Sub btnDesigns_Click(sender As Object, e As EventArgs)
         ShowNewForm(ParentForm, ViewTemplatesForm)
     End Sub
 
-    Private Sub btnOrders_Click(sender As Object, e As EventArgs) Handles btnOrders.Click
+    Private Sub btnOrders_Click(sender As Object, e As EventArgs)
         ShowNewForm(ParentForm, ViewOrdersForm)
     End Sub
 
-    Private Sub btnNewTemplate_Click(sender As Object, e As EventArgs) Handles btnNewTemplate.Click
+    Private Sub btnNewTemplate_Click(sender As Object, e As EventArgs)
         ShowNewForm(ParentForm, NewTemplateForm)
     End Sub
 
-    Private Sub btnHelp_Click(sender As Object, e As EventArgs) Handles btnHelp.Click
+    Private Sub btnHelp_Click(sender As Object, e As EventArgs)
         HelpBox.ShowDialog()
     End Sub
 
-    Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
+    Private Sub btnAbout_Click(sender As Object, e As EventArgs)
         AboutBox.ShowDialog()
     End Sub
 
@@ -305,7 +305,7 @@ Public Class ToolBar
         Tooltip1.SetToolTip(Me.btnNewTemplate, "create a new template")
     End Sub
 
-    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs)
         If PreviousForms.Count = 0 Then
             btnBack.Enabled = False
             MessageBox.Show("ProgramException: PreviousForm not found")
@@ -318,13 +318,15 @@ Public Class ToolBar
 
 
 
-    Private Sub btnQuit_Click(sender As Object, e As EventArgs) Handles btnQuit.Click
+    Private Sub btnQuit_Click(sender As Object, e As EventArgs)
         If CloseBox.ShowDialog() = DialogResult.OK Then
             End
         End If
     End Sub
 
-
+    Private Sub btnSettings_Click(sender As Object, e As EventArgs) Handles btnSettings.Click
+        ShowNewForm(ParentForm, SettingsForm)
+    End Sub
 End Class
 
 
@@ -340,6 +342,7 @@ Public Enum LampForm
     ViewEditTemplateForm
     ApproveTemplateForm
     ManageUsersForm
+    SettingsForm
 End Enum
 
 Public Class ConfirmationInformation
