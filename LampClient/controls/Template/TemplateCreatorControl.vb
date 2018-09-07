@@ -54,7 +54,8 @@ Public Class TemplateCreatorControl
     ''' Determines the template 
     ''' </summary>
     ''' <returns></returns>
-    <Browsable(False), EditorBrowsable(EditorBrowsableState.Never)>
+    <[ReadOnly](True), Browsable(False),
+        EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Property Template As LampTemplate
         Get
             Return _template
@@ -118,7 +119,7 @@ Public Class TemplateCreatorControl
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Template = LampTemplate.Empty
+        Template = New LampTemplate
         ' attach handler
         AddBubblingEvent(Me.Controls)
 
@@ -209,10 +210,12 @@ Public Class TemplateCreatorControl
                 ComboBoxMaterial.Text = template.Material
             Case NameOf(LampTemplate.Approved)
                 UpdateApproval()
+            Case NameOf(LampTemplate.Width)
+            Case NameOf(LampTemplate.Height)
 
 #If DEBUG Then
             Case Else
-                Throw New ArgumentOutOfRangeException(NameOf(args.PropertyName))
+                Throw New ArgumentOutOfRangeException(args.PropertyName)
 #End If
         End Select
 
@@ -624,7 +627,11 @@ Public Class TemplateCreatorControl
             End If
 
             process.StartInfo.Arguments = CurrentFilename
-            process.Start()
+            Try
+                process.Start()
+            Catch ex As Exception
+                MessageBox.Show("Cannot open program: " + ex.ToString)
+            End Try
         End If
         ' else open with saved opentype
     End Sub

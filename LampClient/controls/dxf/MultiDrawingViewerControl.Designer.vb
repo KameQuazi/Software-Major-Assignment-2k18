@@ -64,9 +64,9 @@ Partial Class MultiDrawingViewerControl
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
         Me.TableLayoutPanel2.RowCount = 1
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35.0!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(509, 35)
         Me.TableLayoutPanel2.TabIndex = 1
         '
@@ -123,17 +123,18 @@ Partial Class MultiDrawingViewerControl
         Me.DxfViewerControl1.TabIndex = 0
         LampTemplate1.ApproverProfile = Nothing
         LampTemplate1.BaseDrawing = Nothing
+        LampTemplate1.BoundsLock = False
         LampTemplate1.CreatorProfile = Nothing
         LampTemplate1.GUID = "2710c1e7-9c58-4d85-bd6e-13940c2fa1b1"
         LampTemplate1.Height = 0R
         LampTemplate1.IsComplete = False
-        LampTemplate1.Width = 0R
         LampTemplate1.LongDescription = ""
         LampTemplate1.Material = "Unspecified"
         LampTemplate1.MaterialThickness = 0R
         LampTemplate1.Name = ""
         LampTemplate1.ShortDescription = ""
         LampTemplate1.SubmitDate = Nothing
+        LampTemplate1.Width = 0R
         Me.DxfViewerControl1.Template = LampTemplate1
         Me.DxfViewerControl1.ZoomX = 1.0R
         Me.DxfViewerControl1.ZoomY = 1.0R

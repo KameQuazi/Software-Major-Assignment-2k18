@@ -23,7 +23,6 @@ Partial Class DesignerForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DesignerForm))
-        Dim LampTemplate1 As LampCommon.LampTemplate = New LampCommon.LampTemplate()
         Me.OpenFileBtn = New System.Windows.Forms.Button()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.SaveFileBtn = New System.Windows.Forms.Button()
@@ -291,21 +290,6 @@ Partial Class DesignerForm
         Me.DesignerScreen1.Name = "DesignerScreen1"
         Me.DesignerScreen1.Size = New System.Drawing.Size(501, 366)
         Me.DesignerScreen1.TabIndex = 17
-        LampTemplate1.ApproverProfile = Nothing
-        LampTemplate1.BaseDrawing = Nothing
-        LampTemplate1.BoundsLock = False
-        LampTemplate1.CreatorProfile = Nothing
-        LampTemplate1.GUID = "a0b4a7ab-9c6d-4085-8f79-038054e7bc26"
-        LampTemplate1.Height = 0R
-        LampTemplate1.IsComplete = False
-        LampTemplate1.LongDescription = ""
-        LampTemplate1.Material = "Unspecified"
-        LampTemplate1.MaterialThickness = 0R
-        LampTemplate1.Name = ""
-        LampTemplate1.ShortDescription = ""
-        LampTemplate1.SubmitDate = Nothing
-        LampTemplate1.Width = 0R
-        Me.DesignerScreen1.Template = LampTemplate1
         Me.DesignerScreen1.ZoomX = 1.0R
         Me.DesignerScreen1.ZoomY = 1.0R
         '

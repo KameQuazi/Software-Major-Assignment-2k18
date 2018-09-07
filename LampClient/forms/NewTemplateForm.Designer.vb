@@ -24,8 +24,6 @@ Partial Class NewTemplateForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim LampTemplate1 As LampCommon.LampTemplate = New LampCommon.LampTemplate()
-        Dim LampDxfDocument1 As LampCommon.LampDxfDocument = New LampCommon.LampDxfDocument()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TemplateCreatorControl1 = New LampClient.TemplateCreatorControl()
         Me.ToolBar1 = New LampClient.ToolBar()
@@ -58,20 +56,7 @@ Partial Class NewTemplateForm
         Me.TemplateCreatorControl1.Size = New System.Drawing.Size(1226, 592)
         Me.TemplateCreatorControl1.SubmitType = LampClient.TemplateCreatorControl.SendType.None
         Me.TemplateCreatorControl1.TabIndex = 0
-        LampTemplate1.ApproverProfile = Nothing
-        LampTemplate1.BaseDrawing = LampDxfDocument1
-        LampTemplate1.CreatorProfile = Nothing
-        LampTemplate1.GUID = "100a4c98-1821-41b8-bf2c-d10bf74e640e"
-        LampTemplate1.Height = 0R
-        LampTemplate1.IsComplete = False
-        LampTemplate1.Width = 0R
-        LampTemplate1.LongDescription = ""
-        LampTemplate1.Material = "Unspecified"
-        LampTemplate1.MaterialThickness = 0R
-        LampTemplate1.Name = ""
-        LampTemplate1.ShortDescription = ""
-        LampTemplate1.SubmitDate = Nothing
-        Me.TemplateCreatorControl1.Template = LampTemplate1
+
         '
         'ToolBar1
         '

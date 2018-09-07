@@ -75,12 +75,12 @@ Public Class LampJob
 
             If TemplateWidth + 2 * SeperationDist > BoardWidth Then
                 ' cannot even fit one, just exit
-                Throw New ArgumentOutOfRangeException(String.Format("Template is too high for laser cutter bed {widthWithpadding={0}, boardWidth={1}", TemplateWidth + 2 * SeperationDist, BoardWidth))
+                Throw New ArgumentOutOfRangeException(String.Format("Template is too high for laser cutter bed [widthWithpadding={0}, boardWidth={1}]", TemplateWidth + 2 * SeperationDist, BoardWidth))
             End If
 
             If TemplateHeight + 2 * SeperationDist > BoardHeight Then
                 ' cannot even fit one, just exit
-                Throw New ArgumentOutOfRangeException(String.Format("Template is too high for laser cutter bed {heightWithPadding={0}, boardHeight={1}", TemplateHeight + 2 * SeperationDist, BoardHeight))
+                Throw New ArgumentOutOfRangeException(String.Format("Template is too high for laser cutter bed [heightWithPadding={0}, boardHeight={1}]", TemplateHeight + 2 * SeperationDist, BoardHeight))
             End If
 
             NotifyPropertyChanged()
@@ -367,7 +367,7 @@ Public Class LampJob
 
     Private SeperationDist As Integer = 5
 
-    Public Sub SetCopies(values As IEnumerable(Of IEnumerable(Of DynamicTextValue)), Optional regenerate As Boolean = True)
+    Public Sub SetCopies(values As IList(Of List(Of DynamicTextValue)), Optional regenerate As Boolean = True)
         Dim currentX As Double = SeperationDist
         Dim currentY As Double = SeperationDist + TemplateHeight ' assume that it can fit a height, (since templateheight is validated at initial)
         Dim currentPage As Integer = 0
@@ -376,6 +376,10 @@ Public Class LampJob
 
         AddNewPage()
         For Each row In values
+            If row.Count <> Parameters.Count Then
+                Throw New ArgumentOutOfRangeException(NameOf(values))
+            End If
+
             ' we will tile from top left to bottom right
             ' we assume all boxes are same height
             ' when it reaches the end, it will drop down
@@ -400,8 +404,12 @@ Public Class LampJob
                     currentY = SeperationDist + TemplateHeight
                 End If
             End If
+            Dim sng As New LampSingleDxfInsertLocation(New netDxf.Vector3(currentX, currentY, 0))
 
-            AddInsertionPoint(currentX, currentY, currentPage)
+            For i = 0 To Parameters.Count - 1
+                sng.DynamicTextData.Add(Parameters(i), row(i))
+            Next
+            AddInsertionPoint(sng, currentPage)
             currentX += SeperationDist + TemplateWidth
         Next
     End Sub

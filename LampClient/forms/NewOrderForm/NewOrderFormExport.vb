@@ -17,8 +17,10 @@ Public Class NewOrderFormExport
     End Sub
 
     Private Sub UpdateContents()
-        MultiDrawingViewerControl1.Drawings = Job.CompleteDrawings
         Job.RefreshCompleteDrawing()
+        MultiDrawingViewerControl1.Drawings = Job.CompleteDrawings
+
+
     End Sub
 End Class
 

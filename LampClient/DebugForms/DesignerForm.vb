@@ -5,10 +5,13 @@ Imports netDxf
 Imports netDxf.Entities
 Imports System.Runtime.CompilerServices
 Imports System.Collections.ObjectModel
+Imports System.ComponentModel
 
 Public Class DesignerForm
     Private _drawing As LampDxfDocument
 
+    <[ReadOnly](True), Browsable(False),
+        EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Property Template As LampTemplate
         Get
             Return DesignerScreen1.Template
@@ -21,6 +24,8 @@ Public Class DesignerForm
         End Set
     End Property
 
+    <[ReadOnly](True), Browsable(False),
+        EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Property Drawing As LampDxfDocument
         Get
             Return DesignerScreen1.Drawing
@@ -109,7 +114,7 @@ Public Class DesignerForm
 
         ' Add any initialization after the InitializeComponent() call.
         If template IsNot Nothing Then
-            Me.template = template
+            Me.Template = template
         End If
     End Sub
 
@@ -273,6 +278,7 @@ Public Class DesignerForm
                 textWidth = 0
                 textbuff = ""
                 parameterName = ""
+
             Case Else
                 MessageBox.Show("No cancel routine found for " + CurrentTool.ToString)
 
@@ -324,8 +330,12 @@ Public Class DesignerForm
 
                             DynamicTextKeys.Add(New DynamicTextKey(parameterName, "", firstPoint, textHeight, textWidth))
                             Drawing.RemoveEntity(firstPreviousEntity)
-                            UndoEntities.Push(Drawing.AddMText(firstPoint, parameterName, textHeight, textWidth))
+                            Dim mtext = Drawing.AddMText(firstPoint, parameterName, textHeight, textWidth)
+
+                            UndoEntities.Push(mtext)
+                            ShownDynamicText.Add(mtext)
                             ResetVariables()
+
                         End If
                 End Select
         End Select
@@ -481,6 +491,8 @@ Public Class DesignerForm
         Next
     End Sub
 
+    Private ShownDynamicText As New List(Of MText)
+
     Private Sub cboxDynamicText_CheckedChanged(sender As Object, e As EventArgs) Handles cboxDynamicText.CheckedChanged
         If doUpdate Then
             doUpdate = False
@@ -614,6 +626,10 @@ Public Class DesignerForm
         If currentState <> DrawingState.None Then
             RevertDraw()
         End If
+        For Each item In ShownDynamicText
+            Drawing.RemoveEntity(item)
+        Next
+
     End Sub
 
     Private Sub btnUndo_Click(sender As Object, e As EventArgs) Handles btnUndo.Click

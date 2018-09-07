@@ -24,8 +24,6 @@ Partial Class TemplateCreatorControl
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TemplateCreatorControl))
-        Dim LampDxfDocument1 As LampCommon.LampDxfDocument = New LampCommon.LampDxfDocument()
-        Dim LampTemplate1 As LampCommon.LampTemplate = New LampCommon.LampTemplate()
         Me.RootColumn = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Dynbox = New System.Windows.Forms.ListBox()
@@ -54,8 +52,10 @@ Partial Class TemplateCreatorControl
         Me.ImportSpf = New System.Windows.Forms.Button()
         Me.ExportDxf = New System.Windows.Forms.Button()
         Me.ExportSpf = New System.Windows.Forms.Button()
+        Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
         Me.DrawingDivider = New System.Windows.Forms.TableLayoutPanel()
+        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.btnSetDrawing = New System.Windows.Forms.Button()
         Me.btnViewDrawing = New System.Windows.Forms.Button()
@@ -70,8 +70,6 @@ Partial Class TemplateCreatorControl
         Me.SpfSaveDialog = New System.Windows.Forms.SaveFileDialog()
         Me.SpfOpenDialog = New System.Windows.Forms.OpenFileDialog()
         Me.ErrorProviderName = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
-        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
         Me.RootColumn.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.LeftDivider.SuspendLayout()
@@ -470,6 +468,16 @@ Partial Class TemplateCreatorControl
         Me.ExportSpf.Text = "Export To SPF"
         Me.ExportSpf.UseVisualStyleBackColor = False
         '
+        'DynamicFormCreation1
+        '
+        Me.DynamicFormCreation1.AutoScroll = True
+        Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DynamicFormCreation1.Location = New System.Drawing.Point(432, 3)
+        Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
+        Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(20)
+        Me.DynamicFormCreation1.Size = New System.Drawing.Size(337, 428)
+        Me.DynamicFormCreation1.TabIndex = 29
+        '
         'TableLayoutPanel3
         '
         Me.TableLayoutPanel3.ColumnCount = 1
@@ -500,6 +508,19 @@ Partial Class TemplateCreatorControl
         Me.DrawingDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
         Me.DrawingDivider.Size = New System.Drawing.Size(362, 361)
         Me.DrawingDivider.TabIndex = 1
+        '
+        'DxfViewerControl1
+        '
+        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
+        Me.DxfViewerControl1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.DxfViewerControl1.Location = New System.Drawing.Point(17, 17)
+        Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(16)
+        Me.DxfViewerControl1.Name = "DxfViewerControl1"
+        Me.DxfViewerControl1.Size = New System.Drawing.Size(328, 254)
+        Me.DxfViewerControl1.TabIndex = 0
+        Me.DxfViewerControl1.ZoomX = 1.0R
+        Me.DxfViewerControl1.ZoomY = 1.0R
         '
         'TableLayoutPanel2
         '
@@ -627,49 +648,6 @@ Partial Class TemplateCreatorControl
         'ErrorProviderName
         '
         Me.ErrorProviderName.ContainerControl = Me
-        '
-        'DynamicFormCreation1
-        '
-        Me.DynamicFormCreation1.AutoScroll = True
-        Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DynamicFormCreation1.Location = New System.Drawing.Point(432, 3)
-        Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
-        Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(20)
-        Me.DynamicFormCreation1.Size = New System.Drawing.Size(337, 428)
-        Me.DynamicFormCreation1.TabIndex = 29
-        '
-        'DxfViewerControl1
-        '
-        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
-        Me.DxfViewerControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        LampDxfDocument1.MostBottom = Nothing
-        LampDxfDocument1.MostLeft = Nothing
-        LampDxfDocument1.MostRight = Nothing
-        LampDxfDocument1.MostTop = Nothing
-        Me.DxfViewerControl1.Drawing = LampDxfDocument1
-        Me.DxfViewerControl1.Location = New System.Drawing.Point(17, 17)
-        Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(16)
-        Me.DxfViewerControl1.Name = "DxfViewerControl1"
-        Me.DxfViewerControl1.Size = New System.Drawing.Size(328, 254)
-        Me.DxfViewerControl1.TabIndex = 0
-        LampTemplate1.ApproverProfile = Nothing
-        LampTemplate1.BaseDrawing = LampDxfDocument1
-        LampTemplate1.BoundsLock = False
-        LampTemplate1.CreatorProfile = Nothing
-        LampTemplate1.GUID = "e52c31f6-8831-46bf-bd80-6ef1af3d8fb6"
-        LampTemplate1.Height = -1.0R
-        LampTemplate1.IsComplete = False
-        LampTemplate1.LongDescription = ""
-        LampTemplate1.Material = "Unspecified"
-        LampTemplate1.MaterialThickness = 0R
-        LampTemplate1.Name = ""
-        LampTemplate1.ShortDescription = ""
-        LampTemplate1.SubmitDate = Nothing
-        LampTemplate1.Width = -1.0R
-        Me.DxfViewerControl1.Template = LampTemplate1
-        Me.DxfViewerControl1.ZoomX = 1.0R
-        Me.DxfViewerControl1.ZoomY = 1.0R
         '
         'TemplateCreatorControl
         '

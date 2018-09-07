@@ -26,9 +26,9 @@ Partial Class NewOrderFormExport
         Me.ToolBar1 = New LampClient.ToolBar()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.gboxSummary = New System.Windows.Forms.GroupBox()
         Me.gboxGenerated = New System.Windows.Forms.GroupBox()
         Me.MultiDrawingViewerControl1 = New LampClient.MultiDrawingViewerControl()
-        Me.gboxSummary = New System.Windows.Forms.GroupBox()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
@@ -97,6 +97,16 @@ Partial Class NewOrderFormExport
         Me.TableLayoutPanel3.Size = New System.Drawing.Size(239, 586)
         Me.TableLayoutPanel3.TabIndex = 41
         '
+        'gboxSummary
+        '
+        Me.gboxSummary.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gboxSummary.Location = New System.Drawing.Point(3, 3)
+        Me.gboxSummary.Name = "gboxSummary"
+        Me.gboxSummary.Size = New System.Drawing.Size(233, 228)
+        Me.gboxSummary.TabIndex = 0
+        Me.gboxSummary.TabStop = False
+        Me.gboxSummary.Text = "GroupBox1"
+        '
         'gboxGenerated
         '
         Me.gboxGenerated.Controls.Add(Me.MultiDrawingViewerControl1)
@@ -117,16 +127,6 @@ Partial Class NewOrderFormExport
         Me.MultiDrawingViewerControl1.Name = "MultiDrawingViewerControl1"
         Me.MultiDrawingViewerControl1.Size = New System.Drawing.Size(723, 556)
         Me.MultiDrawingViewerControl1.TabIndex = 0
-        '
-        'gboxSummary
-        '
-        Me.gboxSummary.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gboxSummary.Location = New System.Drawing.Point(3, 3)
-        Me.gboxSummary.Name = "gboxSummary"
-        Me.gboxSummary.Size = New System.Drawing.Size(233, 228)
-        Me.gboxSummary.TabIndex = 0
-        Me.gboxSummary.TabStop = False
-        Me.gboxSummary.Text = "GroupBox1"
         '
         'NewOrderFormExport
         '

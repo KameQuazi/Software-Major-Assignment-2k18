@@ -225,7 +225,7 @@ Public Class NewOrderFormChooseParameter
 
     Private Sub btNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
         Dim newJob As New LampJob(SelectedTemplate)
-        newJob.SetCopies(Items)
+        newJob.SetCopies(Items.ToList())
         Dim x As New NewOrderFormExport(newJob)
         x.Show()
         Me.Close()
