@@ -181,6 +181,7 @@ Public Interface ILampService
 
     <OperationContract>
     Function RevokeJob(credentials As LampCredentials, jobId As String) As LampStatus
+
 End Interface
 
 <ServiceContract>

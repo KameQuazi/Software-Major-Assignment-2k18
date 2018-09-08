@@ -1,7 +1,8 @@
 ﻿Imports System.ServiceModel.Configuration
 Imports System.Threading.Tasks
 Imports LampCommon
-Imports LampService
+Imports LampService.ValidateHelper
+Imports LampService.PermsHelper
 
 ''' <summary>
 ''' The receiver class has all privildegeds to the database 
@@ -810,11 +811,30 @@ Public Class LampService
                 Return response
             End If
 
+            If Not ValidJob(job) Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim submitter = Database.SelectUser(job.SubmitId)
+            If submitter.PermissionLevel < UserPermission.Elevated Then
+                response = LampStatus.InvalidSubmitter
+                Return response
+            End If
+            If job.ApproverId IsNot Nothing Then
+                Dim approver = Database.SelectUser(job.ApproverId)
+                If approver Is Nothing OrElse approver.PermissionLevel <= UserPermission.Elevated Then
+                    response = LampStatus.InvalidApprover
+                    Return response
+                End If
+            End If
+
             If Database.SelectJob(job.JobId) IsNot Nothing Then
                 ' already exists a job, 
                 response = LampStatus.GuidConflict
                 Return response
             End If
+
 
             If Database.SelectTemplateData(job.Template.GUID) Is Nothing Then ' check if exists
                 response = LampStatus.NoTemplateFound
@@ -1150,210 +1170,7 @@ Public Class LampService
 #End Region
 
 
-#Region "HasPermissions"
-    Public Function HasGetUserList(user As LampUser)
-        Return user IsNot Nothing AndAlso user.PermissionLevel >= UserPermission.Admin
-    End Function
 
-    Public Function HasGetTemplateListPerms(user As LampUser, approveStatus As LampApprove, byUser As IEnumerable(Of String)) As Boolean
-        ' allow anyone to access approved
-        If approveStatus = LampApprove.Approved And user.PermissionLevel >= UserPermission.Standard Then
-            Return True
-        End If
-
-        '  deny if standard user tries to get unapproved templates from other users
-        If user.PermissionLevel < UserPermission.Elevated Then
-            If byUser.Count() = 0 Then
-                Return False
-            End If
-            Dim notUser As Boolean = False
-            For Each item In byUser
-                If item <> user.UserId Then
-                    notUser = True
-                    Exit For
-                End If
-            Next
-            If notUser Then
-                Return False
-            End If
-        End If
-        Return user.PermissionLevel >= UserPermission.Standard
-    End Function
-
-    Public Function HasGetTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
-        If template.Approved = True Then
-            ' anyone can access approved templates
-            Return True
-        End If
-
-        If user.UserId = template.CreatorId Then
-            Return True
-            ' same user can access template
-        End If
-
-        If user.PermissionLevel >= UserPermission.Elevated Then
-            ' greater than normal can access all templates
-            Return True
-        End If
-
-        Return False
-    End Function
-
-
-    Public Function HasAddTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
-        Return user.PermissionLevel >= UserPermission.Elevated
-    End Function
-
-    Public Function HasEditTemplatePerms(user As LampUser, original As LampTemplate, altered As LampTemplate) As Boolean
-        If original IsNot Nothing AndAlso user.UserId = original.CreatorId Then
-            Return True
-        End If
-        If user.PermissionLevel >= UserPermission.Elevated Then
-            Return True
-        End If
-        Return False
-    End Function
-
-    Public Function HasRemoveTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
-        If user.PermissionLevel >= UserPermission.Elevated Then
-            Return True
-        End If
-        If template IsNot Nothing AndAlso template.CreatorId = user.UserId Then
-            Return True
-        End If
-        Return False
-    End Function
-
-
-
-
-    Public Function HasGetUnapprovedTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
-        Return user.PermissionLevel >= UserPermission.Elevated Or user.UserId = template.CreatorId
-    End Function
-
-    Public Function HasAddUnapprovedTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
-        If user.PermissionLevel >= UserPermission.Standard Then
-            Return True
-        End If
-        Return False
-    End Function
-
-    Public Function HasEditUnapprovedTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
-        If user.PermissionLevel >= UserPermission.Elevated OrElse user.UserId = template.CreatorId Then
-            Return True
-        End If
-        Return False
-    End Function
-
-    Public Function HasRemoveUnapprovedTemplatePerms(user As LampUser, template As LampTemplate) As Boolean
-        Return user.UserId = template.CreatorId Or user.PermissionLevel >= UserPermission.Elevated
-    End Function
-
-
-
-
-
-    Public Function HasGetUserPerms(thisUser As LampUser, otherUser As LampUser)
-        Return thisUser.PermissionLevel >= UserPermission.Admin
-    End Function
-
-    Public Function HasAddUserPerms(thisUser As LampUser, otherUser As LampUser)
-        ' allow standard users to be signed up
-        If otherUser.PermissionLevel = UserPermission.Standard Then
-            Return True
-        End If
-        Return thisUser IsNot Nothing AndAlso thisUser.PermissionLevel >= UserPermission.Admin
-    End Function
-
-    Public Function HasEditUserPerms(user As LampUser, oldUser As LampUser, newUser As LampUser) As Boolean
-
-        If user.PermissionLevel >= UserPermission.Admin Then
-            Return True
-        End If
-        If oldUser Is Nothing Then
-            Return False
-        End If
-        Return oldUser.UserId = user.UserId
-    End Function
-
-    Public Function HasRemoveUserPerms(user As LampUser, otherUser As LampUser)
-        Return user.PermissionLevel >= UserPermission.Admin
-    End Function
-
-
-
-
-
-    Public Function HasGetJobPerms(user As LampUser, job As LampJob)
-        Return user.PermissionLevel >= UserPermission.Admin OrElse job.SubmitId = user.UserId
-    End Function
-
-    Public Function HasAddJobPerms(user As LampUser, job As LampJob) As Boolean
-        Return user.PermissionLevel >= UserPermission.Elevated
-    End Function
-
-    Public Function HasEditJobPerms(thisUser As LampUser, job As LampJob)
-        Return thisUser.PermissionLevel >= UserPermission.Admin OrElse thisUser.UserId = job.SubmitId
-    End Function
-
-    Public Function HasRemoveJobPerms(user As LampUser, job As LampJob)
-        Return user.PermissionLevel >= UserPermission.Admin OrElse job.SubmitId = user.UserId
-    End Function
-
-
-
-
-
-    Public Function HasApproveTemplatePerms(user As LampUser, template As LampTemplate)
-        Return user.PermissionLevel >= UserPermission.Elevated
-    End Function
-
-
-    Public Function HasRevokeTemplatePerms(user As LampUser, template As LampTemplate)
-        Return user.PermissionLevel >= UserPermission.Elevated
-    End Function
-
-
-
-    Public Function HasGetJobListPerms(user As LampUser, byUser As IEnumerable(Of String))
-        If user.PermissionLevel >= UserPermission.Admin Then
-            Return True
-        End If
-        ' only allow elevated to view own jobs
-        If user.PermissionLevel >= UserPermission.Elevated Then
-            For Each item In byUser
-                If item <> user.UserId Then
-                    Return False
-                End If
-            Next
-            Return True
-        End If
-        Return False
-
-    End Function
-
-
-
-
-    Public Function HasApproveJobPerms(user As LampUser, job As LampJob)
-        Return user IsNot Nothing AndAlso user.PermissionLevel >= UserPermission.Admin
-    End Function
-
-    Public Function HasRevokeJobPerms(user As LampUser, job As LampJob)
-        Return user IsNot Nothing AndAlso user.PermissionLevel >= UserPermission.Admin
-    End Function
-
-
-
-
-
-
-
-
-
-
-
-#End Region
 
     Public Sub ResetDebug()
         Database.ResetDebug()

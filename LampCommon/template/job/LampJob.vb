@@ -35,6 +35,7 @@ Public Class LampJob
     ''' <returns></returns>
     ''' 
     <JsonProperty("job_id")>
+    <DataMember>
     Public Property JobId As String
         Get
             Return _jobId
@@ -60,6 +61,7 @@ Public Class LampJob
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("template")>
+    <DataMember>
     Public Property Template As LampTemplate
         Get
             Return _template
@@ -102,6 +104,7 @@ Public Class LampJob
     ''' </summary>
     ''' <returns></returns>
     <JsonProperty("submitter_profile")>
+    <DataMember>
     Public Property Submitter As LampProfile
         Get
             Return _submitter
@@ -124,6 +127,7 @@ Public Class LampJob
 
     Private _approver As LampProfile
     <JsonProperty("approver_profile")>
+    <DataMember>
     Public Property Approver As LampProfile
         Get
             Return _approver
@@ -207,25 +211,25 @@ Public Class LampJob
         NotifyPropertyChanged(NameOf(InsertionPages))
     End Sub
 
-    Public ReadOnly Property SubmitId As String
+    Public Property SubmitId As String
         Get
-            If Submitter Is Nothing Then
-                Return Nothing
-            End If
-            Return Submitter.UserId
+            Return Submitter?.UserId
         End Get
+        Set(value As String)
+            Submitter = New LampProfile(Nothing, Nothing, value, UserPermission.Invalid)
+        End Set
     End Property
 
-    Public ReadOnly Property ApproverId As String
+    Public Property ApproverId As String
         Get
-            If Approver Is Nothing Then
-                Return Nothing
-            End If
-            Return Approver.UserId
+            Return Approver?.UserId
         End Get
+        Set(value As String)
+            Approver = New LampProfile(Nothing, Nothing, value, UserPermission.Invalid)
+        End Set
     End Property
 
-    Private _summary As String
+    Private _summary As String = ""
     ''' <summary>
     ''' a brief summary of job
     ''' </summary>
@@ -278,7 +282,7 @@ Public Class LampJob
     ''' </summary>
     ''' <param name="template"></param>
     Sub New(template As LampTemplate)
-        Me.New(GetNewGuid, template, Nothing, Nothing, Nothing, DateTime.Now)
+        Me.New(GetNewGuid, template, Nothing, Nothing, "", Nothing)
         RefreshCompleteDrawing()
     End Sub
 

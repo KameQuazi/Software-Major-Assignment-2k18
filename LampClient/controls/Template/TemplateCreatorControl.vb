@@ -600,6 +600,7 @@ Public Class TemplateCreatorControl
 
     Private Sub AskForDrawingProgram()
         DrawingOpenProgram = New OpenType(False, "S:\Programs\Autodesk\AutoCAD 2017\acad.exe")
+        ''  TODO
     End Sub
 
     Private Sub EditDrawingButton_Click(sender As Object, e As EventArgs) Handles btnViewDrawing.Click

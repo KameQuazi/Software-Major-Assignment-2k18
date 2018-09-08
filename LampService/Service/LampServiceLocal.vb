@@ -1,6 +1,7 @@
 ﻿Imports System.Threading.Tasks
 Imports LampCommon
-Imports LampService
+Imports LampService.PermsHelper
+Imports LampService.ValidateHelper
 
 Public Class LampServiceLocal
     Inherits LampService
@@ -704,6 +705,24 @@ Public Class LampServiceLocal
             If Not HasAddJobPerms(user, job) Then
                 response = LampStatus.NoAccess
                 Return response
+            End If
+
+            If Not ValidJob(job) Then
+                response = LampStatus.InvalidParameters
+                Return response
+            End If
+
+            Dim submitter = Await Database.SelectUserAsync(job.SubmitId).ConfigureAwait(False)
+            If submitter.PermissionLevel < UserPermission.Elevated Then
+                response = LampStatus.InvalidSubmitter
+                Return response
+            End If
+            If job.ApproverId IsNot Nothing Then
+                Dim approver = Await Database.SelectUserAsync(job.ApproverId).ConfigureAwait(False)
+                If approver Is Nothing OrElse approver.PermissionLevel <= UserPermission.Elevated Then
+                    response = LampStatus.InvalidApprover
+                    Return response
+                End If
             End If
 
             If Await Database.SelectJobAsync(job.JobId) IsNot Nothing Then
