@@ -369,7 +369,7 @@ Public Class LampJob
 
     Public Sub SetCopies(values As IList(Of List(Of DynamicTextValue)), Optional regenerate As Boolean = True)
         Dim currentX As Double = SeperationDist
-        Dim currentY As Double = SeperationDist + TemplateHeight ' assume that it can fit a height, (since templateheight is validated at initial)
+        Dim currentY As Double = SeperationDist ' assume that it can fit a height, (since templateheight is validated at initial)
         Dim currentPage As Integer = 0
 
         InsertionPages.Clear()
@@ -393,7 +393,7 @@ Public Class LampJob
             Else
                 ' move back to left
                 currentX = SeperationDist
-                ' try to go down
+                ' try to go up 
                 If CanFitHeight(SeperationDist + TemplateHeight) Then
                     currentY += SeperationDist + TemplateHeight
 
@@ -401,7 +401,7 @@ Public Class LampJob
                     ' new page
                     currentPage += 1
                     AddNewPage()
-                    currentY = SeperationDist + TemplateHeight
+                    currentY = SeperationDist
                 End If
             End If
             Dim sng As New LampSingleDxfInsertLocation(New netDxf.Vector3(currentX, currentY, 0))

@@ -35,9 +35,15 @@ Public Class NewOrderFormChooseParameter
 
     Private Sub UpdateFromItems()
         TemplateDisplay1.Template = SelectedTemplate
-        tboxNumTemplates.Text = NumberOfTemplates.ToString
+        If ValidateNumTemplates(New Integer) Then
+            tboxNumTemplates.Text = NumberOfTemplates.ToString
+        End If
+
         UpdateColumnHeaders()
         UpdateRows()
+        If SelectedTemplate IsNot Nothing AndAlso SelectedTemplate.DynamicTextList.Count = 0 Then
+            tboxNumTemplates.Enabled = True
+        End If
     End Sub
 
     Dim doUpdateFromGrid As Boolean = True
@@ -99,35 +105,6 @@ Public Class NewOrderFormChooseParameter
         End Using
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs)
-        Dim job = New LampJob(Me.SelectedTemplate, CurrentUser.ToProfile, "hello summary")
-        job.Pages = 3
-
-        For i = 0 To 2
-
-        Next
-
-
-        Dim response = CurrentSender.AddJob(CurrentUser.ToCredentials, job)
-        Select Case response
-            Case LampStatus.OK
-                MessageBox.Show("Successfully added job")
-                ShowNewForm(Nothing, Me, HomeForm)
-            Case Else
-                ShowError(response)
-        End Select
-    End Sub
-
-    Private Sub ServiceSortableTemplateViewer1_TemplateClick(sender As Object, e As TemplateClickedEventArgs)
-    End Sub
-
-    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs)
-
-    End Sub
-
-    Private Sub TemplateDisplay1_Load(sender As Object, e As EventArgs)
-
-    End Sub
 
     Private Sub btnCreate_Click(sender As Object, e As EventArgs) Handles btnCreate.Click
         AddCopy()
@@ -166,7 +143,7 @@ Public Class NewOrderFormChooseParameter
                 Next
 
             ElseIf value < _numberOfTemplates Then
-                For i = _numberOfTemplates - 1 To value
+                For i = _numberOfTemplates - 1 To value Step -1
                     Items.RemoveAt(i)
                 Next
             End If
@@ -235,6 +212,28 @@ Public Class NewOrderFormChooseParameter
     Private Sub NewOrderFormChooseParameter_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
     End Sub
+
+    Private Sub tboxNumTemplates_TextChanged(sender As Object, e As EventArgs) Handles tboxNumTemplates.TextChanged
+
+        If SelectedTemplate Is Nothing Then
+            ' do nothing
+        ElseIf SelectedTemplate.DynamicTextList.Count = 0 Then
+            Dim result As Integer = -1
+            If ValidateNumTemplates(result) Then
+                NumberOfTemplates = result
+                ErrorProvider1.SetError(tboxNumTemplates, "")
+            Else
+                ErrorProvider1.SetError(tboxNumTemplates, "Please enter a valid integer")
+                NumberOfTemplates = 0
+            End If
+        Else
+            ' do nothing
+        End If
+    End Sub
+
+    Private Function ValidateNumTemplates(ByRef result As Integer) As Boolean
+        Return Integer.TryParse(tboxNumTemplates.Text, result)
+    End Function
 End Class
 
 

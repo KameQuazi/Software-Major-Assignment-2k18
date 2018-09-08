@@ -22,5 +22,9 @@ Public Class NewOrderFormExport
 
 
     End Sub
+
+    Private Sub MultiDrawingViewerControl1_Load(sender As Object, e As EventArgs) Handles MultiDrawingViewerControl1.Load
+
+    End Sub
 End Class
 
