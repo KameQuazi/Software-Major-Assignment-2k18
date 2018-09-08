@@ -64,7 +64,7 @@ End Class
 ''' More than 1 single object (1 board)
 ''' this represents 1 sheet of dxf objects to put into the laser cutter
 ''' </summary>
-<DataContract>
+<CollectionDataContract>
 Public Class LampMultipleInsertLocation
     Inherits ObservableCollection(Of LampSingleDxfInsertLocation)
 End Class

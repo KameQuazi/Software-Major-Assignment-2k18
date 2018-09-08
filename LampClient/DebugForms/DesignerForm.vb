@@ -649,13 +649,6 @@ Public Enum LampTool
 End Enum
 
 
-
-Public Module owo1
-    Public Function DistanceTwoPoints(first As Vector3, second As Vector3)
-        Return Math.Sqrt((first.X - second.X) ^ 2 + (first.Y - second.Y) ^ 2)
-    End Function
-End Module
-
 Public Enum DrawingState
     None = 0
     Uncommitted = 1

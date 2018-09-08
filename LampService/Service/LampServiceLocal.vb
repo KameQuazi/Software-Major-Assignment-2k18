@@ -5,13 +5,13 @@ Imports LampService.ValidateHelper
 
 Public Class LampServiceLocal
     Inherits LampService
-    Implements ILampServiceBoth
+    Implements ILampServiceClient
 
     Public Sub New(databasePath As String)
         MyBase.New(databasePath)
     End Sub
 
-    Public Async Function GetTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampTemplateWrapper) Implements ILampServiceAsync.GetTemplateAsync
+    Public Async Function GetTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampTemplateWrapper) Implements ILampServiceClient.GetTemplateAsync
         Dim response As New LampTemplateWrapper
 
         Try
@@ -51,7 +51,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Async Function AddTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus) Implements ILampServiceAsync.AddTemplateAsync
+    Public Async Function AddTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus) Implements ILampServiceClient.AddTemplateAsync
         Dim response As LampStatus
 
         Try
@@ -91,7 +91,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Async Function EditTemplateAsync(credentials As LampCredentials, newTemplate As LampTemplate) As Task(Of LampStatus) Implements ILampServiceAsync.EditTemplateAsync
+    Public Async Function EditTemplateAsync(credentials As LampCredentials, newTemplate As LampTemplate) As Task(Of LampStatus) Implements ILampServiceClient.EditTemplateAsync
         Dim response As LampStatus
 
         Try
@@ -133,7 +133,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Async Function RemoveTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.RemoveTemplateAsync
+    Public Async Function RemoveTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceClient.RemoveTemplateAsync
         Dim response As LampStatus
         Try
             If guid Is Nothing Then
@@ -171,7 +171,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Async Function GetUserAsync(credentials As LampCredentials, guid As String) As Task(Of LampUserWrapper) Implements ILampServiceAsync.GetUserAsync
+    Public Async Function GetUserAsync(credentials As LampCredentials, guid As String) As Task(Of LampUserWrapper) Implements ILampServiceClient.GetUserAsync
         Dim response As New LampUserWrapper()
 
         Try
@@ -205,7 +205,7 @@ Public Class LampServiceLocal
         Return response
     End Function
 
-    Public Async Function AddUserAsync(credentials As LampCredentials, toAddUser As LampUser) As Task(Of LampStatus) Implements ILampServiceAsync.AddUserAsync
+    Public Async Function AddUserAsync(credentials As LampCredentials, toAddUser As LampUser) As Task(Of LampStatus) Implements ILampServiceClient.AddUserAsync
         Dim response As LampStatus
 
         Try
@@ -251,7 +251,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Async Function EditUserAsync(credentials As LampCredentials, newUser As LampUser) As Task(Of LampStatus) Implements ILampServiceAsync.EditUserAsync
+    Public Async Function EditUserAsync(credentials As LampCredentials, newUser As LampUser) As Task(Of LampStatus) Implements ILampServiceClient.EditUserAsync
         Dim response As LampStatus
 
         Try
@@ -294,7 +294,7 @@ Public Class LampServiceLocal
 
     End Function
 
-    Public Async Function RemoveUserAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.RemoveUserAsync
+    Public Async Function RemoveUserAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceClient.RemoveUserAsync
         Dim response As LampStatus
 
         Try
@@ -337,7 +337,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Async Function AuthenticateAsync(credentials As LampCredentials) As Task(Of LampUserWrapper) Implements ILampServiceAsync.AuthenticateAsync
+    Public Async Function AuthenticateAsync(credentials As LampCredentials) As Task(Of LampUserWrapper) Implements ILampServiceClient.AuthenticateAsync
         Dim user As LampUser = Nothing
         Dim response As New LampUserWrapper()
 
@@ -369,12 +369,12 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Function GetAllTemplateAsync(credentials As LampCredentials) As Task(Of List(Of LampTemplate)) Implements ILampServiceAsync.GetAllTemplateAsync
+    Public Function GetAllTemplateAsync(credentials As LampCredentials) As Task(Of List(Of LampTemplate)) Implements ILampServiceClient.GetAllTemplateAsync
         'to do
         Return Database.GetAllTemplateAsync()
     End Function
 
-    Public Async Function GetUnapprovedTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampTemplateWrapper) Implements ILampServiceAsync.GetUnapprovedTemplateAsync
+    Public Async Function GetUnapprovedTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampTemplateWrapper) Implements ILampServiceClient.GetUnapprovedTemplateAsync
         Dim response As New LampTemplateWrapper()
 
         Try
@@ -413,7 +413,7 @@ Public Class LampServiceLocal
 
     End Function
 
-    Public Async Function AddUnapprovedTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus) Implements ILampServiceAsync.AddUnapprovedTemplateAsync
+    Public Async Function AddUnapprovedTemplateAsync(credentials As LampCredentials, template As LampTemplate) As Task(Of LampStatus) Implements ILampServiceClient.AddUnapprovedTemplateAsync
         Dim response As LampStatus
 
         Try
@@ -449,7 +449,7 @@ Public Class LampServiceLocal
         Return response
     End Function
 
-    Public Async Function EditUnapprovedTemplateAsync(credentials As LampCredentials, newTemplate As LampTemplate) As Task(Of LampStatus) Implements ILampServiceAsync.EditUnapprovedTemplateAsync
+    Public Async Function EditUnapprovedTemplateAsync(credentials As LampCredentials, newTemplate As LampTemplate) As Task(Of LampStatus) Implements ILampServiceClient.EditUnapprovedTemplateAsync
         Dim response As LampStatus
 
         Try
@@ -496,7 +496,7 @@ Public Class LampServiceLocal
     ''' <param name="credentials"></param>
     ''' <param name="guid"></param>
     ''' <returns></returns>
-    Public Async Function RemoveUnapprovedTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.RemoveUnapprovedTemplateAsync
+    Public Async Function RemoveUnapprovedTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceClient.RemoveUnapprovedTemplateAsync
         Dim response As LampStatus
 
         Try
@@ -532,7 +532,7 @@ Public Class LampServiceLocal
         Return response
     End Function
 
-    Public Async Function ApproveTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.ApproveTemplateAsync
+    Public Async Function ApproveTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceClient.ApproveTemplateAsync
         Dim response As LampStatus
 
         Try
@@ -582,7 +582,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Async Function RevokeTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.RevokeTemplateAsync
+    Public Async Function RevokeTemplateAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceClient.RevokeTemplateAsync
         Dim response As LampStatus
 
         Try
@@ -638,7 +638,7 @@ Public Class LampServiceLocal
     ''' <param name="credentials"></param>
     ''' <param name="guid"></param>
     ''' <returns></returns>
-    Public Async Function GetJobAsync(credentials As LampCredentials, guid As String) As Task(Of LampJobWrapper) Implements ILampServiceAsync.GetJobAsync
+    Public Async Function GetJobAsync(credentials As LampCredentials, guid As String) As Task(Of LampJobWrapper) Implements ILampServiceClient.GetJobAsync
         Dim response As New LampJobWrapper
 
         Try
@@ -687,7 +687,7 @@ Public Class LampServiceLocal
     ''' <param name="credentials"></param>
     ''' <param name="job"></param>
     ''' <returns></returns>
-    Public Async Function AddJobAsync(credentials As LampCredentials, job As LampJob) As Task(Of LampStatus) Implements ILampServiceAsync.AddJobAsync
+    Public Async Function AddJobAsync(credentials As LampCredentials, job As LampJob) As Task(Of LampStatus) Implements ILampServiceClient.AddJobAsync
         Dim response As LampStatus
 
         Try
@@ -718,7 +718,7 @@ Public Class LampServiceLocal
                 Return response
             End If
             If job.ApproverId IsNot Nothing Then
-                Dim approver = Await Database.SelectUserAsync(job.ApproverId).ConfigureAwait(False)
+                Dim approver = Await Database.SelectUserAsync(job.ApproverId)
                 If approver Is Nothing OrElse approver.PermissionLevel <= UserPermission.Elevated Then
                     response = LampStatus.InvalidApprover
                     Return response
@@ -750,7 +750,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Async Function EditJobAsync(credentials As LampCredentials, job As LampJob) As Task(Of LampStatus) Implements ILampServiceAsync.EditJobAsync
+    Public Async Function EditJobAsync(credentials As LampCredentials, job As LampJob) As Task(Of LampStatus) Implements ILampServiceClient.EditJobAsync
         Dim response As LampStatus
 
         Try
@@ -796,7 +796,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Async Function RemoveJobAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceAsync.RemoveJobAsync
+    Public Async Function RemoveJobAsync(credentials As LampCredentials, guid As String) As Task(Of LampStatus) Implements ILampServiceClient.RemoveJobAsync
         Dim response As LampStatus
 
         Try
@@ -838,7 +838,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Async Function SelectDxfAsync(credentials As LampCredentials, guid As String) As Task(Of LampDxfDocumentWrapper) Implements ILampServiceAsync.SelectDxfAsync
+    Public Async Function SelectDxfAsync(credentials As LampCredentials, guid As String) As Task(Of LampDxfDocumentWrapper) Implements ILampServiceClient.SelectDxfAsync
         Dim response As New LampDxfDocumentWrapper
 
         Try
@@ -888,7 +888,7 @@ Public Class LampServiceLocal
     End Function
 
 
-    Public Async Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampTemplateSort) As Task(Of LampTemplateListWrapper) Implements ILampServiceBoth.GetTemplateListAsync
+    Public Async Function GetTemplateListAsync(credentials As LampCredentials, tags As IEnumerable(Of String), byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampTemplateSort) As Task(Of LampTemplateListWrapper) Implements ILampServiceClient.GetTemplateListAsync
         Dim response As New LampTemplateListWrapper
         Try
             If limit <= 0 Or offset < 0 Then
@@ -940,7 +940,7 @@ Public Class LampServiceLocal
     End Function
 
 
-    Public Async Function GetJobListAsync(credentials As LampCredentials, byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampJobSort) As Task(Of LampJobListWrapper) Implements ILampServiceBoth.GetJobListAsync
+    Public Async Function GetJobListAsync(credentials As LampCredentials, byUser As IEnumerable(Of String), limit As Integer, offset As Integer, approveStatus As LampApprove, orderBy As LampJobSort) As Task(Of LampJobListWrapper) Implements ILampServiceClient.GetJobListAsync
         Dim response As New LampJobListWrapper
         'todo
 
@@ -982,7 +982,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Async Function GetUserListAsync(credentials As LampCredentials, limit As Integer, offset As Integer, orderBy As LampUserSort) As Task(Of LampUserListWrapper) Implements ILampServiceAsync.GetUserListAsync
+    Public Async Function GetUserListAsync(credentials As LampCredentials, limit As Integer, offset As Integer, orderBy As LampUserSort) As Task(Of LampUserListWrapper) Implements ILampServiceClient.GetUserListAsync
         Dim response As New LampUserListWrapper
 
         Try
@@ -1019,7 +1019,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Async Function ApproveJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus) Implements ILampServiceAsync.ApproveJobAsync
+    Public Async Function ApproveJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus) Implements ILampServiceClient.ApproveJobAsync
         Dim response As LampStatus
 
         Try
@@ -1060,7 +1060,7 @@ Public Class LampServiceLocal
         End Try
     End Function
 
-    Public Async Function RevokeJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus) Implements ILampServiceAsync.RevokeJobAsync
+    Public Async Function RevokeJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus) Implements ILampServiceClient.RevokeJobAsync
         Dim response As LampStatus
 
         Try

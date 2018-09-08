@@ -67,6 +67,7 @@ Public Class LampDxfDocument
         End Get
         Private Set(value As DxfDocument)
             _drawing = value
+            ForceRecalculateBounds()
         End Set
     End Property
 
@@ -106,12 +107,16 @@ Public Class LampDxfDocument
     <IgnoreDataMember>
     Public Property BackgroundBrush As New SolidBrush(Color.Black)
 
+    <IgnoreDataMember>
     Public Property MostLeft As Vector3? = Nothing
 
+    <IgnoreDataMember>
     Public Property MostRight As Vector3? = Nothing
 
+    <IgnoreDataMember>
     Public Property MostTop As Vector3? = Nothing
 
+    <IgnoreDataMember>
     Public Property MostBottom As Vector3? = Nothing
 
     ''' <summary>
@@ -131,7 +136,6 @@ Public Class LampDxfDocument
             Throw New ArgumentNullException(NameOf(dxfFile))
         End If
         Me.Drawing = dxfFile
-        ForceRecalculateBounds()
     End Sub
 
     ''' <summary>
@@ -686,7 +690,7 @@ Public Class LampDxfDocument
                     font = New Font(FontFamily.GenericMonospace, (mtext.Height / pixelsPerUnitY))
                 End Try
                 g.DrawString(mtext.PlainText, font, New SolidBrush(mtext.Color.ToColor), gdiUpperLeft)
-                End If
+            End If
 
         Next
 
@@ -700,6 +704,7 @@ Public Class LampDxfDocument
 
     End Sub
 
+    <IgnoreDataMember>
     Public ReadOnly Property AllEntities As IEnumerable(Of EntityObject)
         Get
 

@@ -475,7 +475,6 @@
     <Compile Include="recievers\ILampWcfClient.vb" />
     <Compile Include="recievers\LampLocalWcfClient.vb" />
     <Compile Include="recievers\LampRemoteWcfClient.vb" />
-    <Compile Include="Main.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

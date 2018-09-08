@@ -19,6 +19,8 @@ Public Class LampJob
     End Sub
 
     Private _boardSize As New SizeF(610, 305)
+    <JsonProperty("board_size")>
+    <DataMember>
     Public Property BoardSize As SizeF
         Get
             Return _boardSize
@@ -55,6 +57,8 @@ Public Class LampJob
         NotifyPropertyChanged("DynamicTextDictionary")
     End Sub
 
+    Public Shared ValidateDist As Boolean = False
+
     Private _template As LampTemplate
     ''' <summary>
     ''' the base template that the job is based off of
@@ -75,15 +79,19 @@ Public Class LampJob
                 AddHandler _template.PropertyChanged, AddressOf Template_PropertyChanged
             End If
 
-            If TemplateWidth + 2 * SeperationDist > BoardWidth Then
-                ' cannot even fit one, just exit
-                Throw New ArgumentOutOfRangeException(String.Format("Template is too high for laser cutter bed [widthWithpadding={0}, boardWidth={1}]", TemplateWidth + 2 * SeperationDist, BoardWidth))
+            If ValidateDist Then
+
+                If TemplateWidth + 2 * SeperationDist > BoardWidth Then
+                    ' cannot even fit one, just exit
+                    Throw New ArgumentOutOfRangeException(String.Format("Template is too high for laser cutter bed [widthWithpadding={0}, boardWidth={1}]", TemplateWidth + 2 * SeperationDist, BoardWidth))
+                End If
+
+                If TemplateHeight + 2 * SeperationDist > BoardHeight Then
+                    ' cannot even fit one, just exit
+                    Throw New ArgumentOutOfRangeException(String.Format("Template is too high for laser cutter bed [heightWithPadding={0}, boardHeight={1}]", TemplateHeight + 2 * SeperationDist, BoardHeight))
+                End If
             End If
 
-            If TemplateHeight + 2 * SeperationDist > BoardHeight Then
-                ' cannot even fit one, just exit
-                Throw New ArgumentOutOfRangeException(String.Format("Template is too high for laser cutter bed [heightWithPadding={0}, boardHeight={1}]", TemplateHeight + 2 * SeperationDist, BoardHeight))
-            End If
 
             NotifyPropertyChanged()
         End Set
@@ -265,6 +273,8 @@ Public Class LampJob
         End Set
     End Property
 
+
+
     ''' <summary>
     ''' default constructor for when job needs to be sent to db from client
     ''' will auto-generate the drawing
@@ -272,8 +282,7 @@ Public Class LampJob
     ''' <param name="template"></param>
     ''' <param name="submitter"></param>
     Sub New(template As LampTemplate, submitter As LampProfile, summary As String)
-        Me.New(GetNewGuid, template, submitter, Nothing, summary, DateTime.Now)
-        RefreshCompleteDrawing()
+        Me.New(GetNewGuid, template, submitter, Nothing, summary, Nothing)
     End Sub
 
     ''' <summary>
@@ -283,7 +292,6 @@ Public Class LampJob
     ''' <param name="template"></param>
     Sub New(template As LampTemplate)
         Me.New(GetNewGuid, template, Nothing, Nothing, "", Nothing)
-        RefreshCompleteDrawing()
     End Sub
 
     ''' <summary>
@@ -369,7 +377,7 @@ Public Class LampJob
         Return currentY + TemplateHeight + SeperationDist <= BoardHeight
     End Function
 
-    Private SeperationDist As Integer = 5
+    Private Const SeperationDist As Integer = 5
 
     Public Sub SetCopies(values As IList(Of List(Of DynamicTextValue)), Optional regenerate As Boolean = True)
         Dim currentX As Double = SeperationDist

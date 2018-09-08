@@ -123,6 +123,15 @@ Namespace My
                 Me("DesignerProgram") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("templateDB.sqlite")>  _
+        Public ReadOnly Property LocalDatabasePath() As String
+            Get
+                Return CType(Me("LocalDatabasePath"),String)
+            End Get
+        End Property
     End Class
 End Namespace
 
