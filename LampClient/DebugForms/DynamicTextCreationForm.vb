@@ -75,9 +75,9 @@ Public Class DynamicTextCreationForm
 
     End Sub
 
-    Public ReadOnly Property DynamicTextValues As DynamicTextValueRow
+    Public ReadOnly Property DynamicTextValues As List(Of DynamicTextValue)
         Get
-            Dim out As New DynamicTextValueRow
+            Dim out As New List(Of DynamicTextValue)
             For Each item In DynamicFormCreation1.FlowLayoutPanel1.Controls
                 Dim x As SingleDynamicText = item
                 out.Add(New DynamicTextValue(x.GetValue()))

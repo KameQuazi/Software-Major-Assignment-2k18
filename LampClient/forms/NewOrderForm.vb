@@ -80,40 +80,7 @@ Public Class NewOrderForm
         End Using
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnNext.Click
-        checkValid()
-        If valid = True Then
 
-            Dim job = New LampJob(Me.CurrentTemplate, CurrentUser.ToProfile, summary)
-            ' For i = 0 To dynamicTextDict.Count - 1
-            'job.adddictionary currentTemplate.DynamicTextList(i).ParameterName  = dynamictextdict(i).split(",")
-            ' 
-            '
-            'Next
-            job.Pages = 3
-
-            For i = 0 To 2
-                job.AddInsertionPoint(New LampSingleDxfInsertLocation(New netDxf.Vector3(0, 0, 0)), i, True)
-
-            Next
-
-
-            Dim response = CurrentSender.AddJob(CurrentUser.ToCredentials, job)
-            Select Case response
-                Case LampStatus.OK
-                    MessageBox.Show("Successfully added job")
-                    ShowNewForm(Nothing, Me, HomeForm)
-                Case Else
-                    ShowError(response)
-            End Select
-        Else
-            MessageBox.Show("All Text Dictionaries Do Not Match Criteria.",
-            "Job Not Complete",
-            MessageBoxButtons.OK,
-            MessageBoxIcon.Exclamation,
-            MessageBoxDefaultButton.Button1)
-        End If
-    End Sub
 
     Private Sub btnDEBUG_Click(sender As Object, e As EventArgs) Handles btnDEBUG.Click
         CurrentTemplate.DynamicTextList.Add(New DynamicTextKey("text1", "", New netDxf.Vector3(0, 0, 0), 0, 0))

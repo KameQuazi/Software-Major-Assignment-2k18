@@ -247,3 +247,6 @@ ModelManifest.xml
 *.bak
 acad.err
 Thumbs.db
+
+# mac temp files
+.DS_Store

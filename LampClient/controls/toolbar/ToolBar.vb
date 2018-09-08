@@ -233,40 +233,40 @@ Public Class ToolBar
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub btnQY_Click(sender As Object, e As EventArgs)
+    Private Sub btnQY_Click(sender As Object, e As EventArgs) Handles btnQuit.Click
         Me.ParentForm.Close()
     End Sub
 
-    Private Sub btnLogOut_Click(sender As Object, e As EventArgs)
+    Private Sub btnLogOut_Click(sender As Object, e As EventArgs) Handles btnLogOut.Click
         Logout(ParentForm)
     End Sub
 
 
-    Private Sub btnHome_Click(sender As Object, e As EventArgs)
+    Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
         ShowNewForm(ParentForm, HomeForm)
     End Sub
 
-    Private Sub btnNewOrder_Click(sender As Object, e As EventArgs)
+    Private Sub btnNewOrder_Click(sender As Object, e As EventArgs) Handles btnNewOrder.Click
         ShowNewForm(ParentForm, NewOrderForm)
     End Sub
 
-    Private Sub btnDesigns_Click(sender As Object, e As EventArgs)
+    Private Sub btnDesigns_Click(sender As Object, e As EventArgs) Handles btnDesigns.Click
         ShowNewForm(ParentForm, ViewTemplatesForm)
     End Sub
 
-    Private Sub btnOrders_Click(sender As Object, e As EventArgs)
+    Private Sub btnOrders_Click(sender As Object, e As EventArgs) Handles btnOrders.Click
         ShowNewForm(ParentForm, ViewOrdersForm)
     End Sub
 
-    Private Sub btnNewTemplate_Click(sender As Object, e As EventArgs)
+    Private Sub btnNewTemplate_Click(sender As Object, e As EventArgs) Handles btnNewTemplate.Click
         ShowNewForm(ParentForm, NewTemplateForm)
     End Sub
 
-    Private Sub btnHelp_Click(sender As Object, e As EventArgs)
+    Private Sub btnHelp_Click(sender As Object, e As EventArgs) Handles btnHelp.Click
         HelpBox.ShowDialog()
     End Sub
 
-    Private Sub btnAbout_Click(sender As Object, e As EventArgs)
+    Private Sub btnAbout_Click(sender As Object, e As EventArgs) Handles btnAbout.Click
         AboutBox.ShowDialog()
     End Sub
 
@@ -325,8 +325,10 @@ Public Class ToolBar
     End Sub
 
     Private Sub btnSettings_Click(sender As Object, e As EventArgs) Handles btnSettings.Click
-
+        SettingsForm.ShowDialog()
     End Sub
+
+
 End Class
 
 

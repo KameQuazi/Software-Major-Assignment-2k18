@@ -15,7 +15,7 @@ Public Class NewOrderFormChooseParameter
         End Set
     End Property
 
-    Public WithEvents Items As New ObservableCollection(Of DynamicTextValueRow)
+    Public WithEvents Items As New ObservableCollection(Of List(Of DynamicTextValue))
 
     Private Sub HandleItemChanged(sender As Object, e As EventArgs) Handles Items.CollectionChanged
         If Items.Count = 0 Then
@@ -101,12 +101,7 @@ Public Class NewOrderFormChooseParameter
 
     Private Sub Button1_Click(sender As Object, e As EventArgs)
         Dim job = New LampJob(Me.SelectedTemplate, CurrentUser.ToProfile, "hello summary")
-        job.Pages = 3
 
-        For i = 0 To 2
-            job.AddInsertionPoint(New LampSingleDxfInsertLocation(New netDxf.Vector3(0, 0, 0)), i, True)
-
-        Next
 
 
         Dim response = CurrentSender.AddJob(CurrentUser.ToCredentials, job)
@@ -163,7 +158,7 @@ Public Class NewOrderFormChooseParameter
                 End If
                 For i = 1 To value - _numberOfTemplates
 
-                    Items.Add(New DynamicTextValueRow())
+                    Items.Add(New List(Of DynamicTextValue)())
                 Next
 
             ElseIf value < _numberOfTemplates Then
@@ -196,7 +191,7 @@ Public Class NewOrderFormChooseParameter
             Items.Clear()
             For Each row As DataGridViewRow In DataGridView1.Rows
                 If Not row.IsNewRow Then
-                    Dim dRow As New DynamicTextValueRow
+                    Dim dRow As New List(Of DynamicTextValue)
                     For Each p In Parameters
                         Dim parameterName = p.ParameterName
                         dRow.Add(New DynamicTextValue(row.Cells(p.ParameterName).Value))

@@ -299,7 +299,6 @@ Public Class LampJob
     ''' adds a new template to 
     ''' </summary>
     ''' <param name="values"></param>
-    ''' <returns></returns>
     Public Sub AddCopy(values As IEnumerable(Of DynamicTextKey), Optional regenerate As Boolean = True)
         If values.Count <> Parameters.Count Then
             Throw New ArgumentOutOfRangeException(NameOf(values) + "should be same length as parameters")
