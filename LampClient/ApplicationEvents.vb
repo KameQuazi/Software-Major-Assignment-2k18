@@ -15,7 +15,9 @@ Namespace My
             Console.WriteLine("Start")
             InitalizeLibraries()
             LampLocalWcfClient.Local = New LampLocalWcfClient(New LampService.LampServiceLocal("templateDB.sqlite"))
-            SetServiceEndpoint(LampLocalWcfClient.Local)
+            SetServiceEndpoint(ClientEndpoint)
+            ' SetServiceEndpoint(LampLocalWcfClient.Local)
+
             CurrentUser = Nothing
             Console.WriteLine("hewwo?")
 

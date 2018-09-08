@@ -20,7 +20,8 @@ Public Module OwO
         Dim endpoint As New EndpointAddress(ClientEndpoint)
         Dim binding = New BasicHttpBinding()
         binding.MaxReceivedMessageSize = 100000000 ' 100 mb max
-        CurrentSender = New LampRemoteWcfClient(binding, New EndpointAddress(url))
+        ' CurrentSender = New LampRemoteWcfClient(binding, New EndpointAddress(url))
+        SetServiceEndpoint(New LampRemoteWcfClient(binding, New EndpointAddress(url)))
     End Sub
 
     Public Sub SetServiceEndpoint(sender As ILampServiceBoth)

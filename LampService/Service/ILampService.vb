@@ -266,8 +266,8 @@ Public Interface ILampServiceAsync
     Function RevokeJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus)
 End Interface
 
-<ServiceContract>
-    Public Interface ILampServiceBoth
+<ServiceContract(Name:=NameOf(ILampService))>
+Public Interface ILampServiceBoth
         Inherits ILampService, ILampServiceAsync
 
 
