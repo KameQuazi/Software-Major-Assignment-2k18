@@ -25,6 +25,7 @@ Partial Class ToolBar
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ToolBar))
         Me.Tooltip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.ToolTip2 = New System.Windows.Forms.ToolTip(Me.components)
         Me.btnNewTemplate = New System.Windows.Forms.Button()
         Me.Logo = New System.Windows.Forms.PictureBox()
         Me.btnQuit = New System.Windows.Forms.Button()
@@ -46,10 +47,10 @@ Partial Class ToolBar
         Me.btnNewTemplate.BackColor = System.Drawing.Color.White
         Me.btnNewTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnNewTemplate.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnNewTemplate.Location = New System.Drawing.Point(195, 3)
+        Me.btnNewTemplate.Location = New System.Drawing.Point(193, 4)
         Me.btnNewTemplate.Margin = New System.Windows.Forms.Padding(5)
         Me.btnNewTemplate.Name = "btnNewTemplate"
-        Me.btnNewTemplate.Size = New System.Drawing.Size(90, 50)
+        Me.btnNewTemplate.Size = New System.Drawing.Size(88, 50)
         Me.btnNewTemplate.TabIndex = 67
         Me.btnNewTemplate.Text = "New Template"
         Me.btnNewTemplate.UseVisualStyleBackColor = False
@@ -69,10 +70,10 @@ Partial Class ToolBar
         Me.btnQuit.BackColor = System.Drawing.Color.White
         Me.btnQuit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnQuit.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnQuit.Location = New System.Drawing.Point(1138, 54)
+        Me.btnQuit.Location = New System.Drawing.Point(1132, 4)
         Me.btnQuit.Margin = New System.Windows.Forms.Padding(5)
         Me.btnQuit.Name = "btnQuit"
-        Me.btnQuit.Size = New System.Drawing.Size(90, 50)
+        Me.btnQuit.Size = New System.Drawing.Size(88, 50)
         Me.btnQuit.TabIndex = 57
         Me.btnQuit.Text = "Quit"
         Me.btnQuit.UseVisualStyleBackColor = False
@@ -82,10 +83,10 @@ Partial Class ToolBar
         Me.btnHome.BackColor = System.Drawing.Color.White
         Me.btnHome.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnHome.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnHome.Location = New System.Drawing.Point(103, 3)
+        Me.btnHome.Location = New System.Drawing.Point(103, 4)
         Me.btnHome.Margin = New System.Windows.Forms.Padding(5)
         Me.btnHome.Name = "btnHome"
-        Me.btnHome.Size = New System.Drawing.Size(90, 50)
+        Me.btnHome.Size = New System.Drawing.Size(88, 50)
         Me.btnHome.TabIndex = 59
         Me.btnHome.Text = "Home"
         Me.btnHome.UseVisualStyleBackColor = False
@@ -95,10 +96,10 @@ Partial Class ToolBar
         Me.btnNewOrder.BackColor = System.Drawing.Color.White
         Me.btnNewOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnNewOrder.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnNewOrder.Location = New System.Drawing.Point(287, 3)
+        Me.btnNewOrder.Location = New System.Drawing.Point(283, 3)
         Me.btnNewOrder.Margin = New System.Windows.Forms.Padding(5)
         Me.btnNewOrder.Name = "btnNewOrder"
-        Me.btnNewOrder.Size = New System.Drawing.Size(90, 50)
+        Me.btnNewOrder.Size = New System.Drawing.Size(88, 50)
         Me.btnNewOrder.TabIndex = 65
         Me.btnNewOrder.Text = "New Order"
         Me.btnNewOrder.UseVisualStyleBackColor = False
@@ -109,7 +110,7 @@ Partial Class ToolBar
         Me.Username.BackColor = System.Drawing.Color.Transparent
         Me.Username.Font = New System.Drawing.Font("Arial", 16.25!)
         Me.Username.ForeColor = System.Drawing.Color.White
-        Me.Username.Location = New System.Drawing.Point(698, 3)
+        Me.Username.Location = New System.Drawing.Point(618, 31)
         Me.Username.Name = "Username"
         Me.Username.Size = New System.Drawing.Size(195, 50)
         Me.Username.TabIndex = 61
@@ -121,10 +122,10 @@ Partial Class ToolBar
         Me.btnOrders.BackColor = System.Drawing.Color.White
         Me.btnOrders.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnOrders.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnOrders.Location = New System.Drawing.Point(287, 54)
+        Me.btnOrders.Location = New System.Drawing.Point(283, 55)
         Me.btnOrders.Margin = New System.Windows.Forms.Padding(5)
         Me.btnOrders.Name = "btnOrders"
-        Me.btnOrders.Size = New System.Drawing.Size(90, 50)
+        Me.btnOrders.Size = New System.Drawing.Size(88, 50)
         Me.btnOrders.TabIndex = 63
         Me.btnOrders.Text = "View Orders"
         Me.btnOrders.UseVisualStyleBackColor = False
@@ -134,10 +135,10 @@ Partial Class ToolBar
         Me.btnLogOut.BackColor = System.Drawing.Color.White
         Me.btnLogOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnLogOut.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnLogOut.Location = New System.Drawing.Point(1138, 3)
+        Me.btnLogOut.Location = New System.Drawing.Point(1132, 55)
         Me.btnLogOut.Margin = New System.Windows.Forms.Padding(5)
         Me.btnLogOut.Name = "btnLogOut"
-        Me.btnLogOut.Size = New System.Drawing.Size(90, 50)
+        Me.btnLogOut.Size = New System.Drawing.Size(88, 50)
         Me.btnLogOut.TabIndex = 60
         Me.btnLogOut.Text = "Log Out"
         Me.btnLogOut.UseVisualStyleBackColor = False
@@ -147,10 +148,10 @@ Partial Class ToolBar
         Me.btnDesigns.BackColor = System.Drawing.Color.White
         Me.btnDesigns.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnDesigns.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnDesigns.Location = New System.Drawing.Point(195, 54)
+        Me.btnDesigns.Location = New System.Drawing.Point(193, 55)
         Me.btnDesigns.Margin = New System.Windows.Forms.Padding(5)
         Me.btnDesigns.Name = "btnDesigns"
-        Me.btnDesigns.Size = New System.Drawing.Size(90, 50)
+        Me.btnDesigns.Size = New System.Drawing.Size(88, 50)
         Me.btnDesigns.TabIndex = 62
         Me.btnDesigns.Text = "View Template"
         Me.btnDesigns.UseVisualStyleBackColor = False
@@ -160,10 +161,10 @@ Partial Class ToolBar
         Me.btnAbout.BackColor = System.Drawing.Color.White
         Me.btnAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnAbout.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnAbout.Location = New System.Drawing.Point(1046, 3)
+        Me.btnAbout.Location = New System.Drawing.Point(1042, 4)
         Me.btnAbout.Margin = New System.Windows.Forms.Padding(5)
         Me.btnAbout.Name = "btnAbout"
-        Me.btnAbout.Size = New System.Drawing.Size(90, 50)
+        Me.btnAbout.Size = New System.Drawing.Size(88, 50)
         Me.btnAbout.TabIndex = 58
         Me.btnAbout.Text = "About"
         Me.btnAbout.UseVisualStyleBackColor = False
@@ -173,10 +174,10 @@ Partial Class ToolBar
         Me.btnBack.BackColor = System.Drawing.Color.White
         Me.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnBack.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnBack.Location = New System.Drawing.Point(103, 54)
+        Me.btnBack.Location = New System.Drawing.Point(103, 55)
         Me.btnBack.Margin = New System.Windows.Forms.Padding(5)
         Me.btnBack.Name = "btnBack"
-        Me.btnBack.Size = New System.Drawing.Size(90, 50)
+        Me.btnBack.Size = New System.Drawing.Size(88, 50)
         Me.btnBack.TabIndex = 66
         Me.btnBack.Text = "Back"
         Me.btnBack.UseVisualStyleBackColor = False
@@ -186,10 +187,10 @@ Partial Class ToolBar
         Me.btnHelp.BackColor = System.Drawing.Color.White
         Me.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnHelp.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnHelp.Location = New System.Drawing.Point(1046, 54)
+        Me.btnHelp.Location = New System.Drawing.Point(1042, 55)
         Me.btnHelp.Margin = New System.Windows.Forms.Padding(5)
         Me.btnHelp.Name = "btnHelp"
-        Me.btnHelp.Size = New System.Drawing.Size(90, 50)
+        Me.btnHelp.Size = New System.Drawing.Size(88, 50)
         Me.btnHelp.TabIndex = 64
         Me.btnHelp.Text = "Help"
         Me.btnHelp.UseVisualStyleBackColor = False
@@ -199,10 +200,10 @@ Partial Class ToolBar
         Me.btnSettings.BackColor = System.Drawing.Color.White
         Me.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnSettings.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnSettings.Location = New System.Drawing.Point(954, 3)
+        Me.btnSettings.Location = New System.Drawing.Point(952, 4)
         Me.btnSettings.Margin = New System.Windows.Forms.Padding(5)
         Me.btnSettings.Name = "btnSettings"
-        Me.btnSettings.Size = New System.Drawing.Size(90, 50)
+        Me.btnSettings.Size = New System.Drawing.Size(88, 50)
         Me.btnSettings.TabIndex = 68
         Me.btnSettings.Text = "Settings"
         Me.btnSettings.UseVisualStyleBackColor = False
@@ -233,6 +234,7 @@ Partial Class ToolBar
 
     End Sub
     Friend WithEvents Tooltip1 As ToolTip
+    Friend WithEvents ToolTip2 As ToolTip
     Friend WithEvents btnNewTemplate As Button
     Friend WithEvents Logo As PictureBox
     Friend WithEvents btnQuit As Button

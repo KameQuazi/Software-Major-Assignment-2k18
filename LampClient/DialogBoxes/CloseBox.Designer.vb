@@ -31,6 +31,7 @@ Partial Class CloseBox
         '
         'Button1
         '
+        Me.Button1.BackColor = System.Drawing.Color.White
         Me.Button1.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.8!)
         Me.Button1.Location = New System.Drawing.Point(101, 186)
@@ -39,10 +40,11 @@ Partial Class CloseBox
         Me.Button1.Size = New System.Drawing.Size(136, 45)
         Me.Button1.TabIndex = 0
         Me.Button1.Text = "Quit"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.Button1.UseVisualStyleBackColor = False
         '
         'Button2
         '
+        Me.Button2.BackColor = System.Drawing.Color.White
         Me.Button2.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.8!)
         Me.Button2.Location = New System.Drawing.Point(245, 186)
@@ -51,7 +53,7 @@ Partial Class CloseBox
         Me.Button2.Size = New System.Drawing.Size(136, 45)
         Me.Button2.TabIndex = 1
         Me.Button2.Text = "Cancel"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.Button2.UseVisualStyleBackColor = False
         '
         'Label1
         '

@@ -325,7 +325,7 @@ Public Class ToolBar
     End Sub
 
     Private Sub btnSettings_Click(sender As Object, e As EventArgs) Handles btnSettings.Click
-        ShowNewForm(ParentForm, SettingsForm)
+
     End Sub
 End Class
 
