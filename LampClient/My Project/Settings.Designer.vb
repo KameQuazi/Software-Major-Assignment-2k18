@@ -132,6 +132,29 @@ Namespace My
                 Return CType(Me("LocalDatabasePath"),String)
             End Get
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property DoSavePassword() As Boolean
+            Get
+                Return CType(Me("DoSavePassword"),Boolean)
+            End Get
+            Set
+                Me("DoSavePassword") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+        Public Property ClientEndpoint() As Global.LampClient.LampWcfClientSettings
+            Get
+                Return CType(Me("ClientEndpoint"),Global.LampClient.LampWcfClientSettings)
+            End Get
+            Set
+                Me("ClientEndpoint") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

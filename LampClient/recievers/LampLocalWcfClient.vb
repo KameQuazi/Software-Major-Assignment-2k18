@@ -6,14 +6,14 @@ Imports LampService
 ''' Run on the client machine, has an internal receiver
 ''' </summary>
 Public Class LampLocalWcfClient
-    Implements ILampServiceClient
+    Implements ILampWcfClient
 
     Private Shared _localLock As New Object()
     Private Shared _local As ILampServiceClient
     ''' <summary>
     ''' global local wcf client 
     ''' </summary>
-    Public Shared ReadOnly Property Local As ILampServiceClient
+    Public Shared ReadOnly Property Local As ILampWcfClient
         Get
             SyncLock (_localLock)
                 If _local Is Nothing Then

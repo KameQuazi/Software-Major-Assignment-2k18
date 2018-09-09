@@ -8,7 +8,7 @@ Imports LampService
 ''' </summary>
 Public Class LampRemoteWcfClient
     Inherits ServiceModel.ClientBase(Of ILampServiceClient)
-    Implements ILampServiceClient
+    Implements ILampWcfClient
 
 
 

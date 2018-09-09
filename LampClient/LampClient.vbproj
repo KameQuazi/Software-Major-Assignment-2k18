@@ -479,6 +479,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="recievers\ILampWcfClient.vb" />
+    <Compile Include="recievers\ILampWcfClientSettings.vb" />
     <Compile Include="recievers\LampLocalWcfClient.vb" />
     <Compile Include="recievers\LampRemoteWcfClient.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

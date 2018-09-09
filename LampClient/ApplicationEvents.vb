@@ -73,9 +73,16 @@ End Namespace
 Public Module OwO
     Public Property CurrentUser As LampUser = New LampUser(GetNewGuid, UserPermission.Admin, "none@gmail.comg", "debugUser", "password", "debugger")
 
-    Public Property CurrentSender As ILampServiceClient
+    Public Property CurrentSender As ILampWcfClient
 
-    Public Property ClientEndpoint As String = "http://localhost:8733/Design_Time_Addresses/LampService.svc"
+    Public Property ClientEndpoint As String
+        Get
+            Return "http://localhost:8733/Design_Time_Addresses/LampService.svc"
+        End Get
+        Set(value As String)
+
+        End Set
+    End Property
 
     Public Sub SetServiceEndpoint(url As String)
         Dim endpoint As New EndpointAddress(ClientEndpoint)
@@ -85,7 +92,7 @@ Public Module OwO
         SetServiceEndpoint(New LampRemoteWcfClient(binding, New EndpointAddress(url)))
     End Sub
 
-    Public Sub SetServiceEndpoint(sender As ILampServiceClient)
+    Public Sub SetServiceEndpoint(sender As ILampWcfClient)
         CurrentSender = sender
     End Sub
 
