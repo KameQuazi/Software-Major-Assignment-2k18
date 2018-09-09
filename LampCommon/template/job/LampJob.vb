@@ -162,6 +162,8 @@ Public Class LampJob
         End Get
     End Property
 
+    <JsonProperty("submit_date")>
+    <DataMember>
     Public Property SubmitDate As Date?
 
     Private _completedDrawings As New List(Of LampDxfDocument)

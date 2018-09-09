@@ -22,6 +22,7 @@ Partial Class LoginForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(LoginForm))
         Me.txtUser = New System.Windows.Forms.TextBox()
         Me.txtPass = New System.Windows.Forms.TextBox()
@@ -31,7 +32,13 @@ Partial Class LoginForm
         Me.btnLogin = New System.Windows.Forms.Button()
         Me.btnCreate = New System.Windows.Forms.Button()
         Me.PasswordCheckbox = New System.Windows.Forms.CheckBox()
+        Me.cboxInternal = New System.Windows.Forms.CheckBox()
+        Me.tboxServerUrl = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.btnTryConnection = New System.Windows.Forms.Button()
         CType(Me.pbLogo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'txtUser
@@ -113,11 +120,56 @@ Partial Class LoginForm
         Me.PasswordCheckbox.Text = "Save Password"
         Me.PasswordCheckbox.UseVisualStyleBackColor = True
         '
+        'cboxInternal
+        '
+        Me.cboxInternal.AutoSize = True
+        Me.cboxInternal.Location = New System.Drawing.Point(710, 682)
+        Me.cboxInternal.Name = "cboxInternal"
+        Me.cboxInternal.Size = New System.Drawing.Size(123, 18)
+        Me.cboxInternal.TabIndex = 8
+        Me.cboxInternal.Text = "Use Local Database"
+        Me.cboxInternal.UseVisualStyleBackColor = True
+        '
+        'tboxServerUrl
+        '
+        Me.tboxServerUrl.Location = New System.Drawing.Point(710, 720)
+        Me.tboxServerUrl.Name = "tboxServerUrl"
+        Me.tboxServerUrl.Size = New System.Drawing.Size(160, 20)
+        Me.tboxServerUrl.TabIndex = 9
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(707, 703)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(66, 14)
+        Me.Label1.TabIndex = 10
+        Me.Label1.Text = "Server URL:"
+        '
+        'ErrorProvider1
+        '
+        Me.ErrorProvider1.ContainerControl = Me
+        '
+        'btnTryConnection
+        '
+        Me.btnTryConnection.BackColor = System.Drawing.Color.White
+        Me.btnTryConnection.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnTryConnection.Location = New System.Drawing.Point(899, 719)
+        Me.btnTryConnection.Name = "btnTryConnection"
+        Me.btnTryConnection.Size = New System.Drawing.Size(101, 23)
+        Me.btnTryConnection.TabIndex = 11
+        Me.btnTryConnection.Text = "Retry Connection"
+        Me.btnTryConnection.UseVisualStyleBackColor = False
+        '
         'LoginForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.SystemColors.ScrollBar
         Me.ClientSize = New System.Drawing.Size(1000, 750)
+        Me.Controls.Add(Me.btnTryConnection)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.tboxServerUrl)
+        Me.Controls.Add(Me.cboxInternal)
         Me.Controls.Add(Me.PasswordCheckbox)
         Me.Controls.Add(Me.btnCreate)
         Me.Controls.Add(Me.btnLogin)
@@ -133,6 +185,7 @@ Partial Class LoginForm
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Log In"
         CType(Me.pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -146,4 +199,9 @@ Partial Class LoginForm
     Friend WithEvents btnLogin As Button
     Friend WithEvents btnCreate As Button
     Friend WithEvents PasswordCheckbox As CheckBox
+    Friend WithEvents cboxInternal As CheckBox
+    Friend WithEvents tboxServerUrl As TextBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents ErrorProvider1 As ErrorProvider
+    Friend WithEvents btnTryConnection As Button
 End Class

@@ -134,18 +134,6 @@ Namespace My
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property DoSavePassword() As Boolean
-            Get
-                Return CType(Me("DoSavePassword"),Boolean)
-            End Get
-            Set
-                Me("DoSavePassword") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
         Public Property ClientEndpoint() As Global.LampClient.LampWcfClientSettings
             Get

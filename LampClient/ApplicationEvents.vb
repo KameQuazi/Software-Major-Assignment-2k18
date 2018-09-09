@@ -69,12 +69,12 @@ Namespace My
 
 End Namespace
 
-Public Class Settings
+Public Module Settings
     Public Property ClientEndpoint As LampWcfClientSettings
         Get
             If My.Settings.ClientEndpoint Is Nothing Then
                 ' set it to default (local)
-                ClientEndpoint = New LampWcfClientSettings(True, "")
+                Settings.ClientEndpoint = New LampWcfClientSettings(True, "")
             End If
 
             Return My.Settings.ClientEndpoint
@@ -84,7 +84,48 @@ Public Class Settings
             My.Settings.Save()
         End Set
     End Property
-End Class
+
+    Public Property LoginPassword As String
+        Get
+            If My.Settings.LoginPassword Is Nothing Then
+                ' set it to default (local)
+                Settings.LoginPassword = ""
+            End If
+
+            Return My.Settings.LoginPassword
+        End Get
+        Set(value As String)
+            My.Settings.LoginPassword = value
+            My.Settings.Save()
+        End Set
+    End Property
+
+    Public Property LoginUsername As String
+        Get
+            If My.Settings.LoginUsername Is Nothing Then
+                ' set it to default (local)
+                Settings.LoginUsername = ""
+            End If
+
+            Return My.Settings.LoginUsername
+        End Get
+        Set(value As String)
+            My.Settings.LoginUsername = value
+            My.Settings.Save()
+        End Set
+    End Property
+
+    Public Property PasswordSaved As Boolean
+        Get
+            Return My.Settings.PasswordSaved
+        End Get
+        Set(value As Boolean)
+            My.Settings.PasswordSaved = value
+            My.Settings.Save()
+        End Set
+    End Property
+End Module
+
 
 
 Public Module OwO

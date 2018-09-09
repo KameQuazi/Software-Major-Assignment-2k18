@@ -7,4 +7,8 @@ Public Class LampWcfClientSettings
         Me.UseLocal = useLocal
         Me.ServerAddress = serverAddress
     End Sub
+
+    Public Sub New()
+
+    End Sub
 End Class

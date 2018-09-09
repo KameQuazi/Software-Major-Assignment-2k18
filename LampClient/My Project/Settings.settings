@@ -23,9 +23,6 @@
     <Setting Name="LocalDatabasePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">templateDB.sqlite</Value>
     </Setting>
-    <Setting Name="DoSavePassword" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="ClientEndpoint" Type="LampClient.LampWcfClientSettings" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

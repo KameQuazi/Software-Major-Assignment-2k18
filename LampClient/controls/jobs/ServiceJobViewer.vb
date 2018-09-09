@@ -103,6 +103,8 @@ Public Class ServiceJobViewer
                 End If
 
 
+
+
                 Dim request = CurrentSender.GetJobList(CurrentUser.ToCredentials,
                                                                GetFilteredUserList,
                                                                JOBS_PER_PAGE, Offset, ApprovedType, SortOrder)
