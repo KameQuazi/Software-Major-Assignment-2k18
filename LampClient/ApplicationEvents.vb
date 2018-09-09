@@ -29,7 +29,8 @@ Namespace My
         End Sub
 
         Private Sub LoadEndpointFromSettings()
-            SetServiceEndpoint(ClientEndpoint)
+            ' SetServiceEndpoint(ClientEndpoint)
+            SetServiceEndpoint(LampLocalWcfClient.Local)
         End Sub
 
         Private Property DefualtMaterialFilename = "DefaultMaterials.json"
