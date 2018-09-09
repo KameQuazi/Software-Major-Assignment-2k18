@@ -69,36 +69,52 @@ Namespace My
 
 End Namespace
 
+Public Class Settings
+    Public Property ClientEndpoint As LampWcfClientSettings
+        Get
+            If My.Settings.ClientEndpoint Is Nothing Then
+                ' set it to default (local)
+                ClientEndpoint = New LampWcfClientSettings(True, "")
+            End If
+
+            Return My.Settings.ClientEndpoint
+        End Get
+        Set(value As LampWcfClientSettings)
+            My.Settings.ClientEndpoint = value
+            My.Settings.Save()
+        End Set
+    End Property
+End Class
+
 
 Public Module OwO
     Public Property CurrentUser As LampUser = New LampUser(GetNewGuid, UserPermission.Admin, "none@gmail.comg", "debugUser", "password", "debugger")
 
+
     Public Property CurrentSender As ILampWcfClient
 
-    Public Property ClientEndpoint As String
-        Get
-            Return "http://localhost:8733/Design_Time_Addresses/LampService.svc"
-        End Get
-        Set(value As String)
-
-        End Set
-    End Property
+    Public Sub SetServiceEndPoint(settings As LampWcfClientSettings)
+        If settings Is Nothing Then
+            Throw New ArgumentNullException(NameOf(settings))
+        End If
+        If settings.UseLocal Then
+            SetServiceEndpoint(LampLocalWcfClient.Local)
+        Else
+            SetServiceEndpoint(settings.ServerAddress)
+        End If
+    End Sub
 
     Public Sub SetServiceEndpoint(url As String)
-        Dim endpoint As New EndpointAddress(ClientEndpoint)
+        Dim endpoint As New EndpointAddress(url)
         Dim binding = New BasicHttpBinding()
-        binding.MaxReceivedMessageSize = 2147483647 ' 100 mb max
+        binding.MaxReceivedMessageSize = 2147483647 ' as big as possible
         binding.MaxBufferSize = 2147483647
-        SetServiceEndpoint(New LampRemoteWcfClient(binding, New EndpointAddress(url)))
+        SetServiceEndpoint(New LampRemoteWcfClient(binding, endpoint))
     End Sub
 
     Public Sub SetServiceEndpoint(sender As ILampWcfClient)
         CurrentSender = sender
     End Sub
-
-
-
-
 
     Sub InitalizeLibraries()
         ' extract necessary dll files
