@@ -82,13 +82,6 @@ Public Class NewOrderForm
 
 
 
-    Private Sub btnDEBUG_Click(sender As Object, e As EventArgs) Handles btnDEBUG.Click
-        CurrentTemplate.DynamicTextList.Add(New DynamicTextKey("text1", "", New netDxf.Vector3(0, 0, 0), 0, 0))
-        CurrentTemplate.DynamicTextList.Add(New DynamicTextKey("text2", "", New netDxf.Vector3(0, 0, 0), 0, 0))
-        CurrentTemplate.DynamicTextList.Add(New DynamicTextKey("text3", "", New netDxf.Vector3(0, 0, 0), 0, 0))
-        loadElements()
-    End Sub
-
     Private Sub txtCaseID_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtNum.KeyPress
         If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then e.KeyChar = ""
     End Sub

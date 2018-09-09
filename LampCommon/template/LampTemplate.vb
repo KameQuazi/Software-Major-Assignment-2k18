@@ -29,7 +29,7 @@ Public Class LampTemplateMetadata
         ret.ShortDescription = ShortDescription
         ret.LongDescription = LongDescription
         ret.Material = Material
-        ret.Length = Length
+        ret.Width = Width
         ret.Height = Height
         ret.MaterialThickness = MaterialThickness
         ret.IsComplete = IsComplete
@@ -128,19 +128,21 @@ Public Class LampTemplateMetadata
     End Property
 
 
-    Private _length As Double
+
+
+    Private _width As Double
     ''' <summary>
     ''' The length of all of the template
     ''' </summary>
     ''' <returns></returns>
-    <JsonProperty("length")>
+    <JsonProperty("width")>
     <DataMember()>
-    Public Property Length As Double
+    Public Property Width As Double
         Get
-            Return _length
+            Return _width
         End Get
         Set(value As Double)
-            _length = value
+            _width = value
             NotifyPropertyChanged()
         End Set
     End Property
@@ -292,7 +294,7 @@ Public Class LampTemplateMetadata
             Return False
         End If
 
-        If Not data.Length.Equals(Length) Then
+        If Not data.Width.Equals(Width) Then
             Return False
         End If
 
@@ -358,13 +360,16 @@ Public NotInheritable Class LampTemplate
     ''' The actual template : contains just 1 of drawing
     ''' Is serialized last in the file 
     ''' </summary>
-    <JsonProperty("template", Order:=1000)>
+    <JsonProperty("template", Order:=1000, Required:=Required.Always)>
     <DataMember>
     Public Property BaseDrawing As LampDxfDocument
         Get
             Return _baseDrawing
         End Get
         Set(value As LampDxfDocument)
+            If value Is Nothing Then
+
+            End If
             If _baseDrawing IsNot Nothing Then
                 RemoveHandler _baseDrawing.PropertyChanged, AddressOf BaseDrawing_PropertyChanged
             End If
@@ -372,16 +377,41 @@ Public NotInheritable Class LampTemplate
             If _baseDrawing IsNot Nothing Then
                 AddHandler _baseDrawing.PropertyChanged, AddressOf BaseDrawing_PropertyChanged
             End If
+
+
             NotifyPropertyChanged()
         End Set
     End Property
 
+    <JsonProperty("bound_lock")>
+    <DataMember>
+    Private _boundsLock As Boolean
+    Public Property BoundsLock As Boolean
+        Get
+            Return _boundsLock
+        End Get
+        Set(value As Boolean)
+            _boundsLock = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
+    Private Sub UpdateBoundsFromDrawing()
+        If BaseDrawing IsNot Nothing Then
+            Me.Width = BaseDrawing.Width
+            Me.Height = BaseDrawing.Height
+        End If
+    End Sub
     ''' <summary>
     ''' handler for base drawing mutating
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub BaseDrawing_PropertyChanged(sender As Object, e As PropertyChangedEventArgs)
+        If Not BoundsLock Then
+            UpdateBoundsFromDrawing()
+        End If
+
         NotifyPropertyChanged(NameOf(BaseDrawing))
     End Sub
 
@@ -444,35 +474,6 @@ Public NotInheritable Class LampTemplate
     '''  see algorithm for in depth explaination
     ''' </summary>
     Public Sub SortTags()
-        'Dim copy(Tags.Count) As String
-        'Tags.CopyTo(copy, 0)
-        '' use selection sort
-        'Dim sortedTillElement = 0
-        'Dim temp As String
-        'Dim current As String
-        'Dim upto As Integer = 0
-        'Dim largestPos As Integer = -1
-        'Dim nextUnsorted As Integer
-
-        'While sortedTillElement <= copy.Length
-        '    upto = sortedTillElement + 1
-        '    largestPos = sortedTillElement
-        '    While upto < copy.Length
-        '        current = copy(upto)
-        '        If current > copy(largestPos) Then
-        '            largestPos = upto
-        '        End If
-        '        upto += 1
-        '    End While
-
-        '    nextUnsorted = sortedTillElement + 1
-        '    temp = copy(nextUnsorted)
-        '    copy(nextUnsorted) = copy(largestPos)
-        '    copy(largestPos) = temp
-        '    sortedTillElement += 1
-
-        'End While
-        'copy.Log("Sorting successful")
         Dim copy As New List(Of String)
         copy.AddRange(Tags)
         copy.Sort()
@@ -529,6 +530,7 @@ Public NotInheritable Class LampTemplate
             NotifyPropertyChanged()
         End Set
     End Property
+
 
     ''' <summary>
     ''' Handler for previewImages change
@@ -614,6 +616,10 @@ Public NotInheritable Class LampTemplate
             formatting = Formatting.Indented
         End If
 
+        If Not BoundsLock Then
+            UpdateBoundsFromDrawing()
+        End If
+
         Using fileStream As New StreamWriter(path)
             fileStream.Write(ToJson(formatting))
         End Using
@@ -636,10 +642,12 @@ Public NotInheritable Class LampTemplate
 
     ''' <summary>
     '''  Creates a new <see cref="LampTemplate"></see> with default guid
+    '''  also sets the bounds
     ''' </summary>
     ''' <param name="dxf"></param>
     Sub New(dxf As LampDxfDocument)
         Me.New(dxf, System.Guid.NewGuid.ToString)
+
     End Sub
 
     ''' <summary>
@@ -647,6 +655,7 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <param name="dxf"></param>
     ''' <param name="guid"></param>
+    <JsonConstructor>
     Sub New(dxf As LampDxfDocument, guid As String)
         Me.GUID = guid
         Me.BaseDrawing = dxf
@@ -655,7 +664,13 @@ Public NotInheritable Class LampTemplate
 
         PreviewImages = New ObservableCollection(Of Image)
         PreviewImages.ClearAsArray()
+
+        If Not BoundsLock Then
+            UpdateBoundsFromDrawing()
+        End If
+
     End Sub
+
 
     Public Shared Sub SortByMaterial(listOfTemplate As List(Of LampTemplate))
         listOfTemplate.Sort(AddressOf CompareMaterial)
@@ -691,46 +706,3 @@ Public Class LampTemplateWrapper
     <DataMember>
     Public Property Status As LampStatus
 End Class
-
-Public Module Owo3
-    <Extension>
-    Public Function ContainsString(self As IEnumerable(Of DynamicTextKey), textbuff As String) As Boolean
-        For Each key In self
-            If key.ParameterName.ToLower = textbuff.ToLower() Then
-                Return True
-            End If
-        Next
-        Return False
-    End Function
-
-    <Extension>
-    Public Sub AddRange(Of T)(self As ObservableCollection(Of T), range As IEnumerable(Of T))
-        If range Is Nothing Then
-            Return
-        End If
-        For Each item In range
-            self.Add(item)
-        Next
-    End Sub
-
-
-    <Extension>
-    Public Function TrimFinalCharacter(self As String)
-        If String.IsNullOrEmpty(self) Then
-            Return self
-        Else
-            Return self.Remove(self.Length - 1)
-        End If
-    End Function
-
-    <Extension>
-    Public Sub Log(array As String(), message As String)
-#If DEBUG Then
-        Console.WriteLine(message)
-#End If
-        Dim x As List(Of String) = array.ToList()
-        x.Sort()
-        x.CopyTo(array)
-
-    End Sub
-End Module

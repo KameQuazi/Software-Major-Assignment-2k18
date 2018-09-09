@@ -78,7 +78,7 @@ Public Enum UserPermission
     Elevated = 2 ' for teachers
     Admin = 3 ' for us + ia staff 
     Super = 4
-
+    Invalid = 5
 End Enum
 
 ''' <summary>
@@ -126,6 +126,8 @@ Public Enum LampStatus
     UsernameConflict = 256
     EmailConflict = 512
     NoTemplateFound = 1024
+    InvalidSubmitter = 2048
+    InvalidApprover = 4096
 End Enum
 
 <DataContract>

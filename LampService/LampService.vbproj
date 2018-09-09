@@ -125,6 +125,7 @@
     </Compile>
     <Compile Include="Service\LampService.vb" />
     <Compile Include="Service\LampHost.vb" />
+    <Compile Include="Service\LampServiceHelper.vb" />
     <Compile Include="Service\LampServiceLocal.vb" />
   </ItemGroup>
   <ItemGroup>

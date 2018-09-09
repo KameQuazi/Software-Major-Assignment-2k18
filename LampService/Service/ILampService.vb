@@ -1,7 +1,7 @@
 ﻿Imports System.Threading.Tasks
 Imports LampCommon
 
-<ServiceContract>
+<ServiceContract(Name:=NameOf(ILampService))>
 Public Interface ILampService
 
     ''' <summary>
@@ -181,10 +181,12 @@ Public Interface ILampService
 
     <OperationContract>
     Function RevokeJob(credentials As LampCredentials, jobId As String) As LampStatus
+
 End Interface
 
-<ServiceContract>
-Public Interface ILampServiceAsync
+<ServiceContract(Name:=NameOf(ILampService))>
+Public Interface ILampServiceClient
+    Inherits ILampService
     <OperationContract>
     Function GetTemplateAsync(ByVal credentials As LampCredentials, guid As String) As Task(Of LampTemplateWrapper)
 
@@ -265,9 +267,3 @@ Public Interface ILampServiceAsync
     Function RevokeJobAsync(credentials As LampCredentials, jobId As String) As Task(Of LampStatus)
 End Interface
 
-<ServiceContract>
-    Public Interface ILampServiceBoth
-        Inherits ILampService, ILampServiceAsync
-
-
-End Interface

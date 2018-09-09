@@ -1,6 +1,7 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.Collections.Specialized
 Imports System.ComponentModel
+Imports System.Runtime.CompilerServices
 
 Public Module CommonExtensions
     <System.Runtime.CompilerServices.Extension()>
@@ -62,6 +63,45 @@ Public Module CommonExtensions
     Public Function GetNewGuid() As String
         Return Guid.NewGuid().ToString()
     End Function
+    <Extension>
+    Public Function ContainsString(self As IEnumerable(Of DynamicTextKey), textbuff As String) As Boolean
+        For Each key In self
+            If key.ParameterName.ToLower = textbuff.ToLower() Then
+                Return True
+            End If
+        Next
+        Return False
+    End Function
 
+    <Extension>
+    Public Sub AddRange(Of T)(self As ObservableCollection(Of T), range As IEnumerable(Of T))
+        If range Is Nothing Then
+            Return
+        End If
+        For Each item In range
+            self.Add(item)
+        Next
+    End Sub
+
+
+    <Extension>
+    Public Function TrimFinalCharacter(self As String)
+        If String.IsNullOrEmpty(self) Then
+            Return self
+        Else
+            Return self.Remove(self.Length - 1)
+        End If
+    End Function
+
+    <Extension>
+    Public Sub Log(array As String(), message As String)
+#If DEBUG Then
+        Console.WriteLine(message)
+#End If
+        Dim x As List(Of String) = array.ToList()
+        x.Sort()
+        x.CopyTo(array)
+
+    End Sub
 
 End Module

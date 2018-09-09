@@ -42,8 +42,31 @@ Public Class DxfViewerControl
         End If
     End Sub
 
+    Private _template As LampTemplate = New LampTemplate
+
+    <[ReadOnly](True), Browsable(False),
+        EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    Public Property Template As LampTemplate
+        Get
+            Return _template
+        End Get
+        Set(value As LampTemplate)
+            If Template.BaseDrawing IsNot Nothing Then
+                RemoveHandler Template.BaseDrawing.PropertyChanged, AddressOf SourceChanged
+            End If
+
+            If value?.BaseDrawing IsNot Nothing Then
+                AddHandler value.BaseDrawing.PropertyChanged, AddressOf SourceChanged
+            End If
+
+            _template = value
+            UpdateView()
+        End Set
+    End Property
 
     <Description("The dxf document that is rendered onto this control"), Category("Data")>
+    <[ReadOnly](True), Browsable(False),
+        EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Property Drawing As LampDxfDocument
         Get
             Return Template.BaseDrawing
@@ -111,16 +134,7 @@ Public Class DxfViewerControl
         End Get
     End Property
 
-    Private _template As LampTemplate = New LampTemplate
-    <Browsable(False), EditorBrowsable(EditorBrowsableState.Never)>
-    Public Property Template As LampTemplate
-        Get
-            Return _template
-        End Get
-        Set(value As LampTemplate)
-            value = _template
-        End Set
-    End Property
+
 
     Public Sub UpdateView()
         Me.Invalidate()
@@ -142,6 +156,11 @@ Public Class DxfViewerControl
 
     End Sub
 
+
+    Public Sub ShiftToZero()
+        Me.Center = New PointF((Width / ZoomX) / 2, (Height / ZoomY) / 2)
+
+    End Sub
 
 
 

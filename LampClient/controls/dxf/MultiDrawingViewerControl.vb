@@ -15,6 +15,37 @@ Public Class MultiDrawingViewerControl
         End Set
     End Property
 
+    Public Property ZoomxX As Double
+        Get
+            Return DxfViewerControl1.ZoomX
+        End Get
+        Set(value As Double)
+            DxfViewerControl1.ZoomX = value
+        End Set
+    End Property
+
+    Public Property ZoomxY As Double
+        Get
+            Return DxfViewerControl1.ZoomY
+        End Get
+        Set(value As Double)
+            DxfViewerControl1.ZoomY = value
+        End Set
+    End Property
+
+    Public Property ZoomFactor As Double
+        Get
+            If DxfViewerControl1.ZoomY <> DxfViewerControl1.ZoomX Then
+                Return -1
+            End If
+            Return DxfViewerControl1.ZoomX
+        End Get
+        Set(value As Double)
+            DxfViewerControl1.ZoomY = value
+            DxfViewerControl1.ZoomX = value
+        End Set
+    End Property
+
     Private index As Integer = 0
 
     Public Sub New()
@@ -60,5 +91,9 @@ Public Class MultiDrawingViewerControl
     Private Sub btnPrevious_Click(sender As Object, e As EventArgs) Handles btnPrevious.Click
         index -= 1
         UpdateContents()
+    End Sub
+
+    Private Sub MultiDrawingViewerControl_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        DxfViewerControl1.ShiftToZero()
     End Sub
 End Class

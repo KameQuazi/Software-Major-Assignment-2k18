@@ -128,6 +128,7 @@
     <Compile Include="template\TemplateParts\DynamicTextDictionary.vb" />
     <Compile Include="template\TemplateParts\DynamicTextKey.vb" />
     <Compile Include="template\TemplateParts\DynamicTextValue.vb" />
+    <Compile Include="user\DesignerOpenType.vb" />
     <Compile Include="user\LampCredentials.vb" />
     <Compile Include="user\LampProfile.vb" />
     <Compile Include="template\LampTemplate.vb" />

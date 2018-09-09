@@ -4,7 +4,7 @@
 ''' includes some convience functions ...
 ''' </summary>
 Public Interface ILampWcfClient
-    Inherits ILampServiceBoth
+    Inherits ILampServiceClient
 
 
 End Interface

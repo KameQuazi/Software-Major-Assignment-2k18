@@ -5,10 +5,13 @@ Imports netDxf
 Imports netDxf.Entities
 Imports System.Runtime.CompilerServices
 Imports System.Collections.ObjectModel
+Imports System.ComponentModel
 
 Public Class DesignerForm
     Private _drawing As LampDxfDocument
 
+    <[ReadOnly](True), Browsable(False),
+        EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Property Template As LampTemplate
         Get
             Return DesignerScreen1.Template
@@ -21,14 +24,18 @@ Public Class DesignerForm
         End Set
     End Property
 
+    <[ReadOnly](True), Browsable(False),
+        EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Property Drawing As LampDxfDocument
         Get
             Return DesignerScreen1.Drawing
         End Get
         Set(value As LampDxfDocument)
             DesignerScreen1.Drawing = value
+
         End Set
     End Property
+
 
     Public ReadOnly Property DynamicTextKeys As ObservableCollection(Of DynamicTextKey)
         Get
@@ -53,6 +60,7 @@ Public Class DesignerForm
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles OpenFileBtn.Click
         If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
             Drawing = LampDxfDocument.FromFile(OpenFileDialog1.FileName)
+            Drawing = Drawing.ShiftToZero()
             SaveFileBtn.Enabled = True
 
             FilenameTbox.Text = OpenFileDialog1.FileName
@@ -106,22 +114,10 @@ Public Class DesignerForm
 
         ' Add any initialization after the InitializeComponent() call.
         If template IsNot Nothing Then
-            Me.template = template
+            Me.Template = template
         End If
     End Sub
 
-
-
-    Private Sub Button4_Click_1(sender As Object, e As EventArgs) Handles Button4.Click
-        Try
-            Dim z = TextBox1.Text.Split(" "c)
-            Dim y = TextBox2.Text.Split(" "c)
-            Drawing.AddLine(Double.Parse(z(0)), Double.Parse(z(1)), Double.Parse(y(0)), Double.Parse(y(1)))
-            DesignerScreen1.Refresh()
-        Catch ex As FormatException
-            MessageBox.Show("The format is incorrect!")
-        End Try
-    End Sub
 
     ''' <summary>
     ''' super override the keydown
@@ -195,7 +191,7 @@ Public Class DesignerForm
         End If
     End Sub
 
-    Private Sub DuplicateButton_Click(sender As Object, e As EventArgs) Handles DuplicateButton.Click
+    Private Sub DuplicateButton_Click(sender As Object, e As EventArgs)
         Dim input As New LampInputBox("enter location (x y) to insert", "enter a point [x y] without brackets")
         If input.ShowDialog = DialogResult.OK Then
             Try
@@ -282,6 +278,7 @@ Public Class DesignerForm
                 textWidth = 0
                 textbuff = ""
                 parameterName = ""
+
             Case Else
                 MessageBox.Show("No cancel routine found for " + CurrentTool.ToString)
 
@@ -333,8 +330,12 @@ Public Class DesignerForm
 
                             DynamicTextKeys.Add(New DynamicTextKey(parameterName, "", firstPoint, textHeight, textWidth))
                             Drawing.RemoveEntity(firstPreviousEntity)
-                            UndoEntities.Push(Drawing.AddMText(firstPoint, parameterName, textHeight, textWidth))
+                            Dim mtext = Drawing.AddMText(firstPoint, parameterName, textHeight, textWidth)
+
+                            UndoEntities.Push(mtext)
+                            ShownDynamicText.Add(mtext)
                             ResetVariables()
+
                         End If
                 End Select
         End Select
@@ -396,7 +397,8 @@ Public Class DesignerForm
 
         End Select
 
-
+        TextBox1.Text = Drawing.Width
+        TextBox2.Text = Drawing.Height
 
     End Sub
 
@@ -488,6 +490,8 @@ Public Class DesignerForm
             End If
         Next
     End Sub
+
+    Private ShownDynamicText As New List(Of MText)
 
     Private Sub cboxDynamicText_CheckedChanged(sender As Object, e As EventArgs) Handles cboxDynamicText.CheckedChanged
         If doUpdate Then
@@ -622,6 +626,10 @@ Public Class DesignerForm
         If currentState <> DrawingState.None Then
             RevertDraw()
         End If
+        For Each item In ShownDynamicText
+            Drawing.RemoveEntity(item)
+        Next
+
     End Sub
 
     Private Sub btnUndo_Click(sender As Object, e As EventArgs) Handles btnUndo.Click
@@ -640,13 +648,6 @@ Public Enum LampTool
     DynamicMText
 End Enum
 
-
-
-Public Module owo1
-    Public Function DistanceTwoPoints(first As Vector3, second As Vector3)
-        Return Math.Sqrt((first.X - second.X) ^ 2 + (first.Y - second.Y) ^ 2)
-    End Function
-End Module
 
 Public Enum DrawingState
     None = 0

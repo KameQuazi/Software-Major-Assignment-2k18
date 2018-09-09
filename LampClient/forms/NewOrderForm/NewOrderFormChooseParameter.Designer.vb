@@ -22,8 +22,8 @@ Partial Class NewOrderFormChooseParameter
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.ToolBar1 = New LampClient.ToolBar()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.gboxHelp = New System.Windows.Forms.GroupBox()
         Me.btnNext = New System.Windows.Forms.Button()
@@ -33,13 +33,15 @@ Partial Class NewOrderFormChooseParameter
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
         Me.gbox1 = New System.Windows.Forms.GroupBox()
-        Me.TemplateDisplay1 = New LampClient.TemplateDisplay()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.btnAdd = New System.Windows.Forms.Button()
         Me.btnMinus = New System.Windows.Forms.Button()
         Me.tboxNumTemplates = New System.Windows.Forms.TextBox()
         Me.btnDeletedSelected = New System.Windows.Forms.Button()
         Me.btnCreate = New System.Windows.Forms.Button()
+        Me.ToolBar1 = New LampClient.ToolBar()
+        Me.TemplateDisplay1 = New LampClient.TemplateDisplay()
+        Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.gboxHelp.SuspendLayout()
@@ -48,6 +50,7 @@ Partial Class NewOrderFormChooseParameter
         Me.TableLayoutPanel3.SuspendLayout()
         Me.gbox1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -65,22 +68,6 @@ Partial Class NewOrderFormChooseParameter
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1232, 703)
         Me.TableLayoutPanel1.TabIndex = 38
-        '
-        'ToolBar1
-        '
-        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
-        Me.ToolBar1.ConfirmationRequired = Nothing
-        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = False
-        Me.ToolBar1.NewTemplateEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
-        Me.ToolBar1.TabIndex = 37
-        Me.ToolBar1.ViewOrderEnabled = True
-        Me.ToolBar1.ViewTemplateEnabled = True
         '
         'TableLayoutPanel2
         '
@@ -196,16 +183,6 @@ Partial Class NewOrderFormChooseParameter
         Me.gbox1.TabStop = False
         Me.gbox1.Text = "Selected Template"
         '
-        'TemplateDisplay1
-        '
-        Me.TemplateDisplay1.BackColor = System.Drawing.Color.White
-        Me.TemplateDisplay1.Cursor = System.Windows.Forms.Cursors.Arrow
-        Me.TemplateDisplay1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TemplateDisplay1.Location = New System.Drawing.Point(6, 31)
-        Me.TemplateDisplay1.Name = "TemplateDisplay1"
-        Me.TemplateDisplay1.Size = New System.Drawing.Size(218, 294)
-        Me.TemplateDisplay1.TabIndex = 0
-        '
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.btnAdd)
@@ -246,6 +223,7 @@ Partial Class NewOrderFormChooseParameter
         '
         'tboxNumTemplates
         '
+        Me.tboxNumTemplates.Enabled = False
         Me.tboxNumTemplates.Location = New System.Drawing.Point(50, 192)
         Me.tboxNumTemplates.Name = "tboxNumTemplates"
         Me.tboxNumTemplates.Size = New System.Drawing.Size(52, 31)
@@ -275,6 +253,36 @@ Partial Class NewOrderFormChooseParameter
         Me.btnCreate.Text = "Add New Template"
         Me.btnCreate.UseVisualStyleBackColor = False
         '
+        'ToolBar1
+        '
+        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.ToolBar1.ConfirmationRequired = Nothing
+        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolBar1.HomeEnabled = True
+        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.NewOrderEnabled = False
+        Me.ToolBar1.NewTemplateEnabled = True
+        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
+        Me.ToolBar1.TabIndex = 37
+        Me.ToolBar1.ViewOrderEnabled = True
+        Me.ToolBar1.ViewTemplateEnabled = True
+        '
+        'TemplateDisplay1
+        '
+        Me.TemplateDisplay1.BackColor = System.Drawing.Color.White
+        Me.TemplateDisplay1.Cursor = System.Windows.Forms.Cursors.Arrow
+        Me.TemplateDisplay1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TemplateDisplay1.Location = New System.Drawing.Point(6, 31)
+        Me.TemplateDisplay1.Name = "TemplateDisplay1"
+        Me.TemplateDisplay1.Size = New System.Drawing.Size(218, 294)
+        Me.TemplateDisplay1.TabIndex = 0
+        '
+        'ErrorProvider1
+        '
+        Me.ErrorProvider1.ContainerControl = Me
+        '
         'NewOrderFormChooseParameter
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
@@ -294,6 +302,7 @@ Partial Class NewOrderFormChooseParameter
         Me.gbox1.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -315,4 +324,5 @@ Partial Class NewOrderFormChooseParameter
     Friend WithEvents btnMinus As Button
     Friend WithEvents tboxNumTemplates As TextBox
     Friend WithEvents btnNext As Button
+    Friend WithEvents ErrorProvider1 As ErrorProvider
 End Class

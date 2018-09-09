@@ -17,5 +17,11 @@
     <Setting Name="SortSettings" Type="LampCommon.SortSettings" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="DesignerProgram" Type="LampCommon.OpenType" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LocalDatabasePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">templateDB.sqlite</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

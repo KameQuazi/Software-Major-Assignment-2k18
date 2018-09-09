@@ -34,15 +34,44 @@ Public Class LampDxfTest
     <TestMethod()>
     Public Sub CompletedDrawingTest()
         Dim dxf As New LampDxfDocument
-        dxf.AddLine(0, 0, 10, 10)
         dxf.AddLine(10, 10, 20, 0)
-        dxf.AddLine(20, 0, 0, 0)
-        Dim template As New LampTemplate(dxf)
+        dxf.AddLine(20, 10, 10, 10)
+        dxf.Save("unshifted.dxf")
+        dxf = dxf.ShiftToZero()
+        dxf.Save("shifted.dxf")
+
         ' template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(0, 0, 0)))
         ' template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(30, 0, 0)))
         ' template.AddInsertionPoint(New LampDxfInsertLocation(New Vector3(60, 0, 0)))
-        template.Save("template.spf")
+
         ' template.CompletedDrawing.Save("finished drawing.dxf")
+        dxf = New LampDxfDocument
+        dxf.AddLine(0, 0, 0, 10)
+        AreEqual(0.0, dxf.Width)
+        AreEqual(10.0, dxf.Height)
+        dxf.AddLine(0, 0, 0, -10)
+        AreEqual(0.0, dxf.Width)
+        AreEqual(20.0, dxf.Height)
+        dxf.AddLine(10, 0, -10, 0)
+        AreEqual(20.0, dxf.Width)
+        AreEqual(20.0, dxf.Height)
+        dxf.AddLine(5, 5, -5, -5)
+        AreEqual(20.0, dxf.Width)
+        AreEqual(20.0, dxf.Height)
+        dxf.AddLine(100, 100, 0, 0)
+        AreEqual(110.0, dxf.Width)
+        AreEqual(110.0, dxf.Height)
+        dxf = New LampDxfDocument
+        Dim l = New Line(New Vector3(0, 0, 0), New Vector3(1, 1, 0))
+        l.Color = New AciColor(Color.Red)
+
+        dxf.AddLine(l)
+
+        dxf.ToImage().Save("test.png")
+
+        Dim template As New LampTemplate(dxf)
+        template.Save("template.spf")
+
     End Sub
 
     <TestMethod>
