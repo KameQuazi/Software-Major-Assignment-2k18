@@ -232,11 +232,8 @@ Public Class TemplateCreatorControl
     End Sub
 
     Private Sub UpdateDynFromTemplate()
-        ' TODO
-        'Dynbox.Items.Clear()
-        'For Each item In Template.DynamicTextList
-        '    Dynbox.Items.Add(item.ParameterName)
-        'Next
+        DynamicFormCreation1.Source.Clear()
+        DynamicFormCreation1.Source.AddRange(Template.DynamicTextList)
     End Sub
 
     Private Sub UpdateTextFromTemplate()
@@ -587,9 +584,33 @@ Public Class TemplateCreatorControl
     Private Sub btnSetDrawing_Click(sender As Object, e As EventArgs) Handles btnSetDrawing.Click
         If DxfFileDialog.ShowDialog = DialogResult.OK Then
             Me.CurrentFilename = DxfFileDialog.FileName
-            Dim loaded = LampDxfDocument.FromFile(CurrentFilename)
-            Console.WriteLine(loaded.AllEntities)
-            Template.BaseDrawing = loaded.ShiftToZero
+            Dim loaded = LampDxfDocument.FromFile(CurrentFilename).ShiftToZero
+
+
+            If loaded.HasMText Then
+                If MessageBox.Show("Found text in template file. Do you want to convert these one or more of these text to dynamic text?", "Found dynamic text", MessageBoxButtons.YesNo, MessageBoxIcon.Information,
+                                   MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
+                    Dim allText = New List(Of netDxf.Entities.MText)
+                    For Each text As netDxf.Entities.MText In loaded.Drawing.MTexts
+
+                        If MessageBox.Show(String.Format("Found text={0} at location=({1},{2})", text.PlainText, text.Position.X,
+                                                         text.Position.Y), "Found text", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
+                            Dim dyn = New DynamicTextKey(text.PlainText, "", text.Position, text.Height, text.RectangleWidth, font:=text.Style.FontFamilyName)
+                            Template.DynamicTextList.Add(dyn)
+                            allText.Add(text)
+                        End If
+
+
+                    Next
+                    For Each item In allText
+                        Template.BaseDrawing.RemoveEntity(item)
+                    Next
+                End If
+
+            End If
+            Template.BaseDrawing = loaded
+            ' also convert all text
+
         End If
 
 

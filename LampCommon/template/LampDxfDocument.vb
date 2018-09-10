@@ -575,6 +575,11 @@ Public Class LampDxfDocument
 
 
     Private Const precision = 100
+
+    Public Function HasMText() As Boolean
+        Return Drawing.MTexts.Count > 0
+    End Function
+
     ''' <summary>
     ''' Draws the contents onto a graphics object
     ''' Only draws lines right now

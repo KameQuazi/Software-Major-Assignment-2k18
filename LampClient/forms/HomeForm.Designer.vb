@@ -36,7 +36,6 @@ Partial Class HomeForm
         '
         'TableLayoutPanel1
         '
-        Me.TableLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TableLayoutPanel1.ColumnCount = 1
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.ToolBar1, 0, 0)
@@ -54,16 +53,18 @@ Partial Class HomeForm
         'ToolBar1
         '
         Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.ToolBar1.ConfirmationRequired = Nothing
         Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.HomeEnabled = False
         Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
-        Me.ToolBar1.ViewOrderEnabled = True
-        Me.ToolBar1.ViewTemplateEnabled = True
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.NewOrderEnabled = True
+        Me.ToolBar1.NewTemplateEnabled = True
         Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
         Me.ToolBar1.TabIndex = 34
+        Me.ToolBar1.ViewOrderEnabled = True
+        Me.ToolBar1.ViewTemplateEnabled = True
         '
         'TableLayoutPanel2
         '
