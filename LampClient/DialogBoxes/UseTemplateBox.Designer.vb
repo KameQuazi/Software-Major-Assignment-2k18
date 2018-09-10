@@ -22,8 +22,6 @@ Partial Class UseTemplateBox
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim LampTemplate1 As LampCommon.LampTemplate = New LampCommon.LampTemplate()
-        Dim LampDxfDocument1 As LampCommon.LampDxfDocument = New LampCommon.LampDxfDocument()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UseTemplateBox))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TemplateCreatorControl1 = New LampClient.TemplateCreatorControl()
@@ -47,35 +45,23 @@ Partial Class UseTemplateBox
         '
         'TemplateCreatorControl1
         '
+        Me.TemplateCreatorControl1.DrawingOpenProgram = Nothing
+        Me.TemplateCreatorControl1.JobEnabled = False
         Me.TemplateCreatorControl1.Location = New System.Drawing.Point(3, 3)
         Me.TemplateCreatorControl1.Name = "TemplateCreatorControl1"
+        Me.TemplateCreatorControl1.ReadOnly = False
         Me.TemplateCreatorControl1.Size = New System.Drawing.Size(1226, 697)
         Me.TemplateCreatorControl1.SubmitType = LampClient.TemplateCreatorControl.SendType.None
         Me.TemplateCreatorControl1.TabIndex = 0
-        LampTemplate1.ApproverProfile = Nothing
-        LampDxfDocument1.SerializedDrawing = resources.GetString("LampDxfDocument1.SerializedDrawing")
-        LampTemplate1.BaseDrawing = LampDxfDocument1
-        LampTemplate1.CreatorProfile = Nothing
-        LampTemplate1.GUID = "86a55c4b-2c35-447e-abc5-504823620f0c"
-        LampTemplate1.Height = 0R
-        LampTemplate1.IsComplete = False
-        LampTemplate1.Width = 0R
-        LampTemplate1.LongDescription = ""
-        LampTemplate1.Material = "Unspecified"
-        LampTemplate1.MaterialThickness = 0R
-        LampTemplate1.Name = ""
-        LampTemplate1.ShortDescription = ""
-        LampTemplate1.SubmitDate = Nothing
-        Me.TemplateCreatorControl1.Template = LampTemplate1
         '
         'UseTemplateBox
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "UseTemplateBox"
-        Me.Text = "UseTemplateBox"
+        Me.Text = "Use Template"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 

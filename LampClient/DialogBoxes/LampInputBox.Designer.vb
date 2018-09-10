@@ -22,6 +22,7 @@ Partial Class LampInputBox
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(LampInputBox))
         Me.Label1 = New System.Windows.Forms.Label()
         Me.CancelExitButon = New System.Windows.Forms.Button()
         Me.OkButton = New System.Windows.Forms.Button()
@@ -67,16 +68,16 @@ Partial Class LampInputBox
         '
         'LampInputBox
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(293, 216)
         Me.Controls.Add(Me.OkButton)
         Me.Controls.Add(Me.CancelExitButon)
         Me.Controls.Add(Me.RichTextBox1)
         Me.Controls.Add(Me.Label1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "LampInputBox"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "LampInputBox"
+        Me.Text = "Input"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

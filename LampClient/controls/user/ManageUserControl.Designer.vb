@@ -173,6 +173,7 @@ Partial Class ManageUserControl
         'DropDownPermission
         '
         Me.DropDownPermission.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.DropDownPermission.BackColor = System.Drawing.SystemColors.Control
         Me.DropDownPermission.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.DropDownPermission.FormattingEnabled = True
         Me.DropDownPermission.Items.AddRange(New Object() {"Standard", "Elevated", "Admin"})

@@ -22,6 +22,7 @@ Partial Class TemplateApproveBox
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TemplateApproveBox))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TemplateCreatorControl1 = New LampClient.TemplateCreatorControl()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
@@ -49,6 +50,7 @@ Partial Class TemplateApproveBox
         'TemplateCreatorControl1
         '
         Me.TemplateCreatorControl1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TemplateCreatorControl1.DrawingOpenProgram = Nothing
         Me.TemplateCreatorControl1.JobEnabled = False
         Me.TemplateCreatorControl1.Location = New System.Drawing.Point(3, 73)
         Me.TemplateCreatorControl1.Name = "TemplateCreatorControl1"
@@ -97,12 +99,12 @@ Partial Class TemplateApproveBox
         '
         'TemplateApproveBox
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "TemplateApproveBox"
-        Me.Text = "TemplateApproveBox"
+        Me.Text = "Approve Template"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
