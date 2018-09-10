@@ -158,6 +158,10 @@ Public Class ServiceJobViewer
 
         ' Add any initialization after the InitializeComponent() call.
         MultiJobViewer1.Rows = JOBS_PER_PAGE
+
+        btnNextPage.Enabled = False
+        btnPreviousPage.Enabled = False
+
         If Me.DesignMode Then
             Me.StopLoading()
         End If
@@ -211,4 +215,5 @@ Public Class ServiceJobViewer
     Private Sub ServiceTemplateViewer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         UpdateContents()
     End Sub
+
 End Class

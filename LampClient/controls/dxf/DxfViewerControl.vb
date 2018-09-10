@@ -19,8 +19,9 @@ Public Class DxfViewerControl
         RaiseEvent MouseMoveAbsolute(Me, New MouseMoveAbsoluteEventArgs(LampDxfHelper.GdiToCartesian(Center, Width, Height, e.Location, 1 / ZoomX, 1 / ZoomY)))
     End Sub
 
-
+    <Browsable(False), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Property BackgroundColorBrush As Brush = New SolidBrush(Color.LimeGreen)
+
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
     Private _center As New PointF

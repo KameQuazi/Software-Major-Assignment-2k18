@@ -60,14 +60,14 @@ Public Class MultiDrawingViewerControl
     Private Sub UpdateButtons()
         If index + 1 > Drawings.Count - 1 Then
             ' cannot go right anymore
-            btnNext.Enabled = False
+            btnNextPage.Enabled = False
         Else
-            btnNext.Enabled = True
+            btnNextPage.Enabled = True
         End If
         If index - 1 < 0 Then
-            btnPrevious.Enabled = False
+            btnPreviousPage.Enabled = False
         Else
-            btnPrevious.Enabled = True
+            btnPreviousPage.Enabled = True
         End If
     End Sub
 
@@ -83,12 +83,12 @@ Public Class MultiDrawingViewerControl
         UpdateButtons()
     End Sub
 
-    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNextPage.Click
         index += 1
         UpdateContents()
     End Sub
 
-    Private Sub btnPrevious_Click(sender As Object, e As EventArgs) Handles btnPrevious.Click
+    Private Sub btnPrevious_Click(sender As Object, e As EventArgs) Handles btnPreviousPage.Click
         index -= 1
         UpdateContents()
     End Sub

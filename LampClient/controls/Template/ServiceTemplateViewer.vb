@@ -147,6 +147,8 @@ Public Class ServiceTemplateViewer
 
         ' This call is required by the designer.
         InitializeComponent()
+        btnNextPage.Enabled = False
+        btnPreviousPage.Enabled = False
 
         ' Add any initialization after the InitializeComponent() call.
         If Me.DesignMode Then

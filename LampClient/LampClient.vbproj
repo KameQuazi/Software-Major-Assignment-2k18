@@ -143,6 +143,12 @@
     <Compile Include="AdminForms\ApproveJobForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="controls\dxf\DxfViewerControl.Designer.vb">
+      <DependentUpon>DxfViewerControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\dxf\DxfViewerControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\dxf\MultiDrawingViewerControl.Designer.vb">
       <DependentUpon>MultiDrawingViewerControl.vb</DependentUpon>
     </Compile>
@@ -217,12 +223,6 @@
       <DependentUpon>AdminToolbar.vb</DependentUpon>
     </Compile>
     <Compile Include="controls\toolbar\AdminToolbar.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="controls\DxfViewerControl.Designer.vb">
-      <DependentUpon>DxfViewerControl.vb</DependentUpon>
-    </Compile>
-    <Compile Include="controls\DxfViewerControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="controls\DynamicFormCreation.Designer.vb">
@@ -507,6 +507,9 @@
     <EmbeddedResource Include="AdminForms\ApproveJobForm.resx">
       <DependentUpon>ApproveJobForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="controls\dxf\DxfViewerControl.resx">
+      <DependentUpon>DxfViewerControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\dxf\MultiDrawingViewerControl.resx">
       <DependentUpon>MultiDrawingViewerControl.vb</DependentUpon>
     </EmbeddedResource>
@@ -542,9 +545,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="controls\toolbar\AdminToolbar.resx">
       <DependentUpon>AdminToolbar.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="controls\DxfViewerControl.resx">
-      <DependentUpon>DxfViewerControl.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\DynamicFormCreation.resx">
       <DependentUpon>DynamicFormCreation.vb</DependentUpon>
