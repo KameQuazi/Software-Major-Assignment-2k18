@@ -23,7 +23,6 @@ Partial Class MultiDrawingViewerControl
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MultiDrawingViewerControl))
-        Dim LampTemplate1 As LampCommon.LampTemplate = New LampCommon.LampTemplate()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.btnNext = New System.Windows.Forms.Button()
@@ -121,21 +120,6 @@ Partial Class MultiDrawingViewerControl
         Me.DxfViewerControl1.Name = "DxfViewerControl1"
         Me.DxfViewerControl1.Size = New System.Drawing.Size(491, 336)
         Me.DxfViewerControl1.TabIndex = 0
-        LampTemplate1.ApproverProfile = Nothing
-        LampTemplate1.BaseDrawing = Nothing
-        LampTemplate1.BoundsLock = False
-        LampTemplate1.CreatorProfile = Nothing
-        LampTemplate1.GUID = "2710c1e7-9c58-4d85-bd6e-13940c2fa1b1"
-        LampTemplate1.Height = 0R
-        LampTemplate1.IsComplete = False
-        LampTemplate1.LongDescription = ""
-        LampTemplate1.Material = "Unspecified"
-        LampTemplate1.MaterialThickness = 0R
-        LampTemplate1.Name = ""
-        LampTemplate1.ShortDescription = ""
-        LampTemplate1.SubmitDate = Nothing
-        LampTemplate1.Width = 0R
-        Me.DxfViewerControl1.Template = LampTemplate1
         Me.DxfViewerControl1.ZoomX = 1.0R
         Me.DxfViewerControl1.ZoomY = 1.0R
         '

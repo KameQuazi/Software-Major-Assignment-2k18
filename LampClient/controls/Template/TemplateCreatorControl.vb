@@ -154,8 +154,8 @@ Public Class TemplateCreatorControl
         UpdateViewerImages()
         UpdateTagsFromTemplate()
         UpdateDxfFromTemplate()
+        UpdateDynFromTemplate()
         UpdateApproval()
-        DynamicFormCreation1.Template = Template
     End Sub
 
     Private Sub UpdateApproval()
@@ -583,10 +583,11 @@ Public Class TemplateCreatorControl
 
     Private Sub btnSetDrawing_Click(sender As Object, e As EventArgs) Handles btnSetDrawing.Click
         If DxfFileDialog.ShowDialog = DialogResult.OK Then
+
             Me.CurrentFilename = DxfFileDialog.FileName
             Dim loaded = LampDxfDocument.FromFile(CurrentFilename).ShiftToZero
 
-
+            Template.DynamicTextList.Clear()
             If loaded.HasMText Then
                 If MessageBox.Show("Found text in template file. Do you want to convert these one or more of these text to dynamic text?", "Found dynamic text", MessageBoxButtons.YesNo, MessageBoxIcon.Information,
                                    MessageBoxDefaultButton.Button1) = DialogResult.Yes Then

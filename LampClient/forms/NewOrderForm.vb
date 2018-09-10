@@ -17,23 +17,6 @@ Public Class NewOrderForm
         End Set
     End Property
 
-
-    Private Sub loadElements() Handles Me.Load
-        If Not CurrentTemplate.HasDynamicText Then
-            txtPrefix.Show()
-            txtRecipient.Show()
-            For i = 0 To CurrentTemplate.DynamicTextList.Count - 1
-                txtPrefix.Items.Add(CurrentTemplate.DynamicTextList(i).ParameterName)
-                dynamicTextDict.Add("")
-            Next
-            txtPrefix.SelectedIndex = 0
-
-        Else
-            txtPrefix.Hide()
-            txtRecipient.Hide()
-        End If
-    End Sub
-
     Private Sub txtRecipient_Enter(sender As Object, e As EventArgs) Handles txtRecipient.Enter
         If txtRecipient.Text = "Insert csv Here" Then
             txtRecipient.Text = ""

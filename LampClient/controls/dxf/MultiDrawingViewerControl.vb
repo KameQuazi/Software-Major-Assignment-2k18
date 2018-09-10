@@ -15,7 +15,7 @@ Public Class MultiDrawingViewerControl
         End Set
     End Property
 
-    Public Property ZoomxX As Double
+    Public Property ZoomX As Double
         Get
             Return DxfViewerControl1.ZoomX
         End Get
@@ -24,7 +24,7 @@ Public Class MultiDrawingViewerControl
         End Set
     End Property
 
-    Public Property ZoomxY As Double
+    Public Property ZoomY As Double
         Get
             Return DxfViewerControl1.ZoomY
         End Get

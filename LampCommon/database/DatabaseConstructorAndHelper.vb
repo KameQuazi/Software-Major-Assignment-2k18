@@ -80,6 +80,7 @@ Partial Public Class TemplateDatabase
                                   approverID Text,
                                   submitDate Text,
                                   complete Int DEFAULT FALSE,
+                                  boundsLock Int DEFAULT FALSE NOT NULL,
                                     
                                   FOREIGN KEY(creatorID) REFERENCES users(UserId),
                                   FOREIGN KEY(approverID) REFERENCES users(UserId)
@@ -193,6 +194,8 @@ Partial Public Class TemplateDatabase
                                   approverID Text,
                                   submitDate Text,
                                   complete Int DEFAULT FALSE,
+                                  boundsLock Int DEFAULT FALSE NOT NULL,
+
                                     
                                   FOREIGN KEY(creatorID) REFERENCES users(UserId),
                                   FOREIGN KEY(approverID) REFERENCES users(UserId)

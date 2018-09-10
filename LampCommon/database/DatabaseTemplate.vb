@@ -15,7 +15,7 @@ Partial Public Class TemplateDatabase
             command.CommandText = "Select DXF from dxf WHERE guid=@guid"
             command.Parameters.AddWithValue("@guid", guid)
             Dim dxfString = DirectCast(command.ExecuteScalar(), String)
-            If dxfString IsNot Nothing Then
+            If dxfString IsNot Nothing AndAlso dxfString <> "" Then
                 dxf = LampDxfDocument.FromString(dxfString)
             End If
         End Using
@@ -251,7 +251,7 @@ Partial Public Class TemplateDatabase
             command.CommandText = "Select 
                                     name, shortDescription, longDescription, material, 
                                     length, height, materialthickness, 
-                                    creatorId, approverId, submitDate, complete 
+                                    creatorId, approverId, submitDate, complete, boundsLock
 
                                     FROM template WHERE guid = @guid"
             command.Parameters.AddWithValue("@guid", guid)
@@ -280,7 +280,7 @@ Partial Public Class TemplateDatabase
 
                     metadata.SubmitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
                     metadata.IsComplete = reader.GetBoolean(reader.GetOrdinal("complete"))
-
+                    metadata.BoundsLock = reader.GetBoolean(reader.GetOrdinal("boundsLock"))
                 End If
             End Using
         End Using
@@ -298,7 +298,7 @@ Partial Public Class TemplateDatabase
             command.CommandText = "Select 
                                     name, shortDescription, longDescription, material, 
                                     length, height, materialthickness, 
-                                    creatorId, approverId, submitDate, complete 
+                                    creatorId, approverId, submitDate, complete, boundsLock
 
                                     FROM template WHERE guid = @guid"
             command.Parameters.AddWithValue("@guid", guid)
@@ -325,7 +325,7 @@ Partial Public Class TemplateDatabase
 
                     metadata.SubmitDate = reader.GetDateTime(reader.GetOrdinal("submitDate"))
                     metadata.IsComplete = reader.GetBoolean(reader.GetOrdinal("complete"))
-
+                    metadata.BoundsLock = reader.GetBoolean(reader.GetOrdinal("boundsLock"))
                 End If
             End Using
         End Using
@@ -344,11 +344,11 @@ Partial Public Class TemplateDatabase
             command.CommandText = "INSERT OR REPLACE INTO template
                     (guid, name, shortDescription, longDescription, material,
                     length, Height, materialthickness, 
-                    creatorID, approverId, submitdate, complete)
+                    creatorID, approverId, submitdate, complete, boundsLock)
                     VALUES
                     (@guid, @name, @shortDescription, @longDescription, @material, 
                     @length, @height, @materialthickness, 
-                    @creatorId, @approverId, DATETIME('now'), @complete);"
+                    @creatorId, @approverId, DATETIME('now'), @complete, @boundsLock);"
 
             command.Parameters.AddWithValue("@guid", template.GUID)
 
@@ -364,6 +364,11 @@ Partial Public Class TemplateDatabase
             command.Parameters.AddWithValue("@creatorId", creatorId)
             command.Parameters.AddWithValue("@approverId", approverId)
             command.Parameters.AddWithValue("@complete", template.IsComplete)
+
+            command.Parameters.AddWithValue("@boundsLock", template.BoundsLock)
+
+
+
 
             Return Convert.ToBoolean(command.ExecuteNonQuery())
         End Using
@@ -381,11 +386,11 @@ Partial Public Class TemplateDatabase
             command.CommandText = "INSERT OR REPLACE INTO template
                     (guid, name, shortDescription, longDescription, material,
                     length, Height, materialthickness, 
-                    creatorID, approverId, submitdate, complete)
+                    creatorID, approverId, submitdate, complete, boundsLock)
                     VALUES
                     (@guid, @name, @shortDescription, @longDescription, @material, 
                     @length, @height, @materialthickness, 
-                    @creatorId, @approverId, DATETIME('now'), @complete);"
+                    @creatorId, @approverId, DATETIME('now'), @complete, @boundsLock);"
 
             command.Parameters.AddWithValue("@guid", template.GUID)
 
@@ -401,6 +406,7 @@ Partial Public Class TemplateDatabase
             command.Parameters.AddWithValue("@creatorId", creatorId)
             command.Parameters.AddWithValue("@approverId", approverId)
             command.Parameters.AddWithValue("@complete", template.IsComplete)
+            command.Parameters.AddWithValue("@boundsLock", template.BoundsLock)
 
             Return Convert.ToBoolean(Await command.ExecuteNonQueryAsync().ConfigureAwait(False))
         End Using

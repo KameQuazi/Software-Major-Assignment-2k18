@@ -733,7 +733,7 @@
     <None Include="Resources\Logo w Circle.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\loading.png" />
+    <None Include="Resources\oldError.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\loading.gif" />
@@ -743,9 +743,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\error.png" />
+    <Content Include="Resources\arrowLeft.png" />
     <Content Include="Resources\no_job_preview_image.png" />
     <Content Include="Resources\no_pending jobs.png" />
     <Content Include="Resources\no_preview_image.png" />
+    <Content Include="Resources\arrowRight.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="stdole">

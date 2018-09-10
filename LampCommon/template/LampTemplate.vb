@@ -37,6 +37,7 @@ Public Class LampTemplateMetadata
         ret.CreatorProfile = CreatorProfile
         ret.SubmitDate = SubmitDate
         ret.IsComplete = IsComplete
+        ret.BoundsLock = BoundsLock
         Return ret
     End Function
 
@@ -164,6 +165,20 @@ Public Class LampTemplateMetadata
             NotifyPropertyChanged()
         End Set
     End Property
+
+    <JsonProperty("bound_lock")>
+    <DataMember>
+    Private _boundsLock As Boolean = False
+    Public Property BoundsLock As Boolean
+        Get
+            Return _boundsLock
+        End Get
+        Set(value As Boolean)
+            _boundsLock = value
+            NotifyPropertyChanged()
+        End Set
+    End Property
+
 
     Private _materialThickness As Double
     ''' <summary>
@@ -335,6 +350,10 @@ Public Class LampTemplateMetadata
             Return False
         End If
 
+        If Not data.BoundsLock.Equals(BoundsLock) Then
+            Return False
+        End If
+
         Return True
     End Function
 
@@ -368,7 +387,7 @@ Public NotInheritable Class LampTemplate
         End Get
         Set(value As LampDxfDocument)
             If value Is Nothing Then
-
+                Throw New ArgumentNullException(NameOf(value))
             End If
             If _baseDrawing IsNot Nothing Then
                 RemoveHandler _baseDrawing.PropertyChanged, AddressOf BaseDrawing_PropertyChanged
@@ -378,23 +397,13 @@ Public NotInheritable Class LampTemplate
                 AddHandler _baseDrawing.PropertyChanged, AddressOf BaseDrawing_PropertyChanged
             End If
 
-
+            If Not BoundsLock Then
+                UpdateBoundsFromDrawing()
+            End If
             NotifyPropertyChanged()
         End Set
     End Property
 
-    <JsonProperty("bound_lock")>
-    <DataMember>
-    Private _boundsLock As Boolean
-    Public Property BoundsLock As Boolean
-        Get
-            Return _boundsLock
-        End Get
-        Set(value As Boolean)
-            _boundsLock = value
-            NotifyPropertyChanged()
-        End Set
-    End Property
 
     Private Sub UpdateBoundsFromDrawing()
         If BaseDrawing IsNot Nothing Then
@@ -636,6 +645,7 @@ Public NotInheritable Class LampTemplate
     ''' Creates a new <see cref="LampTemplate"></see> with default LampDxfDocument
     ''' </summary>
     ''' <param name="guid"></param>
+    <JsonConstructor>
     Sub New(guid As String)
         Me.New(New LampDxfDocument, guid)
     End Sub
@@ -655,7 +665,6 @@ Public NotInheritable Class LampTemplate
     ''' </summary>
     ''' <param name="dxf"></param>
     ''' <param name="guid"></param>
-    <JsonConstructor>
     Sub New(dxf As LampDxfDocument, guid As String)
         Me.GUID = guid
         Me.BaseDrawing = dxf

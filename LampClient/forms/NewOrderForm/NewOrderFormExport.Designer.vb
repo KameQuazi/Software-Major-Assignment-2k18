@@ -226,8 +226,8 @@ Partial Class NewOrderFormExport
         Me.MultiDrawingViewerControl1.Size = New System.Drawing.Size(723, 556)
         Me.MultiDrawingViewerControl1.TabIndex = 0
         Me.MultiDrawingViewerControl1.ZoomFactor = 1.0R
-        Me.MultiDrawingViewerControl1.ZoomxX = 1.0R
-        Me.MultiDrawingViewerControl1.ZoomxY = 1.0R
+        Me.MultiDrawingViewerControl1.ZoomX = 1.0R
+        Me.MultiDrawingViewerControl1.ZoomY = 1.0R
         '
         'JobSaveFileDialog
         '
