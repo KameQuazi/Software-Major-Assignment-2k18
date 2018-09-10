@@ -155,10 +155,10 @@
     <Compile Include="controls\jobs\AdvancedJobViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="controls\toolbar\SettingsForm.Designer.vb">
+    <Compile Include="forms\SettingsForm.Designer.vb">
       <DependentUpon>SettingsForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="controls\toolbar\SettingsForm.vb">
+    <Compile Include="forms\SettingsForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DialogBoxes\AddNewUserDialog.Designer.vb">
@@ -513,7 +513,7 @@
     <EmbeddedResource Include="controls\jobs\AdvancedJobViewer.resx">
       <DependentUpon>AdvancedJobViewer.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="controls\toolbar\SettingsForm.resx">
+    <EmbeddedResource Include="forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DialogBoxes\AddNewUserDialog.resx">

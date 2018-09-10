@@ -56,10 +56,10 @@ Partial Class ToolBar
         Me.btnNewTemplate.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnNewTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnNewTemplate.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnNewTemplate.Location = New System.Drawing.Point(146, 2)
+        Me.btnNewTemplate.Location = New System.Drawing.Point(155, 2)
         Me.btnNewTemplate.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNewTemplate.Name = "btnNewTemplate"
-        Me.btnNewTemplate.Size = New System.Drawing.Size(140, 44)
+        Me.btnNewTemplate.Size = New System.Drawing.Size(149, 44)
         Me.btnNewTemplate.TabIndex = 67
         Me.btnNewTemplate.Text = "New Template"
         Me.btnNewTemplate.UseVisualStyleBackColor = False
@@ -70,7 +70,7 @@ Partial Class ToolBar
         Me.Logo.Image = CType(resources.GetObject("Logo.Image"), System.Drawing.Image)
         Me.Logo.Location = New System.Drawing.Point(3, 3)
         Me.Logo.Name = "Logo"
-        Me.Logo.Size = New System.Drawing.Size(103, 96)
+        Me.Logo.Size = New System.Drawing.Size(76, 96)
         Me.Logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.Logo.TabIndex = 56
         Me.Logo.TabStop = False
@@ -98,7 +98,7 @@ Partial Class ToolBar
         Me.btnHome.Location = New System.Drawing.Point(2, 2)
         Me.btnHome.Margin = New System.Windows.Forms.Padding(2)
         Me.btnHome.Name = "btnHome"
-        Me.btnHome.Size = New System.Drawing.Size(140, 44)
+        Me.btnHome.Size = New System.Drawing.Size(149, 44)
         Me.btnHome.TabIndex = 59
         Me.btnHome.Text = "Home"
         Me.btnHome.UseVisualStyleBackColor = False
@@ -109,10 +109,10 @@ Partial Class ToolBar
         Me.btnNewOrder.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnNewOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnNewOrder.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnNewOrder.Location = New System.Drawing.Point(290, 2)
+        Me.btnNewOrder.Location = New System.Drawing.Point(308, 2)
         Me.btnNewOrder.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNewOrder.Name = "btnNewOrder"
-        Me.btnNewOrder.Size = New System.Drawing.Size(140, 44)
+        Me.btnNewOrder.Size = New System.Drawing.Size(149, 44)
         Me.btnNewOrder.TabIndex = 65
         Me.btnNewOrder.Text = "New Order"
         Me.btnNewOrder.UseVisualStyleBackColor = False
@@ -137,10 +137,10 @@ Partial Class ToolBar
         Me.btnOrders.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnOrders.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnOrders.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnOrders.Location = New System.Drawing.Point(290, 50)
+        Me.btnOrders.Location = New System.Drawing.Point(308, 50)
         Me.btnOrders.Margin = New System.Windows.Forms.Padding(2)
         Me.btnOrders.Name = "btnOrders"
-        Me.btnOrders.Size = New System.Drawing.Size(140, 44)
+        Me.btnOrders.Size = New System.Drawing.Size(149, 44)
         Me.btnOrders.TabIndex = 63
         Me.btnOrders.Text = "View Orders"
         Me.btnOrders.UseVisualStyleBackColor = False
@@ -165,10 +165,10 @@ Partial Class ToolBar
         Me.btnDesigns.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnDesigns.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnDesigns.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.btnDesigns.Location = New System.Drawing.Point(146, 50)
+        Me.btnDesigns.Location = New System.Drawing.Point(155, 50)
         Me.btnDesigns.Margin = New System.Windows.Forms.Padding(2)
         Me.btnDesigns.Name = "btnDesigns"
-        Me.btnDesigns.Size = New System.Drawing.Size(140, 44)
+        Me.btnDesigns.Size = New System.Drawing.Size(149, 44)
         Me.btnDesigns.TabIndex = 62
         Me.btnDesigns.Text = "View Template"
         Me.btnDesigns.UseVisualStyleBackColor = False
@@ -196,7 +196,7 @@ Partial Class ToolBar
         Me.btnBack.Location = New System.Drawing.Point(2, 50)
         Me.btnBack.Margin = New System.Windows.Forms.Padding(2)
         Me.btnBack.Name = "btnBack"
-        Me.btnBack.Size = New System.Drawing.Size(140, 44)
+        Me.btnBack.Size = New System.Drawing.Size(149, 44)
         Me.btnBack.TabIndex = 66
         Me.btnBack.Text = "Back"
         Me.btnBack.UseVisualStyleBackColor = False
@@ -249,8 +249,8 @@ Partial Class ToolBar
         'TableLayoutPanel2
         '
         Me.TableLayoutPanel2.ColumnCount = 2
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80.0!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.0!))
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 85.0!))
         Me.TableLayoutPanel2.Controls.Add(Me.Logo, 0, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel3, 1, 0)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
@@ -274,12 +274,12 @@ Partial Class ToolBar
         Me.TableLayoutPanel3.Controls.Add(Me.btnOrders, 2, 1)
         Me.TableLayoutPanel3.Controls.Add(Me.btnDesigns, 1, 1)
         Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel3.Location = New System.Drawing.Point(112, 3)
+        Me.TableLayoutPanel3.Location = New System.Drawing.Point(85, 3)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
         Me.TableLayoutPanel3.RowCount = 2
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(432, 96)
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(459, 96)
         Me.TableLayoutPanel3.TabIndex = 57
         '
         'TableLayoutPanel4

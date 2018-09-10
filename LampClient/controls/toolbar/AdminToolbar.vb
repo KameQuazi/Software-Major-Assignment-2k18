@@ -1,7 +1,51 @@
-﻿Imports LampClient
+﻿Imports System.ComponentModel
+Imports LampClient
 
 Public Class AdminToolbar
     Implements IToolbar
+
+#Region "DesignerProperties"
+    <Category("DisableButtons")>
+    Public Property HomeEnabled As Boolean
+        Get
+            Return btnHome.Enabled
+        End Get
+        Set(value As Boolean)
+            btnHome.Enabled = value
+        End Set
+    End Property
+
+    <Category("DisableButtons")>
+    Public Property ApproveTemplateEnabled As Boolean
+        Get
+            Return btnApproveTemplates.Enabled
+        End Get
+        Set(value As Boolean)
+            btnApproveTemplates.Enabled = value
+        End Set
+    End Property
+
+    <Category("DisableButtons")>
+    Public Property ApproveJobEnabled As Boolean
+        Get
+            Return btnApproveJob.Enabled
+        End Get
+        Set(value As Boolean)
+            btnApproveJob.Enabled = value
+        End Set
+    End Property
+
+    <Category("DisableButtons")>
+    Public Property ManageUsersEnabled As Boolean
+        Get
+            Return btnManageUsers.Enabled
+        End Get
+        Set(value As Boolean)
+            btnManageUsers.Enabled = value
+        End Set
+    End Property
+#End Region
+
 
     Public Sub SetUsername(username As String) Implements IToolbar.SetUsername
         Me.Username.Text = String.Format("Welcome {0}", username)
@@ -19,7 +63,7 @@ Public Class AdminToolbar
 
 
     Private Sub btnHome_Click(sender As Object, e As EventArgs) Handles btnHome.Click
-        ShowNewForm(ParentForm, HomeForm)
+        ShowNewForm(ParentForm, AdminForm)
     End Sub
 
     Private Sub AdminToolbar_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -35,7 +79,7 @@ Public Class AdminToolbar
         ShowNewForm(ParentForm, ManageUsersForm)
     End Sub
 
-    Private Sub btnViewEditJobs_Click(sender As Object, e As EventArgs) Handles btnViewEditJobs.Click
+    Private Sub btnViewEditJobs_Click(sender As Object, e As EventArgs) Handles btnApproveJob.Click
         ShowNewForm(ParentForm, ApproveJobForm)
     End Sub
 
@@ -68,5 +112,7 @@ Public Class AdminToolbar
         AboutBox.ShowDialog()
     End Sub
 
-
+    Private Sub btnQuit_Click(sender As Object, e As EventArgs) Handles btnQuit.Click
+        QuitProgram()
+    End Sub
 End Class

@@ -4,8 +4,12 @@
         Me.Close()
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
+    End Sub
+
+    Private Sub CloseBox_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.ActiveControl = btnCancel
     End Sub
 End Class

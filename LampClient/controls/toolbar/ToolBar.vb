@@ -126,6 +126,13 @@ Public Module ToolbarUtilities
         End If
         Return False
     End Function
+
+    <Extension>
+    Public Sub QuitProgram(this As IToolbar)
+        If CloseBox.ShowDialog = DialogResult.OK Then
+            End
+        End If
+    End Sub
 End Module
 
 
@@ -234,7 +241,7 @@ Public Class ToolBar
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     Private Sub btnQY_Click(sender As Object, e As EventArgs) Handles btnQuit.Click
-        Me.ParentForm.Close()
+        QuitProgram()
     End Sub
 
     Private Sub btnLogOut_Click(sender As Object, e As EventArgs) Handles btnLogOut.Click
@@ -328,7 +335,16 @@ Public Class ToolBar
         SettingsForm.ShowDialog()
     End Sub
 
+    Private Sub btnBack_Click_1(sender As Object, e As EventArgs) Handles btnBack.Click
+        If PreviousForms.Count = 0 Then
+            btnBack.Enabled = False
+            MessageBox.Show("ProgramException: PreviousForm not found")
+            ' note: this shouldnt be possilbe unless you twiddle w/ the values of PreviousForm urself
+            Return
+        End If
 
+        ShowPreviousForm(ParentForm)
+    End Sub
 End Class
 
 
