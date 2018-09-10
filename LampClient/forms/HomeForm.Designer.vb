@@ -57,11 +57,12 @@ Partial Class HomeForm
         Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.HomeEnabled = False
-        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
+        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
+        Me.ToolBar1.Margin = New System.Windows.Forms.Padding(0)
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.NewOrderEnabled = True
         Me.ToolBar1.NewTemplateEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
+        Me.ToolBar1.Size = New System.Drawing.Size(1232, 105)
         Me.ToolBar1.TabIndex = 34
         Me.ToolBar1.ViewOrderEnabled = True
         Me.ToolBar1.ViewTemplateEnabled = True

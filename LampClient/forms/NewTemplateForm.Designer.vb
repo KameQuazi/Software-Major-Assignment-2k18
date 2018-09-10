@@ -24,6 +24,7 @@ Partial Class NewTemplateForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(NewTemplateForm))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TemplateCreatorControl1 = New LampClient.TemplateCreatorControl()
         Me.ToolBar1 = New LampClient.ToolBar()
@@ -49,6 +50,7 @@ Partial Class NewTemplateForm
         'TemplateCreatorControl1
         '
         Me.TemplateCreatorControl1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TemplateCreatorControl1.DrawingOpenProgram = Nothing
         Me.TemplateCreatorControl1.JobEnabled = False
         Me.TemplateCreatorControl1.Location = New System.Drawing.Point(3, 108)
         Me.TemplateCreatorControl1.Name = "TemplateCreatorControl1"
@@ -56,7 +58,6 @@ Partial Class NewTemplateForm
         Me.TemplateCreatorControl1.Size = New System.Drawing.Size(1226, 592)
         Me.TemplateCreatorControl1.SubmitType = LampClient.TemplateCreatorControl.SendType.None
         Me.TemplateCreatorControl1.TabIndex = 0
-
         '
         'ToolBar1
         '
@@ -76,10 +77,11 @@ Partial Class NewTemplateForm
         '
         'NewTemplateForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "NewTemplateForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "LAMP - New Template"
