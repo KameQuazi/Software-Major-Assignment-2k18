@@ -161,6 +161,12 @@
     <Compile Include="controls\jobs\AdvancedJobViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="controls\tags\TagEditorControl.Designer.vb">
+      <DependentUpon>TagEditorControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\tags\TagEditorControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="forms\SettingsForm.Designer.vb">
       <DependentUpon>SettingsForm.vb</DependentUpon>
     </Compile>
@@ -515,6 +521,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="controls\jobs\AdvancedJobViewer.resx">
       <DependentUpon>AdvancedJobViewer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\tags\TagEditorControl.resx">
+      <DependentUpon>TagEditorControl.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.vb</DependentUpon>

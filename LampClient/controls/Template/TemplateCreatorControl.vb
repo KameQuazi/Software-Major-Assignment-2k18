@@ -23,9 +23,8 @@ Public Class TemplateCreatorControl
             TboxThickness.ReadOnly = value
 
 
-            AddTag.Enabled = Not value
             ImportSpf.Enabled = Not value
-            RemoveTag.Enabled = Not value
+            TagEditorControl1.Readonly = value
 
 
 
@@ -221,14 +220,19 @@ Public Class TemplateCreatorControl
 
     End Sub
 
+    Private updatingFromTemplate = False
     ''' <summary>
     ''' Updates tag from the template
     ''' </summary>
     Private Sub UpdateTagsFromTemplate()
-        TagsBox.Items.Clear()
-        For Each item In Template.Tags
-            TagsBox.Items.Add(NormalizeTags(item))
-        Next
+        If updatingFromControl Then
+            Return
+        End If
+
+        updatingFromTemplate = True
+        TagEditorControl1.Tags.Clear()
+        TagEditorControl1.Tags.AddRange(Me.Template.Tags)
+        updatingFromTemplate = False
     End Sub
 
     Private Sub UpdateDynFromTemplate()
@@ -361,40 +365,7 @@ Public Class TemplateCreatorControl
 
 
 
-    Private Sub AddTag_Click(sender As Object, e As EventArgs) Handles AddTag.Click
-        Dim dialog As New LampInputBox("New tag", "Enter new tag")
-        If dialog.ShowDialog() = DialogResult.OK Then
-            Dim newTag = NormalizeTags(dialog.InputText)
 
-            If Me.Template.Tags.Contains(newTag) Then
-                ' dont allow duplicates
-                MessageBox.Show("tags must be unique ")
-            ElseIf newTag.Length > 16 Then
-                MessageBox.Show("tag must be shorter or equal to 16 characters")
-            ElseIf newTag.Length = 0 Then
-                MessageBox.Show("tag not be empty")
-            Else
-                ' add them to the tags in the template
-                Me.Template.Tags.Add(newTag)
-                Me.Template.SortTags()
-            End If
-        End If
-    End Sub
-
-
-    Private Function NormalizeTags(text As String) As String
-        Return New String(text.Where(Function(x) Not Char.IsWhiteSpace(x)).ToArray()).ToLower
-    End Function
-
-    Private Sub RemoveTagTags_Click(sender As Object, e As EventArgs) Handles RemoveTag.Click
-        Dim selectedPosition = TagsBox.SelectedIndex
-        If selectedPosition <> -1 Then
-            ' an item is selected
-            Dim selectedTag = NormalizeTags(TagsBox.SelectedItem.ToString)
-            Me.Template.Tags.Remove(selectedTag)
-
-        End If
-    End Sub
 
 
 
@@ -659,6 +630,21 @@ Public Class TemplateCreatorControl
         ' else open with saved opentype
     End Sub
 
+    Private updatingFromControl As Boolean = False
+    Private Sub TagEditorControl1_TagContentsChanged(sender As Object, e As TagContentsChangedEvent) Handles TagEditorControl1.TagContentsChanged
+        If updatingFromTemplate Then
+            Return ' dont do anything if it is actually from updating . template
+        End If
+        updatingFromControl = True
+
+        Me.Template.Tags.Clear()
+        Me.Template.Tags.AddRange(TagEditorControl1.Tags)
+        updatingFromControl = False
+    End Sub
+
+    Private Sub TagEditorControl1_Load(sender As Object, e As EventArgs)
+
+    End Sub
 End Class
 
 Public Class SubmitEventArgs

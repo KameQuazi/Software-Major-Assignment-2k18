@@ -59,10 +59,7 @@ Partial Class TemplateCreatorControl
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.btnSetDrawing = New System.Windows.Forms.Button()
         Me.btnViewDrawing = New System.Windows.Forms.Button()
-        Me.TagDivider = New System.Windows.Forms.TableLayoutPanel()
-        Me.TagsBox = New System.Windows.Forms.ListBox()
-        Me.RemoveTag = New System.Windows.Forms.Button()
-        Me.AddTag = New System.Windows.Forms.Button()
+        Me.TagEditorControl1 = New LampClient.TagEditorControl()
         Me.ErrorProviderThickness = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.DxfFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.ImageFileDialog = New System.Windows.Forms.OpenFileDialog()
@@ -83,7 +80,6 @@ Partial Class TemplateCreatorControl
         Me.TableLayoutPanel3.SuspendLayout()
         Me.DrawingDivider.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
-        Me.TagDivider.SuspendLayout()
         CType(Me.ErrorProviderThickness, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ErrorProviderName, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -483,7 +479,7 @@ Partial Class TemplateCreatorControl
         Me.TableLayoutPanel3.ColumnCount = 1
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel3.Controls.Add(Me.DrawingDivider, 0, 1)
-        Me.TableLayoutPanel3.Controls.Add(Me.TagDivider, 0, 0)
+        Me.TableLayoutPanel3.Controls.Add(Me.TagEditorControl1, 0, 0)
         Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel3.Location = New System.Drawing.Point(876, 4)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
@@ -564,60 +560,14 @@ Partial Class TemplateCreatorControl
         Me.btnViewDrawing.Text = "View Drawing"
         Me.btnViewDrawing.UseVisualStyleBackColor = False
         '
-        'TagDivider
+        'TagEditorControl1
         '
-        Me.TagDivider.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
-        Me.TagDivider.ColumnCount = 2
-        Me.TagDivider.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TagDivider.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TagDivider.Controls.Add(Me.TagsBox, 0, 0)
-        Me.TagDivider.Controls.Add(Me.RemoveTag, 1, 1)
-        Me.TagDivider.Controls.Add(Me.AddTag, 0, 1)
-        Me.TagDivider.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TagDivider.Location = New System.Drawing.Point(3, 3)
-        Me.TagDivider.Name = "TagDivider"
-        Me.TagDivider.RowCount = 2
-        Me.TagDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80.0!))
-        Me.TagDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TagDivider.Size = New System.Drawing.Size(362, 361)
-        Me.TagDivider.TabIndex = 0
-        '
-        'TagsBox
-        '
-        Me.TagDivider.SetColumnSpan(Me.TagsBox, 2)
-        Me.TagsBox.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TagsBox.FormattingEnabled = True
-        Me.TagsBox.Items.AddRange(New Object() {""})
-        Me.TagsBox.Location = New System.Drawing.Point(17, 17)
-        Me.TagsBox.Margin = New System.Windows.Forms.Padding(16)
-        Me.TagsBox.Name = "TagsBox"
-        Me.TagsBox.Size = New System.Drawing.Size(328, 254)
-        Me.TagsBox.TabIndex = 29
-        '
-        'RemoveTag
-        '
-        Me.RemoveTag.BackColor = System.Drawing.Color.White
-        Me.RemoveTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.RemoveTag.Location = New System.Drawing.Point(197, 304)
-        Me.RemoveTag.Margin = New System.Windows.Forms.Padding(16)
-        Me.RemoveTag.Name = "RemoveTag"
-        Me.RemoveTag.Size = New System.Drawing.Size(100, 24)
-        Me.RemoveTag.TabIndex = 16
-        Me.RemoveTag.Text = "Remove Tag"
-        Me.RemoveTag.UseVisualStyleBackColor = False
-        '
-        'AddTag
-        '
-        Me.AddTag.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.AddTag.BackColor = System.Drawing.Color.White
-        Me.AddTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.AddTag.Location = New System.Drawing.Point(64, 304)
-        Me.AddTag.Margin = New System.Windows.Forms.Padding(16)
-        Me.AddTag.Name = "AddTag"
-        Me.AddTag.Size = New System.Drawing.Size(100, 24)
-        Me.AddTag.TabIndex = 15
-        Me.AddTag.Text = "Add Tag"
-        Me.AddTag.UseVisualStyleBackColor = False
+        Me.TagEditorControl1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TagEditorControl1.Location = New System.Drawing.Point(3, 3)
+        Me.TagEditorControl1.Name = "TagEditorControl1"
+        Me.TagEditorControl1.Readonly = False
+        Me.TagEditorControl1.Size = New System.Drawing.Size(362, 361)
+        Me.TagEditorControl1.TabIndex = 2
         '
         'ErrorProviderThickness
         '
@@ -670,7 +620,6 @@ Partial Class TemplateCreatorControl
         Me.TableLayoutPanel3.ResumeLayout(False)
         Me.DrawingDivider.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
-        Me.TagDivider.ResumeLayout(False)
         CType(Me.ErrorProviderThickness, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ErrorProviderName, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -703,10 +652,6 @@ Partial Class TemplateCreatorControl
     Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
     Friend WithEvents DrawingDivider As TableLayoutPanel
     Friend WithEvents DxfViewerControl1 As DxfViewerControl
-    Friend WithEvents TagDivider As TableLayoutPanel
-    Friend WithEvents TagsBox As ListBox
-    Friend WithEvents RemoveTag As Button
-    Friend WithEvents AddTag As Button
     Friend WithEvents ErrorProviderThickness As ErrorProvider
     Friend WithEvents DxfFileDialog As OpenFileDialog
     Friend WithEvents ImageFileDialog As OpenFileDialog
@@ -722,4 +667,5 @@ Partial Class TemplateCreatorControl
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
     Friend WithEvents btnSetDrawing As Button
     Friend WithEvents btnViewDrawing As Button
+    Friend WithEvents TagEditorControl1 As TagEditorControl
 End Class
