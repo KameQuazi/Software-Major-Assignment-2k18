@@ -20,706 +20,483 @@ Partial Class TemplateCreatorControl
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TemplateCreatorControl))
-        Me.RootColumn = New System.Windows.Forms.TableLayoutPanel()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Dynbox = New System.Windows.Forms.ListBox()
-        Me.LeftDivider = New System.Windows.Forms.TableLayoutPanel()
-        Me.TableLayoutPanel8 = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnViewDrawing = New System.Windows.Forms.Button()
+        Me.TboxApprove = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.Preview3 = New System.Windows.Forms.PictureBox()
         Me.Preview2 = New System.Windows.Forms.PictureBox()
         Me.Preview1 = New System.Windows.Forms.PictureBox()
-        Me.EmptySpaceDivider = New System.Windows.Forms.TableLayoutPanel()
-        Me.DescriptionDivider = New System.Windows.Forms.TableLayoutPanel()
-        Me.TboxApprove = New System.Windows.Forms.TextBox()
-        Me.Label6 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
         Me.NameBox = New System.Windows.Forms.TextBox()
+        Me.btnSubmitTemplate = New System.Windows.Forms.Button()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.LongDescription = New System.Windows.Forms.RichTextBox()
         Me.ShortDescription = New System.Windows.Forms.RichTextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.ComboBoxMaterial = New System.Windows.Forms.ComboBox()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.RemoveTag = New System.Windows.Forms.Button()
+        Me.ComboBoxMaterial = New System.Windows.Forms.ComboBox()
         Me.TboxThickness = New System.Windows.Forms.TextBox()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.TagsBox = New System.Windows.Forms.ListBox()
+        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
         Me.btnNewJob = New System.Windows.Forms.Button()
-        Me.btnSubmitTemplate = New System.Windows.Forms.Button()
+        Me.AddTag = New System.Windows.Forms.Button()
         Me.ImportSpf = New System.Windows.Forms.Button()
         Me.ExportDxf = New System.Windows.Forms.Button()
         Me.ExportSpf = New System.Windows.Forms.Button()
-        Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
-        Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
-        Me.DrawingDivider = New System.Windows.Forms.TableLayoutPanel()
-        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
-        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnSetDrawing = New System.Windows.Forms.Button()
-        Me.btnViewDrawing = New System.Windows.Forms.Button()
-        Me.TagDivider = New System.Windows.Forms.TableLayoutPanel()
-        Me.TagsBox = New System.Windows.Forms.ListBox()
-        Me.RemoveTag = New System.Windows.Forms.Button()
-        Me.AddTag = New System.Windows.Forms.Button()
-        Me.ErrorProviderThickness = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.DxfFileDialog = New System.Windows.Forms.OpenFileDialog()
-        Me.ImageFileDialog = New System.Windows.Forms.OpenFileDialog()
-        Me.DxfSaveDialog = New System.Windows.Forms.SaveFileDialog()
-        Me.SpfSaveDialog = New System.Windows.Forms.SaveFileDialog()
-        Me.SpfOpenDialog = New System.Windows.Forms.OpenFileDialog()
-        Me.ErrorProviderName = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.RootColumn.SuspendLayout()
-        Me.Panel1.SuspendLayout()
-        Me.LeftDivider.SuspendLayout()
-        Me.TableLayoutPanel8.SuspendLayout()
+        Me.ToolBar1 = New LampClient.ToolBar()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.EmptySpaceDivider.SuspendLayout()
-        Me.DescriptionDivider.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
-        Me.TableLayoutPanel3.SuspendLayout()
-        Me.DrawingDivider.SuspendLayout()
-        Me.TableLayoutPanel2.SuspendLayout()
-        Me.TagDivider.SuspendLayout()
-        CType(Me.ErrorProviderThickness, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ErrorProviderName, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'RootColumn
-        '
-        Me.RootColumn.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
-        Me.RootColumn.ColumnCount = 2
-        Me.RootColumn.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
-        Me.RootColumn.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
-        Me.RootColumn.Controls.Add(Me.Panel1, 0, 0)
-        Me.RootColumn.Controls.Add(Me.TableLayoutPanel3, 1, 0)
-        Me.RootColumn.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.RootColumn.Location = New System.Drawing.Point(0, 0)
-        Me.RootColumn.Name = "RootColumn"
-        Me.RootColumn.RowCount = 1
-        Me.RootColumn.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.RootColumn.Size = New System.Drawing.Size(1248, 742)
-        Me.RootColumn.TabIndex = 29
-        '
-        'Panel1
-        '
-        Me.Panel1.Controls.Add(Me.Dynbox)
-        Me.Panel1.Controls.Add(Me.LeftDivider)
-        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel1.Location = New System.Drawing.Point(4, 4)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(865, 734)
-        Me.Panel1.TabIndex = 0
-        '
-        'Dynbox
-        '
-        Me.Dynbox.FormattingEnabled = True
-        Me.Dynbox.Items.AddRange(New Object() {""})
-        Me.Dynbox.Location = New System.Drawing.Point(1009, 153)
-        Me.Dynbox.Name = "Dynbox"
-        Me.Dynbox.Size = New System.Drawing.Size(372, 134)
-        Me.Dynbox.TabIndex = 25
-        '
-        'LeftDivider
-        '
-        Me.LeftDivider.ColumnCount = 1
-        Me.LeftDivider.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.LeftDivider.Controls.Add(Me.TableLayoutPanel8, 0, 1)
-        Me.LeftDivider.Controls.Add(Me.EmptySpaceDivider, 0, 0)
-        Me.LeftDivider.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.LeftDivider.Location = New System.Drawing.Point(0, 0)
-        Me.LeftDivider.Name = "LeftDivider"
-        Me.LeftDivider.RowCount = 2
-        Me.LeftDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60.0!))
-        Me.LeftDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40.0!))
-        Me.LeftDivider.Size = New System.Drawing.Size(865, 734)
-        Me.LeftDivider.TabIndex = 28
-        '
-        'TableLayoutPanel8
-        '
-        Me.TableLayoutPanel8.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
-        Me.TableLayoutPanel8.ColumnCount = 3
-        Me.TableLayoutPanel8.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.TableLayoutPanel8.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.TableLayoutPanel8.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.TableLayoutPanel8.Controls.Add(Me.Preview3, 2, 0)
-        Me.TableLayoutPanel8.Controls.Add(Me.Preview2, 1, 0)
-        Me.TableLayoutPanel8.Controls.Add(Me.Preview1, 0, 0)
-        Me.TableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel8.Location = New System.Drawing.Point(3, 443)
-        Me.TableLayoutPanel8.Name = "TableLayoutPanel8"
-        Me.TableLayoutPanel8.RowCount = 1
-        Me.TableLayoutPanel8.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel8.Size = New System.Drawing.Size(859, 288)
-        Me.TableLayoutPanel8.TabIndex = 27
-        '
-        'Preview3
-        '
-        Me.Preview3.BackColor = System.Drawing.Color.White
-        Me.Preview3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.Preview3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Preview3.Location = New System.Drawing.Point(589, 17)
-        Me.Preview3.Margin = New System.Windows.Forms.Padding(16)
-        Me.Preview3.Name = "Preview3"
-        Me.Preview3.Size = New System.Drawing.Size(253, 254)
-        Me.Preview3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.Preview3.TabIndex = 3
-        Me.Preview3.TabStop = False
-        '
-        'Preview2
-        '
-        Me.Preview2.BackColor = System.Drawing.Color.White
-        Me.Preview2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.Preview2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Preview2.Location = New System.Drawing.Point(303, 17)
-        Me.Preview2.Margin = New System.Windows.Forms.Padding(16)
-        Me.Preview2.Name = "Preview2"
-        Me.Preview2.Size = New System.Drawing.Size(253, 254)
-        Me.Preview2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.Preview2.TabIndex = 1
-        Me.Preview2.TabStop = False
-        '
-        'Preview1
-        '
-        Me.Preview1.BackColor = System.Drawing.Color.White
-        Me.Preview1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.Preview1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Preview1.Location = New System.Drawing.Point(17, 17)
-        Me.Preview1.Margin = New System.Windows.Forms.Padding(16)
-        Me.Preview1.Name = "Preview1"
-        Me.Preview1.Size = New System.Drawing.Size(253, 254)
-        Me.Preview1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.Preview1.TabIndex = 0
-        Me.Preview1.TabStop = False
-        '
-        'EmptySpaceDivider
-        '
-        Me.EmptySpaceDivider.ColumnCount = 3
-        Me.EmptySpaceDivider.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.EmptySpaceDivider.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.0!))
-        Me.EmptySpaceDivider.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
-        Me.EmptySpaceDivider.Controls.Add(Me.DescriptionDivider, 0, 0)
-        Me.EmptySpaceDivider.Controls.Add(Me.TableLayoutPanel1, 2, 0)
-        Me.EmptySpaceDivider.Controls.Add(Me.DynamicFormCreation1, 1, 0)
-        Me.EmptySpaceDivider.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.EmptySpaceDivider.Location = New System.Drawing.Point(3, 3)
-        Me.EmptySpaceDivider.Name = "EmptySpaceDivider"
-        Me.EmptySpaceDivider.RowCount = 1
-        Me.EmptySpaceDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.EmptySpaceDivider.Size = New System.Drawing.Size(859, 434)
-        Me.EmptySpaceDivider.TabIndex = 28
-        '
-        'DescriptionDivider
-        '
-        Me.DescriptionDivider.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
-        Me.DescriptionDivider.ColumnCount = 2
-        Me.DescriptionDivider.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.0!))
-        Me.DescriptionDivider.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.0!))
-        Me.DescriptionDivider.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.DescriptionDivider.Controls.Add(Me.TboxApprove, 1, 5)
-        Me.DescriptionDivider.Controls.Add(Me.Label6, 0, 5)
-        Me.DescriptionDivider.Controls.Add(Me.Label1, 0, 0)
-        Me.DescriptionDivider.Controls.Add(Me.NameBox, 1, 0)
-        Me.DescriptionDivider.Controls.Add(Me.Label3, 0, 1)
-        Me.DescriptionDivider.Controls.Add(Me.LongDescription, 1, 2)
-        Me.DescriptionDivider.Controls.Add(Me.ShortDescription, 1, 1)
-        Me.DescriptionDivider.Controls.Add(Me.Label2, 0, 2)
-        Me.DescriptionDivider.Controls.Add(Me.Label4, 0, 3)
-        Me.DescriptionDivider.Controls.Add(Me.ComboBoxMaterial, 1, 3)
-        Me.DescriptionDivider.Controls.Add(Me.Label5, 0, 4)
-        Me.DescriptionDivider.Controls.Add(Me.TboxThickness, 1, 4)
-        Me.DescriptionDivider.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.DescriptionDivider.Location = New System.Drawing.Point(4, 4)
-        Me.DescriptionDivider.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
-        Me.DescriptionDivider.Name = "DescriptionDivider"
-        Me.DescriptionDivider.RowCount = 6
-        Me.DescriptionDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
-        Me.DescriptionDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.DescriptionDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40.0!))
-        Me.DescriptionDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
-        Me.DescriptionDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
-        Me.DescriptionDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
-        Me.DescriptionDivider.Size = New System.Drawing.Size(409, 426)
-        Me.DescriptionDivider.TabIndex = 27
-        '
-        'TboxApprove
-        '
-        Me.TboxApprove.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TboxApprove.Location = New System.Drawing.Point(168, 383)
-        Me.TboxApprove.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
-        Me.TboxApprove.MaxLength = 38
-        Me.TboxApprove.Name = "TboxApprove"
-        Me.TboxApprove.Size = New System.Drawing.Size(224, 20)
-        Me.TboxApprove.TabIndex = 26
-        '
-        'Label6
-        '
-        Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(70, 387)
-        Me.Label6.Margin = New System.Windows.Forms.Padding(8)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(85, 13)
-        Me.Label6.TabIndex = 25
-        Me.Label6.Text = "Approval Status:"
-        '
-        'Label1
-        '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(117, 9)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(8)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(38, 13)
-        Me.Label1.TabIndex = 3
-        Me.Label1.Text = "Name:"
-        '
-        'NameBox
-        '
-        Me.NameBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.NameBox.Location = New System.Drawing.Point(168, 5)
-        Me.NameBox.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
-        Me.NameBox.MaxLength = 38
-        Me.NameBox.Name = "NameBox"
-        Me.NameBox.Size = New System.Drawing.Size(224, 20)
-        Me.NameBox.TabIndex = 4
-        '
-        'Label3
-        '
-        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(74, 51)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(8)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(81, 13)
-        Me.Label3.TabIndex = 19
-        Me.Label3.Text = "Short Summary:"
-        '
-        'LongDescription
-        '
-        Me.LongDescription.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.LongDescription.Location = New System.Drawing.Point(168, 131)
-        Me.LongDescription.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
-        Me.LongDescription.Name = "LongDescription"
-        Me.LongDescription.Size = New System.Drawing.Size(224, 159)
-        Me.LongDescription.TabIndex = 20
-        Me.LongDescription.Text = ""
-        '
-        'ShortDescription
-        '
-        Me.ShortDescription.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ShortDescription.Location = New System.Drawing.Point(168, 47)
-        Me.ShortDescription.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
-        Me.ShortDescription.MaxLength = 190
-        Me.ShortDescription.Name = "ShortDescription"
-        Me.ShortDescription.Size = New System.Drawing.Size(224, 75)
-        Me.ShortDescription.TabIndex = 17
-        Me.ShortDescription.Text = ""
-        '
-        'Label2
-        '
-        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(65, 135)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(8)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(90, 13)
-        Me.Label2.TabIndex = 18
-        Me.Label2.Text = "Long Description:"
-        '
-        'Label4
-        '
-        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(108, 303)
-        Me.Label4.Margin = New System.Windows.Forms.Padding(8)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(47, 13)
-        Me.Label4.TabIndex = 21
-        Me.Label4.Text = "Material:"
-        '
-        'ComboBoxMaterial
-        '
-        Me.ComboBoxMaterial.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ComboBoxMaterial.FormattingEnabled = True
-        Me.ComboBoxMaterial.Location = New System.Drawing.Point(168, 299)
-        Me.ComboBoxMaterial.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
-        Me.ComboBoxMaterial.Name = "ComboBoxMaterial"
-        Me.ComboBoxMaterial.Size = New System.Drawing.Size(224, 21)
-        Me.ComboBoxMaterial.TabIndex = 22
-        '
-        'Label5
-        '
-        Me.Label5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(96, 345)
-        Me.Label5.Margin = New System.Windows.Forms.Padding(8)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(59, 13)
-        Me.Label5.TabIndex = 23
-        Me.Label5.Text = "Thickness:"
-        '
-        'TboxThickness
-        '
-        Me.TboxThickness.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TboxThickness.Location = New System.Drawing.Point(168, 341)
-        Me.TboxThickness.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
-        Me.TboxThickness.MaxLength = 38
-        Me.TboxThickness.Name = "TboxThickness"
-        Me.TboxThickness.Size = New System.Drawing.Size(224, 20)
-        Me.TboxThickness.TabIndex = 24
-        '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
-        Me.TableLayoutPanel1.ColumnCount = 1
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.btnNewJob, 0, 4)
-        Me.TableLayoutPanel1.Controls.Add(Me.btnSubmitTemplate, 0, 3)
-        Me.TableLayoutPanel1.Controls.Add(Me.ImportSpf, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.ExportDxf, 0, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.ExportSpf, 0, 2)
-        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(775, 3)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 5
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(81, 428)
-        Me.TableLayoutPanel1.TabIndex = 28
-        '
-        'btnNewJob
-        '
-        Me.btnNewJob.BackColor = System.Drawing.Color.White
-        Me.btnNewJob.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnNewJob.Enabled = False
-        Me.btnNewJob.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnNewJob.Location = New System.Drawing.Point(5, 345)
-        Me.btnNewJob.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnNewJob.Name = "btnNewJob"
-        Me.btnNewJob.Size = New System.Drawing.Size(71, 78)
-        Me.btnNewJob.TabIndex = 16
-        Me.btnNewJob.Text = "Create Job With Template"
-        Me.btnNewJob.UseVisualStyleBackColor = False
-        '
-        'btnSubmitTemplate
-        '
-        Me.btnSubmitTemplate.BackColor = System.Drawing.Color.White
-        Me.btnSubmitTemplate.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnSubmitTemplate.Enabled = False
-        Me.btnSubmitTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSubmitTemplate.Location = New System.Drawing.Point(5, 260)
-        Me.btnSubmitTemplate.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnSubmitTemplate.Name = "btnSubmitTemplate"
-        Me.btnSubmitTemplate.Size = New System.Drawing.Size(71, 76)
-        Me.btnSubmitTemplate.TabIndex = 15
-        Me.btnSubmitTemplate.Text = "Submit To Database"
-        Me.btnSubmitTemplate.UseVisualStyleBackColor = False
-        '
-        'ImportSpf
-        '
-        Me.ImportSpf.BackColor = System.Drawing.Color.White
-        Me.ImportSpf.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ImportSpf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ImportSpf.Location = New System.Drawing.Point(5, 5)
-        Me.ImportSpf.Margin = New System.Windows.Forms.Padding(4)
-        Me.ImportSpf.Name = "ImportSpf"
-        Me.ImportSpf.Size = New System.Drawing.Size(71, 76)
-        Me.ImportSpf.TabIndex = 14
-        Me.ImportSpf.Text = "Load Spf"
-        Me.ImportSpf.UseVisualStyleBackColor = False
-        '
-        'ExportDxf
-        '
-        Me.ExportDxf.BackColor = System.Drawing.Color.White
-        Me.ExportDxf.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ExportDxf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ExportDxf.Location = New System.Drawing.Point(5, 90)
-        Me.ExportDxf.Margin = New System.Windows.Forms.Padding(4)
-        Me.ExportDxf.Name = "ExportDxf"
-        Me.ExportDxf.Size = New System.Drawing.Size(71, 76)
-        Me.ExportDxf.TabIndex = 11
-        Me.ExportDxf.Text = "Export To DXF"
-        Me.ExportDxf.UseVisualStyleBackColor = False
-        '
-        'ExportSpf
-        '
-        Me.ExportSpf.BackColor = System.Drawing.Color.White
-        Me.ExportSpf.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ExportSpf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ExportSpf.Location = New System.Drawing.Point(5, 175)
-        Me.ExportSpf.Margin = New System.Windows.Forms.Padding(4)
-        Me.ExportSpf.Name = "ExportSpf"
-        Me.ExportSpf.Size = New System.Drawing.Size(71, 76)
-        Me.ExportSpf.TabIndex = 10
-        Me.ExportSpf.Text = "Export To SPF"
-        Me.ExportSpf.UseVisualStyleBackColor = False
-        '
-        'DynamicFormCreation1
-        '
-        Me.DynamicFormCreation1.AutoScroll = True
-        Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DynamicFormCreation1.Location = New System.Drawing.Point(432, 3)
-        Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
-        Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(20)
-        Me.DynamicFormCreation1.Size = New System.Drawing.Size(337, 428)
-        Me.DynamicFormCreation1.TabIndex = 29
-        '
-        'TableLayoutPanel3
-        '
-        Me.TableLayoutPanel3.ColumnCount = 1
-        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel3.Controls.Add(Me.DrawingDivider, 0, 1)
-        Me.TableLayoutPanel3.Controls.Add(Me.TagDivider, 0, 0)
-        Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel3.Location = New System.Drawing.Point(876, 4)
-        Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
-        Me.TableLayoutPanel3.RowCount = 2
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(368, 734)
-        Me.TableLayoutPanel3.TabIndex = 1
-        '
-        'DrawingDivider
-        '
-        Me.DrawingDivider.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
-        Me.DrawingDivider.ColumnCount = 1
-        Me.DrawingDivider.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.DrawingDivider.Controls.Add(Me.DxfViewerControl1, 0, 0)
-        Me.DrawingDivider.Controls.Add(Me.TableLayoutPanel2, 0, 1)
-        Me.DrawingDivider.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.DrawingDivider.Location = New System.Drawing.Point(3, 370)
-        Me.DrawingDivider.Name = "DrawingDivider"
-        Me.DrawingDivider.RowCount = 2
-        Me.DrawingDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80.0!))
-        Me.DrawingDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.DrawingDivider.Size = New System.Drawing.Size(362, 361)
-        Me.DrawingDivider.TabIndex = 1
-        '
-        'DxfViewerControl1
-        '
-        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
-        Me.DxfViewerControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.DxfViewerControl1.Location = New System.Drawing.Point(17, 17)
-        Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(16)
-        Me.DxfViewerControl1.Name = "DxfViewerControl1"
-        Me.DxfViewerControl1.Size = New System.Drawing.Size(328, 254)
-        Me.DxfViewerControl1.TabIndex = 0
-        Me.DxfViewerControl1.ZoomX = 1.0R
-        Me.DxfViewerControl1.ZoomY = 1.0R
-        '
-        'TableLayoutPanel2
-        '
-        Me.TableLayoutPanel2.ColumnCount = 2
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.Controls.Add(Me.btnSetDrawing, 0, 0)
-        Me.TableLayoutPanel2.Controls.Add(Me.btnViewDrawing, 1, 0)
-        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel2.Location = New System.Drawing.Point(4, 291)
-        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
-        Me.TableLayoutPanel2.RowCount = 1
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 66.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(354, 66)
-        Me.TableLayoutPanel2.TabIndex = 1
-        '
-        'btnSetDrawing
-        '
-        Me.btnSetDrawing.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.btnSetDrawing.BackColor = System.Drawing.Color.White
-        Me.btnSetDrawing.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSetDrawing.Location = New System.Drawing.Point(38, 16)
-        Me.btnSetDrawing.Margin = New System.Windows.Forms.Padding(16)
-        Me.btnSetDrawing.Name = "btnSetDrawing"
-        Me.btnSetDrawing.Size = New System.Drawing.Size(100, 24)
-        Me.btnSetDrawing.TabIndex = 18
-        Me.btnSetDrawing.Text = "Load Drawing"
-        Me.btnSetDrawing.UseVisualStyleBackColor = False
         '
         'btnViewDrawing
         '
         Me.btnViewDrawing.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.btnViewDrawing.BackColor = System.Drawing.Color.White
         Me.btnViewDrawing.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnViewDrawing.Location = New System.Drawing.Point(215, 16)
+        Me.btnViewDrawing.Location = New System.Drawing.Point(904, 424)
         Me.btnViewDrawing.Margin = New System.Windows.Forms.Padding(16)
         Me.btnViewDrawing.Name = "btnViewDrawing"
         Me.btnViewDrawing.Size = New System.Drawing.Size(100, 24)
-        Me.btnViewDrawing.TabIndex = 17
+        Me.btnViewDrawing.TabIndex = 43
         Me.btnViewDrawing.Text = "View Drawing"
         Me.btnViewDrawing.UseVisualStyleBackColor = False
         '
-        'TagDivider
+        'TboxApprove
         '
-        Me.TagDivider.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
-        Me.TagDivider.ColumnCount = 2
-        Me.TagDivider.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TagDivider.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TagDivider.Controls.Add(Me.TagsBox, 0, 0)
-        Me.TagDivider.Controls.Add(Me.RemoveTag, 1, 1)
-        Me.TagDivider.Controls.Add(Me.AddTag, 0, 1)
-        Me.TagDivider.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TagDivider.Location = New System.Drawing.Point(3, 3)
-        Me.TagDivider.Name = "TagDivider"
-        Me.TagDivider.RowCount = 2
-        Me.TagDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80.0!))
-        Me.TagDivider.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TagDivider.Size = New System.Drawing.Size(362, 361)
-        Me.TagDivider.TabIndex = 0
+        Me.TboxApprove.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.TboxApprove.Location = New System.Drawing.Point(121, 184)
+        Me.TboxApprove.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
+        Me.TboxApprove.MaxLength = 38
+        Me.TboxApprove.Name = "TboxApprove"
+        Me.TboxApprove.Size = New System.Drawing.Size(203, 20)
+        Me.TboxApprove.TabIndex = 53
         '
-        'TagsBox
+        'Label6
         '
-        Me.TagDivider.SetColumnSpan(Me.TagsBox, 2)
-        Me.TagsBox.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TagsBox.FormattingEnabled = True
-        Me.TagsBox.Items.AddRange(New Object() {""})
-        Me.TagsBox.Location = New System.Drawing.Point(17, 17)
-        Me.TagsBox.Margin = New System.Windows.Forms.Padding(16)
-        Me.TagsBox.Name = "TagsBox"
-        Me.TagsBox.Size = New System.Drawing.Size(328, 254)
-        Me.TagsBox.TabIndex = 29
+        Me.Label6.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(34, 188)
+        Me.Label6.Margin = New System.Windows.Forms.Padding(8)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(85, 13)
+        Me.Label6.TabIndex = 52
+        Me.Label6.Text = "Approval Status:"
+        '
+        'Preview3
+        '
+        Me.Preview3.BackColor = System.Drawing.Color.White
+        Me.Preview3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.Preview3.Location = New System.Drawing.Point(509, 19)
+        Me.Preview3.Margin = New System.Windows.Forms.Padding(16)
+        Me.Preview3.Name = "Preview3"
+        Me.Preview3.Size = New System.Drawing.Size(253, 254)
+        Me.Preview3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.Preview3.TabIndex = 33
+        Me.Preview3.TabStop = False
+        '
+        'Preview2
+        '
+        Me.Preview2.BackColor = System.Drawing.Color.White
+        Me.Preview2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.Preview2.Location = New System.Drawing.Point(258, 19)
+        Me.Preview2.Margin = New System.Windows.Forms.Padding(16)
+        Me.Preview2.Name = "Preview2"
+        Me.Preview2.Size = New System.Drawing.Size(253, 254)
+        Me.Preview2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.Preview2.TabIndex = 32
+        Me.Preview2.TabStop = False
+        '
+        'Preview1
+        '
+        Me.Preview1.BackColor = System.Drawing.Color.White
+        Me.Preview1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.Preview1.Location = New System.Drawing.Point(6, 19)
+        Me.Preview1.Margin = New System.Windows.Forms.Padding(16)
+        Me.Preview1.Name = "Preview1"
+        Me.Preview1.Size = New System.Drawing.Size(253, 254)
+        Me.Preview1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.Preview1.TabIndex = 30
+        Me.Preview1.TabStop = False
+        '
+        'Label1
+        '
+        Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(81, 16)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(8)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(38, 13)
+        Me.Label1.TabIndex = 34
+        Me.Label1.Text = "Name:"
+        '
+        'DynamicFormCreation1
+        '
+        Me.DynamicFormCreation1.AutoScroll = True
+        Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DynamicFormCreation1.Location = New System.Drawing.Point(788, 454)
+        Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
+        Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(20)
+        Me.DynamicFormCreation1.Size = New System.Drawing.Size(427, 266)
+        Me.DynamicFormCreation1.TabIndex = 55
+        '
+        'NameBox
+        '
+        Me.NameBox.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.NameBox.Location = New System.Drawing.Point(121, 13)
+        Me.NameBox.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
+        Me.NameBox.MaxLength = 38
+        Me.NameBox.Name = "NameBox"
+        Me.NameBox.Size = New System.Drawing.Size(203, 20)
+        Me.NameBox.TabIndex = 35
+        '
+        'btnSubmitTemplate
+        '
+        Me.btnSubmitTemplate.BackColor = System.Drawing.Color.White
+        Me.btnSubmitTemplate.Enabled = False
+        Me.btnSubmitTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnSubmitTemplate.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.btnSubmitTemplate.Location = New System.Drawing.Point(551, 115)
+        Me.btnSubmitTemplate.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnSubmitTemplate.Name = "btnSubmitTemplate"
+        Me.btnSubmitTemplate.Size = New System.Drawing.Size(120, 56)
+        Me.btnSubmitTemplate.TabIndex = 40
+        Me.btnSubmitTemplate.Text = "Submit To Database"
+        Me.btnSubmitTemplate.UseVisualStyleBackColor = False
+        '
+        'Label3
+        '
+        Me.Label3.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(38, 77)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(8)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(81, 13)
+        Me.Label3.TabIndex = 46
+        Me.Label3.Text = "Short Summary:"
+        '
+        'LongDescription
+        '
+        Me.LongDescription.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.LongDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.LongDescription.Location = New System.Drawing.Point(121, 20)
+        Me.LongDescription.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
+        Me.LongDescription.Name = "LongDescription"
+        Me.LongDescription.Size = New System.Drawing.Size(203, 137)
+        Me.LongDescription.TabIndex = 47
+        Me.LongDescription.Text = ""
+        '
+        'ShortDescription
+        '
+        Me.ShortDescription.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.ShortDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.ShortDescription.Location = New System.Drawing.Point(121, 71)
+        Me.ShortDescription.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
+        Me.ShortDescription.MaxLength = 190
+        Me.ShortDescription.Name = "ShortDescription"
+        Me.ShortDescription.Size = New System.Drawing.Size(203, 56)
+        Me.ShortDescription.TabIndex = 44
+        Me.ShortDescription.Text = ""
+        '
+        'Label2
+        '
+        Me.Label2.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(29, 28)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(8)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(90, 13)
+        Me.Label2.TabIndex = 45
+        Me.Label2.Text = "Long Description:"
+        '
+        'Label4
+        '
+        Me.Label4.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(72, 45)
+        Me.Label4.Margin = New System.Windows.Forms.Padding(8)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(47, 13)
+        Me.Label4.TabIndex = 48
+        Me.Label4.Text = "Material:"
+        '
+        'Label5
+        '
+        Me.Label5.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(60, 163)
+        Me.Label5.Margin = New System.Windows.Forms.Padding(8)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(59, 13)
+        Me.Label5.TabIndex = 50
+        Me.Label5.Text = "Thickness:"
         '
         'RemoveTag
         '
         Me.RemoveTag.BackColor = System.Drawing.Color.White
         Me.RemoveTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.RemoveTag.Location = New System.Drawing.Point(197, 304)
+        Me.RemoveTag.Location = New System.Drawing.Point(187, 162)
         Me.RemoveTag.Margin = New System.Windows.Forms.Padding(16)
         Me.RemoveTag.Name = "RemoveTag"
         Me.RemoveTag.Size = New System.Drawing.Size(100, 24)
-        Me.RemoveTag.TabIndex = 16
+        Me.RemoveTag.TabIndex = 42
         Me.RemoveTag.Text = "Remove Tag"
         Me.RemoveTag.UseVisualStyleBackColor = False
         '
+        'ComboBoxMaterial
+        '
+        Me.ComboBoxMaterial.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.ComboBoxMaterial.FormattingEnabled = True
+        Me.ComboBoxMaterial.Location = New System.Drawing.Point(121, 42)
+        Me.ComboBoxMaterial.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
+        Me.ComboBoxMaterial.Name = "ComboBoxMaterial"
+        Me.ComboBoxMaterial.Size = New System.Drawing.Size(203, 21)
+        Me.ComboBoxMaterial.TabIndex = 49
+        '
+        'TboxThickness
+        '
+        Me.TboxThickness.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.TboxThickness.Location = New System.Drawing.Point(121, 161)
+        Me.TboxThickness.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
+        Me.TboxThickness.MaxLength = 38
+        Me.TboxThickness.Name = "TboxThickness"
+        Me.TboxThickness.Size = New System.Drawing.Size(203, 20)
+        Me.TboxThickness.TabIndex = 51
+        '
+        'TagsBox
+        '
+        Me.TagsBox.FormattingEnabled = True
+        Me.TagsBox.Items.AddRange(New Object() {""})
+        Me.TagsBox.Location = New System.Drawing.Point(8, 15)
+        Me.TagsBox.Margin = New System.Windows.Forms.Padding(16)
+        Me.TagsBox.Name = "TagsBox"
+        Me.TagsBox.Size = New System.Drawing.Size(279, 147)
+        Me.TagsBox.TabIndex = 54
+        '
+        'DxfViewerControl1
+        '
+        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
+        Me.DxfViewerControl1.Location = New System.Drawing.Point(683, 115)
+        Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(16)
+        Me.DxfViewerControl1.Name = "DxfViewerControl1"
+        Me.DxfViewerControl1.Size = New System.Drawing.Size(532, 302)
+        Me.DxfViewerControl1.TabIndex = 31
+        Me.DxfViewerControl1.ZoomX = 1.0R
+        Me.DxfViewerControl1.ZoomY = 1.0R
+        '
+        'btnNewJob
+        '
+        Me.btnNewJob.BackColor = System.Drawing.Color.White
+        Me.btnNewJob.Enabled = False
+        Me.btnNewJob.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnNewJob.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.btnNewJob.Location = New System.Drawing.Point(551, 169)
+        Me.btnNewJob.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnNewJob.Name = "btnNewJob"
+        Me.btnNewJob.Size = New System.Drawing.Size(120, 54)
+        Me.btnNewJob.TabIndex = 41
+        Me.btnNewJob.Text = "Create Job With Template"
+        Me.btnNewJob.UseVisualStyleBackColor = False
+        '
         'AddTag
         '
-        Me.AddTag.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AddTag.BackColor = System.Drawing.Color.White
         Me.AddTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.AddTag.Location = New System.Drawing.Point(64, 304)
+        Me.AddTag.Location = New System.Drawing.Point(88, 162)
         Me.AddTag.Margin = New System.Windows.Forms.Padding(16)
         Me.AddTag.Name = "AddTag"
         Me.AddTag.Size = New System.Drawing.Size(100, 24)
-        Me.AddTag.TabIndex = 15
+        Me.AddTag.TabIndex = 39
         Me.AddTag.Text = "Add Tag"
         Me.AddTag.UseVisualStyleBackColor = False
         '
-        'ErrorProviderThickness
+        'ImportSpf
         '
-        Me.ErrorProviderThickness.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink
-        Me.ErrorProviderThickness.ContainerControl = Me
+        Me.ImportSpf.BackColor = System.Drawing.Color.White
+        Me.ImportSpf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.ImportSpf.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.ImportSpf.Location = New System.Drawing.Point(380, 115)
+        Me.ImportSpf.Margin = New System.Windows.Forms.Padding(4)
+        Me.ImportSpf.Name = "ImportSpf"
+        Me.ImportSpf.Size = New System.Drawing.Size(79, 108)
+        Me.ImportSpf.TabIndex = 38
+        Me.ImportSpf.Text = "Load Spf"
+        Me.ImportSpf.UseVisualStyleBackColor = False
         '
-        'DxfFileDialog
+        'ExportDxf
         '
-        Me.DxfFileDialog.Filter = "dxf Files|*.dxf|All files|*.*"
+        Me.ExportDxf.BackColor = System.Drawing.Color.White
+        Me.ExportDxf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.ExportDxf.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.ExportDxf.Location = New System.Drawing.Point(459, 115)
+        Me.ExportDxf.Margin = New System.Windows.Forms.Padding(4)
+        Me.ExportDxf.Name = "ExportDxf"
+        Me.ExportDxf.Size = New System.Drawing.Size(93, 56)
+        Me.ExportDxf.TabIndex = 37
+        Me.ExportDxf.Text = "Export To DXF"
+        Me.ExportDxf.UseVisualStyleBackColor = False
         '
-        'ImageFileDialog
+        'ExportSpf
         '
-        Me.ImageFileDialog.FileName = "OpenFileDialog2"
-        Me.ImageFileDialog.Filter = "image Files|*.png;*jpg;*jpeg|All files|*.*"
+        Me.ExportSpf.BackColor = System.Drawing.Color.White
+        Me.ExportSpf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.ExportSpf.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.ExportSpf.Location = New System.Drawing.Point(459, 169)
+        Me.ExportSpf.Margin = New System.Windows.Forms.Padding(4)
+        Me.ExportSpf.Name = "ExportSpf"
+        Me.ExportSpf.Size = New System.Drawing.Size(93, 54)
+        Me.ExportSpf.TabIndex = 36
+        Me.ExportSpf.Text = "Export To SPF"
+        Me.ExportSpf.UseVisualStyleBackColor = False
         '
-        'DxfSaveDialog
+        'ToolBar1
         '
-        Me.DxfSaveDialog.Filter = "dxf file|*.dxf"
+        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.ToolBar1.ConfirmationRequired = Nothing
+        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolBar1.HomeEnabled = True
+        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.NewOrderEnabled = True
+        Me.ToolBar1.NewTemplateEnabled = True
+        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
+        Me.ToolBar1.TabIndex = 56
+        Me.ToolBar1.ViewOrderEnabled = True
+        Me.ToolBar1.ViewTemplateEnabled = True
         '
-        'SpfSaveDialog
+        'GroupBox1
         '
-        Me.SpfSaveDialog.Filter = "spf file|*.spf"
+        Me.GroupBox1.Controls.Add(Me.ShortDescription)
+        Me.GroupBox1.Controls.Add(Me.ComboBoxMaterial)
+        Me.GroupBox1.Controls.Add(Me.Label4)
+        Me.GroupBox1.Controls.Add(Me.Label3)
+        Me.GroupBox1.Controls.Add(Me.NameBox)
+        Me.GroupBox1.Controls.Add(Me.Label1)
+        Me.GroupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.GroupBox1.Location = New System.Drawing.Point(7, 108)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(367, 132)
+        Me.GroupBox1.TabIndex = 57
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Primary Info"
         '
-        'SpfOpenDialog
+        'GroupBox2
         '
-        Me.SpfOpenDialog.FileName = "SpfFileDialog"
+        Me.GroupBox2.Controls.Add(Me.LongDescription)
+        Me.GroupBox2.Controls.Add(Me.TboxThickness)
+        Me.GroupBox2.Controls.Add(Me.Label5)
+        Me.GroupBox2.Controls.Add(Me.Label2)
+        Me.GroupBox2.Controls.Add(Me.TboxApprove)
+        Me.GroupBox2.Controls.Add(Me.Label6)
+        Me.GroupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.GroupBox2.Location = New System.Drawing.Point(7, 236)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(367, 213)
+        Me.GroupBox2.TabIndex = 58
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Secondary Info"
         '
-        'ErrorProviderName
+        'GroupBox3
         '
-        Me.ErrorProviderName.ContainerControl = Me
+        Me.GroupBox3.Controls.Add(Me.Preview3)
+        Me.GroupBox3.Controls.Add(Me.Preview2)
+        Me.GroupBox3.Controls.Add(Me.Preview1)
+        Me.GroupBox3.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.GroupBox3.Location = New System.Drawing.Point(7, 447)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(768, 273)
+        Me.GroupBox3.TabIndex = 59
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Preview"
+        '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.TagsBox)
+        Me.GroupBox4.Controls.Add(Me.AddTag)
+        Me.GroupBox4.Controls.Add(Me.RemoveTag)
+        Me.GroupBox4.Location = New System.Drawing.Point(380, 236)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(296, 223)
+        Me.GroupBox4.TabIndex = 60
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Trophy Tags"
         '
         'TemplateCreatorControl
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.RootColumn)
+        Me.Controls.Add(Me.GroupBox3)
+        Me.Controls.Add(Me.GroupBox2)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.ToolBar1)
+        Me.Controls.Add(Me.btnViewDrawing)
+        Me.Controls.Add(Me.DynamicFormCreation1)
+        Me.Controls.Add(Me.btnSubmitTemplate)
+        Me.Controls.Add(Me.DxfViewerControl1)
+        Me.Controls.Add(Me.btnNewJob)
+        Me.Controls.Add(Me.ImportSpf)
+        Me.Controls.Add(Me.ExportDxf)
+        Me.Controls.Add(Me.ExportSpf)
+        Me.Controls.Add(Me.GroupBox4)
         Me.Name = "TemplateCreatorControl"
-        Me.Size = New System.Drawing.Size(1248, 742)
-        Me.RootColumn.ResumeLayout(False)
-        Me.Panel1.ResumeLayout(False)
-        Me.LeftDivider.ResumeLayout(False)
-        Me.TableLayoutPanel8.ResumeLayout(False)
+        Me.Size = New System.Drawing.Size(1231, 742)
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.EmptySpaceDivider.ResumeLayout(False)
-        Me.DescriptionDivider.ResumeLayout(False)
-        Me.DescriptionDivider.PerformLayout()
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel3.ResumeLayout(False)
-        Me.DrawingDivider.ResumeLayout(False)
-        Me.TableLayoutPanel2.ResumeLayout(False)
-        Me.TagDivider.ResumeLayout(False)
-        CType(Me.ErrorProviderThickness, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ErrorProviderName, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox4.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents RootColumn As TableLayoutPanel
-    Friend WithEvents Panel1 As Panel
-    Friend WithEvents Dynbox As ListBox
-    Friend WithEvents LeftDivider As TableLayoutPanel
-    Friend WithEvents TableLayoutPanel8 As TableLayoutPanel
+
+    Friend WithEvents btnViewDrawing As Button
+    Friend WithEvents TboxApprove As TextBox
+    Friend WithEvents Label6 As Label
     Friend WithEvents Preview3 As PictureBox
     Friend WithEvents Preview2 As PictureBox
     Friend WithEvents Preview1 As PictureBox
-    Friend WithEvents EmptySpaceDivider As TableLayoutPanel
-    Friend WithEvents DescriptionDivider As TableLayoutPanel
     Friend WithEvents Label1 As Label
+    Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
     Friend WithEvents NameBox As TextBox
+    Friend WithEvents btnSubmitTemplate As Button
     Friend WithEvents Label3 As Label
     Friend WithEvents LongDescription As RichTextBox
     Friend WithEvents ShortDescription As RichTextBox
     Friend WithEvents Label2 As Label
     Friend WithEvents Label4 As Label
-    Friend WithEvents ComboBoxMaterial As ComboBox
     Friend WithEvents Label5 As Label
+    Friend WithEvents RemoveTag As Button
+    Friend WithEvents ComboBoxMaterial As ComboBox
     Friend WithEvents TboxThickness As TextBox
-    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Friend WithEvents TagsBox As ListBox
+    Friend WithEvents DxfViewerControl1 As DxfViewerControl
+    Friend WithEvents btnNewJob As Button
+    Friend WithEvents AddTag As Button
     Friend WithEvents ImportSpf As Button
     Friend WithEvents ExportDxf As Button
     Friend WithEvents ExportSpf As Button
-    Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
-    Friend WithEvents DrawingDivider As TableLayoutPanel
-    Friend WithEvents DxfViewerControl1 As DxfViewerControl
-    Friend WithEvents TagDivider As TableLayoutPanel
-    Friend WithEvents TagsBox As ListBox
-    Friend WithEvents RemoveTag As Button
-    Friend WithEvents AddTag As Button
-    Friend WithEvents ErrorProviderThickness As ErrorProvider
-    Friend WithEvents DxfFileDialog As OpenFileDialog
-    Friend WithEvents ImageFileDialog As OpenFileDialog
-    Friend WithEvents DxfSaveDialog As SaveFileDialog
-    Friend WithEvents SpfSaveDialog As SaveFileDialog
-    Friend WithEvents SpfOpenDialog As OpenFileDialog
-    Friend WithEvents btnSubmitTemplate As Button
-    Friend WithEvents ErrorProviderName As ErrorProvider
-    Friend WithEvents TboxApprove As TextBox
-    Friend WithEvents Label6 As Label
-    Friend WithEvents btnNewJob As Button
-    Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
-    Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
-    Friend WithEvents btnSetDrawing As Button
-    Friend WithEvents btnViewDrawing As Button
+    Friend WithEvents ToolBar1 As ToolBar
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents GroupBox4 As GroupBox
 End Class
