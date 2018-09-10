@@ -120,10 +120,28 @@ Public Module Settings
             Return My.Settings.PasswordSaved
         End Get
         Set(value As Boolean)
+            If Not value Then
+                Settings.LoginPassword = ""
+            End If
             My.Settings.PasswordSaved = value
             My.Settings.Save()
         End Set
     End Property
+
+    Public Property DesignerProgram As OpenType
+        Get
+            If My.Settings.DesignerProgram Is Nothing Then
+                Settings.DesignerProgram = New OpenType(False, "C:\Program Files\Autodesk\AutoCAD 2018\acad.exe")
+            End If
+            Return My.Settings.DesignerProgram
+        End Get
+        Set(value As OpenType)
+            My.Settings.DesignerProgram = value
+            My.Settings.Save()
+        End Set
+    End Property
+
+
 End Module
 
 

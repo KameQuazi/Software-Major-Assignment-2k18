@@ -3,8 +3,8 @@
 Public Class LoginForm
     Private Loaded As Boolean = False
 
-    Private Sub btnLogin_Click(sender As Object, e As EventArgs) Handles btnLogin.Click
-        If Not ValidateConnection() Then
+    Private Async Sub btnLogin_Click(sender As Object, e As EventArgs) Handles btnLogin.Click
+        If Not Await ValidateConnection() Then
             MessageBox.Show("Error when trying to connect to server: please check the connection address is correct", "Error connecting to remote server", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
         Dim username = txtUser.Text
@@ -112,7 +112,7 @@ Public Class LoginForm
         End Set
     End Property
 
-    Private Sub cboxInternal_CheckedChanged(sender As Object, e As EventArgs) Handles cboxInternal.CheckedChanged
+    Private Async Sub cboxInternal_CheckedChanged(sender As Object, e As EventArgs) Handles cboxInternal.CheckedChanged
         If Not Loaded Then
             Return
         End If
@@ -126,7 +126,7 @@ Public Class LoginForm
         Else
             tboxServerUrl.Enabled = True
             btnTryConnection.Enabled = True
-            If ValidateConnection() Then
+            If Await ValidateConnection() Then
                 ' save it
                 SaveEndpoint(tboxServerUrl.Text, False)
             Else
@@ -135,21 +135,21 @@ Public Class LoginForm
         End If
     End Sub
 
-    Private Function CanConnect(str As String) As Boolean
+    Private Async Function CanConnect(str As String) As Task(Of Boolean)
         Try
             SetServiceEndpoint(str)
-            CurrentSender.Authenticate(Nothing)
+            Await CurrentSender.AuthenticateAsync(Nothing)
             Return True
         Catch ex As Exception
             Return False
         End Try
     End Function
 
-    Private Function ValidateConnection() As Boolean
+    Private Async Function ValidateConnection() As Task(Of Boolean)
         If UseInternal Then
             Return True
         Else
-            Dim result = CanConnect(tboxServerUrl.Text)
+            Dim result = Await CanConnect(tboxServerUrl.Text)
             If result Then
                 ErrorProvider1.SetError(tboxServerUrl, "")
             Else
@@ -159,14 +159,14 @@ Public Class LoginForm
         End If
     End Function
 
-    Private Sub tboxServerUrl_TextChanged(sender As Object, e As EventArgs) Handles tboxServerUrl.TextChanged
+    Private Async Sub tboxServerUrl_TextChanged(sender As Object, e As EventArgs) Handles tboxServerUrl.TextChanged
         If Not Loaded Then
             Return
         End If
 
         If Not UseInternal Then
             ' try to check if it is legit
-            If ValidateConnection() Then
+            If Await ValidateConnection() Then
                 ' help
                 SaveEndpoint(tboxServerUrl.Text, False)
 

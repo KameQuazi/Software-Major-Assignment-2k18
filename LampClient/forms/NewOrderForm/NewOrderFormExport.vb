@@ -61,7 +61,7 @@ Public Class NewOrderFormExport
     Private Sub btnExportDxf_Click(sender As Object, e As EventArgs) Handles btnExportDxf.Click
         If DxfListSaveFileDialog.ShowDialog() = DialogResult.OK Then
             Dim path = DxfListSaveFileDialog.SelectedPath
-            For i = 1 To CompletedJobs.Count
+            For i = 1 To CompletedJobs.Count - 1
                 CompletedJobs(i).Save(Job.Template.Name + i.ToString + ".dxf")
             Next
         End If

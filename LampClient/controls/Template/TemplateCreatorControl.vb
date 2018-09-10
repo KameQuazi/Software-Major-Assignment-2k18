@@ -506,7 +506,7 @@ Public Class TemplateCreatorControl
         Dim value As Double = -1
         Dim parsible = Double.TryParse(TboxThickness.Text, value)
         If Not parsible Then
-            ErrorProviderThickness.SetError(TboxThickness, "Please Enter an number")
+            ErrorProviderThickness.SetError(TboxThickness, "Please enter an number")
             Return False
         ElseIf value <= 0 Then
             ErrorProviderThickness.SetError(TboxThickness, "Number must be greater than 0")

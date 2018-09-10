@@ -396,12 +396,12 @@ Public Class LampService
                 Return response
             End If
 
-            If credentials.Username Is Nothing Or credentials.Password Is Nothing Then
+            If credentials.Username Is Nothing OrElse credentials.Password Is Nothing OrElse credentials.Username = "" OrElse credentials.Password = "" Then
                 response.Status = LampStatus.InvalidParameters
                 Return response
             End If
 
-            Dim user = Database.SelectUser(credentials.Username, credentials.Password)
+            Dim user = Database.SelectUser(credentials.Username.ToLower(), credentials.Password)
             If user Is Nothing Then
                 response.Status = LampStatus.InvalidUsernameOrPassword
                 Return response
