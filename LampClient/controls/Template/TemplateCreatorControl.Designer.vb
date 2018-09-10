@@ -43,17 +43,16 @@ Partial Class TemplateCreatorControl
         Me.ComboBoxMaterial = New System.Windows.Forms.ComboBox()
         Me.TboxThickness = New System.Windows.Forms.TextBox()
         Me.TagsBox = New System.Windows.Forms.ListBox()
-        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
         Me.btnNewJob = New System.Windows.Forms.Button()
         Me.AddTag = New System.Windows.Forms.Button()
         Me.ImportSpf = New System.Windows.Forms.Button()
         Me.ExportDxf = New System.Windows.Forms.Button()
         Me.ExportSpf = New System.Windows.Forms.Button()
-        Me.ToolBar1 = New LampClient.ToolBar()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -68,7 +67,7 @@ Partial Class TemplateCreatorControl
         Me.btnViewDrawing.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.btnViewDrawing.BackColor = System.Drawing.Color.White
         Me.btnViewDrawing.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnViewDrawing.Location = New System.Drawing.Point(904, 424)
+        Me.btnViewDrawing.Location = New System.Drawing.Point(1042, 374)
         Me.btnViewDrawing.Margin = New System.Windows.Forms.Padding(16)
         Me.btnViewDrawing.Name = "btnViewDrawing"
         Me.btnViewDrawing.Size = New System.Drawing.Size(100, 24)
@@ -148,10 +147,10 @@ Partial Class TemplateCreatorControl
         '
         Me.DynamicFormCreation1.AutoScroll = True
         Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DynamicFormCreation1.Location = New System.Drawing.Point(788, 454)
+        Me.DynamicFormCreation1.Location = New System.Drawing.Point(806, 427)
         Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
         Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(20)
-        Me.DynamicFormCreation1.Size = New System.Drawing.Size(427, 266)
+        Me.DynamicFormCreation1.Size = New System.Drawing.Size(393, 266)
         Me.DynamicFormCreation1.TabIndex = 55
         '
         'NameBox
@@ -170,7 +169,7 @@ Partial Class TemplateCreatorControl
         Me.btnSubmitTemplate.Enabled = False
         Me.btnSubmitTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnSubmitTemplate.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.btnSubmitTemplate.Location = New System.Drawing.Point(551, 115)
+        Me.btnSubmitTemplate.Location = New System.Drawing.Point(593, 31)
         Me.btnSubmitTemplate.Margin = New System.Windows.Forms.Padding(4)
         Me.btnSubmitTemplate.Name = "btnSubmitTemplate"
         Me.btnSubmitTemplate.Size = New System.Drawing.Size(120, 56)
@@ -287,25 +286,13 @@ Partial Class TemplateCreatorControl
         Me.TagsBox.Size = New System.Drawing.Size(279, 147)
         Me.TagsBox.TabIndex = 54
         '
-        'DxfViewerControl1
-        '
-        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
-        Me.DxfViewerControl1.Location = New System.Drawing.Point(683, 115)
-        Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(16)
-        Me.DxfViewerControl1.Name = "DxfViewerControl1"
-        Me.DxfViewerControl1.Size = New System.Drawing.Size(532, 302)
-        Me.DxfViewerControl1.TabIndex = 31
-        Me.DxfViewerControl1.ZoomX = 1.0R
-        Me.DxfViewerControl1.ZoomY = 1.0R
-        '
         'btnNewJob
         '
         Me.btnNewJob.BackColor = System.Drawing.Color.White
         Me.btnNewJob.Enabled = False
         Me.btnNewJob.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnNewJob.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.btnNewJob.Location = New System.Drawing.Point(551, 169)
+        Me.btnNewJob.Location = New System.Drawing.Point(593, 85)
         Me.btnNewJob.Margin = New System.Windows.Forms.Padding(4)
         Me.btnNewJob.Name = "btnNewJob"
         Me.btnNewJob.Size = New System.Drawing.Size(120, 54)
@@ -330,7 +317,7 @@ Partial Class TemplateCreatorControl
         Me.ImportSpf.BackColor = System.Drawing.Color.White
         Me.ImportSpf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ImportSpf.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.ImportSpf.Location = New System.Drawing.Point(380, 115)
+        Me.ImportSpf.Location = New System.Drawing.Point(422, 31)
         Me.ImportSpf.Margin = New System.Windows.Forms.Padding(4)
         Me.ImportSpf.Name = "ImportSpf"
         Me.ImportSpf.Size = New System.Drawing.Size(79, 108)
@@ -343,7 +330,7 @@ Partial Class TemplateCreatorControl
         Me.ExportDxf.BackColor = System.Drawing.Color.White
         Me.ExportDxf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ExportDxf.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.ExportDxf.Location = New System.Drawing.Point(459, 115)
+        Me.ExportDxf.Location = New System.Drawing.Point(501, 31)
         Me.ExportDxf.Margin = New System.Windows.Forms.Padding(4)
         Me.ExportDxf.Name = "ExportDxf"
         Me.ExportDxf.Size = New System.Drawing.Size(93, 56)
@@ -356,28 +343,13 @@ Partial Class TemplateCreatorControl
         Me.ExportSpf.BackColor = System.Drawing.Color.White
         Me.ExportSpf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ExportSpf.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.ExportSpf.Location = New System.Drawing.Point(459, 169)
+        Me.ExportSpf.Location = New System.Drawing.Point(501, 85)
         Me.ExportSpf.Margin = New System.Windows.Forms.Padding(4)
         Me.ExportSpf.Name = "ExportSpf"
         Me.ExportSpf.Size = New System.Drawing.Size(93, 54)
         Me.ExportSpf.TabIndex = 36
         Me.ExportSpf.Text = "Export To SPF"
         Me.ExportSpf.UseVisualStyleBackColor = False
-        '
-        'ToolBar1
-        '
-        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
-        Me.ToolBar1.ConfirmationRequired = Nothing
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = True
-        Me.ToolBar1.NewTemplateEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1231, 108)
-        Me.ToolBar1.TabIndex = 56
-        Me.ToolBar1.ViewOrderEnabled = True
-        Me.ToolBar1.ViewTemplateEnabled = True
         '
         'GroupBox1
         '
@@ -388,7 +360,7 @@ Partial Class TemplateCreatorControl
         Me.GroupBox1.Controls.Add(Me.NameBox)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.GroupBox1.Location = New System.Drawing.Point(7, 108)
+        Me.GroupBox1.Location = New System.Drawing.Point(13, 15)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(367, 132)
         Me.GroupBox1.TabIndex = 57
@@ -404,7 +376,7 @@ Partial Class TemplateCreatorControl
         Me.GroupBox2.Controls.Add(Me.TboxApprove)
         Me.GroupBox2.Controls.Add(Me.Label6)
         Me.GroupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.GroupBox2.Location = New System.Drawing.Point(7, 236)
+        Me.GroupBox2.Location = New System.Drawing.Point(13, 169)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(367, 213)
         Me.GroupBox2.TabIndex = 58
@@ -417,7 +389,7 @@ Partial Class TemplateCreatorControl
         Me.GroupBox3.Controls.Add(Me.Preview2)
         Me.GroupBox3.Controls.Add(Me.Preview1)
         Me.GroupBox3.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.GroupBox3.Location = New System.Drawing.Point(7, 447)
+        Me.GroupBox3.Location = New System.Drawing.Point(13, 420)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(768, 273)
         Me.GroupBox3.TabIndex = 59
@@ -429,12 +401,24 @@ Partial Class TemplateCreatorControl
         Me.GroupBox4.Controls.Add(Me.TagsBox)
         Me.GroupBox4.Controls.Add(Me.AddTag)
         Me.GroupBox4.Controls.Add(Me.RemoveTag)
-        Me.GroupBox4.Location = New System.Drawing.Point(380, 236)
+        Me.GroupBox4.Location = New System.Drawing.Point(414, 175)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(296, 223)
         Me.GroupBox4.TabIndex = 60
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Trophy Tags"
+        '
+        'DxfViewerControl1
+        '
+        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
+        Me.DxfViewerControl1.Location = New System.Drawing.Point(831, 16)
+        Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(16)
+        Me.DxfViewerControl1.Name = "DxfViewerControl1"
+        Me.DxfViewerControl1.Size = New System.Drawing.Size(311, 360)
+        Me.DxfViewerControl1.TabIndex = 31
+        Me.DxfViewerControl1.ZoomX = 1.0R
+        Me.DxfViewerControl1.ZoomY = 1.0R
         '
         'TemplateCreatorControl
         '
@@ -443,7 +427,6 @@ Partial Class TemplateCreatorControl
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
-        Me.Controls.Add(Me.ToolBar1)
         Me.Controls.Add(Me.btnViewDrawing)
         Me.Controls.Add(Me.DynamicFormCreation1)
         Me.Controls.Add(Me.btnSubmitTemplate)
@@ -494,7 +477,6 @@ Partial Class TemplateCreatorControl
     Friend WithEvents ImportSpf As Button
     Friend WithEvents ExportDxf As Button
     Friend WithEvents ExportSpf As Button
-    Friend WithEvents ToolBar1 As ToolBar
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents GroupBox3 As GroupBox
