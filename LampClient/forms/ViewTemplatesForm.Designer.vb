@@ -48,16 +48,18 @@ Partial Class ViewTemplatesForm
         'ToolBar1
         '
         Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.ToolBar1.ConfirmationRequired = Nothing
         Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.HomeEnabled = True
         Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
-        Me.ToolBar1.ViewOrderEnabled = True
-        Me.ToolBar1.ViewTemplateEnabled = False
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.NewOrderEnabled = True
+        Me.ToolBar1.NewTemplateEnabled = True
         Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
         Me.ToolBar1.TabIndex = 8
+        Me.ToolBar1.ViewOrderEnabled = True
+        Me.ToolBar1.ViewTemplateEnabled = False
         '
         'ServiceSortableTemplateViewer1
         '
@@ -69,16 +71,16 @@ Partial Class ViewTemplatesForm
         Me.ServiceSortableTemplateViewer1.SidebarHidden = False
         Me.ServiceSortableTemplateViewer1.Size = New System.Drawing.Size(1226, 592)
         Me.ServiceSortableTemplateViewer1.SortOrder = LampCommon.LampTemplateSort.NoSort
+        Me.ServiceSortableTemplateViewer1.SplitterDistance = 981
         Me.ServiceSortableTemplateViewer1.TabIndex = 9
         Me.ServiceSortableTemplateViewer1.TitleText = "View/Edit Templates"
         '
         'ViewTemplatesForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.TableLayoutPanel1)
-		Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon) 
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "ViewTemplatesForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "LAMP - View/Edit Templates"

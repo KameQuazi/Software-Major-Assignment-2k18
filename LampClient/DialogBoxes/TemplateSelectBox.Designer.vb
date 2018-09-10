@@ -22,6 +22,7 @@ Partial Class TemplateSelectBox
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TemplateSelectBox))
         Me.ServiceSortableTemplateViewer1 = New LampClient.ServiceSortableTemplateViewer()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
@@ -32,12 +33,15 @@ Partial Class TemplateSelectBox
         '
         'ServiceSortableTemplateViewer1
         '
+        Me.ServiceSortableTemplateViewer1.ApprovedType = LampCommon.LampApprove.All
         Me.ServiceSortableTemplateViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ServiceSortableTemplateViewer1.JustMyTemplates = False
         Me.ServiceSortableTemplateViewer1.Location = New System.Drawing.Point(3, 3)
         Me.ServiceSortableTemplateViewer1.Name = "ServiceSortableTemplateViewer1"
         Me.ServiceSortableTemplateViewer1.SidebarHidden = False
         Me.ServiceSortableTemplateViewer1.Size = New System.Drawing.Size(1226, 661)
         Me.ServiceSortableTemplateViewer1.SortOrder = LampCommon.LampTemplateSort.NoSort
+        Me.ServiceSortableTemplateViewer1.SplitterDistance = 981
         Me.ServiceSortableTemplateViewer1.TabIndex = 0
         Me.ServiceSortableTemplateViewer1.TitleText = "Choose a Template"
         '
@@ -79,12 +83,12 @@ Partial Class TemplateSelectBox
         '
         'TemplateSelectBox
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 14.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.Color.White
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "TemplateSelectBox"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Viewer"

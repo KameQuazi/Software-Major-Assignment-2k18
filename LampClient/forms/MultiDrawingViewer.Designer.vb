@@ -22,6 +22,7 @@ Partial Class MultiDrawingViewer
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MultiDrawingViewer))
         Me.MultiDrawingViewerControl1 = New LampClient.MultiDrawingViewerControl()
         Me.SuspendLayout()
         '
@@ -32,13 +33,17 @@ Partial Class MultiDrawingViewer
         Me.MultiDrawingViewerControl1.Name = "MultiDrawingViewerControl1"
         Me.MultiDrawingViewerControl1.Size = New System.Drawing.Size(590, 542)
         Me.MultiDrawingViewerControl1.TabIndex = 0
+        Me.MultiDrawingViewerControl1.ZoomFactor = 1.0R
+        Me.MultiDrawingViewerControl1.ZoomxX = 1.0R
+        Me.MultiDrawingViewerControl1.ZoomxY = 1.0R
         '
         'MultiDrawingViewer
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(590, 542)
         Me.Controls.Add(Me.MultiDrawingViewerControl1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "MultiDrawingViewer"
         Me.Text = "MultiDrawingViewer"
         Me.ResumeLayout(False)

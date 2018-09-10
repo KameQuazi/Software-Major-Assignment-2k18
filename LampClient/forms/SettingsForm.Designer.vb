@@ -22,7 +22,9 @@ Partial Class SettingsForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SettingsForm))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.tboxExternalPath = New System.Windows.Forms.TextBox()
         Me.radioExternal = New System.Windows.Forms.RadioButton()
         Me.radioLampViewer = New System.Windows.Forms.RadioButton()
@@ -32,9 +34,8 @@ Partial Class SettingsForm
         Me.btnSave = New System.Windows.Forms.Button()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkSavePassword = New System.Windows.Forms.CheckBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.chkSavePassword = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel4.SuspendLayout()
@@ -57,6 +58,15 @@ Partial Class SettingsForm
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Designer Settings"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(6, 96)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(99, 17)
+        Me.Label1.TabIndex = 3
+        Me.Label1.Text = "Program Path:"
         '
         'tboxExternalPath
         '
@@ -173,17 +183,6 @@ Partial Class SettingsForm
         Me.TableLayoutPanel3.Size = New System.Drawing.Size(637, 263)
         Me.TableLayoutPanel3.TabIndex = 5
         '
-        'chkSavePassword
-        '
-        Me.chkSavePassword.AutoSize = True
-        Me.chkSavePassword.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.25!)
-        Me.chkSavePassword.Location = New System.Drawing.Point(6, 22)
-        Me.chkSavePassword.Name = "chkSavePassword"
-        Me.chkSavePassword.Size = New System.Drawing.Size(198, 24)
-        Me.chkSavePassword.TabIndex = 0
-        Me.chkSavePassword.Text = "Remember Password?"
-        Me.chkSavePassword.UseVisualStyleBackColor = True
-        '
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.chkSavePassword)
@@ -196,22 +195,26 @@ Partial Class SettingsForm
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Account Settings"
         '
-        'Label1
+        'chkSavePassword
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(6, 96)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(99, 17)
-        Me.Label1.TabIndex = 3
-        Me.Label1.Text = "Program Path:"
+        Me.chkSavePassword.AutoSize = True
+        Me.chkSavePassword.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.25!)
+        Me.chkSavePassword.Location = New System.Drawing.Point(6, 22)
+        Me.chkSavePassword.Name = "chkSavePassword"
+        Me.chkSavePassword.Size = New System.Drawing.Size(198, 24)
+        Me.chkSavePassword.TabIndex = 0
+        Me.chkSavePassword.Text = "Remember Password?"
+        Me.chkSavePassword.UseVisualStyleBackColor = True
         '
         'SettingsForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(643, 375)
         Me.Controls.Add(Me.TableLayoutPanel2)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "SettingsForm"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Settings"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()

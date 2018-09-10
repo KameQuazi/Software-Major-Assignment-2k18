@@ -127,7 +127,7 @@ Partial Class AboutBox
         '
         'TextBoxDescription
         '
-        Me.TextBoxDescription.BackColor = System.Drawing.Color.White
+        Me.TextBoxDescription.BackColor = System.Drawing.Color.Silver
         Me.TextBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TextBoxDescription.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxDescription.Location = New System.Drawing.Point(136, 103)
@@ -155,7 +155,7 @@ Partial Class AboutBox
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.Color.White
+        Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(414, 276)
         Me.Controls.Add(Me.TableLayoutPanel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog

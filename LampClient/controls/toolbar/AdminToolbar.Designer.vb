@@ -290,6 +290,7 @@ Partial Class AdminToolbar
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightSeaGreen
         Me.Controls.Add(Me.TableLayoutPanel2)
+        Me.Margin = New System.Windows.Forms.Padding(0)
         Me.Name = "AdminToolbar"
         Me.Size = New System.Drawing.Size(1231, 108)
         Me.TableLayoutPanel2.ResumeLayout(False)
