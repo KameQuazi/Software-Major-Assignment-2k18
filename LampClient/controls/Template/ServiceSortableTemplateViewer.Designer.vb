@@ -46,10 +46,10 @@ Partial Class ServiceSortableTemplateViewer
         Me.rdbtnPublic = New System.Windows.Forms.RadioButton()
         Me.rdbtnMe = New System.Windows.Forms.RadioButton()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.ListBox1 = New System.Windows.Forms.ListBox()
-        Me.btnAddTag = New System.Windows.Forms.Button()
-        Me.btnRemoveTag = New System.Windows.Forms.Button()
+        Me.TagEditorControl1 = New LampClient.TagEditorControl()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -63,6 +63,8 @@ Partial Class ServiceSortableTemplateViewer
         Me.FlowLayoutPanel2.SuspendLayout()
         Me.FlowLayoutPanel3.SuspendLayout()
         Me.Panel2.SuspendLayout()
+        Me.Panel3.SuspendLayout()
+        Me.TableLayoutPanel4.SuspendLayout()
         Me.SuspendLayout()
         '
         'SplitContainer1
@@ -351,60 +353,54 @@ Partial Class ServiceSortableTemplateViewer
         '
         'Panel2
         '
-        Me.Panel2.Controls.Add(Me.btnRemoveTag)
-        Me.Panel2.Controls.Add(Me.btnAddTag)
-        Me.Panel2.Controls.Add(Me.ListBox1)
-        Me.Panel2.Controls.Add(Me.Label1)
+        Me.Panel2.Controls.Add(Me.Panel3)
         Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel2.Location = New System.Drawing.Point(3, 223)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(215, 215)
+        Me.Panel2.Size = New System.Drawing.Size(215, 216)
         Me.Panel2.TabIndex = 9
+        '
+        'Panel3
+        '
+        Me.Panel3.Controls.Add(Me.TableLayoutPanel4)
+        Me.Panel3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel3.Location = New System.Drawing.Point(0, 0)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(215, 216)
+        Me.Panel3.TabIndex = 0
+        '
+        'TableLayoutPanel4
+        '
+        Me.TableLayoutPanel4.ColumnCount = 1
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel4.Controls.Add(Me.TagEditorControl1, 0, 1)
+        Me.TableLayoutPanel4.Controls.Add(Me.Label1, 0, 0)
+        Me.TableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel4.Location = New System.Drawing.Point(0, 0)
+        Me.TableLayoutPanel4.Name = "TableLayoutPanel4"
+        Me.TableLayoutPanel4.RowCount = 2
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel4.Size = New System.Drawing.Size(215, 216)
+        Me.TableLayoutPanel4.TabIndex = 0
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(8, 8)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(8)
+        Me.Label1.Location = New System.Drawing.Point(3, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(70, 13)
-        Me.Label1.TabIndex = 4
-        Me.Label1.Text = "Sort by Tags:"
+        Me.Label1.Size = New System.Drawing.Size(74, 13)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "Filter By Tags:"
         '
-        'ListBox1
+        'TagEditorControl1
         '
-        Me.ListBox1.FormattingEnabled = True
-        Me.ListBox1.Items.AddRange(New Object() {"Help", "Me", "Please"})
-        Me.ListBox1.Location = New System.Drawing.Point(8, 32)
-        Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(175, 95)
-        Me.ListBox1.TabIndex = 5
-        '
-        'btnAddTag
-        '
-        Me.btnAddTag.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnAddTag.Enabled = False
-        Me.btnAddTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnAddTag.Image = Global.LampClient.My.Resources.Resources.arrowLeft
-        Me.btnAddTag.Location = New System.Drawing.Point(11, 133)
-        Me.btnAddTag.Name = "btnAddTag"
-        Me.btnAddTag.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.btnAddTag.Size = New System.Drawing.Size(75, 29)
-        Me.btnAddTag.TabIndex = 11
-        Me.btnAddTag.UseVisualStyleBackColor = True
-        '
-        'btnRemoveTag
-        '
-        Me.btnRemoveTag.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnRemoveTag.Enabled = False
-        Me.btnRemoveTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnRemoveTag.Image = Global.LampClient.My.Resources.Resources.arrowLeft
-        Me.btnRemoveTag.Location = New System.Drawing.Point(92, 133)
-        Me.btnRemoveTag.Name = "btnRemoveTag"
-        Me.btnRemoveTag.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.btnRemoveTag.Size = New System.Drawing.Size(75, 29)
-        Me.btnRemoveTag.TabIndex = 12
-        Me.btnRemoveTag.UseVisualStyleBackColor = True
+        Me.TagEditorControl1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TagEditorControl1.Location = New System.Drawing.Point(3, 16)
+        Me.TagEditorControl1.Name = "TagEditorControl1"
+        Me.TagEditorControl1.Readonly = False
+        Me.TagEditorControl1.Size = New System.Drawing.Size(209, 197)
+        Me.TagEditorControl1.TabIndex = 2
         '
         'ServiceSortableTemplateViewer
         '
@@ -430,7 +426,9 @@ Partial Class ServiceSortableTemplateViewer
         Me.FlowLayoutPanel3.ResumeLayout(False)
         Me.FlowLayoutPanel3.PerformLayout()
         Me.Panel2.ResumeLayout(False)
-        Me.Panel2.PerformLayout()
+        Me.Panel3.ResumeLayout(False)
+        Me.TableLayoutPanel4.ResumeLayout(False)
+        Me.TableLayoutPanel4.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -459,8 +457,8 @@ Partial Class ServiceSortableTemplateViewer
     Friend WithEvents rdbtnYesApproved As RadioButton
     Friend WithEvents rdbtnNoApproved As RadioButton
     Friend WithEvents Panel2 As Panel
-    Friend WithEvents ListBox1 As ListBox
+    Friend WithEvents Panel3 As Panel
+    Friend WithEvents TableLayoutPanel4 As TableLayoutPanel
+    Friend WithEvents TagEditorControl1 As TagEditorControl
     Friend WithEvents Label1 As Label
-    Friend WithEvents btnRemoveTag As Button
-    Friend WithEvents btnAddTag As Button
 End Class

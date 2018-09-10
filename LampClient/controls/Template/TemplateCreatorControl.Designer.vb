@@ -22,6 +22,7 @@ Partial Class TemplateCreatorControl
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TemplateCreatorControl))
         Me.btnViewDrawing = New System.Windows.Forms.Button()
         Me.TboxApprove = New System.Windows.Forms.TextBox()
@@ -30,7 +31,6 @@ Partial Class TemplateCreatorControl
         Me.Preview2 = New System.Windows.Forms.PictureBox()
         Me.Preview1 = New System.Windows.Forms.PictureBox()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
         Me.NameBox = New System.Windows.Forms.TextBox()
         Me.btnSubmitTemplate = New System.Windows.Forms.Button()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -52,11 +52,8 @@ Partial Class TemplateCreatorControl
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
-        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.btnSetDrawing = New System.Windows.Forms.Button()
-        Me.btnViewDrawing = New System.Windows.Forms.Button()
-        Me.TagEditorControl1 = New LampClient.TagEditorControl()
+        Me.DrawingDivider = New System.Windows.Forms.TableLayoutPanel()
         Me.ErrorProviderThickness = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.DxfFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.ImageFileDialog = New System.Windows.Forms.OpenFileDialog()
@@ -64,25 +61,18 @@ Partial Class TemplateCreatorControl
         Me.SpfSaveDialog = New System.Windows.Forms.SaveFileDialog()
         Me.SpfOpenDialog = New System.Windows.Forms.OpenFileDialog()
         Me.ErrorProviderName = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.RootColumn.SuspendLayout()
-        Me.Panel1.SuspendLayout()
-        Me.LeftDivider.SuspendLayout()
-        Me.TableLayoutPanel8.SuspendLayout()
+        Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
+        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
+        Me.TagEditorControl1 = New LampClient.TagEditorControl()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.EmptySpaceDivider.SuspendLayout()
-        Me.DescriptionDivider.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
-        Me.TableLayoutPanel3.SuspendLayout()
-        Me.DrawingDivider.SuspendLayout()
-        Me.TableLayoutPanel2.SuspendLayout()
-        CType(Me.ErrorProviderThickness, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ErrorProviderName, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
+        CType(Me.ErrorProviderThickness, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ErrorProviderName, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'btnViewDrawing
@@ -90,11 +80,11 @@ Partial Class TemplateCreatorControl
         Me.btnViewDrawing.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.btnViewDrawing.BackColor = System.Drawing.Color.White
         Me.btnViewDrawing.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnViewDrawing.Location = New System.Drawing.Point(1042, 374)
+        Me.btnViewDrawing.Location = New System.Drawing.Point(215, 16)
         Me.btnViewDrawing.Margin = New System.Windows.Forms.Padding(16)
         Me.btnViewDrawing.Name = "btnViewDrawing"
         Me.btnViewDrawing.Size = New System.Drawing.Size(100, 24)
-        Me.btnViewDrawing.TabIndex = 43
+        Me.btnViewDrawing.TabIndex = 17
         Me.btnViewDrawing.Text = "View Drawing"
         Me.btnViewDrawing.UseVisualStyleBackColor = False
         '
@@ -165,16 +155,6 @@ Partial Class TemplateCreatorControl
         Me.Label1.Size = New System.Drawing.Size(38, 13)
         Me.Label1.TabIndex = 34
         Me.Label1.Text = "Name:"
-        '
-        'DynamicFormCreation1
-        '
-        Me.DynamicFormCreation1.AutoScroll = True
-        Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DynamicFormCreation1.Location = New System.Drawing.Point(806, 427)
-        Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
-        Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(20)
-        Me.DynamicFormCreation1.Size = New System.Drawing.Size(393, 266)
-        Me.DynamicFormCreation1.TabIndex = 55
         '
         'NameBox
         '
@@ -392,18 +372,6 @@ Partial Class TemplateCreatorControl
         '
         'GroupBox2
         '
-        Me.TableLayoutPanel3.ColumnCount = 1
-        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel3.Controls.Add(Me.DrawingDivider, 0, 1)
-        Me.TableLayoutPanel3.Controls.Add(Me.TagEditorControl1, 0, 0)
-        Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel3.Location = New System.Drawing.Point(876, 4)
-        Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
-        Me.TableLayoutPanel3.RowCount = 2
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(368, 734)
-        Me.TableLayoutPanel3.TabIndex = 1
         Me.GroupBox2.Controls.Add(Me.LongDescription)
         Me.GroupBox2.Controls.Add(Me.TboxThickness)
         Me.GroupBox2.Controls.Add(Me.Label5)
@@ -442,34 +410,7 @@ Partial Class TemplateCreatorControl
         Me.GroupBox4.TabIndex = 60
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Trophy Tags"
-        '
-        'DxfViewerControl1
-        '
-        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
-        Me.DxfViewerControl1.Location = New System.Drawing.Point(831, 16)
-        Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(16)
-        Me.DxfViewerControl1.Name = "DxfViewerControl1"
-        Me.DxfViewerControl1.Size = New System.Drawing.Size(311, 360)
-        Me.DxfViewerControl1.TabIndex = 31
-        Me.DxfViewerControl1.ZoomX = 1.0R
-        Me.DxfViewerControl1.ZoomY = 1.0R
-        '
-        'TableLayoutPanel2
-        '
-        Me.TableLayoutPanel2.ColumnCount = 2
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.Controls.Add(Me.btnSetDrawing, 0, 0)
-        Me.TableLayoutPanel2.Controls.Add(Me.btnViewDrawing, 1, 0)
-        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel2.Location = New System.Drawing.Point(4, 291)
-        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
-        Me.TableLayoutPanel2.RowCount = 1
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 66.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(354, 66)
-        Me.TableLayoutPanel2.TabIndex = 1
+
         '
         'btnSetDrawing
         '
@@ -483,28 +424,14 @@ Partial Class TemplateCreatorControl
         Me.btnSetDrawing.TabIndex = 18
         Me.btnSetDrawing.Text = "Load Drawing"
         Me.btnSetDrawing.UseVisualStyleBackColor = False
+
         '
-        'btnViewDrawing
+        'DrawingDivider
         '
-        Me.btnViewDrawing.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.btnViewDrawing.BackColor = System.Drawing.Color.White
-        Me.btnViewDrawing.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnViewDrawing.Location = New System.Drawing.Point(215, 16)
-        Me.btnViewDrawing.Margin = New System.Windows.Forms.Padding(16)
-        Me.btnViewDrawing.Name = "btnViewDrawing"
-        Me.btnViewDrawing.Size = New System.Drawing.Size(100, 24)
-        Me.btnViewDrawing.TabIndex = 17
-        Me.btnViewDrawing.Text = "View Drawing"
-        Me.btnViewDrawing.UseVisualStyleBackColor = False
-        '
-        'TagEditorControl1
-        '
-        Me.TagEditorControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TagEditorControl1.Location = New System.Drawing.Point(3, 3)
-        Me.TagEditorControl1.Name = "TagEditorControl1"
-        Me.TagEditorControl1.Readonly = False
-        Me.TagEditorControl1.Size = New System.Drawing.Size(362, 361)
-        Me.TagEditorControl1.TabIndex = 2
+        Me.DrawingDivider.Location = New System.Drawing.Point(3, 370)
+        Me.DrawingDivider.Name = "DrawingDivider"
+        Me.DrawingDivider.Size = New System.Drawing.Size(200, 100)
+        Me.DrawingDivider.TabIndex = 0
         '
         'ErrorProviderThickness
         '
@@ -536,6 +463,37 @@ Partial Class TemplateCreatorControl
         '
         Me.ErrorProviderName.ContainerControl = Me
         '
+        'DynamicFormCreation1
+        '
+        Me.DynamicFormCreation1.AutoScroll = True
+        Me.DynamicFormCreation1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DynamicFormCreation1.Location = New System.Drawing.Point(794, 427)
+        Me.DynamicFormCreation1.Name = "DynamicFormCreation1"
+        Me.DynamicFormCreation1.Padding = New System.Windows.Forms.Padding(20)
+        Me.DynamicFormCreation1.Size = New System.Drawing.Size(393, 266)
+        Me.DynamicFormCreation1.TabIndex = 55
+        '
+        'DxfViewerControl1
+        '
+        Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
+        Me.DxfViewerControl1.Location = New System.Drawing.Point(831, 16)
+        Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(16)
+        Me.DxfViewerControl1.Name = "DxfViewerControl1"
+        Me.DxfViewerControl1.Size = New System.Drawing.Size(311, 360)
+        Me.DxfViewerControl1.TabIndex = 31
+        Me.DxfViewerControl1.ZoomX = 1.0R
+        Me.DxfViewerControl1.ZoomY = 1.0R
+        '
+        'TagEditorControl1
+        '
+        Me.TagEditorControl1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TagEditorControl1.Location = New System.Drawing.Point(3, 3)
+        Me.TagEditorControl1.Name = "TagEditorControl1"
+        Me.TagEditorControl1.Readonly = False
+        Me.TagEditorControl1.Size = New System.Drawing.Size(362, 361)
+        Me.TagEditorControl1.TabIndex = 2
+        '
         'TemplateCreatorControl
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -557,21 +515,14 @@ Partial Class TemplateCreatorControl
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.EmptySpaceDivider.ResumeLayout(False)
-        Me.DescriptionDivider.ResumeLayout(False)
-        Me.DescriptionDivider.PerformLayout()
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel3.ResumeLayout(False)
-        Me.DrawingDivider.ResumeLayout(False)
-        Me.TableLayoutPanel2.ResumeLayout(False)
-        CType(Me.ErrorProviderThickness, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ErrorProviderName, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox4.ResumeLayout(False)
+        CType(Me.ErrorProviderThickness, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ErrorProviderName, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -602,24 +553,15 @@ Partial Class TemplateCreatorControl
     Friend WithEvents ImportSpf As Button
     Friend WithEvents ExportDxf As Button
     Friend WithEvents ExportSpf As Button
-    Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
     Friend WithEvents DrawingDivider As TableLayoutPanel
-    Friend WithEvents DxfViewerControl1 As DxfViewerControl
     Friend WithEvents ErrorProviderThickness As ErrorProvider
     Friend WithEvents DxfFileDialog As OpenFileDialog
     Friend WithEvents ImageFileDialog As OpenFileDialog
     Friend WithEvents DxfSaveDialog As SaveFileDialog
     Friend WithEvents SpfSaveDialog As SaveFileDialog
     Friend WithEvents SpfOpenDialog As OpenFileDialog
-    Friend WithEvents btnSubmitTemplate As Button
     Friend WithEvents ErrorProviderName As ErrorProvider
-    Friend WithEvents TboxApprove As TextBox
-    Friend WithEvents Label6 As Label
-    Friend WithEvents btnNewJob As Button
-    Friend WithEvents DynamicFormCreation1 As DynamicFormCreation
-    Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
     Friend WithEvents btnSetDrawing As Button
-    Friend WithEvents btnViewDrawing As Button
     Friend WithEvents TagEditorControl1 As TagEditorControl
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents GroupBox2 As GroupBox

@@ -59,6 +59,10 @@ Public Class ServiceSortableTemplateViewer
         End Set
     End Property
 
+    Public Property FilterTags As List(Of String)
+
+
+
     Public Property TitleText As String
         Get
             Return lblTitle.Text
@@ -254,6 +258,8 @@ Public Class ServiceSortableTemplateViewer
         ServiceTemplateViewer1.Offset = 0
     End Sub
 
+    Private Sub TagEditorControl1_TagContentsChanged(sender As Object, e As TagContentsChangedEvent) Handles TagEditorControl1.TagContentsChanged
 
+    End Sub
 End Class
 
