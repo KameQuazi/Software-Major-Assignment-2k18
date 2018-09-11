@@ -107,9 +107,29 @@ Public Class DesignerForm
 
     End Sub
 
+    Private _myColor As Color
+    Public Property MyColor As Color
+        Get
+            Return _myColor
+        End Get
+        Set(value As Color)
+            _myColor = value
+
+        End Set
+    End Property
+
     Public Sub EnableOnlyDynamicText()
         Me.CurrentTool = LampTool.DynamicMText
-
+        OpenFileBtn.Enabled = False
+        SaveFileBtn.Enabled = False
+        btnUndo.Enabled = False
+        SaveFileBtn.Enabled = False
+        cboxLine.Enabled = False
+        cboxCircle.Enabled = False
+        cboxMeasure.Enabled = False
+        cboxStaticText.Enabled = False
+        cboxDynamicText.Enabled = True
+        cboxDynamicText.Checked = True
     End Sub
 
 
@@ -489,7 +509,7 @@ Public Class DesignerForm
         currentState = DrawingState.None
         CurrentTool = LampTool.Nothing
 
-        Dim cboxes As New List(Of CheckBox) From {cboxArc, cboxCircle, cboxLine, cboxDynamicText, cboxStaticText, cboxMeasure}
+        Dim cboxes As New List(Of CheckBox) From {cboxCircle, cboxLine, cboxDynamicText, cboxStaticText, cboxMeasure}
         For Each box In cboxes
             If Not box.Equals(keep) Then
                 box.Checked = False
@@ -568,18 +588,7 @@ Public Class DesignerForm
 
     End Sub
 
-    Private Sub cboxArc_CheckedChanged(sender As Object, e As EventArgs) Handles cboxArc.CheckedChanged
-        If doUpdate Then
-            doUpdate = False
-            ResetDrawingState(cboxArc)
-            If cboxArc.Checked Then
-                CurrentTool = LampTool.Arc
-            Else
-                CurrentTool = LampTool.Nothing
-            End If
-            doUpdate = True
-        End If
-    End Sub
+
 
     Private Sub rtboxCurrent_TextChanged(sender As Object, e As EventArgs) Handles rtboxCurrent.TextChanged
 
@@ -640,6 +649,14 @@ Public Class DesignerForm
 
     Private Sub btnUndo_Click(sender As Object, e As EventArgs) Handles btnUndo.Click
         Drawing.RemoveEntity(UndoEntities.Pop)
+    End Sub
+
+    Private Sub CutSelectorControl1_Load(sender As Object, e As EventArgs) Handles CutSelectorControl1.Load
+
+    End Sub
+
+    Private Sub CutSelectorControl1_Changed(sender As Object, e As Color) Handles CutSelectorControl1.Changed
+        MyColor = e
     End Sub
 End Class
 

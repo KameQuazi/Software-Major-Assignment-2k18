@@ -77,6 +77,13 @@ Public Class DynamicTextKey
     <DataMember>
     Public Property InputType As InputType
 
+    ''' <summary>
+    ''' color as rgb
+    ''' </summary>
+    <JsonProperty("color")>
+    <DataMember>
+    Public Property Color As Color
+
 
 
     Private Shared defaultFont As String = "Arial"
@@ -88,7 +95,7 @@ Public Class DynamicTextKey
     ''' <param name="description">description of parameter</param>
     ''' <param name="location">where it should be inserted, rel bottom left of the template</param>
     ''' <param name="font">font to use (for text)</param>
-    Public Sub New(parameterName As String, description As String, location As Vector3, textHeight As Double, textWidth As Double, Optional inputType As InputType = InputType.RichTextBox, Optional font As String = Nothing)
+    Public Sub New(parameterName As String, description As String, location As Vector3, textHeight As Double, textWidth As Double, Optional inputType As InputType = InputType.RichTextBox, Optional font As String = Nothing, Optional color As Color? = Nothing)
         Me.ParameterName = parameterName
         Me.Description = description
         Me.Location = location
@@ -99,6 +106,11 @@ Public Class DynamicTextKey
             Me.Font = defaultFont
         Else
             Me.Font = font
+        End If
+        If color Is Nothing Then
+            Me.Color = System.Drawing.Color.Red
+        Else
+            Me.Color = color
         End If
     End Sub
 

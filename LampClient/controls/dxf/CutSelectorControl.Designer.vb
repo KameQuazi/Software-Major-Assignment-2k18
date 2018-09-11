@@ -23,9 +23,9 @@ Partial Class CutSelectorControl
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.radioRed = New System.Windows.Forms.RadioButton()
         Me.radioBlack = New System.Windows.Forms.RadioButton()
-        Me.RadioButton3 = New System.Windows.Forms.RadioButton()
+        Me.radioBlue = New System.Windows.Forms.RadioButton()
+        Me.radioRed = New System.Windows.Forms.RadioButton()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -34,8 +34,8 @@ Partial Class CutSelectorControl
         Me.TableLayoutPanel1.ColumnCount = 1
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.RadioButton3, 0, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.radioBlack, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.radioBlack, 0, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.radioBlue, 0, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.radioRed, 0, 0)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
@@ -48,9 +48,32 @@ Partial Class CutSelectorControl
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(150, 150)
         Me.TableLayoutPanel1.TabIndex = 0
         '
+        'radioBlack
+        '
+        Me.radioBlack.AutoSize = True
+        Me.radioBlack.Location = New System.Drawing.Point(3, 103)
+        Me.radioBlack.Name = "radioBlack"
+        Me.radioBlack.Size = New System.Drawing.Size(135, 17)
+        Me.radioBlack.TabIndex = 3
+        Me.radioBlack.TabStop = True
+        Me.radioBlack.Text = "Black (Raster Engrave)" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
+        Me.radioBlack.UseVisualStyleBackColor = True
+        '
+        'radioBlue
+        '
+        Me.radioBlue.AutoSize = True
+        Me.radioBlue.Location = New System.Drawing.Point(3, 53)
+        Me.radioBlue.Name = "radioBlue"
+        Me.radioBlue.Size = New System.Drawing.Size(105, 17)
+        Me.radioBlue.TabIndex = 2
+        Me.radioBlue.TabStop = True
+        Me.radioBlue.Text = "Blue (Raster Cut)"
+        Me.radioBlue.UseVisualStyleBackColor = True
+        '
         'radioRed
         '
         Me.radioRed.AutoSize = True
+        Me.radioRed.Checked = True
         Me.radioRed.Location = New System.Drawing.Point(3, 3)
         Me.radioRed.Name = "radioRed"
         Me.radioRed.Size = New System.Drawing.Size(104, 17)
@@ -58,28 +81,6 @@ Partial Class CutSelectorControl
         Me.radioRed.TabStop = True
         Me.radioRed.Text = "Red (Vector Cut)"
         Me.radioRed.UseVisualStyleBackColor = True
-        '
-        'radioBlack
-        '
-        Me.radioBlack.AutoSize = True
-        Me.radioBlack.Location = New System.Drawing.Point(3, 52)
-        Me.radioBlack.Name = "radioBlack"
-        Me.radioBlack.Size = New System.Drawing.Size(105, 17)
-        Me.radioBlack.TabIndex = 2
-        Me.radioBlack.TabStop = True
-        Me.radioBlack.Text = "Blue (Raster Cut)"
-        Me.radioBlack.UseVisualStyleBackColor = True
-        '
-        'RadioButton3
-        '
-        Me.RadioButton3.AutoSize = True
-        Me.RadioButton3.Location = New System.Drawing.Point(3, 101)
-        Me.RadioButton3.Name = "RadioButton3"
-        Me.RadioButton3.Size = New System.Drawing.Size(135, 17)
-        Me.RadioButton3.TabIndex = 3
-        Me.RadioButton3.TabStop = True
-        Me.RadioButton3.Text = "Black (Raster Engrave)" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
-        Me.RadioButton3.UseVisualStyleBackColor = True
         '
         'CutSelectorControl
         '
@@ -95,6 +96,6 @@ Partial Class CutSelectorControl
 
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents radioRed As RadioButton
+    Friend WithEvents radioBlue As RadioButton
     Friend WithEvents radioBlack As RadioButton
-    Friend WithEvents RadioButton3 As RadioButton
 End Class

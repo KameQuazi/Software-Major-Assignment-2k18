@@ -27,7 +27,6 @@ Partial Class DesignerForm
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.SaveFileBtn = New System.Windows.Forms.Button()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.jsonOutput = New System.Windows.Forms.RichTextBox()
         Me.rightButton = New System.Windows.Forms.Button()
         Me.downButton = New System.Windows.Forms.Button()
         Me.leftButton = New System.Windows.Forms.Button()
@@ -42,7 +41,6 @@ Partial Class DesignerForm
         Me.cboxDynamicText = New System.Windows.Forms.CheckBox()
         Me.cboxLine = New System.Windows.Forms.CheckBox()
         Me.cboxCircle = New System.Windows.Forms.CheckBox()
-        Me.cboxArc = New System.Windows.Forms.CheckBox()
         Me.cboxMeasure = New System.Windows.Forms.CheckBox()
         Me.rtboxPrevious = New System.Windows.Forms.RichTextBox()
         Me.rtboxCurrent = New System.Windows.Forms.RichTextBox()
@@ -53,10 +51,13 @@ Partial Class DesignerForm
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.CutSelectorControl1 = New LampClient.CutSelectorControl()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
         Me.SuspendLayout()
         '
         'OpenFileBtn
@@ -88,15 +89,6 @@ Partial Class DesignerForm
         Me.SaveFileBtn.TabIndex = 1
         Me.SaveFileBtn.Text = "Save file"
         Me.SaveFileBtn.UseVisualStyleBackColor = False
-        '
-        'jsonOutput
-        '
-        Me.jsonOutput.Location = New System.Drawing.Point(661, 196)
-        Me.jsonOutput.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.jsonOutput.Name = "jsonOutput"
-        Me.jsonOutput.Size = New System.Drawing.Size(208, 210)
-        Me.jsonOutput.TabIndex = 11
-        Me.jsonOutput.Text = "serialized here"
         '
         'rightButton
         '
@@ -239,7 +231,7 @@ Partial Class DesignerForm
         Me.cboxLine.BackColor = System.Drawing.Color.White
         Me.cboxLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cboxLine.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.cboxLine.Location = New System.Drawing.Point(6, 19)
+        Me.cboxLine.Location = New System.Drawing.Point(0, 19)
         Me.cboxLine.Name = "cboxLine"
         Me.cboxLine.Size = New System.Drawing.Size(45, 27)
         Me.cboxLine.TabIndex = 29
@@ -257,22 +249,8 @@ Partial Class DesignerForm
         Me.cboxCircle.Name = "cboxCircle"
         Me.cboxCircle.Size = New System.Drawing.Size(53, 27)
         Me.cboxCircle.TabIndex = 30
-        Me.cboxCircle.Text = "Cirlce"
+        Me.cboxCircle.Text = "Circle"
         Me.cboxCircle.UseVisualStyleBackColor = False
-        '
-        'cboxArc
-        '
-        Me.cboxArc.Appearance = System.Windows.Forms.Appearance.Button
-        Me.cboxArc.AutoSize = True
-        Me.cboxArc.BackColor = System.Drawing.Color.White
-        Me.cboxArc.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.cboxArc.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.cboxArc.Location = New System.Drawing.Point(76, 57)
-        Me.cboxArc.Name = "cboxArc"
-        Me.cboxArc.Size = New System.Drawing.Size(39, 27)
-        Me.cboxArc.TabIndex = 31
-        Me.cboxArc.Text = "Arc"
-        Me.cboxArc.UseVisualStyleBackColor = False
         '
         'cboxMeasure
         '
@@ -281,11 +259,11 @@ Partial Class DesignerForm
         Me.cboxMeasure.BackColor = System.Drawing.Color.White
         Me.cboxMeasure.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cboxMeasure.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.cboxMeasure.Location = New System.Drawing.Point(76, 19)
+        Me.cboxMeasure.Location = New System.Drawing.Point(48, 19)
         Me.cboxMeasure.Name = "cboxMeasure"
-        Me.cboxMeasure.Size = New System.Drawing.Size(73, 27)
+        Me.cboxMeasure.Size = New System.Drawing.Size(116, 27)
         Me.cboxMeasure.TabIndex = 32
-        Me.cboxMeasure.Text = "Meausre"
+        Me.cboxMeasure.Text = "Measuring Tool"
         Me.cboxMeasure.UseVisualStyleBackColor = False
         '
         'rtboxPrevious
@@ -361,7 +339,6 @@ Partial Class DesignerForm
         '
         Me.GroupBox2.Controls.Add(Me.cboxLine)
         Me.GroupBox2.Controls.Add(Me.cboxCircle)
-        Me.GroupBox2.Controls.Add(Me.cboxArc)
         Me.GroupBox2.Controls.Add(Me.cboxMeasure)
         Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
         Me.GroupBox2.Location = New System.Drawing.Point(240, 12)
@@ -383,11 +360,31 @@ Partial Class DesignerForm
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Text"
         '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.CutSelectorControl1)
+        Me.GroupBox4.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.GroupBox4.Location = New System.Drawing.Point(675, 200)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(190, 194)
+        Me.GroupBox4.TabIndex = 41
+        Me.GroupBox4.TabStop = False
+        '
+        'CutSelectorControl1
+        '
+        Me.CutSelectorControl1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.CutSelectorControl1.Location = New System.Drawing.Point(3, 19)
+        Me.CutSelectorControl1.Margin = New System.Windows.Forms.Padding(4)
+        Me.CutSelectorControl1.Name = "CutSelectorControl1"
+        Me.CutSelectorControl1.Size = New System.Drawing.Size(184, 172)
+        Me.CutSelectorControl1.TabIndex = 0
+        '
         'DesignerForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(882, 685)
+        Me.Controls.Add(Me.GroupBox4)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
@@ -404,7 +401,6 @@ Partial Class DesignerForm
         Me.Controls.Add(Me.leftButton)
         Me.Controls.Add(Me.downButton)
         Me.Controls.Add(Me.rightButton)
-        Me.Controls.Add(Me.jsonOutput)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "DesignerForm"
@@ -416,6 +412,7 @@ Partial Class DesignerForm
         Me.GroupBox2.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -425,7 +422,6 @@ Partial Class DesignerForm
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents SaveFileBtn As Button
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
-    Friend WithEvents jsonOutput As RichTextBox
     Friend WithEvents rightButton As Button
     Friend WithEvents downButton As Button
     Friend WithEvents leftButton As Button
@@ -441,7 +437,6 @@ Partial Class DesignerForm
     Friend WithEvents cboxDynamicText As CheckBox
     Friend WithEvents cboxLine As CheckBox
     Friend WithEvents cboxCircle As CheckBox
-    Friend WithEvents cboxArc As CheckBox
     Friend WithEvents cboxMeasure As CheckBox
     Friend WithEvents rtboxPrevious As RichTextBox
     Friend WithEvents rtboxCurrent As RichTextBox
@@ -451,4 +446,6 @@ Partial Class DesignerForm
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents GroupBox4 As GroupBox
+    Friend WithEvents CutSelectorControl1 As CutSelectorControl
 End Class
