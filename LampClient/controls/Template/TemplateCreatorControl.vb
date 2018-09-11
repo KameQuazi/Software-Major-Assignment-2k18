@@ -276,6 +276,7 @@ Public Class TemplateCreatorControl
         Using viewer As New DesignerForm(DxfViewerControl1.Drawing) With {.Readonly = Me.ReadOnly}
             If viewer.ShowDialog() = DialogResult.OK Then
                 Me.Template = viewer.Template
+                Me.Template.BaseDrawing = Me.Template.BaseDrawing.ShiftToZero
             End If
         End Using
     End Sub
@@ -644,6 +645,21 @@ Public Class TemplateCreatorControl
 
     Private Sub TagEditorControl1_Load(sender As Object, e As EventArgs)
 
+    End Sub
+
+
+    Private Sub TagsBox_SelectedIndexChanged(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub RemoveTag_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub btnGeneratePreview_Click(sender As Object, e As EventArgs) Handles btnGeneratePreview.Click
+        If Not Me.Template.GeneratePreviewImages() Then
+            MessageBox.Show("Could not generate preview image. Please ensure there is at least 1 entity in the drawing", "Preview Generation Failed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        End If
     End Sub
 End Class
 

@@ -236,12 +236,12 @@ Public Class TemplateDatabase
                     Throw New ArgumentOutOfRangeException(NameOf(approveStatus))
             End Select
 
-            Dim stringCommand = String.Format("Select tags.guid from tags
+            Dim stringCommand = String.Format("Select tags.guid {4} from tags INNER JOIN template ON template.guid=tags.guid
                                       WHERE {0} AND {1} AND {2}
                                       {3}
                                       LIMIT @limit
                                       OFFSET @offset
-                                     ", tagParameters, approveText, userParameter, GetTemplateSqlFromSort(orderBy))
+                                     ", tagParameters, approveText, userParameter, GetTemplateSqlFromSort(orderBy), GetTableName(orderBy))
             ' find all templates w/
             command.CommandText = stringCommand
             For i = 0 To tags.Count - 1
@@ -313,12 +313,12 @@ Public Class TemplateDatabase
                     Throw New ArgumentOutOfRangeException(NameOf(approveStatus))
             End Select
 
-            Dim stringCommand = String.Format("Select tags.guid from tags
+            Dim stringCommand = String.Format("Select tags.guid {4} from tags INNER JOIN template ON template.guid=tags.guid
                                       WHERE {0} AND {1} AND {2}
                                       {3}
                                       LIMIT @limit
                                       OFFSET @offset
-                                     ", tagString, approveText, userParameter, GetTemplateSqlFromSort(orderBy))
+                                     ", tagString, approveText, userParameter, GetTemplateSqlFromSort(orderBy), GetTableName(orderBy))
             ' find all templates w/
             command.CommandText = stringCommand
             For i = 0 To tags.Count - 1

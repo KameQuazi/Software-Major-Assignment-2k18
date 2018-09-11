@@ -171,11 +171,15 @@ Public Class LampDxfDocument
         Return out
     End Function
 
+    ''' <summary>
+    ''' returns the bottom left co-ordinate
+    ''' </summary>
+    ''' <returns></returns>
     Private Function GetBounds() As RectangleF
-        If MostLeft Is Nothing Or MostRight Is Nothing Then
+        If MostLeft Is Nothing Or MostRight Is Nothing Or MostBottom Is Nothing Or MostTop Is Nothing Then
             Return New RectangleF(0, 0, 0, 0)
         End If
-        Return New RectangleF(MostLeft.Value.X, MostTop.Value.Y, Width, Height)
+        Return New RectangleF(MostLeft.Value.X, MostBottom.Value.Y, Width, Height)
     End Function
 
     ''' <summary>
@@ -1158,7 +1162,7 @@ End Class
 Public Module Extens
     <Extension>
     Public Function GetCenter(self As RectangleF) As PointF
-        Return New PointF((self.X + self.Width) / 2, (self.Y + self.Height) / 2)
+        Return New PointF(self.X + self.Width / 2, self.Y + self.Height / 2)
     End Function
 
     <Extension>

@@ -6,7 +6,7 @@ Imports System.Text.RegularExpressions
 Imports LampCommon
 Imports LampService
 Imports netDxf
-
+Imports System.Runtime.CompilerServices
 
 Namespace My
     ' The following events are available for MyApplication:
@@ -199,4 +199,17 @@ Public Module OwO
         Return Math.Sqrt((first.X - second.X) ^ 2 + (first.Y - second.Y) ^ 2)
     End Function
 
+    <Extension>
+    Public Function IsItemSelected(this As ListBox) As Boolean
+        Return this.SelectedIndex <> -1
+    End Function
+
+
+    <Extension>
+    Public Function ItemSelected(this As ListBox) As String
+        If Not this.IsItemSelected Then
+            Throw New InvalidOperationException("No item selected")
+        End If
+        Return this.Items(this.SelectedIndex).ToString
+    End Function
 End Module

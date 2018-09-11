@@ -1,4 +1,6 @@
-﻿Imports LampCommon
+﻿Imports System.Collections.ObjectModel
+Imports System.Collections.Specialized
+Imports LampCommon
 
 Public Class ServiceTemplateViewer
 
@@ -70,6 +72,33 @@ Public Class ServiceTemplateViewer
         End Set
     End Property
 
+    Private doUpdate As Boolean = True
+
+    Private WithEvents _filterTags As New ObservableCollection(Of String)
+    Public ReadOnly Property FilterTags As ObservableCollection(Of String)
+        Get
+            Return _filterTags
+        End Get
+    End Property
+
+    Private Sub FilterTagsChanged(sender As Object, e As NotifyCollectionChangedEventArgs) Handles _filterTags.CollectionChanged
+        If Not doUpdate Then
+            Return
+        End If
+        UpdateContents()
+    End Sub
+
+    Public Sub Suspend()
+        doUpdate = False
+    End Sub
+
+    Public Sub EndSuspend(Optional update As Boolean = True)
+        doUpdate = True
+        If update Then
+            UpdateContents()
+        End If
+    End Sub
+
     Public Sub UpdateContents()
         NewThreadUpdateInterface()
     End Sub
@@ -80,7 +109,7 @@ Public Class ServiceTemplateViewer
                 ' check if the next page exists (offset - tempaltes-per-page)
                 If Offset - TEMPLATES_PER_PAGE >= 0 Then
                     Dim previousPage = CurrentSender.GetTemplateList(CurrentUser.ToCredentials,
-                                                        Nothing, GetFilteredUserList,
+                                                         FilterTags.ToList(), GetFilteredUserList,
                                                         TEMPLATES_PER_PAGE, Offset - TEMPLATES_PER_PAGE, ApprovedType, SortOrder)
                     If previousPage.Status = LampStatus.OK Then
                         If previousPage.Templates.Count() > 0 Then
@@ -98,7 +127,7 @@ Public Class ServiceTemplateViewer
 
 
                 Dim request = CurrentSender.GetTemplateList(CurrentUser.ToCredentials,
-                                                               Nothing, GetFilteredUserList,
+                                                               FilterTags.ToList(), GetFilteredUserList,
                                                                TEMPLATES_PER_PAGE, Offset, ApprovedType, SortOrder)
 
                 If request.Status <> LampStatus.OK Then
@@ -118,7 +147,7 @@ Public Class ServiceTemplateViewer
                 ' check if the next page exists
                 If Offset + TEMPLATES_PER_PAGE >= 0 Then
                     Dim previousPage = CurrentSender.GetTemplateList(CurrentUser.ToCredentials,
-                                                            Nothing, GetFilteredUserList,
+                                                             FilterTags.ToList(), GetFilteredUserList,
                                                             TEMPLATES_PER_PAGE, Offset + TEMPLATES_PER_PAGE, ApprovedType, SortOrder)
                     If previousPage.Status = LampStatus.OK Then
                         If previousPage.Templates.Count() > 0 Then

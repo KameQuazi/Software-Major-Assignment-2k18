@@ -701,7 +701,14 @@ Public NotInheritable Class LampTemplate
         Return MyBase.GetHashCode()
     End Function
 
+    Public Function GeneratePreviewImages() As Boolean
+        If Me.Width <= 0 OrElse Me.Height <= 0 Then
+            Return False
+        End If
 
+        Me.PreviewImages(0) = Me.BaseDrawing.ToImage()
+        Return True
+    End Function
 End Class
 
 

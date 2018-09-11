@@ -538,6 +538,19 @@ Partial Public Class TemplateDatabase
         Return foo
     End Function
 
+    Public Shared Function GetTableName(orderby As LampTemplateSort) As String
+        Select Case orderby
+            Case LampTemplateSort.SubmitDateAsc, LampTemplateSort.SubmitDateDesc
+                Return ", template.submitDate"
+            Case LampTemplateSort.TemplateNameAsc, LampTemplateSort.TemplateNameDesc
+                Return ", template.name"
+            Case LampTemplateSort.NoSort
+                Return ""
+            Case Else
+                Throw New ArgumentOutOfRangeException(NameOf(orderby))
+        End Select
+    End Function
+
     Public Shared Function GetTemplateSqlFromSort(sort As LampTemplateSort) As String
         Select Case sort
             Case LampTemplateSort.SubmitDateAsc

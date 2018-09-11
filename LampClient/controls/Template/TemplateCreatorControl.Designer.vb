@@ -39,21 +39,19 @@ Partial Class TemplateCreatorControl
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.RemoveTag = New System.Windows.Forms.Button()
         Me.ComboBoxMaterial = New System.Windows.Forms.ComboBox()
         Me.TboxThickness = New System.Windows.Forms.TextBox()
-        Me.TagsBox = New System.Windows.Forms.ListBox()
         Me.btnNewJob = New System.Windows.Forms.Button()
-        Me.AddTag = New System.Windows.Forms.Button()
         Me.ImportSpf = New System.Windows.Forms.Button()
         Me.ExportDxf = New System.Windows.Forms.Button()
         Me.ExportSpf = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.btnGeneratePreview = New System.Windows.Forms.Button()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.TagEditorControl1 = New LampClient.TagEditorControl()
         Me.btnSetDrawing = New System.Windows.Forms.Button()
-        Me.DrawingDivider = New System.Windows.Forms.TableLayoutPanel()
         Me.ErrorProviderThickness = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.DxfFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.ImageFileDialog = New System.Windows.Forms.OpenFileDialog()
@@ -63,7 +61,6 @@ Partial Class TemplateCreatorControl
         Me.ErrorProviderName = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.DynamicFormCreation1 = New LampClient.DynamicFormCreation()
         Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
-        Me.TagEditorControl1 = New LampClient.TagEditorControl()
         CType(Me.Preview3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Preview1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -247,18 +244,6 @@ Partial Class TemplateCreatorControl
         Me.Label5.TabIndex = 50
         Me.Label5.Text = "Thickness:"
         '
-        'RemoveTag
-        '
-        Me.RemoveTag.BackColor = System.Drawing.Color.White
-        Me.RemoveTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.RemoveTag.Location = New System.Drawing.Point(187, 162)
-        Me.RemoveTag.Margin = New System.Windows.Forms.Padding(16)
-        Me.RemoveTag.Name = "RemoveTag"
-        Me.RemoveTag.Size = New System.Drawing.Size(100, 24)
-        Me.RemoveTag.TabIndex = 42
-        Me.RemoveTag.Text = "Remove Tag"
-        Me.RemoveTag.UseVisualStyleBackColor = False
-        '
         'ComboBoxMaterial
         '
         Me.ComboBoxMaterial.Anchor = System.Windows.Forms.AnchorStyles.None
@@ -279,16 +264,6 @@ Partial Class TemplateCreatorControl
         Me.TboxThickness.Size = New System.Drawing.Size(203, 20)
         Me.TboxThickness.TabIndex = 51
         '
-        'TagsBox
-        '
-        Me.TagsBox.FormattingEnabled = True
-        Me.TagsBox.Items.AddRange(New Object() {""})
-        Me.TagsBox.Location = New System.Drawing.Point(8, 15)
-        Me.TagsBox.Margin = New System.Windows.Forms.Padding(16)
-        Me.TagsBox.Name = "TagsBox"
-        Me.TagsBox.Size = New System.Drawing.Size(279, 147)
-        Me.TagsBox.TabIndex = 54
-        '
         'btnNewJob
         '
         Me.btnNewJob.BackColor = System.Drawing.Color.White
@@ -302,18 +277,6 @@ Partial Class TemplateCreatorControl
         Me.btnNewJob.TabIndex = 41
         Me.btnNewJob.Text = "Create Job With Template"
         Me.btnNewJob.UseVisualStyleBackColor = False
-        '
-        'AddTag
-        '
-        Me.AddTag.BackColor = System.Drawing.Color.White
-        Me.AddTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.AddTag.Location = New System.Drawing.Point(88, 162)
-        Me.AddTag.Margin = New System.Windows.Forms.Padding(16)
-        Me.AddTag.Name = "AddTag"
-        Me.AddTag.Size = New System.Drawing.Size(100, 24)
-        Me.AddTag.TabIndex = 39
-        Me.AddTag.Text = "Add Tag"
-        Me.AddTag.UseVisualStyleBackColor = False
         '
         'ImportSpf
         '
@@ -388,29 +351,49 @@ Partial Class TemplateCreatorControl
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.btnGeneratePreview)
         Me.GroupBox3.Controls.Add(Me.Preview3)
         Me.GroupBox3.Controls.Add(Me.Preview2)
         Me.GroupBox3.Controls.Add(Me.Preview1)
         Me.GroupBox3.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.GroupBox3.Location = New System.Drawing.Point(13, 420)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(768, 273)
+        Me.GroupBox3.Size = New System.Drawing.Size(768, 311)
         Me.GroupBox3.TabIndex = 59
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Preview"
         '
+        'btnGeneratePreview
+        '
+        Me.btnGeneratePreview.BackColor = System.Drawing.Color.White
+        Me.btnGeneratePreview.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnGeneratePreview.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.btnGeneratePreview.Location = New System.Drawing.Point(563, 272)
+        Me.btnGeneratePreview.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnGeneratePreview.Name = "btnGeneratePreview"
+        Me.btnGeneratePreview.Size = New System.Drawing.Size(198, 39)
+        Me.btnGeneratePreview.TabIndex = 61
+        Me.btnGeneratePreview.Text = "Generate Preview"
+        Me.btnGeneratePreview.UseVisualStyleBackColor = False
+        '
         'GroupBox4
         '
-        Me.GroupBox4.Controls.Add(Me.TagsBox)
-        Me.GroupBox4.Controls.Add(Me.AddTag)
-        Me.GroupBox4.Controls.Add(Me.RemoveTag)
+        Me.GroupBox4.Controls.Add(Me.TagEditorControl1)
         Me.GroupBox4.Location = New System.Drawing.Point(414, 175)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(296, 223)
         Me.GroupBox4.TabIndex = 60
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Trophy Tags"
-
+        '
+        'TagEditorControl1
+        '
+        Me.TagEditorControl1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TagEditorControl1.Location = New System.Drawing.Point(3, 16)
+        Me.TagEditorControl1.Name = "TagEditorControl1"
+        Me.TagEditorControl1.Readonly = False
+        Me.TagEditorControl1.Size = New System.Drawing.Size(290, 204)
+        Me.TagEditorControl1.TabIndex = 2
         '
         'btnSetDrawing
         '
@@ -424,14 +407,6 @@ Partial Class TemplateCreatorControl
         Me.btnSetDrawing.TabIndex = 18
         Me.btnSetDrawing.Text = "Load Drawing"
         Me.btnSetDrawing.UseVisualStyleBackColor = False
-
-        '
-        'DrawingDivider
-        '
-        Me.DrawingDivider.Location = New System.Drawing.Point(3, 370)
-        Me.DrawingDivider.Name = "DrawingDivider"
-        Me.DrawingDivider.Size = New System.Drawing.Size(200, 100)
-        Me.DrawingDivider.TabIndex = 0
         '
         'ErrorProviderThickness
         '
@@ -477,22 +452,13 @@ Partial Class TemplateCreatorControl
         '
         Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
-        Me.DxfViewerControl1.Location = New System.Drawing.Point(831, 16)
+        Me.DxfViewerControl1.Location = New System.Drawing.Point(750, 16)
         Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(16)
         Me.DxfViewerControl1.Name = "DxfViewerControl1"
-        Me.DxfViewerControl1.Size = New System.Drawing.Size(311, 360)
+        Me.DxfViewerControl1.Size = New System.Drawing.Size(392, 360)
         Me.DxfViewerControl1.TabIndex = 31
         Me.DxfViewerControl1.ZoomX = 1.0R
         Me.DxfViewerControl1.ZoomY = 1.0R
-        '
-        'TagEditorControl1
-        '
-        Me.TagEditorControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TagEditorControl1.Location = New System.Drawing.Point(3, 3)
-        Me.TagEditorControl1.Name = "TagEditorControl1"
-        Me.TagEditorControl1.Readonly = False
-        Me.TagEditorControl1.Size = New System.Drawing.Size(362, 361)
-        Me.TagEditorControl1.TabIndex = 2
         '
         'TemplateCreatorControl
         '
@@ -543,17 +509,13 @@ Partial Class TemplateCreatorControl
     Friend WithEvents Label2 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents Label5 As Label
-    Friend WithEvents RemoveTag As Button
     Friend WithEvents ComboBoxMaterial As ComboBox
     Friend WithEvents TboxThickness As TextBox
-    Friend WithEvents TagsBox As ListBox
     Friend WithEvents DxfViewerControl1 As DxfViewerControl
     Friend WithEvents btnNewJob As Button
-    Friend WithEvents AddTag As Button
     Friend WithEvents ImportSpf As Button
     Friend WithEvents ExportDxf As Button
     Friend WithEvents ExportSpf As Button
-    Friend WithEvents DrawingDivider As TableLayoutPanel
     Friend WithEvents ErrorProviderThickness As ErrorProvider
     Friend WithEvents DxfFileDialog As OpenFileDialog
     Friend WithEvents ImageFileDialog As OpenFileDialog
@@ -567,4 +529,5 @@ Partial Class TemplateCreatorControl
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents GroupBox4 As GroupBox
+    Friend WithEvents btnGeneratePreview As Button
 End Class

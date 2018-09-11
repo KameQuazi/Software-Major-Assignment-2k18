@@ -284,7 +284,6 @@ Partial Class DesignerForm
         '
         Me.DesignerScreen1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.DesignerScreen1.Center = CType(resources.GetObject("DesignerScreen1.Center"), System.Drawing.PointF)
-        Me.DesignerScreen1.Drawing = Nothing
         Me.DesignerScreen1.Location = New System.Drawing.Point(339, 174)
         Me.DesignerScreen1.Margin = New System.Windows.Forms.Padding(5)
         Me.DesignerScreen1.Name = "DesignerScreen1"

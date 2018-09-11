@@ -59,9 +59,6 @@ Public Class ServiceSortableTemplateViewer
         End Set
     End Property
 
-    Public Property FilterTags As List(Of String)
-
-
 
     Public Property TitleText As String
         Get
@@ -259,7 +256,10 @@ Public Class ServiceSortableTemplateViewer
     End Sub
 
     Private Sub TagEditorControl1_TagContentsChanged(sender As Object, e As TagContentsChangedEvent) Handles TagEditorControl1.TagContentsChanged
-
+        ServiceTemplateViewer1.Suspend()
+        ServiceTemplateViewer1.FilterTags.Clear()
+        ServiceTemplateViewer1.FilterTags.AddRange(TagEditorControl1.Tags)
+        ServiceTemplateViewer1.EndSuspend()
     End Sub
 End Class
 

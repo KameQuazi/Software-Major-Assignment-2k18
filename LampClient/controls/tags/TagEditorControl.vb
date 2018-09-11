@@ -27,6 +27,7 @@ Public Class TagEditorControl
             _readonly = value
             AddTag.Enabled = Not value
             RemoveTag.Enabled = Not value
+            TagsBox_SelectedIndexChanged(Nothing, Nothing)
         End Set
     End Property
 
@@ -67,11 +68,8 @@ Public Class TagEditorControl
     End Sub
 
     Private Sub RemoveTagTags_Click(sender As Object, e As EventArgs) Handles RemoveTag.Click
-        Dim selectedPosition = TagsBox.SelectedIndex
-        If selectedPosition <> -1 Then
-            ' an item is selected
-            Dim selectedTag = TagsBox.SelectedItem.ToString
-            Tags.Remove(selectedTag)
+        If TagsBox.IsItemSelected Then
+            Tags.Remove(TagsBox.ItemSelected)
         End If
     End Sub
 
@@ -80,6 +78,23 @@ Public Class TagEditorControl
         For Each tagItem In Tags
             TagsBox.Items.Add(tagItem)
         Next
+    End Sub
+
+    Private Sub TagsBox_KeyDown(sender As Object, e As KeyEventArgs) Handles TagsBox.KeyDown
+
+        If e.KeyCode = Keys.Delete Then
+            ' check if anything is selected
+
+        End If
+
+    End Sub
+
+    Private Sub TagsBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TagsBox.SelectedIndexChanged
+        If TagsBox.IsItemSelected Then
+            RemoveTag.Enabled = True
+        Else
+            RemoveTag.Enabled = False
+        End If
     End Sub
 End Class
 

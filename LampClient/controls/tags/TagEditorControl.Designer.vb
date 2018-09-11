@@ -24,9 +24,9 @@ Partial Class TagEditorControl
     Private Sub InitializeComponent()
         Me.TagDivider = New System.Windows.Forms.TableLayoutPanel()
         Me.TagsBox = New System.Windows.Forms.ListBox()
-        Me.RemoveTag = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.AddTag = New System.Windows.Forms.Button()
+        Me.RemoveTag = New System.Windows.Forms.Button()
         Me.TagDivider.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
@@ -58,19 +58,6 @@ Partial Class TagEditorControl
         Me.TagsBox.Size = New System.Drawing.Size(483, 282)
         Me.TagsBox.TabIndex = 29
         '
-        'RemoveTag
-        '
-        Me.RemoveTag.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.RemoveTag.BackColor = System.Drawing.Color.White
-        Me.RemoveTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.RemoveTag.Location = New System.Drawing.Point(257, 6)
-        Me.RemoveTag.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
-        Me.RemoveTag.Name = "RemoveTag"
-        Me.RemoveTag.Size = New System.Drawing.Size(100, 38)
-        Me.RemoveTag.TabIndex = 16
-        Me.RemoveTag.Text = "Remove Tag"
-        Me.RemoveTag.UseVisualStyleBackColor = False
-        '
         'TableLayoutPanel1
         '
         Me.TableLayoutPanel1.ColumnCount = 2
@@ -99,6 +86,20 @@ Partial Class TagEditorControl
         Me.AddTag.TabIndex = 17
         Me.AddTag.Text = "Add Tag"
         Me.AddTag.UseVisualStyleBackColor = False
+        '
+        'RemoveTag
+        '
+        Me.RemoveTag.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.RemoveTag.BackColor = System.Drawing.Color.White
+        Me.RemoveTag.Enabled = False
+        Me.RemoveTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.RemoveTag.Location = New System.Drawing.Point(257, 6)
+        Me.RemoveTag.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
+        Me.RemoveTag.Name = "RemoveTag"
+        Me.RemoveTag.Size = New System.Drawing.Size(100, 38)
+        Me.RemoveTag.TabIndex = 16
+        Me.RemoveTag.Text = "Remove Tag"
+        Me.RemoveTag.UseVisualStyleBackColor = False
         '
         'TagEditorControl
         '
