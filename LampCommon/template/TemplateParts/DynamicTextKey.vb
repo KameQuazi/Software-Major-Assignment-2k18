@@ -82,7 +82,7 @@ Public Class DynamicTextKey
     ''' </summary>
     <JsonProperty("color")>
     <DataMember>
-    Public Property Color As Color
+    Public Property Color As AciColor
 
 
 
@@ -95,7 +95,7 @@ Public Class DynamicTextKey
     ''' <param name="description">description of parameter</param>
     ''' <param name="location">where it should be inserted, rel bottom left of the template</param>
     ''' <param name="font">font to use (for text)</param>
-    Public Sub New(parameterName As String, description As String, location As Vector3, textHeight As Double, textWidth As Double, Optional inputType As InputType = InputType.RichTextBox, Optional font As String = Nothing, Optional color As Color? = Nothing)
+    Public Sub New(parameterName As String, description As String, location As Vector3, textHeight As Double, textWidth As Double, Optional inputType As InputType = InputType.RichTextBox, Optional font As String = Nothing, Optional color As AciColor = Nothing)
         Me.ParameterName = parameterName
         Me.Description = description
         Me.Location = location
@@ -108,7 +108,7 @@ Public Class DynamicTextKey
             Me.Font = font
         End If
         If color Is Nothing Then
-            Me.Color = System.Drawing.Color.Red
+            Me.Color = System.Drawing.Color.Red.ToAci()
         Else
             Me.Color = color
         End If

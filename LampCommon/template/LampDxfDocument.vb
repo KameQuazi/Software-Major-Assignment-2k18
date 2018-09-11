@@ -548,7 +548,11 @@ Public Class LampDxfDocument
         For Each text In textData
             Dim key = text.Key
             Dim value = text.Value
-            otherDrawing.AddMText(key.Location + offset, value.Value, key.TextHeight, key.TextWidth)
+            Dim mtext = New MText(key.Location + offset, key.TextHeight, key.TextWidth)
+            mtext.Value = value.Value
+            mtext.Color = key.Color
+
+            otherDrawing.AddMText(mtext)
         Next
     End Sub
 

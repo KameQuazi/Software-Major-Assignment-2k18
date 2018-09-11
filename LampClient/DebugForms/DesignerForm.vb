@@ -107,14 +107,13 @@ Public Class DesignerForm
 
     End Sub
 
-    Private _myColor As Color
-    Public Property MyColor As Color
+    Private _myColor As AciColor
+    Public Property MyColor As AciColor
         Get
             Return _myColor
         End Get
-        Set(value As Color)
+        Set(value As AciColor)
             _myColor = value
-
         End Set
     End Property
 
@@ -442,7 +441,7 @@ Public Class DesignerForm
                     If firstPreviousEntity IsNot Nothing Then
                         ' delete the previous line and add new line
                         Drawing.RemoveEntity(firstPreviousEntity)
-                        firstPreviousEntity = Drawing.AddLine(firstPoint, e.Location)
+                        firstPreviousEntity = Drawing.AddLine(New Line(firstPoint, e.Location) With {.Color = MyColor})
                     Else
                         firstPreviousEntity = Drawing.AddLine(firstPoint, e.Location)
                     End If
@@ -657,7 +656,7 @@ Public Class DesignerForm
     End Sub
 
     Private Sub CutSelectorControl1_Changed(sender As Object, e As Color) Handles CutSelectorControl1.Changed
-        MyColor = e
+        MyColor = New AciColor(e)
     End Sub
 End Class
 

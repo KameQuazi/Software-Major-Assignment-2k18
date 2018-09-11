@@ -1,7 +1,9 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.Collections.Specialized
 Imports System.ComponentModel
+Imports System.Drawing
 Imports System.Runtime.CompilerServices
+Imports netDxf
 
 Public Module CommonExtensions
     <System.Runtime.CompilerServices.Extension()>
@@ -103,5 +105,12 @@ Public Module CommonExtensions
         x.CopyTo(array)
 
     End Sub
+
+    <Extension>
+    Public Function ToAci(this As Color) As AciColor
+        Return New AciColor(this)
+    End Function
+
+
 
 End Module
