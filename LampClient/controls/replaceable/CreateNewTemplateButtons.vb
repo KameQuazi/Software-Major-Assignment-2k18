@@ -13,6 +13,7 @@ Public Class CreateNewTemplateButtons
 
     Public Event ExportDxfClicked(sender As Object, e As EventArgs)
 
+    Public Event GeneratePreviewClicked(sender As Object, e As EventArgs)
 
     Private _readonly As Boolean = False
     Public Property [Readonly] As Boolean
@@ -74,6 +75,8 @@ Public Class CreateNewTemplateButtons
         ' Add any initialization after the InitializeComponent() call.
     End Sub
 
-
+    Private Sub btnGeneratePreview_Click(sender As Object, e As EventArgs) Handles btnGeneratePreview.Click
+        RaiseEvent GeneratePreviewClicked(Me, New EventArgs)
+    End Sub
 End Class
 

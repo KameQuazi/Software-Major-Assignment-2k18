@@ -141,6 +141,16 @@ Public Module Settings
         End Set
     End Property
 
+    Friend exeFinder As New OpenFileDialog() With {.Filter = "EXE files|*.exe|All files|*.*", .Title = "Enter path of a designing file", .FileName = "C:\"}
+    Public Function AskForDrawingProgram() As Boolean
+        If exeFinder.ShowDialog() = DialogResult.OK Then
+            DesignerProgram = New OpenType(False, exeFinder.FileName)
+            Return True
+        Else
+            Return False
+        End If
+
+    End Function
 
 End Module
 

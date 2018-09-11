@@ -50,7 +50,6 @@ Partial Class NewTemplateForm
         'TemplateCreatorControl1
         '
         Me.TemplateCreatorControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TemplateCreatorControl1.DrawingOpenProgram = Nothing
         Me.TemplateCreatorControl1.Location = New System.Drawing.Point(3, 108)
         Me.TemplateCreatorControl1.Name = "TemplateCreatorControl1"
         Me.TemplateCreatorControl1.ReadOnly = False

@@ -4,9 +4,9 @@ Public Class SettingsForm
     Private Loaded As Boolean = False
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles radioLampViewer.CheckedChanged, radioExternal.CheckedChanged
         If radioLampViewer.Checked Then
-            tboxExternalPath.Enabled = False
+            rboxPath.Enabled = False
         Else
-            tboxExternalPath.Enabled = True
+            rboxPath.Enabled = True
         End If
     End Sub
 
@@ -16,9 +16,11 @@ Public Class SettingsForm
         If program.Internal Then
             radioLampViewer.Enabled = True
         Else
-            radioLampViewer.Enabled = False
-            tboxExternalPath.Text = program.ProgramPath
+            radioExternal.Enabled = True
+            rboxPath.Text = program.ProgramPath
         End If
+        chkSavePassword.Checked = Settings.PasswordSaved
+
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnSave.Click
@@ -35,17 +37,23 @@ Public Class SettingsForm
 
             End If
             ' or actually save it
-            Settings.DesignerProgram = New OpenType(False, tboxExternalPath.Text)
+            Settings.DesignerProgram = New OpenType(False, rboxPath.Text)
         End If
         Settings.PasswordSaved = chkSavePassword.Checked
         Me.Close()
     End Sub
 
     Private Function ValidateFilePath() As Boolean
-        Return System.IO.File.Exists(tboxExternalPath.Text)
+        Return System.IO.File.Exists(rboxPath.Text)
     End Function
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Me.Close()
+    End Sub
+
+    Private Sub btnSpecifyPath_Click(sender As Object, e As EventArgs) Handles btnSpecifyPath.Click
+        If exeFinder.ShowDialog = DialogResult.OK Then
+            rboxPath.Text = exeFinder.FileName
+        End If
     End Sub
 End Class

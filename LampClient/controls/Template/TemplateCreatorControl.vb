@@ -47,7 +47,7 @@ Public Class TemplateCreatorControl
         UpdateEnabledElements()
     End Sub
 
-    Private _template As LampTemplate = New LampTemplate
+    Private _template As LampTemplate
 
     ''' <summary>
     ''' Determines the template 
@@ -62,7 +62,7 @@ Public Class TemplateCreatorControl
         Set(value As LampTemplate)
             _template = value
             AddHandler _template.PropertyChanged, AddressOf Template_PropertyChanged
-            UpdateAllFromTempate()
+            UpdateAllFromTemplate()
 
         End Set
     End Property
@@ -99,6 +99,7 @@ Public Class TemplateCreatorControl
 
         ' This call is required by the designer.
         InitializeComponent()
+        Template = New LampTemplate
 
         ' Add any initialization after the InitializeComponent() call.
         ' attach handler
@@ -111,6 +112,7 @@ Public Class TemplateCreatorControl
         End If
         TboxApprove.Enabled = False
         gboxOptions.Controls.Clear()
+
     End Sub
 
     ''' <summary>
@@ -130,7 +132,7 @@ Public Class TemplateCreatorControl
     End Sub
 
 
-    Private Sub UpdateAllFromTempate()
+    Private Sub UpdateAllFromTemplate()
         UpdateTextFromTemplate()
         UpdateViewerImages()
         UpdateTagsFromTemplate()
@@ -232,7 +234,7 @@ Public Class TemplateCreatorControl
     End Sub
 
 
-    Private Sub UpdateDxfFromTemplate()
+    Public Sub UpdateDxfFromTemplate()
         DxfViewerControl1.Template = Template
     End Sub
 
@@ -427,37 +429,7 @@ Public Class TemplateCreatorControl
 
 
 
-    Private Sub btnNewJob_Click(sender As Object, e As EventArgs)
 
-        ' create a new job
-        ' we need to push the current form (before this is opened as a dialog) => the toolbar previousform stack
-        If Me.ParentForm.Owner IsNot Nothing Then
-            ShowNewForm(Nothing, Me.ParentForm.Owner, New NewOrderFormChooseParameter() With {.SelectedTemplate = Me.Template})
-        Else
-            Dim x As New NewOrderFormChooseParameter() With {.SelectedTemplate = Me.Template}
-            x.Show()
-            Me.ParentForm.Close()
-            MessageBox.Show("Warning: Cannot update history")
-        End If
-
-    End Sub
-
-    Private Sub btnEdit_Click(sender As Object, e As EventArgs)
-        Using x As New DynamicTextCreationForm(Template)
-            x.ShowDialog()
-        End Using
-    End Sub
-
-
-    Public Property DrawingOpenProgram As OpenType
-        Get
-            Return My.Settings.DesignerProgram
-        End Get
-        Set(value As OpenType)
-            My.Settings.DesignerProgram = value
-            My.Settings.Save()
-        End Set
-    End Property
 
     Private Sub btnSetDrawing_Click(sender As Object, e As EventArgs) Handles btnSetDrawing.Click
         If DxfOpenDialog.ShowDialog = DialogResult.OK Then
@@ -498,18 +470,12 @@ Public Class TemplateCreatorControl
 
     Private CurrentFilename As String = Nothing
 
-    Private Sub AskForDrawingProgram()
-        DrawingOpenProgram = New OpenType(False, "S:\Programs\Autodesk\AutoCAD 2017\acad.exe")
-        ''  TODO
-    End Sub
 
-    Private Sub EditDrawingButton_Click(sender As Object, e As EventArgs)
+
+    Private Sub EditDrawingButton_Click(sender As Object, e As EventArgs) Handles btnEditDrawing.Click
         ' open with internal viewer
-        If DrawingOpenProgram Is Nothing Then
-            ' prompt user for 
-            AskForDrawingProgram()
-        End If
-        If DrawingOpenProgram.Internal Then
+
+        If Settings.DesignerProgram.Internal Then
             Using viewer As New DesignerForm(Me.Template) With {.Readonly = Me.ReadOnly}
                 If viewer.ShowDialog() = DialogResult.OK Then
                     Me.Template = viewer.Template
@@ -517,21 +483,20 @@ Public Class TemplateCreatorControl
             End Using
         Else
             Dim process As New Process
-            process.StartInfo.FileName = DrawingOpenProgram.ProgramPath
+            process.StartInfo.FileName = Settings.DesignerProgram.ProgramPath
             ' prompt use for file name and create empty dxf file
             If CurrentFilename Is Nothing Then
                 If DxfSaveDialog.ShowDialog = DialogResult.OK Then
                     CurrentFilename = DxfSaveDialog.FileName
                     Me.Template.BaseDrawing.Save(CurrentFilename)
                 End If
-
             End If
 
             process.StartInfo.Arguments = CurrentFilename
             Try
                 process.Start()
             Catch ex As Exception
-                MessageBox.Show("Cannot open program: " + ex.ToString)
+                MessageBox.Show(String.Format("Cannot open using program: {0}. Please specify another program in Settings.", DesignerProgram.ProgramPath))
             End Try
         End If
         ' else open with saved opentype
@@ -550,11 +515,7 @@ Public Class TemplateCreatorControl
     End Sub
 
 
-    Private Sub btnGeneratePreview_Click(sender As Object, e As EventArgs) Handles btnGeneratePreview.Click
-        If Not Me.Template.GeneratePreviewImages() Then
-            MessageBox.Show("Could not generate preview image. Please ensure there is at least 1 entity in the drawing", "Preview Generation Failed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        End If
-    End Sub
+
 
     Private Sub btnAddDynamicText_Click(sender As Object, e As EventArgs) Handles btnAddDynamicText.Click
 
@@ -562,6 +523,10 @@ Public Class TemplateCreatorControl
 
     Private Sub DxfViewerControl1_Resize(sender As Object, e As EventArgs) Handles DxfViewerControl1.Resize
         DxfViewerControl1.ShiftToZero()
+    End Sub
+
+    Private Sub btnEditDrawing_Click(sender As Object, e As EventArgs) Handles btnEditDrawing.Click
+
     End Sub
 End Class
 

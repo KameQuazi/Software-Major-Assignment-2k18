@@ -24,8 +24,9 @@ Partial Class SettingsForm
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SettingsForm))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.rboxPath = New System.Windows.Forms.RichTextBox()
+        Me.btnSpecifyPath = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.tboxExternalPath = New System.Windows.Forms.TextBox()
         Me.radioExternal = New System.Windows.Forms.RadioButton()
         Me.radioLampViewer = New System.Windows.Forms.RadioButton()
         Me.Button2 = New System.Windows.Forms.Button()
@@ -46,8 +47,9 @@ Partial Class SettingsForm
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.rboxPath)
+        Me.GroupBox1.Controls.Add(Me.btnSpecifyPath)
         Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Controls.Add(Me.tboxExternalPath)
         Me.GroupBox1.Controls.Add(Me.radioExternal)
         Me.GroupBox1.Controls.Add(Me.radioLampViewer)
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
@@ -59,21 +61,34 @@ Partial Class SettingsForm
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Designer Settings"
         '
+        'rboxPath
+        '
+        Me.rboxPath.Enabled = False
+        Me.rboxPath.Location = New System.Drawing.Point(5, 110)
+        Me.rboxPath.Name = "rboxPath"
+        Me.rboxPath.Size = New System.Drawing.Size(266, 86)
+        Me.rboxPath.TabIndex = 5
+        Me.rboxPath.Text = ""
+        '
+        'btnSpecifyPath
+        '
+        Me.btnSpecifyPath.BackColor = System.Drawing.Color.White
+        Me.btnSpecifyPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnSpecifyPath.Location = New System.Drawing.Point(150, 202)
+        Me.btnSpecifyPath.Name = "btnSpecifyPath"
+        Me.btnSpecifyPath.Size = New System.Drawing.Size(121, 28)
+        Me.btnSpecifyPath.TabIndex = 4
+        Me.btnSpecifyPath.Text = "Specify Path:"
+        Me.btnSpecifyPath.UseVisualStyleBackColor = False
+        '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(6, 96)
+        Me.Label1.Location = New System.Drawing.Point(6, 90)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(99, 17)
         Me.Label1.TabIndex = 3
         Me.Label1.Text = "Program Path:"
-        '
-        'tboxExternalPath
-        '
-        Me.tboxExternalPath.Location = New System.Drawing.Point(6, 116)
-        Me.tboxExternalPath.Name = "tboxExternalPath"
-        Me.tboxExternalPath.Size = New System.Drawing.Size(211, 23)
-        Me.tboxExternalPath.TabIndex = 2
         '
         'radioExternal
         '
@@ -103,13 +118,15 @@ Partial Class SettingsForm
         '
         Me.Button2.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Button2.AutoSize = True
+        Me.Button2.BackColor = System.Drawing.Color.White
+        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Button2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.25!)
-        Me.Button2.Location = New System.Drawing.Point(174, 32)
+        Me.Button2.Location = New System.Drawing.Point(176, 27)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(92, 30)
+        Me.Button2.Size = New System.Drawing.Size(92, 39)
         Me.Button2.TabIndex = 3
         Me.Button2.Text = "Cancel"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.Button2.UseVisualStyleBackColor = False
         '
         'TableLayoutPanel1
         '
@@ -144,13 +161,15 @@ Partial Class SettingsForm
         '
         Me.btnSave.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnSave.AutoSize = True
+        Me.btnSave.BackColor = System.Drawing.Color.White
+        Me.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnSave.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.25!)
-        Me.btnSave.Location = New System.Drawing.Point(3, 32)
+        Me.btnSave.Location = New System.Drawing.Point(3, 27)
         Me.btnSave.Name = "btnSave"
-        Me.btnSave.Size = New System.Drawing.Size(159, 30)
+        Me.btnSave.Size = New System.Drawing.Size(163, 39)
         Me.btnSave.TabIndex = 3
         Me.btnSave.Text = "Save and Continue"
-        Me.btnSave.UseVisualStyleBackColor = True
+        Me.btnSave.UseVisualStyleBackColor = False
         '
         'TableLayoutPanel2
         '
@@ -233,7 +252,6 @@ Partial Class SettingsForm
     Friend WithEvents radioExternal As RadioButton
     Friend WithEvents radioLampViewer As RadioButton
     Friend WithEvents Button2 As Button
-    Friend WithEvents tboxExternalPath As TextBox
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
     Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
@@ -242,4 +260,6 @@ Partial Class SettingsForm
     Friend WithEvents Label1 As Label
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents chkSavePassword As CheckBox
+    Friend WithEvents btnSpecifyPath As Button
+    Friend WithEvents rboxPath As RichTextBox
 End Class

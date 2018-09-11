@@ -71,6 +71,7 @@ Public Class NewTemplateForm
                     Throw New Exception("Dxf File cannot be nothing")
                 End If
                 Me.Template.BaseDrawing = dxf
+                TemplateCreatorControl1.UpdateDxfFromTemplate()
 
             Catch ex As Exception
                 If MessageBox.Show("File is invalid. Show detailed error message?", "File Invalid", MessageBoxButtons.YesNo) = DialogResult.Yes Then
@@ -118,7 +119,11 @@ Public Class NewTemplateForm
         End Try
     End Sub
 
-
+    Private Sub GenerateButtonClickedHandler(sender As Object, e As EventArgs) Handles buttons.GeneratePreviewClicked
+        If Not Me.Template.GeneratePreviewImages() Then
+            MessageBox.Show("Could not generate preview image. Please ensure there is at least 1 entity in the drawing", "Preview Generation Failed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        End If
+    End Sub
 
 
 

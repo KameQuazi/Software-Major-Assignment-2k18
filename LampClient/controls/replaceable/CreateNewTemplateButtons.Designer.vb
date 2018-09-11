@@ -35,6 +35,7 @@ Partial Class CreateNewTemplateButtons
         Me.DxfSaveDialog = New System.Windows.Forms.SaveFileDialog()
         Me.SpfSaveDialog = New System.Windows.Forms.SaveFileDialog()
         Me.SpfOpenDialog = New System.Windows.Forms.OpenFileDialog()
+        Me.btnGeneratePreview = New System.Windows.Forms.Button()
         Me.RootTableLayoutPanel.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
@@ -110,6 +111,7 @@ Partial Class CreateNewTemplateButtons
         Me.TableLayoutPanel3.ColumnCount = 1
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel3.Controls.Add(Me.btnGeneratePreview, 0, 1)
         Me.TableLayoutPanel3.Controls.Add(Me.btnSubmitTemplate, 0, 0)
         Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel3.Location = New System.Drawing.Point(211, 0)
@@ -198,6 +200,20 @@ Partial Class CreateNewTemplateButtons
         Me.SpfOpenDialog.FileName = "SpfFileDialog"
         Me.SpfOpenDialog.Filter = "spf file|*.spf|All files|*.*"
         '
+        'btnGeneratePreview
+        '
+        Me.btnGeneratePreview.BackColor = System.Drawing.Color.White
+        Me.btnGeneratePreview.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnGeneratePreview.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnGeneratePreview.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.btnGeneratePreview.Location = New System.Drawing.Point(4, 81)
+        Me.btnGeneratePreview.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnGeneratePreview.Name = "btnGeneratePreview"
+        Me.btnGeneratePreview.Size = New System.Drawing.Size(134, 70)
+        Me.btnGeneratePreview.TabIndex = 46
+        Me.btnGeneratePreview.Text = "Generate Preview"
+        Me.btnGeneratePreview.UseVisualStyleBackColor = False
+        '
         'CreateNewTemplateButtons
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -226,4 +242,5 @@ Partial Class CreateNewTemplateButtons
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents ImportSpf As Button
     Friend WithEvents ImportDxf As Button
+    Friend WithEvents btnGeneratePreview As Button
 End Class

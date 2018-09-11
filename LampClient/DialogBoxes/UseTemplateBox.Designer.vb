@@ -45,7 +45,6 @@ Partial Class UseTemplateBox
         '
         'TemplateCreatorControl1
         '
-        Me.TemplateCreatorControl1.DrawingOpenProgram = Nothing
         Me.TemplateCreatorControl1.Location = New System.Drawing.Point(3, 3)
         Me.TemplateCreatorControl1.Name = "TemplateCreatorControl1"
         Me.TemplateCreatorControl1.ReadOnly = False
