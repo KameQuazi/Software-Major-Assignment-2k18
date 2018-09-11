@@ -24,6 +24,7 @@ Partial Class MultiDrawingViewer
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MultiDrawingViewer))
         Me.MultiDrawingViewerControl1 = New LampClient.MultiDrawingViewerControl()
+        Me.btnPrint = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'MultiDrawingViewerControl1
@@ -37,11 +38,22 @@ Partial Class MultiDrawingViewer
         Me.MultiDrawingViewerControl1.ZoomX = 1.0R
         Me.MultiDrawingViewerControl1.ZoomY = 1.0R
         '
+        'btnPrint
+        '
+        Me.btnPrint.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnPrint.Location = New System.Drawing.Point(311, 506)
+        Me.btnPrint.Name = "btnPrint"
+        Me.btnPrint.Size = New System.Drawing.Size(79, 31)
+        Me.btnPrint.TabIndex = 1
+        Me.btnPrint.Text = "Print"
+        Me.btnPrint.UseVisualStyleBackColor = True
+        '
         'MultiDrawingViewer
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(590, 542)
+        Me.Controls.Add(Me.btnPrint)
         Me.Controls.Add(Me.MultiDrawingViewerControl1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "MultiDrawingViewer"
@@ -51,4 +63,5 @@ Partial Class MultiDrawingViewer
     End Sub
 
     Friend WithEvents MultiDrawingViewerControl1 As MultiDrawingViewerControl
+    Friend WithEvents btnPrint As Button
 End Class

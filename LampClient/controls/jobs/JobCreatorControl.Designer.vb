@@ -465,6 +465,7 @@ Partial Class JobCreatorControl
         Me.DxfViewerControl1.Location = New System.Drawing.Point(17, 17)
         Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(16)
         Me.DxfViewerControl1.Name = "DxfViewerControl1"
+        Me.DxfViewerControl1.Readonly = False
         Me.DxfViewerControl1.Size = New System.Drawing.Size(328, 254)
         Me.DxfViewerControl1.TabIndex = 0
         Me.DxfViewerControl1.ZoomX = 1.0R

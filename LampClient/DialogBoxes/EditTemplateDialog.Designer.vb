@@ -23,23 +23,34 @@ Partial Class EditTemplateDialog
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EditTemplateDialog))
+        Me.btnBack = New System.Windows.Forms.Button()
         Me.TemplateCreatorControl1 = New LampClient.TemplateCreatorControl()
         Me.SuspendLayout()
         '
+        'btnBack
+        '
+        Me.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnBack.Location = New System.Drawing.Point(12, 10)
+        Me.btnBack.Name = "btnBack"
+        Me.btnBack.Size = New System.Drawing.Size(75, 23)
+        Me.btnBack.TabIndex = 3
+        Me.btnBack.Text = "Back"
+        Me.btnBack.UseVisualStyleBackColor = True
+        '
         'TemplateCreatorControl1
         '
-        Me.TemplateCreatorControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TemplateCreatorControl1.Location = New System.Drawing.Point(0, 0)
+        Me.TemplateCreatorControl1.Location = New System.Drawing.Point(0, 30)
         Me.TemplateCreatorControl1.Name = "TemplateCreatorControl1"
         Me.TemplateCreatorControl1.OptionsControl = Nothing
         Me.TemplateCreatorControl1.ReadOnly = False
-        Me.TemplateCreatorControl1.Size = New System.Drawing.Size(1232, 703)
+        Me.TemplateCreatorControl1.Size = New System.Drawing.Size(1232, 673)
         Me.TemplateCreatorControl1.TabIndex = 2
         '
         'EditTemplateDialog
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(1232, 703)
+        Me.Controls.Add(Me.btnBack)
         Me.Controls.Add(Me.TemplateCreatorControl1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "EditTemplateDialog"
@@ -50,4 +61,5 @@ Partial Class EditTemplateDialog
     End Sub
 
     Friend WithEvents TemplateCreatorControl1 As TemplateCreatorControl
+    Friend WithEvents btnBack As Button
 End Class

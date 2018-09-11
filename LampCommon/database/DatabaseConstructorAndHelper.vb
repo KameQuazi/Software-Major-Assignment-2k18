@@ -469,18 +469,23 @@ Partial Public Class TemplateDatabase
 
             Dim standard = New LampUser(GetNewGuid(), UserPermission.Standard, "example@google.com", "standard", "1234", "examply gy")
             Await db.SetUserAsync(standard).ConfigureAwait(False)
-
-            ' add new templates 
-            For Each spfName As String In ExampleSpfFiles
-                Dim fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", "spf", spfName))
+        Dim fp As String
+        ' add new templates 
+        For Each spfName As String In ExampleSpfFiles
+            Try
+                fp = IO.Path.GetFullPath(IO.Path.Combine("../", "../", "../", "templates", "spf", spfName))
                 Dim template = Await LampTemplate.FromFileAsync(fp)
-                Await db.SetTemplateAsync(template, shovel.UserId, shovel.UserId).ConfigureAwait(False)
-            Next
+                Await db.SetTemplateAsync(template, shovel.UserId, shovel.UserId)
+            Catch e As Exception
+                Console.WriteLine("help me please")
+            End Try
+
+        Next
 
 
 
 
-            Dim templates = Await db.GetAllTemplateAsync.ConfigureAwait(False)
+        Dim templates = Await db.GetAllTemplateAsync.ConfigureAwait(False)
 
             ' add jobs
             Dim job As New LampJob(templates(0), max.ToProfile, "job description")

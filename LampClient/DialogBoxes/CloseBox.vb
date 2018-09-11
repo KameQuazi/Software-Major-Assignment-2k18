@@ -12,4 +12,12 @@
     Private Sub CloseBox_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.ActiveControl = btnCancel
     End Sub
+    Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        btnCancel.Focus()
+    End Sub
 End Class

@@ -157,5 +157,10 @@ Public Class EditTemplateDialog
 
     End Sub
 
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        If MessageBox.Show("Do you wish to return and discard any changes made?", "Returning to Home Screen", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) Then
+            Me.Close()
+        End If
 
+    End Sub
 End Class

@@ -73,4 +73,25 @@ Public Class AdvancedJobViewer
             End Select
         End If
     End Sub
+
+    Private Sub btnPrint_Click(sender As Object, e As EventArgs) Handles btnPrint.Click
+        If PrintDialog1.ShowDialog() = DialogResult.OK Then
+            PrintDocument1.Print()
+        End If
+    End Sub
+
+    Private Sub PrintDocument1_PrintPage(sender As Object, e As Printing.PrintPageEventArgs) Handles PrintDocument1.PrintPage
+        Dim font = New Font(New FontFamily("arial"), 15, FontStyle.Bold)
+        Dim brush As New SolidBrush(Color.Black)
+        e.Graphics.DrawString("JobId: " + Job.JobId.ToString, font, brush, New PointF(0, 0))
+        e.Graphics.DrawString("Laser cutting Pages: " + Job.Pages.ToString, font, brush, New PointF(0, 20))
+        e.Graphics.DrawString("Date submitted: " + Job.SubmitDate.Value.ToLongDateString + " " + Job.SubmitDate.Value.ToLongTimeString, font, brush, New PointF(0, 40))
+        e.Graphics.DrawString("Submitter username: " + Job.Submitter.Username, font, brush, New PointF(0, 60))
+        e.Graphics.DrawString("Summary: " + Job.Summary, font, brush, New PointF(0, 80))
+        If Job.Template.PreviewImages(0) IsNot Nothing Then
+            e.Graphics.DrawString("Preview Image: ", font, brush, New PointF(10, 110))
+            e.Graphics.DrawImage(Job.Template.PreviewImages(0), New PointF(0, 140))
+        End If
+
+    End Sub
 End Class

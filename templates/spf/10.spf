@@ -15,7 +15,15 @@
       "width": 9.86271994143101,
       "can_override_font": false,
       "input_type": 0,
-      "color": "Red"
+       "color": {
+        "IsByLayer": false,
+        "IsByBlock": false,
+        "R": 255,
+        "G": 255,
+        "B": 255,
+        "UseTrueColor": false,
+        "Index": 1
+      }
     }
   ],
   "preview_images": [

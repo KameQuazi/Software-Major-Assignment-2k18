@@ -96,4 +96,13 @@ Public Class MultiDrawingViewerControl
     Private Sub MultiDrawingViewerControl_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         DxfViewerControl1.ShiftToZero()
     End Sub
+
+    Public ReadOnly Property CurrentDrawing As LampDxfDocument
+        Get
+            If Drawings.Count = 0 Then
+                Return Nothing
+            End If
+            Return Drawings(index)
+        End Get
+    End Property
 End Class
