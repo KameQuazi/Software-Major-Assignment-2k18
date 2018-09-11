@@ -111,6 +111,8 @@ Public Class TemplateCreatorControl
         End If
         TboxApprove.Enabled = False
         gboxOptions.Controls.Clear()
+        DxfViewerControl1.ShiftToZero()
+        DxfViewerControl1.SetDxfBounds(New SizeF(605, 310))
     End Sub
 
     ''' <summary>
@@ -340,77 +342,14 @@ Public Class TemplateCreatorControl
     End Sub
 
 
-    Public Event SubmitSuccessful(sender As Object, e As SubmitEventArgs)
-
-    Public Event EditSuccessful(sender As Object, e As SubmitEventArgs)
-
-    Public Event DeleteSuccesful(sender As Object, e As SubmitEventArgs)
-
-    Friend Sub RaiseSubmitSuccessful(sender As Object, e As SubmitEventArgs)
-        RaiseEvent SubmitSuccessful(Me, e)
-    End Sub
-
-    Friend Sub RaiseEditSuccessful(sender As Object, e As SubmitEventArgs)
-        RaiseEvent EditSuccessful(Me, e)
-    End Sub
-
-    Friend Sub RaiseDeleteSuccessful(sender As Object, e As SubmitEventArgs)
-        RaiseEvent DeleteSuccesful(Me, e)
-    End Sub
 
 
-
-    Private Async Sub btnSubmitTemplate_Click(sender As Object, e As EventArgs)
-        If Not CheckPossibleErrors() Then
-            Return
-        End If
-
-        'TODO FIX wasd
-        'If SubmitType = SendType.Add Then
-        '    Dim response = Await CurrentSender.AddUnapprovedTemplateAsync(CurrentUser.ToCredentials, Template)
-        '    Select Case response
-        '        Case LampStatus.OK
-        '            MessageBox.Show("Submitted Successfully")
-
-        '            RaiseEvent SubmitSuccessful(Me, New SubmitEventArgs(Template))
-
-
-        '        Case LampStatus.InvalidUsernameOrPassword
-        '            ShowLoginError(Me.ParentForm)
-        '        Case Else
-        '            ShowError(response)
-
-        '    End Select
-
-
-        'ElseIf SubmitType = SendType.Edit Then
-        '    Dim response = CurrentSender.EditTemplate(CurrentUser.ToCredentials, Template)
-        '    Select Case response
-        '        Case LampStatus.OK
-        '            MessageBox.Show("Editted Successfully")
-
-        '            RaiseEvent SubmitSuccessful(Me, New SubmitEventArgs(Template))
-
-
-        '        Case LampStatus.InvalidUsernameOrPassword
-        '            ShowLoginError(Me.ParentForm)
-
-        '        Case Else
-        '            ShowError(response)
-
-        '    End Select
-
-
-
-        'Else
-        '    Throw New InvalidOperationException(NameOf(SubmitType))
-
-        'End If
-
-
-    End Sub
-
-    Private Function CheckPossibleErrors() As Boolean
+    ''' <summary>
+    ''' Checks for errors, showing a messagebox to user for any warnings or errors found
+    ''' will return whether to go ahead, regardless of errors
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function CheckPossibleErrors() As Boolean
         If Not ValidateThickness() Then
             MessageBox.Show("Error: Thickness is in incorrect format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return False

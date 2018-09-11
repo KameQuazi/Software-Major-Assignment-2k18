@@ -33,12 +33,16 @@ Partial Class LoginForm
         Me.btnCreate = New System.Windows.Forms.Button()
         Me.PasswordCheckbox = New System.Windows.Forms.CheckBox()
         Me.cboxInternal = New System.Windows.Forms.CheckBox()
-        Me.tboxServerUrl = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.btnTryConnection = New System.Windows.Forms.Button()
+        Me.pBoxConnectionIndicator = New System.Windows.Forms.PictureBox()
+        Me.gboxConnection = New System.Windows.Forms.GroupBox()
+        Me.rtboxServerUrl = New System.Windows.Forms.RichTextBox()
         CType(Me.pbLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pBoxConnectionIndicator, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.gboxConnection.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtUser
@@ -91,6 +95,7 @@ Partial Class LoginForm
         'btnLogin
         '
         Me.btnLogin.BackColor = System.Drawing.Color.White
+        Me.btnLogin.Enabled = False
         Me.btnLogin.Font = New System.Drawing.Font("Arial", 10.25!)
         Me.btnLogin.Location = New System.Drawing.Point(562, 564)
         Me.btnLogin.Name = "btnLogin"
@@ -123,24 +128,17 @@ Partial Class LoginForm
         'cboxInternal
         '
         Me.cboxInternal.AutoSize = True
-        Me.cboxInternal.Location = New System.Drawing.Point(710, 682)
+        Me.cboxInternal.Location = New System.Drawing.Point(16, 19)
         Me.cboxInternal.Name = "cboxInternal"
         Me.cboxInternal.Size = New System.Drawing.Size(123, 18)
         Me.cboxInternal.TabIndex = 8
         Me.cboxInternal.Text = "Use Local Database"
         Me.cboxInternal.UseVisualStyleBackColor = True
         '
-        'tboxServerUrl
-        '
-        Me.tboxServerUrl.Location = New System.Drawing.Point(710, 720)
-        Me.tboxServerUrl.Name = "tboxServerUrl"
-        Me.tboxServerUrl.Size = New System.Drawing.Size(160, 20)
-        Me.tboxServerUrl.TabIndex = 9
-        '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(707, 703)
+        Me.Label1.Location = New System.Drawing.Point(13, 40)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(66, 14)
         Me.Label1.TabIndex = 10
@@ -154,22 +152,51 @@ Partial Class LoginForm
         '
         Me.btnTryConnection.BackColor = System.Drawing.Color.White
         Me.btnTryConnection.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnTryConnection.Location = New System.Drawing.Point(899, 719)
+        Me.btnTryConnection.Location = New System.Drawing.Point(228, 54)
         Me.btnTryConnection.Name = "btnTryConnection"
         Me.btnTryConnection.Size = New System.Drawing.Size(101, 23)
         Me.btnTryConnection.TabIndex = 11
-        Me.btnTryConnection.Text = "Retry Connection"
+        Me.btnTryConnection.Text = "Connect"
         Me.btnTryConnection.UseVisualStyleBackColor = False
+        '
+        'pBoxConnectionIndicator
+        '
+        Me.pBoxConnectionIndicator.Image = Global.LampClient.My.Resources.Resources.red_dot
+        Me.pBoxConnectionIndicator.Location = New System.Drawing.Point(309, 17)
+        Me.pBoxConnectionIndicator.Name = "pBoxConnectionIndicator"
+        Me.pBoxConnectionIndicator.Size = New System.Drawing.Size(20, 20)
+        Me.pBoxConnectionIndicator.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pBoxConnectionIndicator.TabIndex = 12
+        Me.pBoxConnectionIndicator.TabStop = False
+        '
+        'gboxConnection
+        '
+        Me.gboxConnection.Controls.Add(Me.rtboxServerUrl)
+        Me.gboxConnection.Controls.Add(Me.cboxInternal)
+        Me.gboxConnection.Controls.Add(Me.pBoxConnectionIndicator)
+        Me.gboxConnection.Controls.Add(Me.Label1)
+        Me.gboxConnection.Controls.Add(Me.btnTryConnection)
+        Me.gboxConnection.Location = New System.Drawing.Point(653, 638)
+        Me.gboxConnection.Name = "gboxConnection"
+        Me.gboxConnection.Size = New System.Drawing.Size(350, 114)
+        Me.gboxConnection.TabIndex = 13
+        Me.gboxConnection.TabStop = False
+        Me.gboxConnection.Text = "Connection Options"
+        '
+        'rtboxServerUrl
+        '
+        Me.rtboxServerUrl.Location = New System.Drawing.Point(16, 54)
+        Me.rtboxServerUrl.Name = "rtboxServerUrl"
+        Me.rtboxServerUrl.Size = New System.Drawing.Size(176, 54)
+        Me.rtboxServerUrl.TabIndex = 13
+        Me.rtboxServerUrl.Text = ""
         '
         'LoginForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.SystemColors.ScrollBar
         Me.ClientSize = New System.Drawing.Size(1000, 750)
-        Me.Controls.Add(Me.btnTryConnection)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.tboxServerUrl)
-        Me.Controls.Add(Me.cboxInternal)
+        Me.Controls.Add(Me.gboxConnection)
         Me.Controls.Add(Me.PasswordCheckbox)
         Me.Controls.Add(Me.btnCreate)
         Me.Controls.Add(Me.btnLogin)
@@ -186,6 +213,9 @@ Partial Class LoginForm
         Me.Text = "Log In"
         CType(Me.pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pBoxConnectionIndicator, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.gboxConnection.ResumeLayout(False)
+        Me.gboxConnection.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -200,8 +230,10 @@ Partial Class LoginForm
     Friend WithEvents btnCreate As Button
     Friend WithEvents PasswordCheckbox As CheckBox
     Friend WithEvents cboxInternal As CheckBox
-    Friend WithEvents tboxServerUrl As TextBox
     Friend WithEvents Label1 As Label
     Friend WithEvents ErrorProvider1 As ErrorProvider
     Friend WithEvents btnTryConnection As Button
+    Friend WithEvents pBoxConnectionIndicator As PictureBox
+    Friend WithEvents gboxConnection As GroupBox
+    Friend WithEvents rtboxServerUrl As RichTextBox
 End Class

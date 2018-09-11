@@ -1,23 +1,20 @@
 ﻿Imports LampCommon
 
 Public Class LoginForm
-    Private Loaded As Boolean = False
 
     Private Async Sub btnLogin_Click(sender As Object, e As EventArgs) Handles btnLogin.Click
-        If Not Await ValidateConnection() Then
-            MessageBox.Show("Error when trying to connect to server: please check the connection address is correct", "Error connecting to remote server", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End If
         Dim username = txtUser.Text
         Dim pass = txtPass.Text
-        Login(username, pass)
-
+        Await Login(username, pass)
     End Sub
 
-    Private Sub LoginForm_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown, txtPass.KeyDown, txtUser.KeyDown
+
+
+    Private Async Sub LoginForm_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown, txtPass.KeyDown, txtUser.KeyDown
         If e.KeyCode = Keys.Enter Then
             Dim username = txtUser.Text
             Dim pass = txtPass.Text
-            Login(username, pass)
+            Await Login(username, pass)
         End If
     End Sub
 
@@ -43,41 +40,57 @@ Public Class LoginForm
     End Sub
 
 
-    Private Function Login(username As String, password As String) As Boolean
-        Dim loginResponse = CurrentSender.Authenticate(username, password)
-        If loginResponse.Status = LampStatus.OK Then
-            CurrentUser = loginResponse.user
+    Private Async Function Login(username As String, password As String) As Task(Of Boolean)
+        ' help me please
+        Dim past = Me.Enabled
+        Me.Enabled = False
 
-            HomeForm.Show()
-            Me.Close()
-            SaveLogin(username, password, PasswordCheckbox.Checked)
-            Return True
-        Else
-            ' TODO tell user that they're bad
+        Try
+            ShowWaitForm()
+
+            Dim response = Await CurrentSender.AuthenticateAsync(username, password)
+
+            If response.Status = LampStatus.OK Then
+                CurrentUser = response.user
+
+                HomeForm.Show()
+                Me.Close()
+                SaveLogin(username, password, PasswordCheckbox.Checked)
+                Return True
+            Else
+                Select Case response.Status
+                    Case LampStatus.InvalidUsernameOrPassword
+                        MessageBox.Show(String.Format("An invalid username or password supplied. Please try again"))
+                    Case Else
+                        MessageBox.Show("An unspecified error occured: " + response.Status.ToString)
+                End Select
+
+                txtUser.Focus()
+                Return False
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("An error occured while connecting to server")
 #If DEBUG Then
-            MessageBox.Show("Login unsucc: " + loginResponse.Status.ToString())
-            txtUser.Focus()
-            Return False
-#Else
-            Select Case loginResponse.Status
-                Case LampStatus.InvalidUsernameOrPassword
-                    MessageBox.Show(String.Format("An invalid username or password supplied. Please try again"))
-                Case Else
-                    MessageBox.Show("An unspecified error occured: " + loginResponse.Status.ToString)
-            End Select
-
-            txtUser.Focus()
-            Return False
+            Throw ex
 #End If
+        Finally
+            Me.Enabled = past
+            HideWaitForm()
 
-        End If
+        End Try
+
+
+
+
+
     End Function
 
     Private Async Sub pbLogo_Click(sender As Object, e As EventArgs) Handles pbLogo.Click
 #If DEBUG Then
-        If Not Login("moji", "snack time") Then
+        If Not Await Login("moji", "snack time") Then
             Await TemplateDatabase.FillDebugDatabaseAsync
-            Login("moji", "snack time")
+            Await Login("moji", "snack time")
 
         End If
 
@@ -94,9 +107,9 @@ Public Class LoginForm
         txtUser.Text = Settings.LoginUsername
         txtPass.Text = Settings.LoginPassword
         PasswordCheckbox.Checked = Settings.PasswordSaved
+        rtboxServerUrl.Text = Settings.ClientEndpoint.ServerAddress
         cboxInternal.Checked = Settings.ClientEndpoint.UseLocal
-        tboxServerUrl.Text = Settings.ClientEndpoint.ServerAddress
-        Loaded = True
+        CheckUserConnections()
     End Sub
 
     Private Sub btnCreate_Click(sender As Object, e As EventArgs) Handles btnCreate.Click
@@ -112,31 +125,80 @@ Public Class LoginForm
         End Set
     End Property
 
-    Private Async Sub cboxInternal_CheckedChanged(sender As Object, e As EventArgs) Handles cboxInternal.CheckedChanged
-        If Not Loaded Then
-            Return
-        End If
+    Private canLogin As Boolean = False
+    Private Sub IndicatorEnabled()
+        pBoxConnectionIndicator.Image = My.Resources.green_dot
+        canLogin = True
+        OnEnabledChanged(Nothing)
+    End Sub
 
+    Private Sub IndicatorDisabled()
+        pBoxConnectionIndicator.Image = My.Resources.red_dot
+        canLogin = False
+        OnEnabledChanged(Nothing)
+
+    End Sub
+
+    Private Async Sub CheckUserConnections()
+        IndicatorDisabled()
+
+        ' do logic based off the checkbox state
         If cboxInternal.Checked Then
-            tboxServerUrl.Enabled = False
+            rtboxServerUrl.Enabled = False
             btnTryConnection.Enabled = False
             ' save it
             SaveEndpoint("", True)
-            ErrorProvider1.SetError(tboxServerUrl, "")
+            IndicatorEnabled()
         Else
-            tboxServerUrl.Enabled = True
+            rtboxServerUrl.Enabled = True
             btnTryConnection.Enabled = True
-            If Await ValidateConnection() Then
-                ' save it
-                SaveEndpoint(tboxServerUrl.Text, False)
-            Else
-
-            End If
+            Await AttemptRemoteConnection()
         End If
     End Sub
 
+    Private Sub cboxInternal_CheckedChanged(sender As Object, e As EventArgs) Handles cboxInternal.CheckedChanged
+        CheckUserConnections()
+    End Sub
+
+    Private Sub btnTryConnection_Click(sender As Object, e As EventArgs) Handles btnTryConnection.Click
+        CheckUserConnections()
+    End Sub
+
+
+    Private Async Function AttemptRemoteConnection() As Task
+        ' help me please
+        Dim past = Me.Enabled
+        Me.Enabled = False
+
+        Try
+            ShowWaitForm()
+            Dim result = Await CanConnect(rtboxServerUrl.Text)
+            If result Then
+                IndicatorEnabled()
+                SaveEndpoint(rtboxServerUrl.Text, False)
+            Else
+                ErrorProvider1.SetError(rtboxServerUrl, "Cannot connect to server")
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("An error occured while connecting to server")
+#If DEBUG Then
+            Throw ex
+#End If
+        Finally
+            Me.Enabled = past
+            HideWaitForm()
+
+        End Try
+    End Function
+
     Private Async Function CanConnect(str As String) As Task(Of Boolean)
         Try
+            Dim uriResult As Uri = Nothing
+            If Not (Uri.TryCreate(str, UriKind.Absolute, uriResult)) Then
+                Return False
+            End If
+
             SetServiceEndpoint(str)
             Await CurrentSender.AuthenticateAsync(Nothing)
             Return True
@@ -145,36 +207,22 @@ Public Class LoginForm
         End Try
     End Function
 
-    Private Async Function ValidateConnection() As Task(Of Boolean)
-        If UseInternal Then
-            Return True
-        Else
-            Dim result = Await CanConnect(tboxServerUrl.Text)
-            If result Then
-                ErrorProvider1.SetError(tboxServerUrl, "")
-            Else
-                ErrorProvider1.SetError(tboxServerUrl, "Cannot connect to this server")
-            End If
-            Return result
+
+    Protected Overrides Sub OnEnabledChanged(e As EventArgs)
+        MyBase.OnEnabledChanged(e)
+        For Each control As Control In Me.Controls
+            control.Enabled = Me.Enabled
+        Next
+        If Not canLogin Then
+            btnLogin.Enabled = False
+            btnCreate.Enabled = False
         End If
-    End Function
+    End Sub
 
-    Private Async Sub tboxServerUrl_TextChanged(sender As Object, e As EventArgs) Handles tboxServerUrl.TextChanged
-        If Not Loaded Then
-            Return
-        End If
 
-        If Not UseInternal Then
-            ' try to check if it is legit
-            If Await ValidateConnection() Then
-                ' help
-                SaveEndpoint(tboxServerUrl.Text, False)
 
-            End If
-
-        Else
-
-        End If
+    Private Sub tboxServerUrl_TextChanged(sender As Object, e As EventArgs) Handles rtboxServerUrl.TextChanged
+        ErrorProvider1.SetError(rtboxServerUrl, "")
     End Sub
 
 

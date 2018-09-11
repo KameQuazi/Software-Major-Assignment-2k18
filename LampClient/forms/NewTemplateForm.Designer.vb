@@ -91,7 +91,6 @@ Partial Class NewTemplateForm
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents TemplateCreatorControl1 As TemplateCreatorControl
     Friend WithEvents ToolBar1 As ToolBar
-    Public Property Template As LampTemplate
 
 
 End Class

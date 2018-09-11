@@ -473,7 +473,7 @@ Public Class LampService
         Dim response As LampStatus
 
         Try
-            If template Is Nothing Then
+            If Not ValidTemplate(template) Then
                 response = LampStatus.InvalidParameters
                 Return response
             End If

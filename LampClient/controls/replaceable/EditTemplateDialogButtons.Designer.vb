@@ -23,18 +23,21 @@ Partial Class EditTemplateDialogButtons
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.RootTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.ImportSpf = New System.Windows.Forms.Button()
+        Me.ImportDxf = New System.Windows.Forms.Button()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.ExportDxf = New System.Windows.Forms.Button()
         Me.ExportSpf = New System.Windows.Forms.Button()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnDelete = New System.Windows.Forms.Button()
+        Me.btnSubmitEdit = New System.Windows.Forms.Button()
         Me.DxfFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.DxfSaveDialog = New System.Windows.Forms.SaveFileDialog()
         Me.SpfSaveDialog = New System.Windows.Forms.SaveFileDialog()
         Me.SpfOpenDialog = New System.Windows.Forms.OpenFileDialog()
-        Me.btnSubmitEdit = New System.Windows.Forms.Button()
-        Me.btnDelete = New System.Windows.Forms.Button()
         Me.RootTableLayoutPanel.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
         Me.SuspendLayout()
@@ -45,11 +48,12 @@ Partial Class EditTemplateDialogButtons
         Me.RootTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.RootTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.0!))
         Me.RootTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.0!))
-        Me.RootTableLayoutPanel.Controls.Add(Me.ImportSpf, 0, 0)
+        Me.RootTableLayoutPanel.Controls.Add(Me.TableLayoutPanel1, 0, 0)
         Me.RootTableLayoutPanel.Controls.Add(Me.TableLayoutPanel2, 1, 0)
         Me.RootTableLayoutPanel.Controls.Add(Me.TableLayoutPanel3, 2, 0)
         Me.RootTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.RootTableLayoutPanel.Location = New System.Drawing.Point(0, 0)
+        Me.RootTableLayoutPanel.Margin = New System.Windows.Forms.Padding(0)
         Me.RootTableLayoutPanel.Name = "RootTableLayoutPanel"
         Me.RootTableLayoutPanel.RowCount = 1
         Me.RootTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
@@ -57,19 +61,51 @@ Partial Class EditTemplateDialogButtons
         Me.RootTableLayoutPanel.Size = New System.Drawing.Size(353, 155)
         Me.RootTableLayoutPanel.TabIndex = 0
         '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.ColumnCount = 1
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.ImportSpf, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.ImportDxf, 0, 0)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
+        Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(0)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 2
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(88, 155)
+        Me.TableLayoutPanel1.TabIndex = 48
+        '
         'ImportSpf
         '
         Me.ImportSpf.BackColor = System.Drawing.Color.White
         Me.ImportSpf.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ImportSpf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ImportSpf.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.ImportSpf.Location = New System.Drawing.Point(4, 4)
+        Me.ImportSpf.Location = New System.Drawing.Point(4, 81)
         Me.ImportSpf.Margin = New System.Windows.Forms.Padding(4)
         Me.ImportSpf.Name = "ImportSpf"
-        Me.ImportSpf.Size = New System.Drawing.Size(80, 147)
-        Me.ImportSpf.TabIndex = 44
+        Me.ImportSpf.Size = New System.Drawing.Size(80, 70)
+        Me.ImportSpf.TabIndex = 47
         Me.ImportSpf.Text = "Load Spf"
         Me.ImportSpf.UseVisualStyleBackColor = False
+        '
+        'ImportDxf
+        '
+        Me.ImportDxf.BackColor = System.Drawing.Color.White
+        Me.ImportDxf.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ImportDxf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.ImportDxf.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.ImportDxf.Location = New System.Drawing.Point(4, 4)
+        Me.ImportDxf.Margin = New System.Windows.Forms.Padding(4)
+        Me.ImportDxf.Name = "ImportDxf"
+        Me.ImportDxf.Size = New System.Drawing.Size(80, 69)
+        Me.ImportDxf.TabIndex = 45
+        Me.ImportDxf.Text = "Load DXF"
+        Me.ImportDxf.UseVisualStyleBackColor = False
         '
         'TableLayoutPanel2
         '
@@ -79,12 +115,13 @@ Partial Class EditTemplateDialogButtons
         Me.TableLayoutPanel2.Controls.Add(Me.ExportDxf, 0, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.ExportSpf, 0, 1)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel2.Location = New System.Drawing.Point(91, 3)
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(88, 0)
+        Me.TableLayoutPanel2.Margin = New System.Windows.Forms.Padding(0)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
         Me.TableLayoutPanel2.RowCount = 2
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(117, 149)
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(123, 155)
         Me.TableLayoutPanel2.TabIndex = 45
         '
         'ExportDxf
@@ -96,7 +133,7 @@ Partial Class EditTemplateDialogButtons
         Me.ExportDxf.Location = New System.Drawing.Point(4, 4)
         Me.ExportDxf.Margin = New System.Windows.Forms.Padding(4)
         Me.ExportDxf.Name = "ExportDxf"
-        Me.ExportDxf.Size = New System.Drawing.Size(109, 66)
+        Me.ExportDxf.Size = New System.Drawing.Size(115, 69)
         Me.ExportDxf.TabIndex = 43
         Me.ExportDxf.Text = "Export To DXF"
         Me.ExportDxf.UseVisualStyleBackColor = False
@@ -107,10 +144,10 @@ Partial Class EditTemplateDialogButtons
         Me.ExportSpf.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ExportSpf.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ExportSpf.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.ExportSpf.Location = New System.Drawing.Point(4, 78)
+        Me.ExportSpf.Location = New System.Drawing.Point(4, 81)
         Me.ExportSpf.Margin = New System.Windows.Forms.Padding(4)
         Me.ExportSpf.Name = "ExportSpf"
-        Me.ExportSpf.Size = New System.Drawing.Size(109, 67)
+        Me.ExportSpf.Size = New System.Drawing.Size(115, 70)
         Me.ExportSpf.TabIndex = 42
         Me.ExportSpf.Text = "Export To SPF"
         Me.ExportSpf.UseVisualStyleBackColor = False
@@ -123,14 +160,43 @@ Partial Class EditTemplateDialogButtons
         Me.TableLayoutPanel3.Controls.Add(Me.btnDelete, 0, 1)
         Me.TableLayoutPanel3.Controls.Add(Me.btnSubmitEdit, 0, 0)
         Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel3.Location = New System.Drawing.Point(214, 3)
+        Me.TableLayoutPanel3.Location = New System.Drawing.Point(211, 0)
+        Me.TableLayoutPanel3.Margin = New System.Windows.Forms.Padding(0)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
         Me.TableLayoutPanel3.RowCount = 2
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel3.Size = New System.Drawing.Size(136, 149)
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(142, 155)
         Me.TableLayoutPanel3.TabIndex = 46
+        '
+        'btnDelete
+        '
+        Me.btnDelete.BackColor = System.Drawing.Color.White
+        Me.btnDelete.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnDelete.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.btnDelete.Location = New System.Drawing.Point(4, 81)
+        Me.btnDelete.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnDelete.Name = "btnDelete"
+        Me.btnDelete.Size = New System.Drawing.Size(134, 70)
+        Me.btnDelete.TabIndex = 48
+        Me.btnDelete.Text = "Delete"
+        Me.btnDelete.UseVisualStyleBackColor = False
+        '
+        'btnSubmitEdit
+        '
+        Me.btnSubmitEdit.BackColor = System.Drawing.Color.White
+        Me.btnSubmitEdit.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnSubmitEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnSubmitEdit.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.btnSubmitEdit.Location = New System.Drawing.Point(4, 4)
+        Me.btnSubmitEdit.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnSubmitEdit.Name = "btnSubmitEdit"
+        Me.btnSubmitEdit.Size = New System.Drawing.Size(134, 69)
+        Me.btnSubmitEdit.TabIndex = 47
+        Me.btnSubmitEdit.Text = "Submit Edit"
+        Me.btnSubmitEdit.UseVisualStyleBackColor = False
         '
         'DxfFileDialog
         '
@@ -149,34 +215,6 @@ Partial Class EditTemplateDialogButtons
         Me.SpfOpenDialog.FileName = "SpfFileDialog"
         Me.SpfOpenDialog.Filter = "spf file|*.spf|All files|*.*"
         '
-        'btnSubmitEdit
-        '
-        Me.btnSubmitEdit.BackColor = System.Drawing.Color.White
-        Me.btnSubmitEdit.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnSubmitEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSubmitEdit.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.btnSubmitEdit.Location = New System.Drawing.Point(4, 4)
-        Me.btnSubmitEdit.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnSubmitEdit.Name = "btnSubmitEdit"
-        Me.btnSubmitEdit.Size = New System.Drawing.Size(128, 66)
-        Me.btnSubmitEdit.TabIndex = 47
-        Me.btnSubmitEdit.Text = "Submit Edit"
-        Me.btnSubmitEdit.UseVisualStyleBackColor = False
-        '
-        'btnDelete
-        '
-        Me.btnDelete.BackColor = System.Drawing.Color.White
-        Me.btnDelete.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnDelete.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.btnDelete.Location = New System.Drawing.Point(4, 78)
-        Me.btnDelete.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnDelete.Name = "btnDelete"
-        Me.btnDelete.Size = New System.Drawing.Size(128, 67)
-        Me.btnDelete.TabIndex = 48
-        Me.btnDelete.Text = "Delete"
-        Me.btnDelete.UseVisualStyleBackColor = False
-        '
         'EditTemplateDialogButtons
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -185,6 +223,7 @@ Partial Class EditTemplateDialogButtons
         Me.Name = "EditTemplateDialogButtons"
         Me.Size = New System.Drawing.Size(353, 155)
         Me.RootTableLayoutPanel.ResumeLayout(False)
+        Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.TableLayoutPanel3.ResumeLayout(False)
         Me.ResumeLayout(False)
@@ -192,7 +231,6 @@ Partial Class EditTemplateDialogButtons
     End Sub
 
     Friend WithEvents RootTableLayoutPanel As TableLayoutPanel
-    Friend WithEvents ImportSpf As Button
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
     Friend WithEvents ExportDxf As Button
     Friend WithEvents ExportSpf As Button
@@ -203,4 +241,7 @@ Partial Class EditTemplateDialogButtons
     Friend WithEvents SpfOpenDialog As OpenFileDialog
     Friend WithEvents btnSubmitEdit As Button
     Friend WithEvents btnDelete As Button
+    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Friend WithEvents ImportSpf As Button
+    Friend WithEvents ImportDxf As Button
 End Class

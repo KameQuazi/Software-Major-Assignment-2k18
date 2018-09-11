@@ -1,7 +1,7 @@
 ﻿Imports LampCommon
 
 Public Class frmCreateAcc
-    Private Sub btnCreate_Click(sender As Object, e As EventArgs) Handles btnCreate.Click
+    Private Async Sub btnCreate_Click(sender As Object, e As EventArgs) Handles btnCreate.Click
         Dim noErrors = True
 
         If txtPass.Text <> txtPass2.Text Then
@@ -37,15 +37,38 @@ Public Class frmCreateAcc
         End If
 
         If noErrors Then
-            Dim user As New LampUser(GetNewGuid, UserPermission.Standard, txtEmail.Text, txtUser.Text, txtPass.Text, txtName.Text + " " + txtName2.Text)
-            Dim response = CurrentSender.AddUser(Nothing, user)
-            Select Case response
-                Case LampStatus.OK
-                    MessageBox.Show("User signup successful!")
-                    Me.Close()
-                Case Else
-                    ShowError(response)
-            End Select
+            ' help me please
+            Dim past = Me.Enabled
+            Me.Enabled = False
+
+            Try
+                ShowWaitForm()
+
+                Dim user As New LampUser(GetNewGuid, UserPermission.Standard, txtEmail.Text, txtUser.Text, txtPass.Text, txtName.Text + " " + txtName2.Text)
+                Dim response = Await CurrentSender.AddUserAsync(Nothing, user)
+
+                Select Case response
+                    Case LampStatus.OK
+                        MessageBox.Show("User signup successful!")
+                        Me.Close()
+                    Case Else
+                        ShowError(response)
+                End Select
+
+            Catch ex As Exception
+                MessageBox.Show("An error occured while connecting to server")
+#If DEBUG Then
+                Throw ex
+#End If
+            Finally
+                Me.Enabled = past
+                HideWaitForm()
+
+            End Try
+
+
+
+
         End If
     End Sub
 

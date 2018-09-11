@@ -778,6 +778,8 @@
     <Folder Include="bin\Debug\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\green-dot.png" />
+    <Content Include="Resources\red-dot.png" />
     <None Include="Resources\Settings.png" />
     <None Include="Resources\Quit.png" />
     <None Include="Resources\ViewTemplate.png" />

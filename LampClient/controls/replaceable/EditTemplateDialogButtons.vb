@@ -7,6 +7,18 @@ Public Class EditTemplateDialogButtons
 
     Public Event LoadingEnd(sender As Object, e As EventArgs)
 
+    Private _editDisabled As Boolean = False
+    Public Property EditDisabled As Boolean
+        Get
+            Return _editDisabled
+        End Get
+        Set(value As Boolean)
+            _editDisabled = value
+            btnSubmitEdit.Enabled = Not value
+        End Set
+    End Property
+
+
     Private _readonly As Boolean = False
     Public Property [Readonly] As Boolean
         Get
@@ -20,11 +32,20 @@ Public Class EditTemplateDialogButtons
 
     Private Sub UpdateReadonlyElements()
         ImportSpf.Enabled = Not [Readonly]
+        ImportDxf.Enabled = Not [Readonly]
+        If EditDisabled Then
+            btnSubmitEdit.Enabled = False
+        End If
     End Sub
 
     Private Sub UpdateEnabledElements()
         RootTableLayoutPanel.Enabled = Me.Enabled
+        If EditDisabled Then
+            btnSubmitEdit.Enabled = False
+        End If
     End Sub
+
+
 
     Protected Overrides Sub OnEnabledChanged(e As EventArgs)
         MyBase.OnEnabledChanged(e)
@@ -32,133 +53,59 @@ Public Class EditTemplateDialogButtons
         UpdateEnabledElements()
     End Sub
 
-    Private _enabled As Boolean = False
-    Public Property TemplateParent As TemplateCreatorControl
-
-    Public Property Template As LampTemplate
-        Get
-            Return TemplateParent.Template
-        End Get
-        Set(value As LampTemplate)
-            TemplateParent.Template = value
-        End Set
-    End Property
-
-    Private Sub ImportSpf_Click(sender As Object, e As EventArgs) Handles ImportSpf.Click
-        If SpfOpenDialog.ShowDialog() = DialogResult.OK Then
-            Try
-                Dim temp = LampTemplate.FromFile(SpfOpenDialog.FileName)
-                If temp Is Nothing Then
-                    Throw New Exception("Spf File cannot be nothing")
-                End If
-                Me.Template = temp
-
-            Catch ex As Exception
-                If MessageBox.Show("File is invalid. Show detailed error message?", "File Invalid", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-                    MessageBox.Show(ex.ToString)
-                End If
-            End Try
-
-        End If
-    End Sub
-
-    Private Sub ExportDxf_Click(sender As Object, e As EventArgs) Handles ExportDxf.Click
-        If DxfSaveDialog.ShowDialog = DialogResult.OK Then
-            Template.BaseDrawing.Save(DxfSaveDialog.FileName)
-        End If
-    End Sub
-
-    Private Sub ExportSpf_Click(sender As Object, e As EventArgs) Handles ExportSpf.Click
-        If SpfSaveDialog.ShowDialog = DialogResult.OK Then
-            Template.Save(SpfSaveDialog.FileName)
-        End If
-    End Sub
 
 
-    Sub New(parent As TemplateCreatorControl)
+    Sub New()
 
         ' This call is required by the designer.
         InitializeComponent()
 
-        ' Add any initialization after the InitializeComponent() call.
-        Me.TemplateParent = parent
-    End Sub
-
-    Private Sub StartLoading()
-        RaiseEvent LoadingStart(Me, New EventArgs)
-        TemplateParent.Enabled = False
-        ShowWaitForm()
-    End Sub
-
-    Private Sub StopLoading()
-        RaiseEvent LoadingEnd(Me, New EventArgs)
-        HideWaitForm()
+        ' Add any initialization after the InitializeComponent() call    End Sub
     End Sub
 
 
 
-    Private Async Sub btnSubmitEdit_Click(sender As Object, e As EventArgs) Handles btnSubmitEdit.Click
-        StartLoading()
-        Dim pastEnabled = TemplateParent.Enabled
+    Public Event ImportSpfClicked(sender As Object, e As EventArgs)
 
-        Try
-            If MessageBox.Show("Are you sure you edit this template? Previous data may be lost", "Warning - Editing file",
-                               MessageBoxButtons.YesNo) = DialogResult.Yes Then
-                Dim response = Await CurrentSender.EditTemplateAsync(CurrentUser.ToCredentials, Template)
-                Select Case response
-                    Case LampStatus.OK
-                        MessageBox.Show("Edited successfully")
-                        TemplateParent.RaiseEditSuccessful(Me, New SubmitEventArgs(Template))
-                    Case LampStatus.InvalidUsernameOrPassword
-                        ShowLoginError(Me.ParentForm)
-                    Case Else
-                        ShowError(response)
-                End Select
-            End If
+    Public Event ImportDxfClicked(sender As Object, e As EventArgs)
 
-        Catch ex As Exception
-            MessageBox.Show("An unknown error occured when communicating with server")
-#If DEBUG Then
-            Throw ex
-#End If
-        Finally
-            StopLoading()
-            TemplateParent.Enabled = pastEnabled
-        End Try
+    Public Event ExportSpfClicked(sender As Object, e As EventArgs)
 
+    Public Event ExportDxfClicked(sender As Object, e As EventArgs)
+
+    Public Event SubmitEditClicked(sender As Object, e As EventArgs)
+
+    Public Event DeleteClicked(sender As Object, e As EventArgs)
+
+    Private Sub ImportSpf_Click(sender As Object, e As EventArgs) Handles ImportSpf.Click
+        RaiseEvent ImportSpfClicked(Me, New EventArgs)
     End Sub
 
-    Private Async Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
-        StartLoading()
-        Dim pastEnabled = TemplateParent.Enabled
-
-        Try
-            If MessageBox.Show("Are you sure you want to PERMANTLY delete this template?", "Warning - Deleting file",
-                               MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
-                Dim response = Await CurrentSender.RemoveTemplateAsync(CurrentUser.ToCredentials,
-                                                                  Template.GUID)
-                Select Case response
-                    Case LampStatus.OK
-                        MessageBox.Show("Edited successfully")
-                        TemplateParent.RaiseEditSuccessful(Me, New SubmitEventArgs(Template))
-                    Case LampStatus.InvalidUsernameOrPassword
-                        ShowLoginError(Me.ParentForm)
-                    Case Else
-                        ShowError(response)
-                End Select
-            End If
-
-        Catch ex As Exception
-            MessageBox.Show("An unknown error occured when communicating with server")
-#If DEBUG Then
-            Throw ex
-#End If
-        Finally
-            StopLoading()
-            TemplateParent.Enabled = pastEnabled
-        End Try
-
-
+    Private Sub ImportDxf_Click(sender As Object, e As EventArgs) Handles ImportDxf.Click
+        RaiseEvent ImportDxfClicked(Me, New EventArgs)
     End Sub
+
+    Private Sub ExportDxf_Click(sender As Object, e As EventArgs) Handles ExportDxf.Click
+        RaiseEvent ExportDxfClicked(Me, New EventArgs)
+    End Sub
+
+    Private Sub ExportSpf_Click(sender As Object, e As EventArgs) Handles ExportSpf.Click
+        RaiseEvent ExportSpfClicked(Me, New EventArgs)
+    End Sub
+
+    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
+        RaiseEvent DeleteClicked(Me, New EventArgs)
+    End Sub
+
+    Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmitEdit.Click
+        RaiseEvent SubmitEditClicked(Me, New EventArgs)
+    End Sub
+
+
+
+
+
+
+
 End Class
 

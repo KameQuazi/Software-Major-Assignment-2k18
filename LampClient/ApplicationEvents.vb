@@ -163,9 +163,14 @@ Public Module OwO
         End If
     End Sub
 
-    Public Sub SetServiceEndpoint(url As String)
+    Public Sub SetServiceEndpoint(url As String, Optional timeout As TimeSpan? = Nothing)
+        If timeout Is Nothing Then
+            ' set timeout to default
+            timeout = New TimeSpan(0, 1, 0)
+        End If
         Dim endpoint As New EndpointAddress(url)
         Dim binding = New BasicHttpBinding()
+        binding.OpenTimeout = timeout
         binding.MaxReceivedMessageSize = 2147483647 ' as big as possible
         binding.MaxBufferSize = 2147483647
         SetServiceEndpoint(New LampRemoteWcfClient(binding, endpoint))
@@ -213,14 +218,12 @@ Public Module OwO
         Return this.Items(this.SelectedIndex).ToString
     End Function
 
-    Private _shownWaitForm As Boolean = False
-    Private _shownForm As New LoadingMessageBox
 
     Public Sub ShowWaitForm()
-        _shownForm.Show()
+        LoadingMessageBox.Show()
     End Sub
 
     Public Sub HideWaitForm()
-        _shownForm.Hide()
+        LoadingMessageBox.Close()
     End Sub
 End Module

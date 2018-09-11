@@ -113,6 +113,8 @@ Public Class DxfViewerControl
         End Set
     End Property
 
+
+
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
@@ -157,11 +159,25 @@ Public Class DxfViewerControl
 
     End Sub
 
-
+    ''' <summary>
+    ''' shifts the bottom left of view to zero
+    ''' </summary>
     Public Sub ShiftToZero()
         Me.Center = New PointF((Width / ZoomX) / 2, (Height / ZoomY) / 2)
-
     End Sub
+
+    ''' <summary>
+    ''' sets the bounds of dxf to size given
+    ''' </summary>
+    ''' <param name="bounds"></param>
+    Public Sub SetDxfBounds(bounds As SizeF)
+        Dim pixelsPerX = bounds.Width / Me.Width
+        Me.ZoomX = 1 / pixelsPerX
+        Dim pixelsPerY = bounds.Height / Me.Height
+        Me.ZoomY = 1 / pixelsPerY
+    End Sub
+
+
 
 
 

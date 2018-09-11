@@ -382,7 +382,7 @@ Public Class LampServiceLocal
                 response.Status = LampStatus.InvalidParameters
                 Return response
             End If
-            Dim auth = Await AuthenticateAsync(credentials)
+            Dim auth = Await AuthenticateAsync(credentials).ConfigureAwait(False)
             If auth.user Is Nothing Then
                 response.Status = auth.Status
                 Return response
@@ -417,36 +417,39 @@ Public Class LampServiceLocal
         Dim response As LampStatus
 
         Try
-            Dim auth = Await AuthenticateAsync(credentials)
-            If auth.user IsNot Nothing Then
-
-                Dim user = auth.user
-
-
-                If HasAddUnapprovedTemplatePerms(user, template) Then
-                    If Await Database.SelectTemplateDataAsync(template.GUID) Is Nothing Then
-                        Database.SetTemplate(template, user.UserId) ' no approver
-                        response = LampStatus.OK
-                    Else
-                        response = LampStatus.GuidConflict
-                    End If
-
-                Else
-                    response = LampStatus.NoAccess
-
-                End If
-            Else
-                response = auth.Status
-
+            If Not ValidTemplate(template) Then
+                response = LampStatus.InvalidParameters
+                Return response
             End If
+            Dim auth = Await AuthenticateAsync(credentials).ConfigureAwait(False)
+            If auth.user Is Nothing Then
+                response = auth.Status
+                Return response
+            End If
+
+            Dim user = auth.user
+
+            If Await Database.SelectTemplateDataAsync(template.GUID).ConfigureAwait(False) IsNot Nothing Then
+                response = LampStatus.GuidConflict
+                Return response
+            End If
+
+            If Not HasAddUnapprovedTemplatePerms(user, template) Then
+                response = LampStatus.NoAccess
+                Return response
+            End If
+
+            ' passed all tests
+            Await Database.SetTemplateAsync(template, user.UserId).ConfigureAwait(False) ' no approver
+            response = LampStatus.OK
+            Return response
 
 
         Catch ex As Exception
             response = LampStatus.InternalServerError
             Log(ex)
+            Return response
         End Try
-
-        Return response
     End Function
 
     Public Async Function EditUnapprovedTemplateAsync(credentials As LampCredentials, newTemplate As LampTemplate) As Task(Of LampStatus) Implements ILampServiceClient.EditUnapprovedTemplateAsync
