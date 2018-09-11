@@ -28,12 +28,12 @@ Partial Class EditTemplateDialogButtons
         Me.ExportDxf = New System.Windows.Forms.Button()
         Me.ExportSpf = New System.Windows.Forms.Button()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnNewJob = New System.Windows.Forms.Button()
-        Me.btnSubmitTemplate = New System.Windows.Forms.Button()
         Me.DxfFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.DxfSaveDialog = New System.Windows.Forms.SaveFileDialog()
         Me.SpfSaveDialog = New System.Windows.Forms.SaveFileDialog()
         Me.SpfOpenDialog = New System.Windows.Forms.OpenFileDialog()
+        Me.btnSubmitEdit = New System.Windows.Forms.Button()
+        Me.btnDelete = New System.Windows.Forms.Button()
         Me.RootTableLayoutPanel.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
@@ -120,44 +120,17 @@ Partial Class EditTemplateDialogButtons
         Me.TableLayoutPanel3.ColumnCount = 1
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel3.Controls.Add(Me.btnNewJob, 0, 1)
-        Me.TableLayoutPanel3.Controls.Add(Me.btnSubmitTemplate, 0, 0)
+        Me.TableLayoutPanel3.Controls.Add(Me.btnDelete, 0, 1)
+        Me.TableLayoutPanel3.Controls.Add(Me.btnSubmitEdit, 0, 0)
         Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel3.Location = New System.Drawing.Point(214, 3)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
         Me.TableLayoutPanel3.RowCount = 2
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel3.Size = New System.Drawing.Size(136, 149)
         Me.TableLayoutPanel3.TabIndex = 46
-        '
-        'btnNewJob
-        '
-        Me.btnNewJob.BackColor = System.Drawing.Color.White
-        Me.btnNewJob.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnNewJob.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnNewJob.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.btnNewJob.Location = New System.Drawing.Point(4, 78)
-        Me.btnNewJob.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnNewJob.Name = "btnNewJob"
-        Me.btnNewJob.Size = New System.Drawing.Size(128, 67)
-        Me.btnNewJob.TabIndex = 46
-        Me.btnNewJob.Text = "Create Job With Template"
-        Me.btnNewJob.UseVisualStyleBackColor = False
-        '
-        'btnSubmitTemplate
-        '
-        Me.btnSubmitTemplate.BackColor = System.Drawing.Color.White
-        Me.btnSubmitTemplate.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.btnSubmitTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSubmitTemplate.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
-        Me.btnSubmitTemplate.Location = New System.Drawing.Point(4, 4)
-        Me.btnSubmitTemplate.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnSubmitTemplate.Name = "btnSubmitTemplate"
-        Me.btnSubmitTemplate.Size = New System.Drawing.Size(128, 66)
-        Me.btnSubmitTemplate.TabIndex = 45
-        Me.btnSubmitTemplate.Text = "Submit To Database"
-        Me.btnSubmitTemplate.UseVisualStyleBackColor = False
         '
         'DxfFileDialog
         '
@@ -176,12 +149,40 @@ Partial Class EditTemplateDialogButtons
         Me.SpfOpenDialog.FileName = "SpfFileDialog"
         Me.SpfOpenDialog.Filter = "spf file|*.spf|All files|*.*"
         '
-        'CreateNewTemplateButtons
+        'btnSubmitEdit
+        '
+        Me.btnSubmitEdit.BackColor = System.Drawing.Color.White
+        Me.btnSubmitEdit.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnSubmitEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnSubmitEdit.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.btnSubmitEdit.Location = New System.Drawing.Point(4, 4)
+        Me.btnSubmitEdit.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnSubmitEdit.Name = "btnSubmitEdit"
+        Me.btnSubmitEdit.Size = New System.Drawing.Size(128, 66)
+        Me.btnSubmitEdit.TabIndex = 47
+        Me.btnSubmitEdit.Text = "Submit Edit"
+        Me.btnSubmitEdit.UseVisualStyleBackColor = False
+        '
+        'btnDelete
+        '
+        Me.btnDelete.BackColor = System.Drawing.Color.White
+        Me.btnDelete.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnDelete.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.btnDelete.Location = New System.Drawing.Point(4, 78)
+        Me.btnDelete.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnDelete.Name = "btnDelete"
+        Me.btnDelete.Size = New System.Drawing.Size(128, 67)
+        Me.btnDelete.TabIndex = 48
+        Me.btnDelete.Text = "Delete"
+        Me.btnDelete.UseVisualStyleBackColor = False
+        '
+        'EditTemplateDialogButtons
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.RootTableLayoutPanel)
-        Me.Name = "CreateNewTemplateButtons"
+        Me.Name = "EditTemplateDialogButtons"
         Me.Size = New System.Drawing.Size(353, 155)
         Me.RootTableLayoutPanel.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
@@ -196,10 +197,10 @@ Partial Class EditTemplateDialogButtons
     Friend WithEvents ExportDxf As Button
     Friend WithEvents ExportSpf As Button
     Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
-    Friend WithEvents btnNewJob As Button
-    Friend WithEvents btnSubmitTemplate As Button
     Friend WithEvents DxfFileDialog As OpenFileDialog
     Friend WithEvents DxfSaveDialog As SaveFileDialog
     Friend WithEvents SpfSaveDialog As SaveFileDialog
     Friend WithEvents SpfOpenDialog As OpenFileDialog
+    Friend WithEvents btnSubmitEdit As Button
+    Friend WithEvents btnDelete As Button
 End Class

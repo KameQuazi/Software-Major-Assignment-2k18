@@ -84,36 +84,81 @@ Public Class EditTemplateDialogButtons
         Me.TemplateParent = parent
     End Sub
 
-    Private Async Sub btnSubmitTemplate_Click(sender As Object, e As EventArgs) Handles btnSubmitTemplate.Click
-
-        ShowWaitForm()
-        Dim pastEnabled = TemplateParent.Enabled
-        TemplateParent.Enabled = False
+    Private Sub StartLoading()
         RaiseEvent LoadingStart(Me, New EventArgs)
+        TemplateParent.Enabled = False
         ShowWaitForm()
+    End Sub
+
+    Private Sub StopLoading()
+        RaiseEvent LoadingEnd(Me, New EventArgs)
+        HideWaitForm()
+    End Sub
+
+
+
+    Private Async Sub btnSubmitEdit_Click(sender As Object, e As EventArgs) Handles btnSubmitEdit.Click
+        StartLoading()
+        Dim pastEnabled = TemplateParent.Enabled
+
         Try
-            Dim response = Await CurrentSender.AddUnapprovedTemplateAsync(CurrentUser.ToCredentials, Template)
-            Select Case response
-                Case LampStatus.OK
-                    MessageBox.Show("Submitted Successfully")
-                    TemplateParent.RaiseSubmitSuccessful(Me, New SubmitEventArgs(Template))
-                Case LampStatus.InvalidUsernameOrPassword
-                    ShowLoginError(Me.ParentForm)
-                Case Else
-                    ShowError(response)
-            End Select
+            If MessageBox.Show("Are you sure you edit this template? Previous data may be lost", "Warning - Editing file",
+                               MessageBoxButtons.YesNo) = DialogResult.Yes Then
+                Dim response = Await CurrentSender.EditTemplateAsync(CurrentUser.ToCredentials, Template)
+                Select Case response
+                    Case LampStatus.OK
+                        MessageBox.Show("Edited successfully")
+                        TemplateParent.RaiseEditSuccessful(Me, New SubmitEventArgs(Template))
+                    Case LampStatus.InvalidUsernameOrPassword
+                        ShowLoginError(Me.ParentForm)
+                    Case Else
+                        ShowError(response)
+                End Select
+            End If
 
         Catch ex As Exception
-
+            MessageBox.Show("An unknown error occured when communicating with server")
 #If DEBUG Then
             Throw ex
 #End If
-
         Finally
+            StopLoading()
             TemplateParent.Enabled = pastEnabled
-            RaiseEvent LoadingEnd(Me, New EventArgs)
-            HideWaitForm()
         End Try
+
+    End Sub
+
+    Private Async Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
+        StartLoading()
+        Dim pastEnabled = TemplateParent.Enabled
+
+        Try
+            If MessageBox.Show("Are you sure you want to PERMANTLY delete this template?", "Warning - Deleting file",
+                               MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
+                Dim response = Await CurrentSender.RemoveTemplateAsync(CurrentUser.ToCredentials,
+                                                                  Template.GUID)
+                Select Case response
+                    Case LampStatus.OK
+                        MessageBox.Show("Edited successfully")
+                        TemplateParent.RaiseEditSuccessful(Me, New SubmitEventArgs(Template))
+                    Case LampStatus.InvalidUsernameOrPassword
+                        ShowLoginError(Me.ParentForm)
+                    Case Else
+                        ShowError(response)
+                End Select
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("An unknown error occured when communicating with server")
+#If DEBUG Then
+            Throw ex
+#End If
+        Finally
+            StopLoading()
+            TemplateParent.Enabled = pastEnabled
+        End Try
+
+
     End Sub
 End Class
 

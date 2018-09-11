@@ -340,9 +340,22 @@ Public Class TemplateCreatorControl
 
     Public Event SubmitSuccessful(sender As Object, e As SubmitEventArgs)
 
+    Public Event EditSuccessful(sender As Object, e As SubmitEventArgs)
+
+    Public Event DeleteSuccesful(sender As Object, e As SubmitEventArgs)
+
     Friend Sub RaiseSubmitSuccessful(sender As Object, e As SubmitEventArgs)
         RaiseEvent SubmitSuccessful(Me, e)
     End Sub
+
+    Friend Sub RaiseEditSuccessful(sender As Object, e As SubmitEventArgs)
+        RaiseEvent EditSuccessful(Me, e)
+    End Sub
+
+    Friend Sub RaiseDeleteSuccessful(sender As Object, e As SubmitEventArgs)
+        RaiseEvent DeleteSuccesful(Me, e)
+    End Sub
+
 
 
     Private Async Sub btnSubmitTemplate_Click(sender As Object, e As EventArgs)

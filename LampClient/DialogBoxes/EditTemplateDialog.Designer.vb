@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class EditTemplateDialog
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,16 +20,13 @@ Partial Class EditTemplateDialog
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EditTemplateDialog))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.TemplateCreatorControl1 = New LampClient.TemplateCreatorControl()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.btnSubmitEdit = New System.Windows.Forms.Button()
-        Me.btnDelete = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1.SuspendLayout()
-        Me.FlowLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -52,46 +49,19 @@ Partial Class EditTemplateDialog
         Me.TemplateCreatorControl1.DrawingOpenProgram = Nothing
         Me.TemplateCreatorControl1.Location = New System.Drawing.Point(3, 73)
         Me.TemplateCreatorControl1.Name = "TemplateCreatorControl1"
+        Me.TemplateCreatorControl1.OptionsControl = Nothing
         Me.TemplateCreatorControl1.ReadOnly = False
         Me.TemplateCreatorControl1.Size = New System.Drawing.Size(1226, 592)
         Me.TemplateCreatorControl1.TabIndex = 1
         '
         'FlowLayoutPanel1
         '
-        Me.FlowLayoutPanel1.Controls.Add(Me.btnSubmitEdit)
-        Me.FlowLayoutPanel1.Controls.Add(Me.btnDelete)
         Me.FlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft
         Me.FlowLayoutPanel1.Location = New System.Drawing.Point(3, 3)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
         Me.FlowLayoutPanel1.Size = New System.Drawing.Size(1226, 64)
         Me.FlowLayoutPanel1.TabIndex = 2
-        '
-        'btnSubmitEdit
-        '
-        Me.btnSubmitEdit.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnSubmitEdit.BackColor = System.Drawing.Color.White
-        Me.btnSubmitEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSubmitEdit.Location = New System.Drawing.Point(1161, 4)
-        Me.btnSubmitEdit.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnSubmitEdit.Name = "btnSubmitEdit"
-        Me.btnSubmitEdit.Size = New System.Drawing.Size(61, 59)
-        Me.btnSubmitEdit.TabIndex = 13
-        Me.btnSubmitEdit.Text = "Submit Edit"
-        Me.btnSubmitEdit.UseVisualStyleBackColor = False
-        '
-        'btnDelete
-        '
-        Me.btnDelete.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnDelete.BackColor = System.Drawing.Color.White
-        Me.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnDelete.Location = New System.Drawing.Point(1092, 4)
-        Me.btnDelete.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnDelete.Name = "btnDelete"
-        Me.btnDelete.Size = New System.Drawing.Size(61, 59)
-        Me.btnDelete.TabIndex = 14
-        Me.btnDelete.Text = "Delete"
-        Me.btnDelete.UseVisualStyleBackColor = False
         '
         'EditTemplateDialog
         '
@@ -103,7 +73,6 @@ Partial Class EditTemplateDialog
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Editing Template - LAMP"
         Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -111,6 +80,4 @@ Partial Class EditTemplateDialog
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents TemplateCreatorControl1 As TemplateCreatorControl
     Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
-    Friend WithEvents btnSubmitEdit As Button
-    Friend WithEvents btnDelete As Button
 End Class

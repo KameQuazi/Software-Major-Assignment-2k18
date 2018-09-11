@@ -84,13 +84,22 @@ Public Class CreateNewTemplateButtons
         Me.TemplateParent = parent
     End Sub
 
-    Private Async Sub btnSubmitTemplate_Click(sender As Object, e As EventArgs) Handles btnSubmitTemplate.Click
-
-        ShowWaitForm()
-        Dim pastEnabled = TemplateParent.Enabled
-        TemplateParent.Enabled = False
+    Private Sub StartLoading()
         RaiseEvent LoadingStart(Me, New EventArgs)
+        TemplateParent.Enabled = False
         ShowWaitForm()
+    End Sub
+
+    Private Sub StopLoading()
+        RaiseEvent LoadingEnd(Me, New EventArgs)
+        HideWaitForm()
+    End Sub
+
+    Private Async Sub btnSubmitTemplate_Click(sender As Object, e As EventArgs) Handles btnSubmitTemplate.Click
+        Dim pastEnabled = TemplateParent.Enabled
+
+        StartLoading()
+
         Try
             Dim response = Await CurrentSender.AddUnapprovedTemplateAsync(CurrentUser.ToCredentials, Template)
             Select Case response
@@ -110,9 +119,9 @@ Public Class CreateNewTemplateButtons
 #End If
 
         Finally
+            StopLoading()
             TemplateParent.Enabled = pastEnabled
-            RaiseEvent LoadingEnd(Me, New EventArgs)
-            HideWaitForm()
+
         End Try
     End Sub
 End Class
