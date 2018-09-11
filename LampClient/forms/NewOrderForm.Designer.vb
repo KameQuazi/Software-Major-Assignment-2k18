@@ -26,23 +26,23 @@ Partial Class NewOrderForm
         Me.txtRecipient = New System.Windows.Forms.TextBox()
         Me.txtPrefix = New System.Windows.Forms.ComboBox()
         Me.grpParameters = New System.Windows.Forms.GroupBox()
+        Me.txtSum = New System.Windows.Forms.TextBox()
         Me.txtNum = New System.Windows.Forms.TextBox()
         Me.btnDEBUG = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.btnNext = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.ToolBar1 = New LampClient.ToolBar()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
-        Me.txtSum = New System.Windows.Forms.TextBox()
-        Me.grpParameters.SuspendLayout()
         Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
         Me.gboxHelp = New System.Windows.Forms.GroupBox()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.gbox1 = New System.Windows.Forms.GroupBox()
-        Me.ToolBar1 = New LampClient.ToolBar()
         Me.ServiceSortableTemplateViewer1 = New LampClient.ServiceSortableTemplateViewer()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.DxfViewerControl1 = New LampClient.DxfViewerControl()
+        Me.grpParameters.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
@@ -85,6 +85,15 @@ Partial Class NewOrderForm
         Me.grpParameters.TabIndex = 36
         Me.grpParameters.TabStop = False
         Me.grpParameters.Text = "Edit Text"
+        '
+        'txtSum
+        '
+        Me.txtSum.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!)
+        Me.txtSum.Location = New System.Drawing.Point(173, 222)
+        Me.txtSum.Name = "txtSum"
+        Me.txtSum.Size = New System.Drawing.Size(224, 29)
+        Me.txtSum.TabIndex = 43
+        Me.txtSum.Text = "Summary"
         '
         'txtNum
         '
@@ -144,6 +153,23 @@ Partial Class NewOrderForm
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1232, 703)
         Me.TableLayoutPanel1.TabIndex = 38
         '
+        'ToolBar1
+        '
+        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.ToolBar1.ConfirmationRequired = Nothing
+        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ToolBar1.HomeEnabled = True
+        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
+        Me.ToolBar1.Margin = New System.Windows.Forms.Padding(0)
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.NewOrderEnabled = False
+        Me.ToolBar1.NewTemplateEnabled = True
+        Me.ToolBar1.Size = New System.Drawing.Size(1232, 105)
+        Me.ToolBar1.TabIndex = 37
+        Me.ToolBar1.ViewOrderEnabled = True
+        Me.ToolBar1.ViewTemplateEnabled = True
+        '
         'TableLayoutPanel2
         '
         Me.TableLayoutPanel2.ColumnCount = 2
@@ -187,6 +213,17 @@ Partial Class NewOrderForm
         Me.gboxHelp.TabStop = False
         Me.gboxHelp.Text = "Help"
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Arial Narrow", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(2, 115)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(206, 40)
+        Me.Label2.TabIndex = 1
+        Me.Label2.Text = "Click on a template in the list to" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "select"
+        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -211,21 +248,6 @@ Partial Class NewOrderForm
         Me.gbox1.TabStop = False
         Me.gbox1.Text = "Choose Template"
         '
-        'ToolBar1
-        '
-        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
-        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = False
-        Me.ToolBar1.NewTemplateEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
-        Me.ToolBar1.TabIndex = 37
-        Me.ToolBar1.ViewOrderEnabled = True
-        Me.ToolBar1.ViewTemplateEnabled = True
-        '
         'ServiceSortableTemplateViewer1
         '
         Me.ServiceSortableTemplateViewer1.ApprovedType = LampCommon.LampApprove.All
@@ -242,31 +264,12 @@ Partial Class NewOrderForm
         Me.ServiceSortableTemplateViewer1.TabIndex = 0
         Me.ServiceSortableTemplateViewer1.TitleText = "Choose Template"
         '
-        'Label2
+        'Panel1
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Arial Narrow", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(2, 115)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(206, 40)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Click on a template in the list to" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "select"
-        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'ToolBar1
-        '
-        Me.ToolBar1.BackColor = System.Drawing.Color.MediumSlateBlue
-        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.NewOrderEnabled = False
-        Me.ToolBar1.NewTemplateEnabled = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
-        Me.ToolBar1.TabIndex = 37
-        Me.ToolBar1.ViewOrderEnabled = True
-        Me.ToolBar1.ViewTemplateEnabled = True
+        Me.Panel1.Location = New System.Drawing.Point(0, 0)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(200, 100)
+        Me.Panel1.TabIndex = 0
         '
         'DxfViewerControl1
         '
@@ -277,19 +280,11 @@ Partial Class NewOrderForm
         Me.DxfViewerControl1.Location = New System.Drawing.Point(0, 0)
         Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(4)
         Me.DxfViewerControl1.Name = "DxfViewerControl1"
+        Me.DxfViewerControl1.Readonly = False
         Me.DxfViewerControl1.Size = New System.Drawing.Size(607, 586)
         Me.DxfViewerControl1.TabIndex = 39
         Me.DxfViewerControl1.ZoomX = 1.0R
         Me.DxfViewerControl1.ZoomY = 1.0R
-        '
-        'txtSum
-        '
-        Me.txtSum.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!)
-        Me.txtSum.Location = New System.Drawing.Point(173, 222)
-        Me.txtSum.Name = "txtSum"
-        Me.txtSum.Size = New System.Drawing.Size(224, 29)
-        Me.txtSum.TabIndex = 43
-        Me.txtSum.Text = "Summary"
         '
         'NewOrderForm
         '
@@ -301,6 +296,8 @@ Partial Class NewOrderForm
         Me.Name = "NewOrderForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "LAMP - Create New Job"
+        Me.grpParameters.ResumeLayout(False)
+        Me.grpParameters.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.TableLayoutPanel3.ResumeLayout(False)

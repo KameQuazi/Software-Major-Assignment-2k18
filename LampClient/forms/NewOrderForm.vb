@@ -111,4 +111,8 @@ Public Class NewOrderForm
         x.Show()
         Me.Close()
     End Sub
+
+    Private Sub NewOrderForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Icon = My.Resources.Logo_w_Circle1
+    End Sub
 End Class

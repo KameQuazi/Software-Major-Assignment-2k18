@@ -48,7 +48,7 @@ Partial Class LoginForm
         'txtUser
         '
         Me.txtUser.Font = New System.Drawing.Font("Arial", 15.25!)
-        Me.txtUser.Location = New System.Drawing.Point(460, 478)
+        Me.txtUser.Location = New System.Drawing.Point(407, 486)
         Me.txtUser.Name = "txtUser"
         Me.txtUser.Size = New System.Drawing.Size(193, 31)
         Me.txtUser.TabIndex = 0
@@ -56,7 +56,7 @@ Partial Class LoginForm
         'txtPass
         '
         Me.txtPass.Font = New System.Drawing.Font("Arial", 15.25!)
-        Me.txtPass.Location = New System.Drawing.Point(460, 521)
+        Me.txtPass.Location = New System.Drawing.Point(407, 529)
         Me.txtPass.Name = "txtPass"
         Me.txtPass.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.txtPass.Size = New System.Drawing.Size(193, 31)
@@ -66,7 +66,7 @@ Partial Class LoginForm
         '
         Me.lblUser.AutoSize = True
         Me.lblUser.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.lblUser.Location = New System.Drawing.Point(347, 485)
+        Me.lblUser.Location = New System.Drawing.Point(294, 493)
         Me.lblUser.Name = "lblUser"
         Me.lblUser.Size = New System.Drawing.Size(88, 19)
         Me.lblUser.TabIndex = 2
@@ -76,7 +76,7 @@ Partial Class LoginForm
         '
         Me.lblPass.AutoSize = True
         Me.lblPass.Font = New System.Drawing.Font("Arial", 12.25!)
-        Me.lblPass.Location = New System.Drawing.Point(349, 528)
+        Me.lblPass.Location = New System.Drawing.Point(296, 536)
         Me.lblPass.Name = "lblPass"
         Me.lblPass.Size = New System.Drawing.Size(85, 19)
         Me.lblPass.TabIndex = 3
@@ -97,7 +97,7 @@ Partial Class LoginForm
         Me.btnLogin.BackColor = System.Drawing.Color.White
         Me.btnLogin.Enabled = False
         Me.btnLogin.Font = New System.Drawing.Font("Arial", 10.25!)
-        Me.btnLogin.Location = New System.Drawing.Point(562, 564)
+        Me.btnLogin.Location = New System.Drawing.Point(509, 572)
         Me.btnLogin.Name = "btnLogin"
         Me.btnLogin.Size = New System.Drawing.Size(91, 53)
         Me.btnLogin.TabIndex = 5
@@ -108,7 +108,7 @@ Partial Class LoginForm
         '
         Me.btnCreate.BackColor = System.Drawing.Color.White
         Me.btnCreate.Font = New System.Drawing.Font("Arial", 10.25!)
-        Me.btnCreate.Location = New System.Drawing.Point(460, 564)
+        Me.btnCreate.Location = New System.Drawing.Point(407, 572)
         Me.btnCreate.Name = "btnCreate"
         Me.btnCreate.Size = New System.Drawing.Size(91, 53)
         Me.btnCreate.TabIndex = 6
@@ -118,7 +118,7 @@ Partial Class LoginForm
         'PasswordCheckbox
         '
         Me.PasswordCheckbox.AutoSize = True
-        Me.PasswordCheckbox.Location = New System.Drawing.Point(669, 531)
+        Me.PasswordCheckbox.Location = New System.Drawing.Point(616, 539)
         Me.PasswordCheckbox.Name = "PasswordCheckbox"
         Me.PasswordCheckbox.Size = New System.Drawing.Size(104, 18)
         Me.PasswordCheckbox.TabIndex = 7
