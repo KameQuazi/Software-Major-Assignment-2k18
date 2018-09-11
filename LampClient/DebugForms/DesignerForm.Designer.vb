@@ -50,14 +50,20 @@ Partial Class DesignerForm
         Me.btnUndo = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
         Me.SuspendLayout()
         '
         'OpenFileBtn
         '
         Me.OpenFileBtn.BackColor = System.Drawing.Color.White
         Me.OpenFileBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.OpenFileBtn.Location = New System.Drawing.Point(82, 163)
+        Me.OpenFileBtn.Location = New System.Drawing.Point(7, 20)
         Me.OpenFileBtn.Margin = New System.Windows.Forms.Padding(4)
         Me.OpenFileBtn.Name = "OpenFileBtn"
         Me.OpenFileBtn.Size = New System.Drawing.Size(100, 28)
@@ -75,7 +81,7 @@ Partial Class DesignerForm
         Me.SaveFileBtn.BackColor = System.Drawing.Color.White
         Me.SaveFileBtn.Enabled = False
         Me.SaveFileBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.SaveFileBtn.Location = New System.Drawing.Point(73, 199)
+        Me.SaveFileBtn.Location = New System.Drawing.Point(7, 56)
         Me.SaveFileBtn.Margin = New System.Windows.Forms.Padding(4)
         Me.SaveFileBtn.Name = "SaveFileBtn"
         Me.SaveFileBtn.Size = New System.Drawing.Size(100, 28)
@@ -85,10 +91,10 @@ Partial Class DesignerForm
         '
         'jsonOutput
         '
-        Me.jsonOutput.Location = New System.Drawing.Point(913, 343)
+        Me.jsonOutput.Location = New System.Drawing.Point(661, 196)
         Me.jsonOutput.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.jsonOutput.Name = "jsonOutput"
-        Me.jsonOutput.Size = New System.Drawing.Size(204, 210)
+        Me.jsonOutput.Size = New System.Drawing.Size(208, 210)
         Me.jsonOutput.TabIndex = 11
         Me.jsonOutput.Text = "serialized here"
         '
@@ -96,7 +102,7 @@ Partial Class DesignerForm
         '
         Me.rightButton.BackColor = System.Drawing.Color.White
         Me.rightButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.rightButton.Location = New System.Drawing.Point(1018, 258)
+        Me.rightButton.Location = New System.Drawing.Point(765, 129)
         Me.rightButton.Margin = New System.Windows.Forms.Padding(4)
         Me.rightButton.Name = "rightButton"
         Me.rightButton.Size = New System.Drawing.Size(100, 28)
@@ -108,7 +114,7 @@ Partial Class DesignerForm
         '
         Me.downButton.BackColor = System.Drawing.Color.White
         Me.downButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.downButton.Location = New System.Drawing.Point(966, 294)
+        Me.downButton.Location = New System.Drawing.Point(713, 165)
         Me.downButton.Margin = New System.Windows.Forms.Padding(4)
         Me.downButton.Name = "downButton"
         Me.downButton.Size = New System.Drawing.Size(100, 28)
@@ -120,7 +126,7 @@ Partial Class DesignerForm
         '
         Me.leftButton.BackColor = System.Drawing.Color.White
         Me.leftButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.leftButton.Location = New System.Drawing.Point(910, 258)
+        Me.leftButton.Location = New System.Drawing.Point(657, 129)
         Me.leftButton.Margin = New System.Windows.Forms.Padding(4)
         Me.leftButton.Name = "leftButton"
         Me.leftButton.Size = New System.Drawing.Size(100, 28)
@@ -132,7 +138,7 @@ Partial Class DesignerForm
         '
         Me.upButton.BackColor = System.Drawing.Color.White
         Me.upButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.upButton.Location = New System.Drawing.Point(966, 222)
+        Me.upButton.Location = New System.Drawing.Point(713, 93)
         Me.upButton.Margin = New System.Windows.Forms.Padding(4)
         Me.upButton.Name = "upButton"
         Me.upButton.Size = New System.Drawing.Size(100, 28)
@@ -142,10 +148,10 @@ Partial Class DesignerForm
         '
         'FilenameTbox
         '
-        Me.FilenameTbox.Location = New System.Drawing.Point(12, 280)
+        Me.FilenameTbox.Location = New System.Drawing.Point(661, 493)
         Me.FilenameTbox.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.FilenameTbox.Name = "FilenameTbox"
-        Me.FilenameTbox.Size = New System.Drawing.Size(170, 96)
+        Me.FilenameTbox.Size = New System.Drawing.Size(208, 96)
         Me.FilenameTbox.TabIndex = 16
         Me.FilenameTbox.Text = ""
         '
@@ -153,7 +159,7 @@ Partial Class DesignerForm
         '
         Me.Button1.BackColor = System.Drawing.Color.White
         Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button1.Location = New System.Drawing.Point(73, 235)
+        Me.Button1.Location = New System.Drawing.Point(115, 56)
         Me.Button1.Margin = New System.Windows.Forms.Padding(4)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(100, 28)
@@ -165,12 +171,12 @@ Partial Class DesignerForm
         '
         Me.TrackBar1.BackColor = System.Drawing.Color.White
         Me.TrackBar1.LargeChange = 100
-        Me.TrackBar1.Location = New System.Drawing.Point(892, 594)
+        Me.TrackBar1.Location = New System.Drawing.Point(661, 412)
         Me.TrackBar1.Margin = New System.Windows.Forms.Padding(4)
         Me.TrackBar1.Maximum = 1000
         Me.TrackBar1.Minimum = 10
         Me.TrackBar1.Name = "TrackBar1"
-        Me.TrackBar1.Size = New System.Drawing.Size(268, 45)
+        Me.TrackBar1.Size = New System.Drawing.Size(208, 45)
         Me.TrackBar1.SmallChange = 10
         Me.TrackBar1.TabIndex = 19
         Me.TrackBar1.TickFrequency = 10
@@ -179,10 +185,10 @@ Partial Class DesignerForm
         'ZoomLevelBox
         '
         Me.ZoomLevelBox.Enabled = False
-        Me.ZoomLevelBox.Location = New System.Drawing.Point(934, 654)
+        Me.ZoomLevelBox.Location = New System.Drawing.Point(661, 465)
         Me.ZoomLevelBox.Margin = New System.Windows.Forms.Padding(4)
         Me.ZoomLevelBox.Name = "ZoomLevelBox"
-        Me.ZoomLevelBox.Size = New System.Drawing.Size(132, 20)
+        Me.ZoomLevelBox.Size = New System.Drawing.Size(208, 20)
         Me.ZoomLevelBox.TabIndex = 20
         Me.ZoomLevelBox.Text = "100"
         '
@@ -190,7 +196,7 @@ Partial Class DesignerForm
         '
         Me.Button2.BackColor = System.Drawing.Color.White
         Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button2.Location = New System.Drawing.Point(39, 646)
+        Me.Button2.Location = New System.Drawing.Point(769, 647)
         Me.Button2.Margin = New System.Windows.Forms.Padding(4)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(100, 28)
@@ -202,81 +208,99 @@ Partial Class DesignerForm
         '
         Me.cboxStaticText.Appearance = System.Windows.Forms.Appearance.Button
         Me.cboxStaticText.AutoSize = True
-        Me.cboxStaticText.Location = New System.Drawing.Point(236, 382)
+        Me.cboxStaticText.BackColor = System.Drawing.Color.White
+        Me.cboxStaticText.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cboxStaticText.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.cboxStaticText.Location = New System.Drawing.Point(6, 19)
         Me.cboxStaticText.Name = "cboxStaticText"
-        Me.cboxStaticText.Size = New System.Drawing.Size(68, 23)
+        Me.cboxStaticText.Size = New System.Drawing.Size(84, 27)
         Me.cboxStaticText.TabIndex = 27
         Me.cboxStaticText.Text = "Static Text"
-        Me.cboxStaticText.UseVisualStyleBackColor = True
+        Me.cboxStaticText.UseVisualStyleBackColor = False
         '
         'cboxDynamicText
         '
         Me.cboxDynamicText.Appearance = System.Windows.Forms.Appearance.Button
         Me.cboxDynamicText.AutoSize = True
-        Me.cboxDynamicText.Location = New System.Drawing.Point(231, 423)
+        Me.cboxDynamicText.BackColor = System.Drawing.Color.White
+        Me.cboxDynamicText.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cboxDynamicText.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.cboxDynamicText.Location = New System.Drawing.Point(6, 56)
         Me.cboxDynamicText.Name = "cboxDynamicText"
-        Me.cboxDynamicText.Size = New System.Drawing.Size(79, 23)
+        Me.cboxDynamicText.Size = New System.Drawing.Size(99, 27)
         Me.cboxDynamicText.TabIndex = 28
         Me.cboxDynamicText.Text = "DynamicText"
-        Me.cboxDynamicText.UseVisualStyleBackColor = True
+        Me.cboxDynamicText.UseVisualStyleBackColor = False
         '
         'cboxLine
         '
         Me.cboxLine.Appearance = System.Windows.Forms.Appearance.Button
         Me.cboxLine.AutoSize = True
-        Me.cboxLine.Location = New System.Drawing.Point(261, 187)
+        Me.cboxLine.BackColor = System.Drawing.Color.White
+        Me.cboxLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cboxLine.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.cboxLine.Location = New System.Drawing.Point(6, 19)
         Me.cboxLine.Name = "cboxLine"
-        Me.cboxLine.Size = New System.Drawing.Size(37, 23)
+        Me.cboxLine.Size = New System.Drawing.Size(45, 27)
         Me.cboxLine.TabIndex = 29
         Me.cboxLine.Text = "Line"
-        Me.cboxLine.UseVisualStyleBackColor = True
+        Me.cboxLine.UseVisualStyleBackColor = False
         '
         'cboxCircle
         '
         Me.cboxCircle.Appearance = System.Windows.Forms.Appearance.Button
         Me.cboxCircle.AutoSize = True
-        Me.cboxCircle.Location = New System.Drawing.Point(257, 227)
+        Me.cboxCircle.BackColor = System.Drawing.Color.White
+        Me.cboxCircle.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cboxCircle.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.cboxCircle.Location = New System.Drawing.Point(6, 57)
         Me.cboxCircle.Name = "cboxCircle"
-        Me.cboxCircle.Size = New System.Drawing.Size(43, 23)
+        Me.cboxCircle.Size = New System.Drawing.Size(53, 27)
         Me.cboxCircle.TabIndex = 30
         Me.cboxCircle.Text = "Cirlce"
-        Me.cboxCircle.UseVisualStyleBackColor = True
+        Me.cboxCircle.UseVisualStyleBackColor = False
         '
         'cboxArc
         '
         Me.cboxArc.Appearance = System.Windows.Forms.Appearance.Button
         Me.cboxArc.AutoSize = True
-        Me.cboxArc.Location = New System.Drawing.Point(261, 294)
+        Me.cboxArc.BackColor = System.Drawing.Color.White
+        Me.cboxArc.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cboxArc.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.cboxArc.Location = New System.Drawing.Point(76, 57)
         Me.cboxArc.Name = "cboxArc"
-        Me.cboxArc.Size = New System.Drawing.Size(33, 23)
+        Me.cboxArc.Size = New System.Drawing.Size(39, 27)
         Me.cboxArc.TabIndex = 31
         Me.cboxArc.Text = "Arc"
-        Me.cboxArc.UseVisualStyleBackColor = True
+        Me.cboxArc.UseVisualStyleBackColor = False
         '
         'cboxMeasure
         '
         Me.cboxMeasure.Appearance = System.Windows.Forms.Appearance.Button
         Me.cboxMeasure.AutoSize = True
-        Me.cboxMeasure.Location = New System.Drawing.Point(257, 343)
+        Me.cboxMeasure.BackColor = System.Drawing.Color.White
+        Me.cboxMeasure.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.cboxMeasure.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.cboxMeasure.Location = New System.Drawing.Point(76, 19)
         Me.cboxMeasure.Name = "cboxMeasure"
-        Me.cboxMeasure.Size = New System.Drawing.Size(58, 23)
+        Me.cboxMeasure.Size = New System.Drawing.Size(73, 27)
         Me.cboxMeasure.TabIndex = 32
         Me.cboxMeasure.Text = "Meausre"
-        Me.cboxMeasure.UseVisualStyleBackColor = True
+        Me.cboxMeasure.UseVisualStyleBackColor = False
         '
         'rtboxPrevious
         '
-        Me.rtboxPrevious.Location = New System.Drawing.Point(303, 548)
+        Me.rtboxPrevious.Location = New System.Drawing.Point(12, 493)
         Me.rtboxPrevious.Name = "rtboxPrevious"
-        Me.rtboxPrevious.Size = New System.Drawing.Size(546, 96)
+        Me.rtboxPrevious.Size = New System.Drawing.Size(636, 96)
         Me.rtboxPrevious.TabIndex = 33
         Me.rtboxPrevious.Text = ""
         '
         'rtboxCurrent
         '
-        Me.rtboxCurrent.Location = New System.Drawing.Point(303, 651)
+        Me.rtboxCurrent.Location = New System.Drawing.Point(12, 595)
         Me.rtboxCurrent.Name = "rtboxCurrent"
-        Me.rtboxCurrent.Size = New System.Drawing.Size(546, 37)
+        Me.rtboxCurrent.Size = New System.Drawing.Size(636, 45)
         Me.rtboxCurrent.TabIndex = 34
         Me.rtboxCurrent.Text = ""
         '
@@ -284,10 +308,11 @@ Partial Class DesignerForm
         '
         Me.DesignerScreen1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.DesignerScreen1.Center = CType(resources.GetObject("DesignerScreen1.Center"), System.Drawing.PointF)
-        Me.DesignerScreen1.Location = New System.Drawing.Point(339, 174)
+        Me.DesignerScreen1.Location = New System.Drawing.Point(12, 120)
         Me.DesignerScreen1.Margin = New System.Windows.Forms.Padding(5)
         Me.DesignerScreen1.Name = "DesignerScreen1"
-        Me.DesignerScreen1.Size = New System.Drawing.Size(501, 366)
+        Me.DesignerScreen1.Readonly = False
+        Me.DesignerScreen1.Size = New System.Drawing.Size(636, 366)
         Me.DesignerScreen1.TabIndex = 17
         Me.DesignerScreen1.ZoomX = 1.0R
         Me.DesignerScreen1.ZoomY = 1.0R
@@ -296,7 +321,7 @@ Partial Class DesignerForm
         '
         Me.btnUndo.BackColor = System.Drawing.Color.White
         Me.btnUndo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnUndo.Location = New System.Drawing.Point(86, 109)
+        Me.btnUndo.Location = New System.Drawing.Point(115, 20)
         Me.btnUndo.Margin = New System.Windows.Forms.Padding(4)
         Me.btnUndo.Name = "btnUndo"
         Me.btnUndo.Size = New System.Drawing.Size(100, 28)
@@ -306,38 +331,73 @@ Partial Class DesignerForm
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(56, 583)
+        Me.TextBox1.Location = New System.Drawing.Point(661, 594)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox1.Size = New System.Drawing.Size(208, 20)
         Me.TextBox1.TabIndex = 36
         '
         'TextBox2
         '
-        Me.TextBox2.Location = New System.Drawing.Point(178, 583)
+        Me.TextBox2.Location = New System.Drawing.Point(661, 620)
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox2.Size = New System.Drawing.Size(208, 20)
         Me.TextBox2.TabIndex = 37
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btnUndo)
+        Me.GroupBox1.Controls.Add(Me.OpenFileBtn)
+        Me.GroupBox1.Controls.Add(Me.SaveFileBtn)
+        Me.GroupBox1.Controls.Add(Me.Button1)
+        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(222, 100)
+        Me.GroupBox1.TabIndex = 38
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "File"
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.cboxLine)
+        Me.GroupBox2.Controls.Add(Me.cboxCircle)
+        Me.GroupBox2.Controls.Add(Me.cboxArc)
+        Me.GroupBox2.Controls.Add(Me.cboxMeasure)
+        Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.GroupBox2.Location = New System.Drawing.Point(240, 12)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(164, 100)
+        Me.GroupBox2.TabIndex = 39
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Add"
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.cboxStaticText)
+        Me.GroupBox3.Controls.Add(Me.cboxDynamicText)
+        Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.25!)
+        Me.GroupBox3.Location = New System.Drawing.Point(410, 12)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(117, 100)
+        Me.GroupBox3.TabIndex = 40
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Text"
         '
         'DesignerForm
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Silver
-        Me.ClientSize = New System.Drawing.Size(1232, 703)
+        Me.ClientSize = New System.Drawing.Size(882, 685)
+        Me.Controls.Add(Me.GroupBox3)
+        Me.Controls.Add(Me.GroupBox2)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TextBox2)
         Me.Controls.Add(Me.TextBox1)
-        Me.Controls.Add(Me.btnUndo)
         Me.Controls.Add(Me.rtboxCurrent)
         Me.Controls.Add(Me.rtboxPrevious)
-        Me.Controls.Add(Me.cboxMeasure)
-        Me.Controls.Add(Me.cboxArc)
-        Me.Controls.Add(Me.cboxCircle)
-        Me.Controls.Add(Me.cboxLine)
-        Me.Controls.Add(Me.cboxDynamicText)
-        Me.Controls.Add(Me.cboxStaticText)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.ZoomLevelBox)
         Me.Controls.Add(Me.TrackBar1)
-        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.DesignerScreen1)
         Me.Controls.Add(Me.FilenameTbox)
         Me.Controls.Add(Me.upButton)
@@ -345,14 +405,17 @@ Partial Class DesignerForm
         Me.Controls.Add(Me.downButton)
         Me.Controls.Add(Me.rightButton)
         Me.Controls.Add(Me.jsonOutput)
-        Me.Controls.Add(Me.SaveFileBtn)
-        Me.Controls.Add(Me.OpenFileBtn)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "DesignerForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "LAMP - Designer"
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -385,4 +448,7 @@ Partial Class DesignerForm
     Friend WithEvents btnUndo As Button
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents TextBox2 As TextBox
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents GroupBox3 As GroupBox
 End Class
