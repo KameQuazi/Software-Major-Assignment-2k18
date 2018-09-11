@@ -161,6 +161,12 @@
     <Compile Include="controls\jobs\AdvancedJobViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="controls\replaceable\EditTemplateDialogButtons.Designer.vb">
+      <DependentUpon>EditTemplateDialogButtons.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\replaceable\EditTemplateDialogButtons.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\replaceable\CreateNewTemplateButtons.Designer.vb">
       <DependentUpon>CreateNewTemplateButtons.vb</DependentUpon>
     </Compile>
@@ -533,6 +539,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="controls\jobs\AdvancedJobViewer.resx">
       <DependentUpon>AdvancedJobViewer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="controls\replaceable\EditTemplateDialogButtons.resx">
+      <DependentUpon>EditTemplateDialogButtons.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="controls\replaceable\CreateNewTemplateButtons.resx">
       <DependentUpon>CreateNewTemplateButtons.vb</DependentUpon>

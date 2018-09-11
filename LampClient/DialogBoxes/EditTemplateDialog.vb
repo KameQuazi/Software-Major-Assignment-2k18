@@ -29,12 +29,13 @@ Public Class EditTemplateDialog
         Dim buttons = New EditTemplateDialogButtons(TemplateCreatorControl1)
         buttons.Dock = DockStyle.Fill
 
+        TemplateCreatorControl1.OptionsControl = buttons
+
+
     End Sub
 
-    Private Sub TemplateCreatorControl1_SubmitSuccessful(sender As Object, e As SubmitEventArgs) Handles TemplateCreatorControl1.SubmitSuccessful
+    Private Sub TemplateCreatorControl1_EditSuccessful(sender As Object, e As SubmitEventArgs) Handles TemplateCreatorControl1.EditSuccessful, TemplateCreatorControl1.DeleteSuccesful
         Me.Close()
     End Sub
-
-
 
 End Class

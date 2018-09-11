@@ -18,12 +18,12 @@
         ToolBar1.ShowPreviousForm(Me)
     End Sub
 
-    Private Sub LoadingStart()
+    Private Sub LoadingStart(sender As Object, e As EventArgs)
         Me.ToolBar1.Enabled = False
 
     End Sub
 
-    Private Sub LoadingEnd()
+    Private Sub LoadingEnd(sender As Object, e As EventArgs)
         Me.ToolBar1.Enabled = True
     End Sub
 

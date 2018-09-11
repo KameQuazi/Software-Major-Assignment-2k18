@@ -16,11 +16,13 @@ Public Class TemplateCreatorControl
                 gboxOptions.Controls.Remove(_optionsControl)
             End If
 
-            _optionsControl = value
-
-            If _optionsControl.GetType().GetField("ReadOnly") IsNot Nothing Then
-                DirectCast(_optionsControl, Object).Readonly = Me.ReadOnly
+            If value IsNot Nothing Then
+                If value.GetType().GetProperty("ReadOnly") IsNot Nothing Then
+                    DirectCast(value, Object).Readonly = Me.ReadOnly
+                End If
             End If
+
+            _optionsControl = value
 
             gboxOptions.Controls.Add(_optionsControl)
         End Set
