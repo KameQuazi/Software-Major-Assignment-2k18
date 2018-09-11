@@ -751,8 +751,22 @@
     <Folder Include="bin\Debug\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Settings.png" />
+    <None Include="Resources\Quit.png" />
+    <None Include="Resources\ViewTemplate.png" />
+    <None Include="Resources\ViewOrder.png" />
+    <None Include="Resources\ApproveJob.png" />
+    <None Include="Resources\ApproveTemplate.png" />
+    <None Include="Resources\Back.png" />
+    <None Include="Resources\About.png" />
     <Content Include="Resources\error.png" />
     <Content Include="Resources\arrowLeft.png" />
+    <None Include="Resources\Home.png" />
+    <None Include="Resources\ManageUsers.png" />
+    <None Include="Resources\NewOrder.png" />
+    <None Include="Resources\NewTemplate.png" />
+    <None Include="Resources\Help.png" />
+    <None Include="Resources\Log Out.png" />
     <Content Include="Resources\no_job_preview_image.png" />
     <Content Include="Resources\no_pending jobs.png" />
     <Content Include="Resources\no_preview_image.png" />
