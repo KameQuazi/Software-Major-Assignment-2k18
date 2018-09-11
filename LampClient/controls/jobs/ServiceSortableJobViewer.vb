@@ -51,22 +51,6 @@ Public Class ServiceSortableJobViewer
         End Set
     End Property
 
-    Public Property ApprovedType As LampApprove
-        Get
-            Return ServiceJobViewer1.ApprovedType
-        End Get
-        Set(value As LampApprove)
-            ServiceJobViewer1.ApprovedType = value
-            Select Case value
-                Case LampApprove.Approved
-                    rdbtnYesApproved.Checked = True
-                Case LampApprove.All
-                    rdbtnAllApproved.Checked = True
-                Case LampApprove.Unapproved
-                    rdbtnNoApproved.Checked = True
-            End Select
-        End Set
-    End Property
 
     Public Property TitleText As String
         Get
@@ -128,7 +112,6 @@ Public Class ServiceSortableJobViewer
         ' finished load
         finishedLoading = True
         LoadSettings()
-        ValidateApprovedCheckboxes()
     End Sub
 
 
@@ -221,17 +204,7 @@ Public Class ServiceSortableJobViewer
 
     End Sub
 
-    Private Sub ValidateApprovedCheckboxes()
-        If CurrentUser.PermissionLevel < UserPermission.Elevated And JustMyJobs = False Then
-            ' disable unapproved editing
-            rdbtnNoApproved.Enabled = False
-            rdbtnAllApproved.Enabled = False
-            rdbtnYesApproved.Checked = True
-        Else
-            rdbtnNoApproved.Enabled = True
-            rdbtnAllApproved.Enabled = True
-        End If
-    End Sub
+
 
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles rdbtnPublic.CheckedChanged, rdbtnMe.CheckedChanged
         If rdbtnPublic.Checked Then
@@ -240,21 +213,10 @@ Public Class ServiceSortableJobViewer
             JustMyJobs = True
         End If
 
-        ValidateApprovedCheckboxes()
         WriteSettings()
     End Sub
 
-    Private Sub ApprovedChanged(sender As Object, e As EventArgs) Handles rdbtnAllApproved.CheckedChanged, rdbtnNoApproved.CheckedChanged, rdbtnYesApproved.CheckedChanged
-        ValidateApprovedCheckboxes()
-        If rdbtnAllApproved.Checked Then
-            ApprovedType = LampApprove.All
-        ElseIf rdbtnYesApproved.Checked Then
-            ApprovedType = LampApprove.Approved
-        ElseIf rdbtnNoApproved.Checked Then
-            ApprovedType = LampApprove.Unapproved
-        End If
-        ServiceJobViewer1.Offset = 0
-    End Sub
+
 
 End Class
 

@@ -78,7 +78,6 @@ Partial Class ViewOrdersForm
         '
         'ServiceSortableJobViewer1
         '
-        Me.ServiceSortableJobViewer1.ApprovedType = LampCommon.LampApprove.Approved
         Me.ServiceSortableJobViewer1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ServiceSortableJobViewer1.JustMyJobs = False
         Me.ServiceSortableJobViewer1.Location = New System.Drawing.Point(3, 3)

@@ -19,7 +19,6 @@ Public Class ApproveJobForm
 
 
     Private Sub ApproveJobForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ServiceSortableJobViewer1.ApprovedType = LampApprove.Unapproved
         AdminToolbar1.btnHome.Enabled = True
         AdminToolbar1.btnApproveTemplates.Enabled = True
         AdminToolbar1.btnApproveJob.Enabled = False

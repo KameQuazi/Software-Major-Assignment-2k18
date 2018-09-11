@@ -14,9 +14,9 @@ Public Class SettingsForm
     Private Sub SettingsForm_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         Dim program = Settings.DesignerProgram
         If program.Internal Then
-            radioLampViewer.Enabled = True
+            radioLampViewer.Checked = True
         Else
-            radioExternal.Enabled = True
+            radioExternal.Checked = True
             rboxPath.Text = program.ProgramPath
         End If
         chkSavePassword.Checked = Settings.PasswordSaved

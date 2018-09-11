@@ -62,7 +62,6 @@ Partial Class ApproveJobForm
         '
         'ServiceSortableJobViewer1
         '
-        Me.ServiceSortableJobViewer1.ApprovedType = LampCommon.LampApprove.All
         Me.ServiceSortableJobViewer1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ServiceSortableJobViewer1.JustMyJobs = False
         Me.ServiceSortableJobViewer1.Location = New System.Drawing.Point(3, 108)

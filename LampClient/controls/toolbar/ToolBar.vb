@@ -295,7 +295,7 @@ Public Class ToolBar
         Else
             btnBack.Enabled = True
         End If
-        SetUsername(CurrentUser.Username)
+        SetUsername(CurrentUser.Name)
         ' dont have permission to 
         If CurrentUser.PermissionLevel <= UserPermission.Standard Then
             ViewOrderEnabled = False
