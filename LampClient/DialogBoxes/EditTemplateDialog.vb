@@ -19,14 +19,6 @@ Public Class EditTemplateDialog
         End Set
     End Property
 
-    Public Property JobEnabled As Boolean
-        Get
-            Return TemplateCreatorControl1.JobEnabled
-        End Get
-        Set(value As Boolean)
-            TemplateCreatorControl1.JobEnabled = value
-        End Set
-    End Property
 
     Sub New()
 

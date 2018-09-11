@@ -116,15 +116,19 @@ Public Module ToolbarUtilities
     End Function
 
     <Extension>
-    Public Function Logout(this As IToolbar, parentForm As Form) As Boolean
-        If LogoutBox.ShowDialog() = DialogResult.OK Then
-            PreviousForms.Clear()
-            LoginForm.Show()
+    Public Function Logout(this As IToolbar, parentForm As Form, Optional confirm As Boolean = True) As Boolean
+        If confirm Then
 
-            parentForm.Close()
-            Return True
+            If LogoutBox.ShowDialog() <> DialogResult.OK Then
+                Return False
+            End If
         End If
-        Return False
+
+        PreviousForms.Clear()
+        LoginForm.Show()
+
+        parentForm.Close()
+        Return True
     End Function
 
     <Extension>

@@ -27,6 +27,5 @@ Public Class UseTemplateBox
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        TemplateCreatorControl1.JobEnabled = True
     End Sub
 End Class

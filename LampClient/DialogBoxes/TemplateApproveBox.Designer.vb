@@ -51,12 +51,10 @@ Partial Class TemplateApproveBox
         '
         Me.TemplateCreatorControl1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TemplateCreatorControl1.DrawingOpenProgram = Nothing
-        Me.TemplateCreatorControl1.JobEnabled = False
         Me.TemplateCreatorControl1.Location = New System.Drawing.Point(3, 73)
         Me.TemplateCreatorControl1.Name = "TemplateCreatorControl1"
         Me.TemplateCreatorControl1.ReadOnly = True
         Me.TemplateCreatorControl1.Size = New System.Drawing.Size(1226, 627)
-        Me.TemplateCreatorControl1.SubmitType = LampClient.TemplateCreatorControl.SendType.None
         Me.TemplateCreatorControl1.TabIndex = 0
         '
         'FlowLayoutPanel1

@@ -51,12 +51,10 @@ Partial Class NewTemplateForm
         '
         Me.TemplateCreatorControl1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TemplateCreatorControl1.DrawingOpenProgram = Nothing
-        Me.TemplateCreatorControl1.JobEnabled = False
         Me.TemplateCreatorControl1.Location = New System.Drawing.Point(3, 108)
         Me.TemplateCreatorControl1.Name = "TemplateCreatorControl1"
         Me.TemplateCreatorControl1.ReadOnly = False
         Me.TemplateCreatorControl1.Size = New System.Drawing.Size(1226, 592)
-        Me.TemplateCreatorControl1.SubmitType = LampClient.TemplateCreatorControl.SendType.None
         Me.TemplateCreatorControl1.TabIndex = 0
         '
         'ToolBar1

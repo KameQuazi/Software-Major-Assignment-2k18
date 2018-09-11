@@ -6,6 +6,26 @@ Public Class TemplateCreatorControl
 
 #Region "Properties"
 
+    Private _optionsControl As Control
+    Public Property OptionsControl As Control
+        Get
+            Return _optionsControl
+        End Get
+        Set(value As Control)
+            If _optionsControl IsNot Nothing Then
+                gboxOptions.Controls.Remove(_optionsControl)
+            End If
+
+            _optionsControl = value
+
+            If _optionsControl.GetType().GetField("ReadOnly") IsNot Nothing Then
+                DirectCast(_optionsControl, Object).Readonly = Me.ReadOnly
+            End If
+
+            gboxOptions.Controls.Add(_optionsControl)
+        End Set
+    End Property
+
 
     Private _readonly As Boolean
     Public Property [ReadOnly] As Boolean
@@ -15,39 +35,17 @@ Public Class TemplateCreatorControl
 
         Set(value As Boolean)
             _readonly = value
-            NameBox.ReadOnly = value
-            ShortDescription.ReadOnly = value
-            LongDescription.ReadOnly = value
-            ComboBoxMaterial.Enabled = Not value
-
-            TboxThickness.ReadOnly = value
-
-
-            ImportSpf.Enabled = Not value
-            TagEditorControl1.Readonly = value
-
-
-
+            UpdateReadonlyElements()
         End Set
     End Property
 
     Protected Overrides Sub OnEnabledChanged(e As EventArgs)
         MyBase.OnEnabledChanged(e)
 
-        ImportSpf.Enabled = Me.Enabled
-        ExportDxf.Enabled = Me.Enabled
-        ExportSpf.Enabled = Me.Enabled
-        btnViewDrawing.Enabled = Me.Enabled
-
         UpdateEnabledElements()
-        If Not Me.Enabled Then
-            Me.ReadOnly = True
-            btnSubmitTemplate.Enabled = False
-            btnNewJob.Enabled = False
-        End If
     End Sub
 
-    Private _template As LampTemplate
+    Private _template As LampTemplate = New LampTemplate
 
     ''' <summary>
     ''' Determines the template 
@@ -67,36 +65,7 @@ Public Class TemplateCreatorControl
         End Set
     End Property
 
-    Private _jobEnabled As Boolean = False
-    Public Property JobEnabled As Boolean
-        Get
-            Return _jobEnabled
-        End Get
-        Set(value As Boolean)
-            _jobEnabled = value
-            btnNewJob.Enabled = value
-        End Set
-    End Property
 
-
-    Public Sub SetSubmitType(opt As SendType)
-        SubmitType = opt
-        If opt <> SendType.None Then
-            btnSubmitTemplate.Enabled = True
-        Else
-            btnSubmitTemplate.Enabled = False
-        End If
-    End Sub
-
-    Public Property SubmitType As SendType
-
-
-
-    Public Enum SendType
-        None
-        Add
-        Edit
-    End Enum
 
 
 #End Region
@@ -106,9 +75,21 @@ Public Class TemplateCreatorControl
     ''' 
     ''' </summary>
     Private Sub UpdateEnabledElements()
-        SetSubmitType(SubmitType)
-        TboxApprove.ReadOnly = True
-        btnNewJob.Enabled = JobEnabled
+        gboxPrimary.Enabled = Me.Enabled
+        gboxSecondary.Enabled = Me.Enabled
+        gboxTags.Enabled = Me.Enabled
+        gboxOptions.Enabled = Me.Enabled
+
+        UpdateReadonlyElements()
+    End Sub
+
+    Private Sub UpdateReadonlyElements()
+        NameBox.ReadOnly = Me.ReadOnly
+        ComboBoxMaterial.Enabled = Not Me.ReadOnly
+        ShortDescription.ReadOnly = Me.ReadOnly
+        LongDescription.ReadOnly = Me.ReadOnly
+        TboxThickness.ReadOnly = Me.ReadOnly
+        DxfViewerControl1.Readonly = Me.ReadOnly
     End Sub
 
 
@@ -118,7 +99,6 @@ Public Class TemplateCreatorControl
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Template = New LampTemplate
         ' attach handler
         AddBubblingEvent(Me.Controls)
 
@@ -127,8 +107,8 @@ Public Class TemplateCreatorControl
         If ComboBoxMaterial.Items.Count > 0 Then
             ComboBoxMaterial.SelectedIndex = 0
         End If
-
-        UpdateEnabledElements()
+        TboxApprove.Enabled = False
+        gboxOptions.Controls.Clear()
     End Sub
 
     ''' <summary>
@@ -339,30 +319,8 @@ Public Class TemplateCreatorControl
 
 
 
-    Private Sub ExportDxf_Click(sender As Object, e As EventArgs) Handles ExportDxf.Click
-        If DxfSaveDialog.ShowDialog = DialogResult.OK Then
-            Template.BaseDrawing.Save(DxfSaveDialog.FileName)
-        End If
-    End Sub
 
-    Private Sub ExportSpf_Click(sender As Object, e As EventArgs) Handles ExportSpf.Click
-        If SpfSaveDialog.ShowDialog = DialogResult.OK Then
-            Template.Save(SpfSaveDialog.FileName)
-        End If
-    End Sub
 
-    Private Sub ImportSpf_Click(sender As Object, e As EventArgs) Handles ImportSpf.Click
-        If SpfOpenDialog.ShowDialog() = DialogResult.OK Then
-            Try
-                Me.Template = LampTemplate.FromFile(SpfOpenDialog.FileName)
-            Catch ex As Exception
-                If MessageBox.Show("File is invalid. Show detailed error message?", "File Invalid", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-                    MessageBox.Show(ex.ToString)
-                End If
-            End Try
-
-        End If
-    End Sub
 
 
 
@@ -382,52 +340,57 @@ Public Class TemplateCreatorControl
 
     Public Event SubmitSuccessful(sender As Object, e As SubmitEventArgs)
 
+    Friend Sub RaiseSubmitSuccessful(sender As Object, e As SubmitEventArgs)
+        RaiseEvent SubmitSuccessful(Me, e)
+    End Sub
 
-    Private Async Sub btnSubmitTemplate_Click(sender As Object, e As EventArgs) Handles btnSubmitTemplate.Click
+
+    Private Async Sub btnSubmitTemplate_Click(sender As Object, e As EventArgs)
         If Not CheckPossibleErrors() Then
             Return
         End If
 
-        If SubmitType = SendType.Add Then
-            Dim response = Await CurrentSender.AddUnapprovedTemplateAsync(CurrentUser.ToCredentials, Template)
-            Select Case response
-                Case LampStatus.OK
-                    MessageBox.Show("Submitted Successfully")
+        'TODO FIX wasd
+        'If SubmitType = SendType.Add Then
+        '    Dim response = Await CurrentSender.AddUnapprovedTemplateAsync(CurrentUser.ToCredentials, Template)
+        '    Select Case response
+        '        Case LampStatus.OK
+        '            MessageBox.Show("Submitted Successfully")
 
-                    RaiseEvent SubmitSuccessful(Me, New SubmitEventArgs(Template))
-
-
-                Case LampStatus.InvalidUsernameOrPassword
-                    ShowLoginError(Me.ParentForm)
-                Case Else
-                    ShowError(response)
-
-            End Select
+        '            RaiseEvent SubmitSuccessful(Me, New SubmitEventArgs(Template))
 
 
-        ElseIf SubmitType = SendType.Edit Then
-            Dim response = CurrentSender.EditTemplate(CurrentUser.ToCredentials, Template)
-            Select Case response
-                Case LampStatus.OK
-                    MessageBox.Show("Editted Successfully")
+        '        Case LampStatus.InvalidUsernameOrPassword
+        '            ShowLoginError(Me.ParentForm)
+        '        Case Else
+        '            ShowError(response)
 
-                    RaiseEvent SubmitSuccessful(Me, New SubmitEventArgs(Template))
-
-
-                Case LampStatus.InvalidUsernameOrPassword
-                    ShowLoginError(Me.ParentForm)
-
-                Case Else
-                    ShowError(response)
-
-            End Select
+        '    End Select
 
 
+        'ElseIf SubmitType = SendType.Edit Then
+        '    Dim response = CurrentSender.EditTemplate(CurrentUser.ToCredentials, Template)
+        '    Select Case response
+        '        Case LampStatus.OK
+        '            MessageBox.Show("Editted Successfully")
 
-        Else
-            Throw New InvalidOperationException(NameOf(SubmitType))
+        '            RaiseEvent SubmitSuccessful(Me, New SubmitEventArgs(Template))
 
-        End If
+
+        '        Case LampStatus.InvalidUsernameOrPassword
+        '            ShowLoginError(Me.ParentForm)
+
+        '        Case Else
+        '            ShowError(response)
+
+        '    End Select
+
+
+
+        'Else
+        '    Throw New InvalidOperationException(NameOf(SubmitType))
+
+        'End If
 
 
     End Sub
@@ -518,7 +481,7 @@ Public Class TemplateCreatorControl
 
 
 
-    Private Sub btnNewJob_Click(sender As Object, e As EventArgs) Handles btnNewJob.Click
+    Private Sub btnNewJob_Click(sender As Object, e As EventArgs)
 
         ' create a new job
         ' we need to push the current form (before this is opened as a dialog) => the toolbar previousform stack
@@ -539,9 +502,6 @@ Public Class TemplateCreatorControl
         End Using
     End Sub
 
-    Private Sub DxfViewerControl1_MouseClickAbsolute(sender As Object, args As MouseClickAbsoluteEventArgs) Handles DxfViewerControl1.MouseClickAbsolute
-
-    End Sub
 
     Public Property DrawingOpenProgram As OpenType
         Get
@@ -554,9 +514,9 @@ Public Class TemplateCreatorControl
     End Property
 
     Private Sub btnSetDrawing_Click(sender As Object, e As EventArgs) Handles btnSetDrawing.Click
-        If DxfFileDialog.ShowDialog = DialogResult.OK Then
+        If DxfOpenDialog.ShowDialog = DialogResult.OK Then
 
-            Me.CurrentFilename = DxfFileDialog.FileName
+            Me.CurrentFilename = DxfOpenDialog.FileName
             Dim loaded = LampDxfDocument.FromFile(CurrentFilename).ShiftToZero
 
             Template.DynamicTextList.Clear()
@@ -597,7 +557,7 @@ Public Class TemplateCreatorControl
         ''  TODO
     End Sub
 
-    Private Sub EditDrawingButton_Click(sender As Object, e As EventArgs) Handles btnViewDrawing.Click
+    Private Sub EditDrawingButton_Click(sender As Object, e As EventArgs)
         ' open with internal viewer
         If DrawingOpenProgram Is Nothing Then
             ' prompt user for 

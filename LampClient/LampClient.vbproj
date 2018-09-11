@@ -161,11 +161,23 @@
     <Compile Include="controls\jobs\AdvancedJobViewer.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="controls\replaceable\CreateNewTemplateButtons.Designer.vb">
+      <DependentUpon>CreateNewTemplateButtons.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\replaceable\CreateNewTemplateButtons.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\tags\TagEditorControl.Designer.vb">
       <DependentUpon>TagEditorControl.vb</DependentUpon>
     </Compile>
     <Compile Include="controls\tags\TagEditorControl.vb">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DialogBoxes\LoadingMessageBox.Designer.vb">
+      <DependentUpon>LoadingMessageBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DialogBoxes\LoadingMessageBox.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="forms\SettingsForm.Designer.vb">
       <DependentUpon>SettingsForm.vb</DependentUpon>
@@ -522,8 +534,14 @@
     <EmbeddedResource Include="controls\jobs\AdvancedJobViewer.resx">
       <DependentUpon>AdvancedJobViewer.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="controls\replaceable\CreateNewTemplateButtons.resx">
+      <DependentUpon>CreateNewTemplateButtons.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\tags\TagEditorControl.resx">
       <DependentUpon>TagEditorControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogBoxes\LoadingMessageBox.resx">
+      <DependentUpon>LoadingMessageBox.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.vb</DependentUpon>

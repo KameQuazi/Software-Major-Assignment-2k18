@@ -135,7 +135,7 @@ Public Class DxfViewerControl
         End Get
     End Property
 
-
+    Public Property [Readonly] As Boolean
 
     Public Sub UpdateView()
         Me.Invalidate()

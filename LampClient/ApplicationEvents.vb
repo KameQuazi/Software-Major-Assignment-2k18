@@ -182,7 +182,7 @@ Public Module OwO
 
     Public Sub ShowLoginError(parentForm As Form)
         MessageBox.Show("Login Expired: please login again")
-        Logout(Nothing, parentForm)
+        Logout(Nothing, parentForm, False)
     End Sub
 
     Public Sub ShowError([error] As LampStatus)
@@ -212,4 +212,15 @@ Public Module OwO
         End If
         Return this.Items(this.SelectedIndex).ToString
     End Function
+
+    Private _shownWaitForm As Boolean = False
+    Private _shownForm As New LoadingMessageBox
+
+    Public Sub ShowWaitForm()
+        _shownForm.Show()
+    End Sub
+
+    Public Sub HideWaitForm()
+        _shownForm.Hide()
+    End Sub
 End Module

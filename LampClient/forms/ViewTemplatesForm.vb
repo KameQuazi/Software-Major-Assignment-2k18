@@ -5,7 +5,7 @@ Public Class ViewTemplatesForm
 
     Private Sub ServiceSortableTemplateViewer1_TemplateClick(sender As Object, e As TemplateClickedEventArgs) Handles ServiceSortableTemplateViewer1.TemplateClick
         ' Oepn up the single template Viewer
-        Using singleViewer As New EditTemplateDialog() With {.Template = e.Template, .JobEnabled = True}
+        Using singleViewer As New EditTemplateDialog() With {.Template = e.Template}
             ' allow editing if same creator OR permission >= Elevated
             If e.Template.CreatorId = CurrentUser.UserId OrElse CurrentUser.PermissionLevel >= UserPermission.Elevated Then
                 singleViewer.Readonly = False
