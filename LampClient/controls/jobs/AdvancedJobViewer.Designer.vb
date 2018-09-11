@@ -27,7 +27,6 @@ Partial Class AdvancedJobViewer
         Me.Label1 = New System.Windows.Forms.Label()
         Me.tboxSummary = New System.Windows.Forms.RichTextBox()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
-        Me.dtPicker = New System.Windows.Forms.DateTimePicker()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -43,12 +42,16 @@ Partial Class AdvancedJobViewer
         Me.btnPrint = New System.Windows.Forms.Button()
         Me.PrintDocument1 = New System.Drawing.Printing.PrintDocument()
         Me.PrintDialog1 = New System.Windows.Forms.PrintDialog()
+        Me.TableLayoutPanel7 = New System.Windows.Forms.TableLayoutPanel()
+        Me.dtPicker = New System.Windows.Forms.DateTimePicker()
+        Me.btnDelete = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel6.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.TableLayoutPanel3.SuspendLayout()
         Me.TableLayoutPanel4.SuspendLayout()
         Me.TableLayoutPanel5.SuspendLayout()
+        Me.TableLayoutPanel7.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -113,7 +116,6 @@ Partial Class AdvancedJobViewer
         Me.TableLayoutPanel2.ColumnCount = 2
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
-        Me.TableLayoutPanel2.Controls.Add(Me.dtPicker, 1, 2)
         Me.TableLayoutPanel2.Controls.Add(Me.Label5, 0, 2)
         Me.TableLayoutPanel2.Controls.Add(Me.Label4, 0, 1)
         Me.TableLayoutPanel2.Controls.Add(Me.Label3, 0, 3)
@@ -121,6 +123,7 @@ Partial Class AdvancedJobViewer
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel3, 1, 3)
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel4, 1, 1)
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel5, 1, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel7, 1, 2)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(4, 192)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
@@ -132,17 +135,6 @@ Partial Class AdvancedJobViewer
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(507, 182)
         Me.TableLayoutPanel2.TabIndex = 6
-        '
-        'dtPicker
-        '
-        Me.dtPicker.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.dtPicker.CustomFormat = "yyyy / mm / dd - H:mm:ss tt"
-        Me.dtPicker.Enabled = False
-        Me.dtPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dtPicker.Location = New System.Drawing.Point(155, 102)
-        Me.dtPicker.Name = "dtPicker"
-        Me.dtPicker.Size = New System.Drawing.Size(248, 20)
-        Me.dtPicker.TabIndex = 7
         '
         'Label5
         '
@@ -313,6 +305,47 @@ Partial Class AdvancedJobViewer
         Me.PrintDialog1.Document = Me.PrintDocument1
         Me.PrintDialog1.UseEXDialog = True
         '
+        'TableLayoutPanel7
+        '
+        Me.TableLayoutPanel7.ColumnCount = 2
+        Me.TableLayoutPanel7.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
+        Me.TableLayoutPanel7.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
+        Me.TableLayoutPanel7.Controls.Add(Me.btnDelete, 1, 0)
+        Me.TableLayoutPanel7.Controls.Add(Me.dtPicker, 0, 0)
+        Me.TableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel7.Location = New System.Drawing.Point(155, 93)
+        Me.TableLayoutPanel7.Name = "TableLayoutPanel7"
+        Me.TableLayoutPanel7.RowCount = 1
+        Me.TableLayoutPanel7.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel7.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel7.Size = New System.Drawing.Size(349, 39)
+        Me.TableLayoutPanel7.TabIndex = 10
+        '
+        'dtPicker
+        '
+        Me.dtPicker.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.dtPicker.CustomFormat = "yyyy / mm / dd - H:mm:ss tt"
+        Me.dtPicker.Enabled = False
+        Me.dtPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtPicker.Location = New System.Drawing.Point(3, 9)
+        Me.dtPicker.Name = "dtPicker"
+        Me.dtPicker.Size = New System.Drawing.Size(238, 20)
+        Me.dtPicker.TabIndex = 8
+        '
+        'btnDelete
+        '
+        Me.btnDelete.BackColor = System.Drawing.Color.White
+        Me.btnDelete.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnDelete.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDelete.Location = New System.Drawing.Point(249, 5)
+        Me.btnDelete.Margin = New System.Windows.Forms.Padding(5)
+        Me.btnDelete.Name = "btnDelete"
+        Me.btnDelete.Size = New System.Drawing.Size(95, 29)
+        Me.btnDelete.TabIndex = 49
+        Me.btnDelete.Text = "Delete"
+        Me.btnDelete.UseVisualStyleBackColor = False
+        '
         'AdvancedJobViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -331,6 +364,7 @@ Partial Class AdvancedJobViewer
         Me.TableLayoutPanel4.PerformLayout()
         Me.TableLayoutPanel5.ResumeLayout(False)
         Me.TableLayoutPanel5.PerformLayout()
+        Me.TableLayoutPanel7.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -346,7 +380,6 @@ Partial Class AdvancedJobViewer
     Friend WithEvents Label2 As Label
     Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
     Friend WithEvents btnViewDrawing As Button
-    Friend WithEvents dtPicker As DateTimePicker
     Friend WithEvents tboxPages As TextBox
     Friend WithEvents TableLayoutPanel4 As TableLayoutPanel
     Friend WithEvents tboxApprover As TextBox
@@ -356,4 +389,7 @@ Partial Class AdvancedJobViewer
     Friend WithEvents tboxSubmitter As TextBox
     Friend WithEvents PrintDocument1 As Printing.PrintDocument
     Friend WithEvents PrintDialog1 As PrintDialog
+    Friend WithEvents TableLayoutPanel7 As TableLayoutPanel
+    Friend WithEvents btnDelete As Button
+    Friend WithEvents dtPicker As DateTimePicker
 End Class

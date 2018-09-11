@@ -17,7 +17,7 @@ Public Class AdvancedJobViewer
             tboxSubmitter.Text = Job.Submitter?.Username
             tboxApprover.Text = Job.Approver?.Username
             tboxSummary.Text = Job.Summary
-            tboxPages.Text = Job.Pages
+            tboxPages.Text = Job.CompleteDrawings.Count()
             dtPicker.Value = Job.SubmitDate
             If Job.Approved Then
                 btnApprove.Text = "Revoke"
@@ -42,6 +42,7 @@ Public Class AdvancedJobViewer
         If CurrentUser.PermissionLevel < UserPermission.Admin Then
             btnApprove.Enabled = False
         End If
+        UpdateContents()
     End Sub
 
     'approved if true, else revoke
@@ -84,7 +85,7 @@ Public Class AdvancedJobViewer
         Dim font = New Font(New FontFamily("arial"), 15, FontStyle.Bold)
         Dim brush As New SolidBrush(Color.Black)
         e.Graphics.DrawString("JobId: " + Job.JobId.ToString, font, brush, New PointF(0, 0))
-        e.Graphics.DrawString("Laser cutting Pages: " + Job.Pages.ToString, font, brush, New PointF(0, 20))
+        e.Graphics.DrawString("Laser cutting Pages: " + Job.CompleteDrawings.Count.ToString, font, brush, New PointF(0, 20))
         e.Graphics.DrawString("Date submitted: " + Job.SubmitDate.Value.ToLongDateString + " " + Job.SubmitDate.Value.ToLongTimeString, font, brush, New PointF(0, 40))
         e.Graphics.DrawString("Submitter username: " + Job.Submitter.Username, font, brush, New PointF(0, 60))
         e.Graphics.DrawString("Summary: " + Job.Summary, font, brush, New PointF(0, 80))
@@ -93,5 +94,18 @@ Public Class AdvancedJobViewer
             e.Graphics.DrawImage(Job.Template.PreviewImages(0), New PointF(0, 140))
         End If
 
+    End Sub
+
+    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
+        If MessageBox.Show("Do you wish to delete this job? DATA WILL BE LOST", "Deleting job", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
+            Dim response = CurrentSender.RemoveJob(CurrentUser.ToCredentials, Job.JobId)
+            Select Case response
+                Case LampStatus.OK
+                    MessageBox.Show("Deleted Successfully")
+                    Me.ParentForm.Close()
+                Case Else
+                    ShowError(response)
+            End Select
+        End If
     End Sub
 End Class

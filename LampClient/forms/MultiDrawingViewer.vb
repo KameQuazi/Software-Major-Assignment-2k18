@@ -26,10 +26,16 @@ Public Class MultiDrawingViewer
             If current Is Nothing Then
                 MessageBox.Show("No drawing found!")
             Else
-                current.Save(currentfilename)
-                process.StartInfo.Arguments = currentfilename
-                'process.StartInfo.Verb = "print"
                 Try
+                    current.Save(currentfilename)
+                    process.StartInfo.Arguments = currentfilename
+                    'process.StartInfo.Verb = "print"
+                Catch ex As Exception
+                    MessageBox.Show("temp.dxf is open in another program. Please close that program")
+                    Return
+                End Try
+
+                    Try
                     process.Start()
                 Catch ex As Exception
                     MessageBox.Show(String.Format("Cannot open using program: {0}. Please specify another program in Settings.", DesignerProgram.ProgramPath))
