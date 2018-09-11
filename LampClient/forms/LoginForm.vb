@@ -148,6 +148,7 @@ Public Class LoginForm
             btnTryConnection.Enabled = False
             ' save it
             SaveEndpoint("", True)
+            SetServiceEndpoint(LampLocalWcfClient.Local)
             IndicatorEnabled()
         Else
             rtboxServerUrl.Enabled = True

@@ -52,6 +52,7 @@ Partial Class NewTemplateForm
         Me.TemplateCreatorControl1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TemplateCreatorControl1.Location = New System.Drawing.Point(3, 108)
         Me.TemplateCreatorControl1.Name = "TemplateCreatorControl1"
+        Me.TemplateCreatorControl1.OptionsControl = Nothing
         Me.TemplateCreatorControl1.ReadOnly = False
         Me.TemplateCreatorControl1.Size = New System.Drawing.Size(1226, 592)
         Me.TemplateCreatorControl1.TabIndex = 0
@@ -63,11 +64,12 @@ Partial Class NewTemplateForm
         Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ToolBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolBar1.HomeEnabled = True
-        Me.ToolBar1.Location = New System.Drawing.Point(3, 3)
+        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
+        Me.ToolBar1.Margin = New System.Windows.Forms.Padding(0)
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.NewOrderEnabled = True
         Me.ToolBar1.NewTemplateEnabled = False
-        Me.ToolBar1.Size = New System.Drawing.Size(1226, 99)
+        Me.ToolBar1.Size = New System.Drawing.Size(1232, 105)
         Me.ToolBar1.TabIndex = 1
         Me.ToolBar1.ViewOrderEnabled = True
         Me.ToolBar1.ViewTemplateEnabled = True

@@ -107,6 +107,12 @@ Public Class DesignerForm
 
     End Sub
 
+    Public Sub EnableOnlyDynamicText()
+        Me.CurrentTool = LampTool.DynamicMText
+
+    End Sub
+
+
     Sub New(Optional template As LampTemplate = Nothing)
 
         ' This call is required by the designer.

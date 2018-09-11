@@ -97,7 +97,7 @@ Public Class NewTemplateForm
             Select Case response
                 Case LampStatus.OK
                     MessageBox.Show("Submitted Successfully")
-
+                    Me.Close()
                 Case LampStatus.InvalidUsernameOrPassword
                     ShowLoginError(Me.ParentForm)
                 Case Else
@@ -125,6 +125,7 @@ Public Class NewTemplateForm
         End If
     End Sub
 
+    Private Sub TemplateCreatorControl1_Load(sender As Object, e As EventArgs) Handles TemplateCreatorControl1.Load
 
-
+    End Sub
 End Class

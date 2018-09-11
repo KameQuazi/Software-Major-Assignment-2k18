@@ -230,10 +230,10 @@ Public Class LampDxfDocument
     Public Function ToImage() As System.Drawing.Image
         Dim bounds = GetBounds()
         Dim center = bounds.GetCenter
-        Return RasterizeImage(center, Width, Height)
+        Return RasterizeImage(center, Width + sizeOffset, Height + sizeOffset)
     End Function
 
-
+    Private Const sizeOffset As Integer = 10
 
     ''' <summary>
     ''' Saves the file
@@ -486,10 +486,18 @@ Public Class LampDxfDocument
 
         For Each polyLine As Polyline In Drawing.Polylines.ToArray()
             Dim newPolyLine As Polyline = polyLine.Clone()
-            For Each point In newPolyLine.Vertexes
+            For Each point In polyLine.Vertexes
                 point.Position = Transform(point.Position, offset)
             Next
             otherDrawing.AddPolyLine(newPolyLine)
+        Next
+
+        For Each lwPolyline As LwPolyline In Drawing.LwPolylines.ToArray()
+            Dim newPolyLine As LwPolyline = lwPolyline.Clone()
+            For Each point In newPolyLine.Vertexes
+                point.Position = Transform(point.Position.ToV3, offset.X, offset.Y).ToV2
+            Next
+            otherDrawing.Drawing.AddEntity(newPolyLine)
         Next
 
         For Each text As Text In Drawing.Texts.ToArray()
@@ -516,11 +524,7 @@ Public Class LampDxfDocument
             otherDrawing.AddText(newmLine)
         Next
 
-        For Each ray As Ray In Drawing.Rays
-            Dim newRay As Ray = ray.Clone()
-            newRay.Origin = Transform(newRay.Origin, offset)
-            otherDrawing.AddRay(newRay)
-        Next
+
         If notify Then
             NotifyPropertyChanged(NameOf(Drawing))
         End If
@@ -1217,6 +1221,11 @@ Public Module Extens
     <Extension>
     Public Function ToV3(self As Vector2) As Vector3
         Return New Vector3(self.X, self.Y, 0)
+    End Function
+
+    <Extension>
+    Public Function ToV2(self As Vector3) As Vector2
+        Return New Vector2(self.X, self.Y)
     End Function
 
 End Module

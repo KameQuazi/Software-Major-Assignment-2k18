@@ -56,6 +56,7 @@ Public Class EditUserForm
         previousUser = Nothing
         btnEdit.Enabled = True
         btnEdit.Text = "Edit User"
+        editPressed = False
 
     End Sub
     Private _editPressed As Boolean = False
@@ -102,7 +103,7 @@ Public Class EditUserForm
     Private previousUser As LampUser
     Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
         If editPressed Then
-            If Not ValidateUser() Then
+            If Not validateUser() Then
                 Return
             End If
             Dim response = CurrentSender.EditUser(CurrentUser.ToCredentials, User)

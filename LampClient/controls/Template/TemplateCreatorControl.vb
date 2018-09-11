@@ -489,6 +489,8 @@ Public Class TemplateCreatorControl
                 If DxfSaveDialog.ShowDialog = DialogResult.OK Then
                     CurrentFilename = DxfSaveDialog.FileName
                     Me.Template.BaseDrawing.Save(CurrentFilename)
+                Else
+                    Return
                 End If
             End If
 
@@ -518,7 +520,10 @@ Public Class TemplateCreatorControl
 
 
     Private Sub btnAddDynamicText_Click(sender As Object, e As EventArgs) Handles btnAddDynamicText.Click
-
+        Using x As New DesignerForm() With {.Template = Me.Template}
+            x.EnableOnlyDynamicText()
+            x.ShowDialog()
+        End Using
     End Sub
 
     Private Sub DxfViewerControl1_Resize(sender As Object, e As EventArgs) Handles DxfViewerControl1.Resize

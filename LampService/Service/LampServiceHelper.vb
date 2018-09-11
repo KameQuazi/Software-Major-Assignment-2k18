@@ -33,9 +33,6 @@ Public Class ValidateHelper
         If template Is Nothing Then
             Return False
         End If
-        If template.CreatorProfile Is Nothing Then
-            Return False
-        End If
         If template.DynamicTextList Is Nothing Then
             Return False
         End If
@@ -60,9 +57,7 @@ Public Class ValidateHelper
         If template.Tags Is Nothing Then
             Return False
         End If
-        If template.SubmitDate Is Nothing Then
-            Return False
-        End If
+
 
 
         Return True

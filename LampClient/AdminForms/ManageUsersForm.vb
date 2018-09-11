@@ -15,6 +15,7 @@
             ServiceMultiUserViewer1.UpdateContents()
         End Using
     End Sub
+
     Private Sub load() Handles MyBase.Load
         AdminToolbar1.btnHome.Enabled = True
         AdminToolbar1.btnApproveTemplates.Enabled = True

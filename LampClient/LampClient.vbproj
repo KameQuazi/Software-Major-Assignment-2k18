@@ -143,6 +143,12 @@
     <Compile Include="AdminForms\ApproveJobForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="controls\dxf\CutSelectorControl.Designer.vb">
+      <DependentUpon>CutSelectorControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="controls\dxf\CutSelectorControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="controls\dxf\DxfViewerControl.Designer.vb">
       <DependentUpon>DxfViewerControl.vb</DependentUpon>
     </Compile>
@@ -178,6 +184,12 @@
     </Compile>
     <Compile Include="controls\tags\TagEditorControl.vb">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DialogBoxes\DynamicTextCreator.Designer.vb">
+      <DependentUpon>DynamicTextCreator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DialogBoxes\DynamicTextCreator.vb">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="DialogBoxes\LoadingMessageBox.Designer.vb">
       <DependentUpon>LoadingMessageBox.vb</DependentUpon>
@@ -531,6 +543,9 @@
     <EmbeddedResource Include="AdminForms\ApproveJobForm.resx">
       <DependentUpon>ApproveJobForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="controls\dxf\CutSelectorControl.resx">
+      <DependentUpon>CutSelectorControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="controls\dxf\DxfViewerControl.resx">
       <DependentUpon>DxfViewerControl.vb</DependentUpon>
     </EmbeddedResource>
@@ -548,6 +563,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="controls\tags\TagEditorControl.resx">
       <DependentUpon>TagEditorControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogBoxes\DynamicTextCreator.resx">
+      <DependentUpon>DynamicTextCreator.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DialogBoxes\LoadingMessageBox.resx">
       <DependentUpon>LoadingMessageBox.vb</DependentUpon>
