@@ -120,6 +120,7 @@ Public Class DesignerForm
 
     Public Sub EnableOnlyDynamicText()
         Me.CurrentTool = LampTool.DynamicMText
+        Me.currentState = DrawingState.None
         OpenFileBtn.Enabled = False
         SaveFileBtn.Enabled = False
         btnUndo.Enabled = False
@@ -269,7 +270,7 @@ Public Class DesignerForm
 
 
         End If
-
+        e.Handled = True
 
     End Sub
 
