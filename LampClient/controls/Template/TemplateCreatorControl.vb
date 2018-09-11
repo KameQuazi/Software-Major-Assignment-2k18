@@ -111,8 +111,6 @@ Public Class TemplateCreatorControl
         End If
         TboxApprove.Enabled = False
         gboxOptions.Controls.Clear()
-        DxfViewerControl1.ShiftToZero()
-        DxfViewerControl1.SetDxfBounds(New SizeF(605, 310))
     End Sub
 
     ''' <summary>
@@ -256,13 +254,7 @@ Public Class TemplateCreatorControl
 
 
     Private Sub DxfViewerControl1_Click(sender As Object, e As EventArgs) Handles DxfViewerControl1.Click
-
-        Using viewer As New DesignerForm(DxfViewerControl1.Drawing) With {.Readonly = Me.ReadOnly}
-            If viewer.ShowDialog() = DialogResult.OK Then
-                Me.Template = viewer.Template
-                Me.Template.BaseDrawing = Me.Template.BaseDrawing.ShiftToZero
-            End If
-        End Using
+        Console.WriteLine("help")
     End Sub
 
 
@@ -471,7 +463,7 @@ Public Class TemplateCreatorControl
         If DxfOpenDialog.ShowDialog = DialogResult.OK Then
 
             Me.CurrentFilename = DxfOpenDialog.FileName
-            Dim loaded = LampDxfDocument.FromFile(CurrentFilename).ShiftToZero
+            Dim loaded = LampDxfDocument.FromFile(CurrentFilename)
 
             Template.DynamicTextList.Clear()
             If loaded.HasMText Then
@@ -495,7 +487,7 @@ Public Class TemplateCreatorControl
                 End If
 
             End If
-            Template.BaseDrawing = loaded
+            Template.BaseDrawing = loaded.ShiftToZero
             ' also convert all text
 
         End If
@@ -557,23 +549,19 @@ Public Class TemplateCreatorControl
         updatingFromControl = False
     End Sub
 
-    Private Sub TagEditorControl1_Load(sender As Object, e As EventArgs)
-
-    End Sub
-
-
-    Private Sub TagsBox_SelectedIndexChanged(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub RemoveTag_Click(sender As Object, e As EventArgs)
-
-    End Sub
 
     Private Sub btnGeneratePreview_Click(sender As Object, e As EventArgs) Handles btnGeneratePreview.Click
         If Not Me.Template.GeneratePreviewImages() Then
             MessageBox.Show("Could not generate preview image. Please ensure there is at least 1 entity in the drawing", "Preview Generation Failed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         End If
+    End Sub
+
+    Private Sub btnAddDynamicText_Click(sender As Object, e As EventArgs) Handles btnAddDynamicText.Click
+
+    End Sub
+
+    Private Sub DxfViewerControl1_Resize(sender As Object, e As EventArgs) Handles DxfViewerControl1.Resize
+        DxfViewerControl1.ShiftToZero()
     End Sub
 End Class
 

@@ -23,6 +23,7 @@ Public Class NewTemplateForm
         ' Add any initialization after the InitializeComponent() call.
         TemplateCreatorControl1.OptionsControl = buttons
 
+
     End Sub
 
     Protected Overrides Sub OnEnabledChanged(e As EventArgs)
@@ -65,7 +66,7 @@ Public Class NewTemplateForm
     Private Sub ImportDxfClickedHandler(sender As Object, e As EventArgs) Handles buttons.ImportDxfClicked
         If TemplateCreatorControl1.DxfOpenDialog.ShowDialog() = DialogResult.OK Then
             Try
-                Dim dxf = LampDxfDocument.FromFile(TemplateCreatorControl1.DxfOpenDialog.FileName)
+                Dim dxf = LampDxfDocument.FromFile(TemplateCreatorControl1.DxfOpenDialog.FileName).ShiftToZero
                 If dxf Is Nothing Then
                     Throw New Exception("Dxf File cannot be nothing")
                 End If
