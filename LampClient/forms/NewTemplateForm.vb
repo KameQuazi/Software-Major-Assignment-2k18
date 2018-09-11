@@ -97,7 +97,7 @@ Public Class NewTemplateForm
             Select Case response
                 Case LampStatus.OK
                     MessageBox.Show("Submitted Successfully")
-                    Me.Close()
+                    ToolBar1.ShowPreviousForm(Me)
                 Case LampStatus.InvalidUsernameOrPassword
                     ShowLoginError(Me.ParentForm)
                 Case Else

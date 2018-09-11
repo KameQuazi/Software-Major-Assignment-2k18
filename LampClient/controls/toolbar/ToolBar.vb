@@ -104,7 +104,7 @@ Public Module ToolbarUtilities
     <Extension>
     Public Sub ShowPreviousForm(this As IToolbar, currentForm As Form)
         If Not this.HasSavedForms() Then
-            Throw New InvalidOperationException("No previous forms")
+            HomeForm.Show()
         End If
         this.PopPreviousForm()
         currentForm.Close()
