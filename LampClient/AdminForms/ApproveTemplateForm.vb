@@ -11,5 +11,9 @@ Public Class ApproveTemplateForm
 
     Private Sub ApproveTemplateForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ServiceSortableTemplateViewer1.ApprovedType = LampApprove.Unapproved
+        AdminToolbar1.btnHome.Enabled = True
+        AdminToolbar1.btnApproveTemplates.Enabled = False
+        AdminToolbar1.btnApproveJob.Enabled = True
+        AdminToolbar1.btnManageUsers.Enabled = True
     End Sub
 End Class
