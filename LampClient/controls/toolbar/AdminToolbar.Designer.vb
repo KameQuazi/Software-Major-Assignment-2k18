@@ -49,43 +49,52 @@ Partial Class AdminToolbar
         'btnManageUsers
         '
         Me.btnManageUsers.BackColor = System.Drawing.Color.White
+        Me.btnManageUsers.BackgroundImage = Global.LampClient.My.Resources.Resources.ManageUsers
+        Me.btnManageUsers.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.btnManageUsers.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnManageUsers.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnManageUsers.Font = New System.Drawing.Font("Arial", 12.25!)
+        Me.btnManageUsers.Font = New System.Drawing.Font("Arial", 10.0!)
         Me.btnManageUsers.Location = New System.Drawing.Point(155, 50)
         Me.btnManageUsers.Margin = New System.Windows.Forms.Padding(2)
         Me.btnManageUsers.Name = "btnManageUsers"
         Me.btnManageUsers.Size = New System.Drawing.Size(149, 44)
         Me.btnManageUsers.TabIndex = 53
-        Me.btnManageUsers.Text = "Manage Users"
+        Me.btnManageUsers.Text = "Manage" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Users"
+        Me.btnManageUsers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnManageUsers.UseVisualStyleBackColor = False
         '
         'btnQuit
         '
         Me.btnQuit.BackColor = System.Drawing.Color.White
+        Me.btnQuit.BackgroundImage = Global.LampClient.My.Resources.Resources.Quit
+        Me.btnQuit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.btnQuit.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnQuit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnQuit.Font = New System.Drawing.Font("Arial", 12.25!)
+        Me.btnQuit.Font = New System.Drawing.Font("Arial", 10.0!)
         Me.btnQuit.Location = New System.Drawing.Point(204, 2)
         Me.btnQuit.Margin = New System.Windows.Forms.Padding(2)
         Me.btnQuit.Name = "btnQuit"
         Me.btnQuit.Size = New System.Drawing.Size(99, 48)
         Me.btnQuit.TabIndex = 42
         Me.btnQuit.Text = "Quit"
+        Me.btnQuit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnQuit.UseVisualStyleBackColor = False
         '
         'btnHome
         '
         Me.btnHome.BackColor = System.Drawing.Color.White
+        Me.btnHome.BackgroundImage = Global.LampClient.My.Resources.Resources.Home
+        Me.btnHome.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.btnHome.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnHome.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnHome.Font = New System.Drawing.Font("Arial", 12.25!)
+        Me.btnHome.Font = New System.Drawing.Font("Arial", 10.0!)
         Me.btnHome.Location = New System.Drawing.Point(2, 2)
         Me.btnHome.Margin = New System.Windows.Forms.Padding(2)
         Me.btnHome.Name = "btnHome"
         Me.btnHome.Size = New System.Drawing.Size(149, 44)
         Me.btnHome.TabIndex = 44
         Me.btnHome.Text = "Home"
+        Me.btnHome.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnHome.UseVisualStyleBackColor = False
         '
         'Username
@@ -105,85 +114,103 @@ Partial Class AdminToolbar
         'btnApproveTemplates
         '
         Me.btnApproveTemplates.BackColor = System.Drawing.Color.White
+        Me.btnApproveTemplates.BackgroundImage = Global.LampClient.My.Resources.Resources.ApproveTemplate
+        Me.btnApproveTemplates.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.btnApproveTemplates.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnApproveTemplates.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnApproveTemplates.Font = New System.Drawing.Font("Arial", 12.25!)
+        Me.btnApproveTemplates.Font = New System.Drawing.Font("Arial", 10.0!)
         Me.btnApproveTemplates.Location = New System.Drawing.Point(155, 2)
         Me.btnApproveTemplates.Margin = New System.Windows.Forms.Padding(2)
         Me.btnApproveTemplates.Name = "btnApproveTemplates"
         Me.btnApproveTemplates.Size = New System.Drawing.Size(149, 44)
         Me.btnApproveTemplates.TabIndex = 49
-        Me.btnApproveTemplates.Text = "Approve Template"
+        Me.btnApproveTemplates.Text = "Approve" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Template"
+        Me.btnApproveTemplates.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnApproveTemplates.UseVisualStyleBackColor = False
         '
         'btnLogOut
         '
         Me.btnLogOut.BackColor = System.Drawing.Color.White
+        Me.btnLogOut.BackgroundImage = Global.LampClient.My.Resources.Resources.Log_Out
+        Me.btnLogOut.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.btnLogOut.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnLogOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnLogOut.Font = New System.Drawing.Font("Arial", 12.25!)
+        Me.btnLogOut.Font = New System.Drawing.Font("Arial", 10.0!)
         Me.btnLogOut.Location = New System.Drawing.Point(204, 54)
         Me.btnLogOut.Margin = New System.Windows.Forms.Padding(2)
         Me.btnLogOut.Name = "btnLogOut"
         Me.btnLogOut.Size = New System.Drawing.Size(99, 48)
         Me.btnLogOut.TabIndex = 45
         Me.btnLogOut.Text = "Log Out"
+        Me.btnLogOut.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnLogOut.UseVisualStyleBackColor = False
         '
         'btnApproveJob
         '
         Me.btnApproveJob.BackColor = System.Drawing.Color.White
+        Me.btnApproveJob.BackgroundImage = Global.LampClient.My.Resources.Resources.ApproveJob
+        Me.btnApproveJob.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.btnApproveJob.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnApproveJob.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnApproveJob.Font = New System.Drawing.Font("Arial", 12.25!)
+        Me.btnApproveJob.Font = New System.Drawing.Font("Arial", 10.0!)
         Me.btnApproveJob.Location = New System.Drawing.Point(308, 2)
         Me.btnApproveJob.Margin = New System.Windows.Forms.Padding(2)
         Me.btnApproveJob.Name = "btnApproveJob"
         Me.btnApproveJob.Size = New System.Drawing.Size(149, 44)
         Me.btnApproveJob.TabIndex = 48
         Me.btnApproveJob.Text = "Approve Job"
+        Me.btnApproveJob.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnApproveJob.UseVisualStyleBackColor = False
         '
         'btnAbout
         '
         Me.btnAbout.BackColor = System.Drawing.Color.White
+        Me.btnAbout.BackgroundImage = Global.LampClient.My.Resources.Resources.About
+        Me.btnAbout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.btnAbout.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnAbout.Font = New System.Drawing.Font("Arial", 12.25!)
+        Me.btnAbout.Font = New System.Drawing.Font("Arial", 10.0!)
         Me.btnAbout.Location = New System.Drawing.Point(103, 2)
         Me.btnAbout.Margin = New System.Windows.Forms.Padding(2)
         Me.btnAbout.Name = "btnAbout"
         Me.btnAbout.Size = New System.Drawing.Size(97, 48)
         Me.btnAbout.TabIndex = 43
         Me.btnAbout.Text = "About"
+        Me.btnAbout.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnAbout.UseVisualStyleBackColor = False
         '
         'btnBack
         '
         Me.btnBack.BackColor = System.Drawing.Color.White
+        Me.btnBack.BackgroundImage = Global.LampClient.My.Resources.Resources.Back
+        Me.btnBack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.btnBack.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnBack.Font = New System.Drawing.Font("Arial", 12.25!)
+        Me.btnBack.Font = New System.Drawing.Font("Arial", 10.0!)
         Me.btnBack.Location = New System.Drawing.Point(2, 50)
         Me.btnBack.Margin = New System.Windows.Forms.Padding(2)
         Me.btnBack.Name = "btnBack"
         Me.btnBack.Size = New System.Drawing.Size(149, 44)
         Me.btnBack.TabIndex = 52
         Me.btnBack.Text = "Back"
+        Me.btnBack.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnBack.UseVisualStyleBackColor = False
         '
         'btnHelp
         '
         Me.btnHelp.BackColor = System.Drawing.Color.White
+        Me.btnHelp.BackgroundImage = Global.LampClient.My.Resources.Resources.Help
+        Me.btnHelp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.btnHelp.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnHelp.Font = New System.Drawing.Font("Arial", 12.25!)
+        Me.btnHelp.Font = New System.Drawing.Font("Arial", 10.0!)
         Me.btnHelp.Location = New System.Drawing.Point(103, 54)
         Me.btnHelp.Margin = New System.Windows.Forms.Padding(2)
         Me.btnHelp.Name = "btnHelp"
         Me.btnHelp.Size = New System.Drawing.Size(97, 48)
         Me.btnHelp.TabIndex = 50
         Me.btnHelp.Text = "Help"
+        Me.btnHelp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnHelp.UseVisualStyleBackColor = False
         '
         'TableLayoutPanel2
@@ -193,8 +220,8 @@ Partial Class AdminToolbar
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
         Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel3, 0, 0)
-        Me.TableLayoutPanel2.Controls.Add(Me.Username, 1, 0)
         Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel5, 2, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.Username, 1, 0)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
@@ -273,15 +300,18 @@ Partial Class AdminToolbar
         'btnSettings
         '
         Me.btnSettings.BackColor = System.Drawing.Color.White
+        Me.btnSettings.BackgroundImage = Global.LampClient.My.Resources.Resources.Settings
+        Me.btnSettings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.btnSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSettings.Font = New System.Drawing.Font("Arial", 12.25!)
+        Me.btnSettings.Font = New System.Drawing.Font("Arial", 10.0!)
         Me.btnSettings.Location = New System.Drawing.Point(2, 2)
         Me.btnSettings.Margin = New System.Windows.Forms.Padding(2)
         Me.btnSettings.Name = "btnSettings"
         Me.btnSettings.Size = New System.Drawing.Size(97, 48)
         Me.btnSettings.TabIndex = 68
         Me.btnSettings.Text = "Settings"
+        Me.btnSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnSettings.UseVisualStyleBackColor = False
         '
         'AdminToolbar

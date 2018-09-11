@@ -46,11 +46,17 @@ Partial Class ApproveJobForm
         '
         'AdminToolbar1
         '
+        Me.AdminToolbar1.ApproveJobEnabled = True
+        Me.AdminToolbar1.ApproveTemplateEnabled = True
         Me.AdminToolbar1.BackColor = System.Drawing.Color.LightSeaGreen
+        Me.AdminToolbar1.ConfirmationRequired = Nothing
         Me.AdminToolbar1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.AdminToolbar1.Location = New System.Drawing.Point(3, 3)
+        Me.AdminToolbar1.HomeEnabled = True
+        Me.AdminToolbar1.Location = New System.Drawing.Point(0, 0)
+        Me.AdminToolbar1.ManageUsersEnabled = True
+        Me.AdminToolbar1.Margin = New System.Windows.Forms.Padding(0)
         Me.AdminToolbar1.Name = "AdminToolbar1"
-        Me.AdminToolbar1.Size = New System.Drawing.Size(1226, 99)
+        Me.AdminToolbar1.Size = New System.Drawing.Size(1232, 105)
         Me.AdminToolbar1.TabIndex = 0
         '
         'ServiceSortableJobViewer1
@@ -63,18 +69,18 @@ Partial Class ApproveJobForm
         Me.ServiceSortableJobViewer1.SidebarHidden = False
         Me.ServiceSortableJobViewer1.Size = New System.Drawing.Size(1226, 592)
         Me.ServiceSortableJobViewer1.SortOrder = LampCommon.LampJobSort.NoSort
+        Me.ServiceSortableJobViewer1.SplitterDistance = 981
         Me.ServiceSortableJobViewer1.TabIndex = 1
         Me.ServiceSortableJobViewer1.TitleText = "Approve Job"
         '
         'ApproveJobForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Name = "ApproveJobForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "ViewEditJobsForm"
+        Me.Text = "View/Edit Jobs"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 

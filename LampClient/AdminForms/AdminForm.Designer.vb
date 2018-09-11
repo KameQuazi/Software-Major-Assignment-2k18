@@ -24,10 +24,10 @@ Partial Class AdminForm
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AdminForm))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.AdminToolbar1 = New LampClient.AdminToolbar()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.pbLogo = New System.Windows.Forms.PictureBox()
         Me.lblStartText = New System.Windows.Forms.Label()
+        Me.AdminToolbar1 = New LampClient.AdminToolbar()
         Me.btnStandard = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
@@ -48,15 +48,6 @@ Partial Class AdminForm
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1232, 703)
         Me.TableLayoutPanel1.TabIndex = 1
-        '
-        'AdminToolbar1
-        '
-        Me.AdminToolbar1.BackColor = System.Drawing.Color.LightSeaGreen
-        Me.AdminToolbar1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.AdminToolbar1.Location = New System.Drawing.Point(3, 3)
-        Me.AdminToolbar1.Name = "AdminToolbar1"
-        Me.AdminToolbar1.Size = New System.Drawing.Size(1226, 99)
-        Me.AdminToolbar1.TabIndex = 0
         '
         'TableLayoutPanel2
         '
@@ -96,6 +87,21 @@ Partial Class AdminForm
         Me.lblStartText.Text = "Select a Tool from above"
         Me.lblStartText.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
+        'AdminToolbar1
+        '
+        Me.AdminToolbar1.ApproveJobEnabled = True
+        Me.AdminToolbar1.ApproveTemplateEnabled = True
+        Me.AdminToolbar1.BackColor = System.Drawing.Color.LightSeaGreen
+        Me.AdminToolbar1.ConfirmationRequired = Nothing
+        Me.AdminToolbar1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.AdminToolbar1.HomeEnabled = True
+        Me.AdminToolbar1.Location = New System.Drawing.Point(0, 0)
+        Me.AdminToolbar1.ManageUsersEnabled = True
+        Me.AdminToolbar1.Margin = New System.Windows.Forms.Padding(0)
+        Me.AdminToolbar1.Name = "AdminToolbar1"
+        Me.AdminToolbar1.Size = New System.Drawing.Size(1232, 105)
+        Me.AdminToolbar1.TabIndex = 0
+        '
         'btnStandard
         '
         Me.btnStandard.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -112,15 +118,15 @@ Partial Class AdminForm
         '
         'AdminForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.SystemColors.ControlDark
         Me.ClientSize = New System.Drawing.Size(1232, 703)
         Me.Controls.Add(Me.btnStandard)
         Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "AdminForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "AdminForm"
+        Me.Text = "Admin"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
         CType(Me.pbLogo, System.ComponentModel.ISupportInitialize).EndInit()

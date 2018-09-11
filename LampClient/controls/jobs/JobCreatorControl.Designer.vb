@@ -462,7 +462,6 @@ Partial Class JobCreatorControl
         Me.DxfViewerControl1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.DxfViewerControl1.Center = CType(resources.GetObject("DxfViewerControl1.Center"), System.Drawing.PointF)
         Me.DxfViewerControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.DxfViewerControl1.Drawing = Nothing
         Me.DxfViewerControl1.Location = New System.Drawing.Point(17, 17)
         Me.DxfViewerControl1.Margin = New System.Windows.Forms.Padding(16)
         Me.DxfViewerControl1.Name = "DxfViewerControl1"
