@@ -23,11 +23,11 @@ Partial Class EditUserForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.ManageUserControl1 = New LampClient.ManageUserControl()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.btnEdit = New System.Windows.Forms.Button()
         Me.btnRevert = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
-        Me.ManageUserControl1 = New LampClient.ManageUserControl()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.SuspendLayout()
@@ -46,6 +46,16 @@ Partial Class EditUserForm
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(502, 482)
         Me.TableLayoutPanel1.TabIndex = 1
+        '
+        'ManageUserControl1
+        '
+        Me.ManageUserControl1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ManageUserControl1.Location = New System.Drawing.Point(3, 3)
+        Me.ManageUserControl1.Name = "ManageUserControl1"
+        Me.ManageUserControl1.Readonly = False
+        Me.ManageUserControl1.Size = New System.Drawing.Size(496, 379)
+        Me.ManageUserControl1.TabIndex = 56
+        Me.ManageUserControl1.UsernameReadonly = True
         '
         'TableLayoutPanel2
         '
@@ -107,16 +117,6 @@ Partial Class EditUserForm
         Me.btnDelete.TabIndex = 53
         Me.btnDelete.Text = "Delete User"
         Me.btnDelete.UseVisualStyleBackColor = False
-        '
-        'ManageUserControl1
-        '
-        Me.ManageUserControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ManageUserControl1.Location = New System.Drawing.Point(3, 3)
-        Me.ManageUserControl1.Name = "ManageUserControl1"
-        Me.ManageUserControl1.Readonly = False
-        Me.ManageUserControl1.Size = New System.Drawing.Size(496, 379)
-        Me.ManageUserControl1.TabIndex = 56
-        Me.ManageUserControl1.UsernameReadonly = True
         '
         'EditUserForm
         '

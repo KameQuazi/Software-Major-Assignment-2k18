@@ -207,11 +207,13 @@ Public Class TemplateDatabase
                 Throw New Exception("must have at least 1 tag")
             End If
 
-            Dim tagParameters = "tagName IN ("
-            For i = 0 To tags.Count - 1
-                tagParameters += "@tag" + i.ToString()
+            Dim tagParameters As String = ""
+
+            tagParameters += "@tag0"
+            For i = 1 To tags.Count - 1
+                tagParameters += ",@tag" + i.ToString()
             Next
-            tagParameters += ")"
+            Dim tagString = "tagName IN (" + tagParameters.ToString() + ")"
 
             Dim userParameter = "1"
             If byUser.Count <> 0 Then
@@ -241,7 +243,7 @@ Public Class TemplateDatabase
                                       {3}
                                       LIMIT @limit
                                       OFFSET @offset
-                                     ", tagParameters, approveText, userParameter, GetTemplateSqlFromSort(orderBy), GetTableName(orderBy))
+                                     ", tagString, approveText, userParameter, GetTemplateSqlFromSort(orderBy), GetTableName(orderBy))
             ' find all templates w/
             command.CommandText = stringCommand
             For i = 0 To tags.Count - 1
@@ -282,13 +284,13 @@ Public Class TemplateDatabase
                 Throw New Exception("must have at least 1 tag")
             End If
 
-            Dim tagParameters As New StringBuilder()
+            Dim tagParameters As String = ""
 
-            For i = 0 To tags.Count - 1
-                tagParameters.Insert(i, "@tag" + i.ToString())
+            tagParameters += "@tag0"
+            For i = 1 To tags.Count - 1
+                tagParameters += ",@tag" + i.ToString()
             Next
             Dim tagString = "tagName IN (" + tagParameters.ToString() + ")"
-
             Dim userParameter = "1"
             If byUser.Count <> 0 Then
                 userParameter = "template.creatorId in ("

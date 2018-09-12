@@ -22,15 +22,9 @@ Public Class EditUserForm
         Me.Readonly = False
     End Sub
 
-    Private Sub ManageUserControl1_UserDeleted(sender As Object, args As UserDeletedEventArgs)
 
-    End Sub
 
-    Private Sub ManageUserControl1_UserDeleted(sender As Object, args As UserEditedEventArgs)
-
-    End Sub
-
-    Private Sub btnDelete_Click(sender As Object, e As EventArgs)
+    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         If MessageBox.Show("This will permanently remove this user", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) Then
             Dim response = CurrentSender.RemoveUser(CurrentUser.ToCredentials, User.UserId)
             Select Case response
@@ -148,4 +142,7 @@ Public Class EditUserForm
 
     End Function
 
+    Private Sub btnDelete_Click_1(sender As Object, e As EventArgs) Handles btnDelete.Click
+
+    End Sub
 End Class
