@@ -257,7 +257,7 @@ Partial Class TemplateCreatorControl
         Me.TboxThickness.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TboxThickness.Location = New System.Drawing.Point(115, 178)
         Me.TboxThickness.Margin = New System.Windows.Forms.Padding(4, 4, 16, 4)
-        Me.TboxThickness.MaxLength = 38
+        Me.TboxThickness.MaxLength = 3
         Me.TboxThickness.Name = "TboxThickness"
         Me.TboxThickness.Size = New System.Drawing.Size(203, 20)
         Me.TboxThickness.TabIndex = 51

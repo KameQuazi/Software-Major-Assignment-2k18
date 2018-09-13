@@ -270,6 +270,7 @@ Partial Class DesignerForm
         '
         Me.rtboxPrevious.Location = New System.Drawing.Point(12, 493)
         Me.rtboxPrevious.Name = "rtboxPrevious"
+        Me.rtboxPrevious.ReadOnly = True
         Me.rtboxPrevious.Size = New System.Drawing.Size(636, 96)
         Me.rtboxPrevious.TabIndex = 33
         Me.rtboxPrevious.Text = ""

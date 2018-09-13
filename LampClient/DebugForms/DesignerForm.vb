@@ -107,7 +107,7 @@ Public Class DesignerForm
 
     End Sub
 
-    Private _myColor As AciColor
+    Private _myColor As AciColor = New AciColor(Color.Red)
     Public Property MyColor As AciColor
         Get
             Return _myColor
@@ -332,12 +332,12 @@ Public Class DesignerForm
                         ' just entered in name
                         If textbuff.Count = 0 Then
                             SetError("name length cannot be zero")
-                        ElseIf DynamicTextKeys.ContainsString(textbuff) Then
+                        ElseIf DynamicTextKeys.ContainsString(textbuff.ToLower()) Then
                             SetError("parameter name already exists in drawing")
                         Else
                             currentState = DrawingState.AskingTextHeight
                             currentCmdText = "Enter text Height: {0}"
-                            parameterName = textbuff
+                            parameterName = textbuff.ToLower()
                             SetCommand(String.Format(currentCmdText, ""))
                             textbuff = ""
 
